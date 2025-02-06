@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+FORBIDDEN_HTTPS_URL="https://github.com/ICan-5/ICan-Frontend" # 레포 https url 
+FORBIDDEN_SSH_URL="git@github.com:ICan-5/ICan-Frontend.git" # 레포 ssh url
+FORBIDDEN_REF_MAIN="main"
+FORBIDDEN_REF_DEV="dev"
+
+remote="$1"
+url="$2"
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+push_branch=$(git rev-parse --symbolic-full-name @{u} 2>/dev/null | awk -F'/' '{print $NF}')
+
+if [ "$url" != "$FORBIDDEN_HTTPS_URL" -a "$url" != "$FORBIDDEN_SSH_URL" ]
+then
+    echo "forked branch can push your commits"
+    exit 0 # Forked Project 에서는 제한하지 않음
+fi
+
+echo "현재 로컬 브랜치는 $current_branch 입니다."
+echo "현재 푸쉬하는 원격 브랜치는 $push_branch 입니다."
+
+if [ "$push_branch" == "$FORBIDDEN_REF_MAIN" ] || [ "$push_branch" == "$FORBIDDEN_REF_DEV" ]
+then
+    echo "DO NOT PUSH TO MAIN OR DEV"
+    exit 0 # 금지된 ref 로 push 를 실행하면 에러
+fi
+
+exit 0
