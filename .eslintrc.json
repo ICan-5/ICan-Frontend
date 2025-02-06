@@ -1,3 +1,60 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "eslint:recommended", // eslint에서 추천하는 설정
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error", // Prettier 규칙을 ESLint 오류로 처리
+    "no-console": "warn", // console.log 사용 시 경고
+    "eqeqeq": "error", // === 사용 강제
+    "no-var": "error", // var 금지
+    "prefer-const": "error", // 가능하면 const 사용
+    "camelcase": ["error", { "properties": "never" }], // 변수와 함수는 camelCase 사용
+    "arrow-parens": ["error", "always"], // 화살표 함수 괄호 강제
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // 사용하지 않는 변수 경고
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 함수 반환 타입 강제 X
+    "@typescript-eslint/lines-between-class-members": "off", // 클래스에서 멤버 사이에 빈줄 강제 X
+    "@typescript-eslint/no-throw-literal": "off", // 문자열, 숫자와 같은 값을 throw로 던지는걸 막음
+    "react/react-in-jsx-scope": "off", // Next.js에서는 React import 필요 없음
+    "react/prop-types": "off", // TypeScript를 사용하므로 PropTypes 비활성화
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }], // JSX를 TypeScript 파일에서만 사용
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "function-declaration",
+        "unnamedComponents": "arrow-function"
+      }
+    ], // 함수형 컴포넌트는 function 함수, 나머지는 화살표 함수
+    "import/prefer-default-export": "off", // default export 강제하지 않음
+    "jsx-a11y/anchor-is-valid": "off" // Next.js의 Link 컴포넌트 사용을 고려하여 anchor 규칙 비활성화
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "ignorePatterns": ["node_modules/", "dist/", ".next/", "public/"]
 }
