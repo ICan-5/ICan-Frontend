@@ -52,6 +52,11 @@
     "jsx-a11y/anchor-is-valid": "off" // Next.js의 Link 컴포넌트 사용을 고려하여 anchor 규칙 비활성화
   },
   "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    },
     "react": {
       "version": "detect"
     }
