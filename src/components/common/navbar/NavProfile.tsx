@@ -9,7 +9,7 @@ export default function NavProfile() {
   };
 
   return (
-    <div className={cn('flex h-16 w-full items-center gap-3 overflow-hidden')}>
+    <div className={cn('flex h-16 w-full flex-none items-center gap-3')}>
       <Image
         className={cn('h-8 w-8')}
         src={data.image || '/images/profile.png'}
@@ -33,7 +33,7 @@ export default function NavProfile() {
             'overflow-hidden text-ellipsis whitespace-nowrap break-words',
           )}
         >
-          {`${data.email}`}
+          {data.email}
         </span>
       </div>
     </div>
