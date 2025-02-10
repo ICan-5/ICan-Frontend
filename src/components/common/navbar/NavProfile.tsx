@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import cn from '@/utils/cn';
 
-export default function Profile() {
+export default function NavProfile() {
   const data = {
     image: '',
     name: 'Jack Martine',
@@ -21,7 +21,7 @@ export default function Profile() {
       <div className={cn('flex w-full flex-col overflow-hidden')}>
         <span
           className={cn(
-            'text-m w-full',
+            'text-m w-full font-semibold',
             'overflow-hidden text-ellipsis whitespace-nowrap break-words',
           )}
         >
