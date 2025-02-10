@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>icon-frontend</div>;
+  return <div>ican-frontend</div>;
 }
