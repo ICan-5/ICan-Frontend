@@ -25,3 +25,9 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .text-overflow {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap break-words;
+  }
+}
