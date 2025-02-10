@@ -19,22 +19,10 @@ export default function NavProfile() {
         priority
       />
       <div className={cn('flex w-full flex-col overflow-hidden')}>
-        <span
-          className={cn(
-            'text-m w-full font-semibold',
-            'overflow-hidden text-ellipsis whitespace-nowrap break-words',
-          )}
-        >
+        <span className={cn('text-m text-overflow w-full font-semibold')}>
           {data.name}
         </span>
-        <span
-          className={cn(
-            'w-full text-sm',
-            'overflow-hidden text-ellipsis whitespace-nowrap break-words',
-          )}
-        >
-          {data.email}
-        </span>
+        <span className={cn('text-overflow w-full text-sm')}>{data.email}</span>
       </div>
     </div>
   );

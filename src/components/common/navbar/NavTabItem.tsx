@@ -21,7 +21,7 @@ export default function NavTabItem({ icon, path, title }: Props) {
       className={cn(
         'flex flex-shrink-0 items-center gap-3 overflow-hidden whitespace-nowrap rounded-md p-2 text-gray-400',
         'hover:bg-gray-100',
-        { 'bg-[#E6EFFC] text-[#0052CC] hover:bg-[#E6EFFC]': pathname === path },
+        { 'bg-secondary text-primary hover:bg-secondary': pathname === path },
       )}
     >
       <div className={cn('flex items-center justify-center')}>

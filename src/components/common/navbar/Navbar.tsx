@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import cn from '@/utils/cn';
 import NavProfile from './NavProfile';
-import NavTab from './navTab/NavTab';
+import NavTab from './NavTab';
 
 export default function Navbar() {
   const [isFolded, setIsFolded] = useState<boolean>(false);
