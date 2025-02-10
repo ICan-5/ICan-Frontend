@@ -139,17 +139,19 @@ export default function Calendar() {
     window.alert(info.event.title);
   };
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center p-4">
       {/* custom header */}
-      <div className="mb-4 flex w-full max-w-lg items-center justify-between">
-        <button
-          type="button"
-          onClick={clickTodayHandler}
-          className="bg-gray-200 p-4"
-        >
-          Today
-        </button>
-        <div className="flex items-center">
+      <div className="mb-4 flex w-full items-center justify-between">
+        <div className="w-1/4">
+          <button
+            type="button"
+            onClick={clickTodayHandler}
+            className="rounded-lg bg-gray-200 p-4"
+          >
+            Today
+          </button>
+        </div>
+        <div className="flex w-1/2 flex-grow-0 items-center justify-center">
           <button
             type="button"
             onClick={clickPrevMonthHandler}
@@ -157,7 +159,7 @@ export default function Calendar() {
           >
             ←
           </button>
-          <span className="text-lg font-semibold">
+          <span className="inline-block min-w-32 flex-shrink-0 text-center text-lg font-semibold">
             {viewMonth.toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -171,6 +173,7 @@ export default function Calendar() {
             →
           </button>
         </div>
+        <div className="w-1/4" />
       </div>
       <FullCalendar
         ref={calendarRef}
