@@ -8,27 +8,77 @@ import { DayCellContentArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
 import { useState, useRef } from 'react';
 
-const events = [
+const todos = [
   {
-    title: 'Mitchell Admin',
+    id: 1,
+    title: '할일 1',
     date: '2025-02-03',
-    backgroundColor: 'bg-red-500',
-  },
-  { title: 'Modern space', date: '2025-02-05', backgroundColor: 'bg-blue-500' },
-  { title: 'space', date: '2025-02-05', backgroundColor: 'bg-green-500' },
-  { title: '8 Chairs', date: '2025-02-08', backgroundColor: 'bg-green-500' },
-  {
-    title: 'Quote for 12 Tab',
-    date: '2025-02-15',
-    backgroundColor: 'bg-purple-500',
+    goal: {
+      id: 1,
+      title: '강의 듣기',
+      color: 'bg-red-500',
+    },
   },
   {
-    title: '5 VP Chairs',
-    date: '2025-02-15',
-    backgroundColor: 'bg-yellow-500',
+    id: 2,
+    title: '할일 2',
+    date: '2025-02-10',
+    goal: {
+      id: 1,
+      title: '강의 듣기',
+      color: 'bg-red-500',
+    },
   },
-  { title: 'Ready Mat', date: '2025-02-18', backgroundColor: 'bg-indigo-500' },
-  { title: 'Obq Interior', date: '2025-02-25', backgroundColor: 'bg-red-500' },
+  {
+    id: 3,
+    title: '할일 3',
+    date: '2025-02-07',
+    goal: {
+      id: 2,
+      title: '목표 2',
+      color: 'bg-indigo-500',
+    },
+  },
+  {
+    id: 4,
+    title: '할일 4',
+    date: '2025-02-20',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+  },
+  {
+    id: 5,
+    title: '할일 5',
+    date: '2025-02-17',
+    goal: {
+      id: 4,
+      title: '목표 4',
+      color: 'bg-green-500',
+    },
+  },
+  {
+    id: 6,
+    title: '할일 6',
+    date: '2025-02-25',
+    goal: {
+      id: 1,
+      title: '강의 듣기',
+      color: 'bg-red-500',
+    },
+  },
+  {
+    id: 7,
+    title: '할일 7',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+  },
 ];
 
 const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
@@ -126,9 +176,10 @@ export default function Calendar() {
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
-        events={events.map((event) => ({
+        events={todos.map((event) => ({
           ...event,
-          className: event.backgroundColor, // Tailwind 색상 클래스 추가
+          id: event.id.toString(),
+          className: event.goal.color,
         }))}
         eventBorderColor="transparent"
         eventClick={clickTodoHandler}
