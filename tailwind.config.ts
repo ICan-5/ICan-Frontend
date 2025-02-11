@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+
         // 임시 커스텀 컬러
         // 어두운 회색 계열
         grayDarkest: '#333333', // 가장 어두운 회색 (검정에 가까운 회색)
