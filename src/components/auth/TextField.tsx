@@ -1,11 +1,16 @@
-import { TextFieldProps } from '@/types/inputTypes';
+type Props = {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+};
 
 export default function TextField({
   label,
   name,
   type = 'text', // 기본값 'text'
   placeholder = '입력창에 입력해주세요',
-}: TextFieldProps) {
+}: Props) {
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>

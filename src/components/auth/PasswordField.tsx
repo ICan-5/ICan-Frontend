@@ -2,16 +2,21 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { PasswordFieldProps } from '@/types/inputTypes';
+type Props = {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+};
 
 export default function PasswordField({
   label, // 레이블
   name,
   type = 'password',
   placeholder = '비밀번호를 입력해주세요',
-}: PasswordFieldProps) {
+}: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  function clickPasswordVisibilityHandler() {
+  function handleTogglePasswordVisible() {
     setIsPasswordVisible(!isPasswordVisible);
   }
 
@@ -26,10 +31,7 @@ export default function PasswordField({
             placeholder={placeholder}
             autoComplete="off"
           />
-          <button
-            type="button"
-            onClick={() => clickPasswordVisibilityHandler()}
-          >
+          <button type="button" onClick={() => handleTogglePasswordVisible()}>
             {isPasswordVisible ? (
               <FontAwesomeIcon
                 className="absolute right-6 top-1/2 h-6 w-6 -translate-y-1/2 text-grayDarker"
