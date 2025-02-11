@@ -5,14 +5,12 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 type Props = {
   label: string;
   name: string;
-  type?: string;
   placeholder?: string;
 };
 
 export default function PasswordField({
   label, // 레이블
   name,
-  type = 'password',
   placeholder = '비밀번호를 입력해주세요',
 }: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -27,7 +25,7 @@ export default function PasswordField({
         <div className="relative w-full">
           <input
             className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-gray shadow-sm transition-colors focus:outline-none focus:ring-gray focus-visible:ring-1"
-            type={type}
+            type={isPasswordVisible ? 'text' : 'password'}
             placeholder={placeholder}
             autoComplete="off"
           />
