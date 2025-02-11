@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FullCalendar 날짜 셀 높이 고정 */
+.fc-daygrid-day {
+  @apply h-[120px] max-h-[120px] overflow-hidden; /* Tailwind로 높이 고정 */
+}
+
+/* 이벤트 스타일 */
+.fc-event {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap; /* 이벤트 내용 숨김 처리 */
+}
+
+/* 오늘 날짜 기본 배경색 제거 */
+.fc-day-today {
+  @apply bg-transparent !important;
+}
