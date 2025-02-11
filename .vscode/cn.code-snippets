@@ -1,0 +1,8 @@
+{
+  "apply cn": {
+    "prefix": "style",
+    "scope": "html, javascript, typescript, javascriptreact, typescriptreact",
+    "body": "className={cn('$0')}",
+    "description": "tailwindMerge + clsx",
+  },
+}
