@@ -32,9 +32,16 @@ export default function NewGoalItem({ onCloseInput, onAddNewItem }: Props) {
           title,
         };
         onAddNewItem(newItem);
-        onCloseInput();
       }
+      onCloseInput();
     }
+  };
+
+  /**
+   * input에서 focus가 빠지면 input 종료 함수
+   */
+  const handleBlur = () => {
+    onCloseInput();
   };
 
   useEffect(() => {
@@ -49,6 +56,7 @@ export default function NewGoalItem({ onCloseInput, onAddNewItem }: Props) {
         className="text-overflow p-1"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       />
     </div>
