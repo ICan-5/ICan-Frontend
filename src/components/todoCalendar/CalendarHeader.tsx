@@ -8,14 +8,19 @@ export default function CalendarHeader({
   calendarRef: React.RefObject<FullCalendar>;
   onDateChange: (date: Date) => void;
 }) {
+  // 헤더에 있는 현재 달력의 달을 보여주기 위함
   const [viewMonth, setViewMonth] = useState<Date>(new Date());
 
+  // 현재 달력 위치의 날짜를 update
   const updateCurrentView = () => {
     const calendarApi = calendarRef.current?.getApi();
     const currentDate = calendarApi?.getDate() ?? new Date();
     setViewMonth(currentDate);
   };
 
+  // today 버튼을 클릭했을 때
+  // 선택한 날짜도 오늘로 변경,
+  // 달력 위치도 오늘로 변경
   const handleTodayClick = () => {
     const today = new Date();
     onDateChange(today);
@@ -24,12 +29,14 @@ export default function CalendarHeader({
     updateCurrentView();
   };
 
+  // 이전 달로 이동
   const handlePrevMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.prev();
     updateCurrentView();
   };
 
+  // 다음 달로 이동
   const handleNextMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.next();
