@@ -29,7 +29,11 @@
     "next": "14.2.23",
     "react": "^18",
     "react-dom": "^18",
-    "tailwind-merge": "2.6"
+    "tailwind-merge": "2.6",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",
