@@ -1,6 +1,13 @@
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
 
+/**
+ * 캘린더 헤더 부분
+ * (달력의 연도와 달, 오늘로 이동하는 버튼, 달 이동 버튼)
+ *
+ * @param calendarRef 달력
+ * @param onDateChange 선택 날짜 변경
+ */
 export default function CalendarHeader({
   calendarRef,
   onDateChange,
@@ -11,16 +18,20 @@ export default function CalendarHeader({
   // 헤더에 있는 현재 달력의 달을 보여주기 위함
   const [viewMonth, setViewMonth] = useState<Date>(new Date());
 
-  // 현재 달력 위치의 날짜를 update
+  /**
+   * 현재 달력 위치의 날짜로 업데이트
+   */
   const updateCurrentView = () => {
     const calendarApi = calendarRef.current?.getApi();
     const currentDate = calendarApi?.getDate() ?? new Date();
     setViewMonth(currentDate);
   };
 
-  // today 버튼을 클릭했을 때
-  // 선택한 날짜도 오늘로 변경,
-  // 달력 위치도 오늘로 변경
+  /**
+   * today 버튼을 클릭했을 때
+   * 선택한 날짜도 오늘로 변경,
+   * 달력 위치도 오늘로 변경
+   */
   const handleTodayClick = () => {
     const today = new Date();
     onDateChange(today);
@@ -29,15 +40,18 @@ export default function CalendarHeader({
     updateCurrentView();
   };
 
-  // 이전 달로 이동
+  /**
+   * 이전 달로 이동
+   */
   const handlePrevMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.prev();
     updateCurrentView();
   };
 
-  // 다음 달로 이동
-  const handleNextMonthClick = () => {
+  /**
+   * 다음 달로 이동
+   */ const handleNextMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.next();
     updateCurrentView();

@@ -82,7 +82,12 @@ const todos = [
   },
 ];
 
-// 각 날짜 칸을 render하는 함수
+/**
+ * 각 날짜 칸을 커스텀한 UI
+ *
+ * @param info 각 날짜 정보
+ * @param selectedDate 선택된 날짜
+ */
 const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
   const isSelectedDate =
     selectedDate.toDateString() === info.date.toDateString();
@@ -101,17 +106,25 @@ const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
   );
 };
 
+/**
+ * 달력 컴포넌트
+ */
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const calendarRef = useRef<FullCalendar>(null);
 
-  // 날짜 클릭했을 때
-  // Todo: 해당 날짜의 할 일 띄우기
+  /**
+   * 각 날짜 칸을 클릭을 처리하는 핸들러
+   *
+   * Todo: 해당 날짜의 할 일 보여주기
+   */
   const handleDateClick = useCallback((info: { date: Date }) => {
     setSelectedDate(new Date(info.date));
   }, []);
 
-  // 달력 위의 할 일 클릭했을 때
+  /**
+   * 각 날짜 칸에 있는 할 일 클릭을 처리하는 핸들러
+   */
   const handleTodoClick = useCallback((info: { event: { title: string } }) => {
     console.log(info);
     window.alert(info.event.title);
