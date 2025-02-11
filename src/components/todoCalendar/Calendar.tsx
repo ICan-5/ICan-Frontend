@@ -8,6 +8,7 @@ import { DayCellContentArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
 import { useState, useRef, useCallback } from 'react';
 import CalendarHeader from './CalendarHeader';
+import cn from '@/utils/cn';
 
 const todos = [
   {
@@ -83,7 +84,7 @@ const todos = [
 ];
 
 /**
- * 각 날짜 칸을 커스텀한 UI
+ * 각 날짜 숫자를 커스텀한 UI
  *
  * @param info 각 날짜 정보
  * @param selectedDate 선택된 날짜
@@ -95,13 +96,16 @@ const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
 
   return (
     <div className="flex h-full items-center justify-center">
-      {isSelectedDate ? (
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500 text-white">
-          {dateText}
-        </span>
-      ) : (
-        <span>{dateText}</span>
-      )}
+      <span
+        className={cn(
+          'flex items-center justify-center',
+          'h-8 w-8',
+          'rounded-full',
+          isSelectedDate && 'bg-purple-500 text-white',
+        )}
+      >
+        {dateText}
+      </span>
     </div>
   );
 };
