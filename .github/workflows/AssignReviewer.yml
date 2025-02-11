@@ -13,10 +13,10 @@ jobs:
       - name: Set reviewers based on the actor
         id: reviewers
         run: |
-          if [ "${{ github.actor }}" == "izodam" ]; then echo "REVIEWERS=kxmmxnzx,jeongeunhq" >> $GITHUB_ENV;
-          elif [ "${{ github.actor }}" == "jeongeunhq" ]; then echo "REVIEWERS=kxmmxnzx,chocorogit" >> $GITHUB_ENV;
-          elif [ "${{ github.actor }}" == "kxmmxnzx" ]; then echo "REVIEWERS=izodam,chocorogit" >> $GITHUB_ENV;
-          elif [ "${{ github.actor }}" == "chocorogit" ]; then echo "REVIEWERS=jeongeunhq,izodam" >> $GITHUB_ENV;
+          if [ "${{ github.actor }}" == "izodam" ]; then echo "REVIEWERS=kxmmxnzx, jeongeunhq" >> $GITHUB_ENV;
+          elif [ "${{ github.actor }}" == "jeongeunhq" ]; then echo "REVIEWERS=kxmmxnzx, chocorogit" >> $GITHUB_ENV;
+          elif [ "${{ github.actor }}" == "kxmmxnzx" ]; then echo "REVIEWERS=izodam, chocorogit" >> $GITHUB_ENV;
+          elif [ "${{ github.actor }}" == "chocorogit" ]; then echo "REVIEWERS=jeongeunhq, izodam" >> $GITHUB_ENV;
           else echo "REVIEWERS=" >> $GITHUB_ENV; fi
           
       - name: Assign Reviewers, Assignee
