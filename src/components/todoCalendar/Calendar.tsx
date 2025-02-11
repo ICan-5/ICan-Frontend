@@ -7,6 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { DayCellContentArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
 import { useState, useRef } from 'react';
+import CalendarHeader from './CalendarHeader';
 
 const todos = [
   {
@@ -101,34 +102,7 @@ const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [viewMonth, setViewMonth] = useState<Date>(new Date());
   const calendarRef = useRef<FullCalendar>(null);
-
-  const updateCurrentView = () => {
-    const calendarApi = calendarRef.current?.getApi();
-    const currentDate = calendarApi?.getDate();
-    if (currentDate) setViewMonth(currentDate);
-  };
-
-  const clickTodayHandler = () => {
-    const today = new Date();
-    setSelectedDate(today);
-    const calendarApi = calendarRef.current?.getApi();
-    calendarApi?.today();
-    updateCurrentView();
-  };
-
-  const clickPrevMonthHandler = () => {
-    const calendarApi = calendarRef.current?.getApi();
-    calendarApi?.prev();
-    updateCurrentView();
-  };
-
-  const clickNextMonthHandler = () => {
-    const calendarApi = calendarRef.current?.getApi();
-    calendarApi?.next();
-    updateCurrentView();
-  };
 
   const clickDateHandler = (info: { date: Date }) => {
     setSelectedDate(new Date(info.date));
@@ -140,41 +114,10 @@ export default function Calendar() {
   };
   return (
     <div className="flex flex-col items-center p-4">
-      {/* custom header */}
-      <div className="mb-4 flex w-full items-center justify-between">
-        <div className="w-1/4">
-          <button
-            type="button"
-            onClick={clickTodayHandler}
-            className="rounded-lg bg-gray-200 p-4"
-          >
-            Today
-          </button>
-        </div>
-        <div className="flex w-1/2 flex-grow-0 items-center justify-center">
-          <button
-            type="button"
-            onClick={clickPrevMonthHandler}
-            className="mr-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
-          >
-            ←
-          </button>
-          <span className="inline-block min-w-32 flex-shrink-0 text-center text-lg font-semibold">
-            {viewMonth.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-            })}
-          </span>
-          <button
-            type="button"
-            onClick={clickNextMonthHandler}
-            className="ml-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
-          >
-            →
-          </button>
-        </div>
-        <div className="w-1/4" />
-      </div>
+      <CalendarHeader
+        calendarRef={calendarRef}
+        onDateChange={setSelectedDate}
+      />
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
