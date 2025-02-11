@@ -6,7 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { DayCellContentArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import CalendarHeader from './CalendarHeader';
 
 const todos = [
@@ -104,14 +104,15 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const calendarRef = useRef<FullCalendar>(null);
 
-  const clickDateHandler = (info: { date: Date }) => {
+  const handleDateClick = useCallback((info: { date: Date }) => {
     setSelectedDate(new Date(info.date));
-  };
+  }, []);
 
-  const clickTodoHandler = (info: { event: { title: string } }) => {
+  const handleTodoClick = useCallback((info: { event: { title: string } }) => {
     console.log(info);
     window.alert(info.event.title);
-  };
+  }, []);
+
   return (
     <div className="flex flex-col items-center p-4">
       <CalendarHeader
@@ -128,9 +129,9 @@ export default function Calendar() {
           className: event.goal.color,
         }))}
         eventBorderColor="transparent"
-        eventClick={clickTodoHandler}
+        eventClick={handleTodoClick}
         eventDisplay="block" // Display all events as blocks
-        dateClick={clickDateHandler}
+        dateClick={handleDateClick}
         locale="kr"
         headerToolbar={false}
         height="auto"
