@@ -13,7 +13,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        'relative left-0 top-0 flex h-screen flex-col items-start bg-white p-4 transition-all duration-300',
+        'relative left-0 top-0 flex h-screen flex-none flex-col items-start bg-white p-4 transition-all duration-300',
         { 'w-16': isFolded, 'w-60': !isFolded },
       )}
     >

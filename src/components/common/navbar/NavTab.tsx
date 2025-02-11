@@ -9,7 +9,7 @@ import NavGoal from './navGoal/NavGoal';
 
 const tabs = [
   { icon: faHouse, title: '대시보드', path: '/' },
-  { icon: faCalendar, title: '캘린더', path: '/calendar' },
+  { icon: faCalendar, title: '캘린더', path: '/todoCalendar' },
 ];
 
 export default function NavTab() {
