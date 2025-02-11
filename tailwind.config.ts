@@ -19,7 +19,6 @@ const config: Config = {
         grayDark: '#808080', // 표준 어두운 회색
 
         // 중간 회색 계열
-        gray: '#B7B7B7', // 기본 회색 (표준 회색)
         grayLight: '#D1D1D1', // 연한 회색 (밝은 회색 계열의 시작)
         grayLighter: '#E8E8E8', // 더 밝은 회색 (흰색에 가까운 회색)
 
