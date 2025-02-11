@@ -1,0 +1,20 @@
+name: Assign Reviewers, Assignee
+
+on:
+  pull_request:
+    branches: 
+      -dev
+    types: [opened, ready_for_review]
+  
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/review-assign-action@v1.4.0
+        with:
+          assignees: ${{ github.actor }} # assign pull request author
+          reviewers: |
+            ${{ github.actor == 'izodam' && 'kxmmxnzx, jeongeunhq'}}
+            ${{ github.actor == 'jeongeunhq' && 'kxmmxnzx, chocorogit'}}
+            ${{ github.actor == 'kxmmxnzx' && 'izodam, chocorogit'}}
+            ${{ github.actor == 'chocorogit' && 'jeongeunhq, izodam'}}
