@@ -16,9 +16,9 @@ export default function PasswordField({
   placeholder = '비밀번호를 입력해주세요',
 }: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  function handleTogglePasswordVisible() {
+  const handleTogglePasswordVisible = () => {
     setIsPasswordVisible(!isPasswordVisible);
-  }
+  };
 
   return (
     <div className="mb-6 w-full">
