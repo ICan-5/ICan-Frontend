@@ -1,6 +1,11 @@
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
 
+type Props = {
+  calendarRef: React.RefObject<FullCalendar>;
+  onDateChange: (date: Date) => void;
+};
+
 /**
  * 캘린더 헤더 부분
  * (달력의 연도와 달, 오늘로 이동하는 버튼, 달 이동 버튼)
@@ -8,13 +13,7 @@ import { useState } from 'react';
  * @param calendarRef 달력
  * @param onDateChange 선택 날짜 변경
  */
-export default function CalendarHeader({
-  calendarRef,
-  onDateChange,
-}: {
-  calendarRef: React.RefObject<FullCalendar>;
-  onDateChange: (date: Date) => void;
-}) {
+export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
   // 헤더에 있는 현재 달력의 달을 보여주기 위함
   const [viewMonth, setViewMonth] = useState<Date>(new Date());
 
