@@ -2,6 +2,8 @@ import Image from 'next/image';
 import cn from '@/utils/cn';
 
 export default function NavProfile() {
+  // TODO:: API연결 되면 밑 데이터 삭제
+  // 프로필 데이터 받아오기
   const data = {
     image: '',
     name: 'Jack Martine',

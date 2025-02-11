@@ -8,39 +8,36 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import cn from '@/utils/cn';
 import NavGoalItem from './NavGoalItem';
+import NewGoalItem from './NewGoalItem';
 
-const goals = [
+// TODO:: 목표 리스트 mock 데이터, API 연결하면 삭제
+const tempGoalList = [
   { id: 1, title: '자바스크립트 공부하기' },
   { id: 2, title: '리액트 공부하기' },
-  { id: 3, title: '리액트 공부하기' },
-  { id: 4, title: '리액트 공부하기' },
-  { id: 5, title: '리액트 공부하기' },
-  { id: 12, title: '리액트 공부하기' },
-  { id: 13, title: '리액트 공부하기' },
-  { id: 14, title: '리액트 공부하기' },
-  { id: 15, title: '리액트 공부하기' },
-  { id: 212, title: '리액트 공부하기' },
-  { id: 213, title: '리액트 공부하기' },
-  { id: 214, title: '리액트 공부하기' },
-  { id: 215, title: '리액트 공부하기' },
-  { id: 314, title: '리액트 공부하기' },
-  { id: 315, title: '리액트 공부하기' },
-  { id: 3212, title: '리액트 공부하기' },
-  { id: 3213, title: '리액트 공부하기' },
-  { id: 3214, title: '리액트 공부하기' },
-  { id: 3215, title: '리액트 공부하기' },
+  { id: 3, title: 'Next14 공부하기' },
 ];
 
 export default function NavGoal() {
   const pathname = usePathname();
+  const [goalList, setGoalList] = useState(tempGoalList);
   const [isFolded, setIsFolded] = useState<boolean>(false);
+  const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
 
+  /**
+   * 목표 리스트 접기/펼치기 함수
+   */
   const foldGoalList = () => {
     setIsFolded((prev) => !prev);
   };
 
-  const addGoallist = (event: React.MouseEvent) => {
+  /**
+   * @param event 마우스 이벤트
+   * 새로운 목표 생성 & 목표 리스트가 접혀져있다면 펼치기 함수
+   */
+  const addGoalList = (event: React.MouseEvent) => {
     event?.stopPropagation();
+    setShowNewGoal(true);
+    if (isFolded) setIsFolded(false);
   };
 
   return (
@@ -58,9 +55,7 @@ export default function NavGoal() {
         </div>
         <p className={cn('text-m flex-1 text-left font-medium')}>목표</p>
         <button
-          className={cn(
-            'flex h-5 w-5 items-center justify-center rounded-md hover:bg-gray-100',
-          )}
+          className={cn('flex h-5 w-5 items-center justify-center rounded-md')}
           type="button"
           onClick={foldGoalList}
         >
@@ -78,7 +73,7 @@ export default function NavGoal() {
             'flex h-5 w-5 items-center justify-center rounded-md bg-primary',
           )}
           type="button"
-          onClick={addGoallist}
+          onClick={addGoalList}
         >
           <FontAwesomeIcon
             className={cn('h-3 w-3 text-white')}
@@ -87,16 +82,30 @@ export default function NavGoal() {
           />
         </button>
       </div>
-      <ul
+      <div
         className={cn(
-          'flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden whitespace-nowrap transition-transform duration-300',
-          { hidden: isFolded },
+          'flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden whitespace-nowrap py-2',
+          'origin-top transition-transform duration-300 ease-in-out',
+          { 'scale-y-0': isFolded },
         )}
       >
-        {goals.map((goal) => (
-          <NavGoalItem id={goal.id} title={goal.title} key={goal.id} />
+        {goalList.map((goal) => (
+          <NavGoalItem
+            id={goal.id}
+            title={goal.title}
+            isSelected={pathname === `/goals/${goal.id}`}
+            key={goal.id}
+          />
         ))}
-      </ul>
+        {showNewGoal && (
+          <NewGoalItem
+            onCloseInput={() => setShowNewGoal(false)}
+            onAddNewItem={(newItem) =>
+              setGoalList((prev) => [...prev, newItem])
+            }
+          />
+        )}
+      </div>
     </div>
   );
 }

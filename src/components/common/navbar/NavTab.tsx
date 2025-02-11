@@ -1,6 +1,9 @@
+'use client';
+
 import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons/faCalendar';
+import { usePathname } from 'next/navigation';
 import cn from '@/utils/cn';
 import NavTabItem from './NavTabItem';
 import NavGoal from './navGoal/NavGoal';
@@ -11,6 +14,8 @@ const tabs = [
 ];
 
 export default function NavTab() {
+  const pathname = usePathname();
+
   return (
     <div
       className={cn(
@@ -23,6 +28,7 @@ export default function NavTab() {
             icon={tab.icon}
             title={tab.title}
             path={tab.path}
+            isSelected={pathname === tab.path}
             key={tab.path}
           />
         ))}
@@ -31,7 +37,12 @@ export default function NavTab() {
         <NavGoal />
       </section>
       <section className={cn('flex-none')}>
-        <NavTabItem icon={faGear} title="설정" path="/setting" />
+        <NavTabItem
+          icon={faGear}
+          title="설정"
+          path="/setting"
+          isSelected={pathname === '/setting'}
+        />
       </section>
     </div>
   );
