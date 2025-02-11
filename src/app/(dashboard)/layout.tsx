@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import localFont from 'next/font/local';
 import cn from '@/utils/cn';
+import Navbar from '@/components/common/navbar/Navbar';
 
 const pretendard = localFont({
-  src: '../../public/fonts/PretendardVariable.woff2',
+  src: '../../../public/fonts/PretendardVariable.woff2',
   display: 'swap',
   weight: '45 920',
   variable: '--font-pretendard',
@@ -27,6 +28,7 @@ export default function RootLayout({
           pretendard.className,
         )}
       >
+        <Navbar />
         {children}
       </body>
     </html>

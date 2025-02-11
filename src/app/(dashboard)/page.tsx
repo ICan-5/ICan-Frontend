@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>ican-frontend</div>;
+  return <div>DashBoard Page</div>;
 }
