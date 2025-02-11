@@ -4,7 +4,6 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons/faCalendar';
 import { usePathname } from 'next/navigation';
-import cn from '@/utils/cn';
 import NavTabItem from './NavTabItem';
 import NavGoal from './navGoal/NavGoal';
 
@@ -17,12 +16,8 @@ export default function NavTab() {
   const pathname = usePathname();
 
   return (
-    <div
-      className={cn(
-        'mt-2 flex w-full flex-1 flex-col gap-1 overflow-y-hidden border-t-[1px] py-2',
-      )}
-    >
-      <section className={cn('flex flex-none flex-col gap-1')}>
+    <div className="mt-2 flex w-full flex-1 flex-col gap-1 overflow-y-hidden border-t-[1px] py-2">
+      <section className="flex flex-none flex-col gap-1">
         {tabs.map((tab) => (
           <NavTabItem
             icon={tab.icon}
@@ -33,10 +28,10 @@ export default function NavTab() {
           />
         ))}
       </section>
-      <section className={cn('flex-1 overflow-hidden')}>
+      <section className="flex-1 overflow-hidden">
         <NavGoal />
       </section>
-      <section className={cn('flex-none')}>
+      <section className="flex-none">
         <NavTabItem
           icon={faGear}
           title="설정"

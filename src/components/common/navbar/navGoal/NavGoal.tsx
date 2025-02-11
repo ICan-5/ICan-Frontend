@@ -41,7 +41,7 @@ export default function NavGoal() {
   };
 
   return (
-    <div className={cn('flex h-full flex-col overflow-y-hidden')}>
+    <div className="flex h-full flex-col overflow-y-hidden">
       <div
         className={cn(
           'flex flex-none items-center gap-3 overflow-hidden whitespace-nowrap rounded-md p-2 text-gray-400',
@@ -50,33 +50,31 @@ export default function NavGoal() {
           },
         )}
       >
-        <div className={cn('flex items-center justify-center')}>
-          <FontAwesomeIcon className={cn('h-4 w-4')} icon={faFlag} size="sm" />
+        <div className="flex items-center justify-center">
+          <FontAwesomeIcon className="h-4 w-4" icon={faFlag} size="sm" />
         </div>
-        <p className={cn('text-m flex-1 text-left font-medium')}>목표</p>
+        <p className="text-m flex-1 text-left font-medium">목표</p>
         <button
-          className={cn('flex h-5 w-5 items-center justify-center rounded-md')}
+          className="flex h-5 w-5 items-center justify-center rounded-md"
           type="button"
           onClick={foldGoalList}
         >
           <FontAwesomeIcon
             className={cn('h-4 w-4 transition-transform duration-300', {
-              'rotate-180': !isFolded,
-              'rotate-0': isFolded,
+              'rotate-0': !isFolded,
+              'rotate-180': isFolded,
             })}
             icon={faAngleDown}
             size="2xs"
           />
         </button>
         <button
-          className={cn(
-            'flex h-5 w-5 items-center justify-center rounded-md bg-primary',
-          )}
+          className="flex h-5 w-5 items-center justify-center rounded-md bg-primary"
           type="button"
           onClick={addGoalList}
         >
           <FontAwesomeIcon
-            className={cn('h-3 w-3 text-white')}
+            className="h-3 w-3 text-white"
             icon={faPlus}
             size="2xs"
           />

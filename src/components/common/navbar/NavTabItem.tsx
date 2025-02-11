@@ -20,10 +20,10 @@ export default function NavTabItem({ icon, path, title, isSelected }: Props) {
         { 'bg-secondary text-primary hover:bg-secondary': isSelected },
       )}
     >
-      <div className={cn('flex items-center justify-center')}>
-        <FontAwesomeIcon className={cn('h-4 w-4')} icon={icon} size="sm" />
+      <div className="flex items-center justify-center">
+        <FontAwesomeIcon className="h-4 w-4" icon={icon} size="sm" />
       </div>
-      <p className={cn('text-m font-medium')}>{title}</p>
+      <p className="text-m font-medium">{title}</p>
     </Link>
   );
 }

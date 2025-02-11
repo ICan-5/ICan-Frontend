@@ -20,7 +20,7 @@ export default function NavGoalItem({ id, title, isSelected }: Props) {
       )}
     >
       <span>•</span>
-      <span className={cn('text-overflow')}>{title}</span>
+      <span className="text-overflow">{title}</span>
     </Link>
   );
 }

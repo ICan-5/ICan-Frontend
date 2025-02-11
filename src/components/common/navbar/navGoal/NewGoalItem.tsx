@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import cn from '@/utils/cn';
 
 // TODO:: API 연결 완료시 onAddNewItem 삭제
 type Props = {
@@ -43,15 +42,11 @@ export default function NewGoalItem({ onCloseInput, onAddNewItem }: Props) {
   });
 
   return (
-    <div
-      className={cn(
-        'flex flex-none cursor-pointer items-center gap-5 rounded-md bg-gray-100 py-1 pl-3 text-xs text-gray-400',
-      )}
-    >
+    <div className="flex flex-none cursor-pointer items-center gap-5 rounded-md bg-gray-100 py-1 pl-3 text-xs text-gray-400">
       <span>•</span>
       <input
         ref={inputRef}
-        className={cn('text-overflow p-1')}
+        className="text-overflow p-1"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={handleKeyDown}
