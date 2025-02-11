@@ -37,3 +37,5 @@ next-env.d.ts
 
 # lint-staged에서 eslint cache 생성
 .eslintcache
+
+/.vscode/
