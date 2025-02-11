@@ -1,10 +1,11 @@
+'use client';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { PasswordFieldProps } from '@/types/inputTypes';
 
 export default function PasswordField({
-  label,
+  label, // 레이블
   name,
   type = 'password',
   placeholder = '비밀번호를 입력해주세요',
@@ -20,9 +21,7 @@ export default function PasswordField({
         <span className="mb-3">{label}</span>
         <div className="relative w-full">
           <input
-            className="w-full rounded-full border border-grayLighter px-6 py-3 placeholder-gray"
-            id="confirmPassword"
-            name="confirmPassword"
+            className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-gray shadow-sm transition-colors focus:outline-none focus:ring-gray focus-visible:ring-1"
             type={type}
             placeholder={placeholder}
             autoComplete="off"
