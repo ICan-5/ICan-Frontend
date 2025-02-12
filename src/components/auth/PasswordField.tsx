@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { ValidationSchemaType } from '@/schemas/auth';
+import { ValidationSchemaType } from '@/lib/validation';
 import ErrorMessage from './ErrorMessage';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 

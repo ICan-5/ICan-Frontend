@@ -4,7 +4,7 @@ import TextField from './TextField';
 import PasswordField from './PasswordField';
 import Button from './Button';
 import { useForm } from 'react-hook-form';
-import { SignUpSchema, ValidationSchemaType } from '@/schemas/auth';
+import { SignUpSchema, ValidationSchemaType } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function SignupForm() {
