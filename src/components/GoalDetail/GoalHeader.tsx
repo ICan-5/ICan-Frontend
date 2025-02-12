@@ -26,13 +26,13 @@ export default function GoalHeader({
         />
         {isMenuOpen && (
           <div className="absolute right-12 mt-2 rounded bg-white shadow-md">
-            <button className="block px-4 py-2 text-sm text-gray-700">
+            <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
               목표 색상 변경
             </button>
-            <button className="block px-4 py-2 text-sm text-gray-700">
+            <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
               수정하기
             </button>
-            <button className="block px-4 py-2 text-sm text-gray-700">
+            <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
               삭제하기
             </button>
           </div>

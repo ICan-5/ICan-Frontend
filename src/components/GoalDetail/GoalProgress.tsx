@@ -1,6 +1,6 @@
 interface GoalProgressProps {
-  doneItems: string[];
-  todoItems: string[];
+  doneItems: { task: string; date: string }[];
+  todoItems: { task: string; date: string }[];
 }
 //목표 진행 그래프
 export default function GoalProgress({
