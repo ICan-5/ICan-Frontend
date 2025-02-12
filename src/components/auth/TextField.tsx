@@ -1,6 +1,7 @@
 import { ValidationSchemaType } from '@/lib/validation';
 import ErrorMessage from './ErrorMessage';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import cn from '@/utils/cn';
 
 type Props = {
   label: string;
@@ -24,7 +25,10 @@ export default function TextField({
       <label className="flex flex-col" htmlFor={name}>
         <span className="mb-3">{label}</span>
         <input
-          className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1"
+          className={cn(
+            'focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1',
+            errors[name] && 'focus-visible:ring-red-500',
+          )}
           id={name} // label을 연결
           type={type}
           placeholder={placeholder}

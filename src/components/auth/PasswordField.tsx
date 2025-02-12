@@ -4,6 +4,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { ValidationSchemaType } from '@/lib/validation';
 import ErrorMessage from './ErrorMessage';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import cn from '@/utils/cn';
 
 type Props = {
   label: string;
@@ -31,7 +32,10 @@ export default function PasswordField({
         <span className="mb-3">{label}</span>
         <div className="relative w-full">
           <input
-            className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter py-3 pl-6 pr-14 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1"
+            className={cn(
+              'focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter py-3 pl-6 pr-14 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1',
+              errors[name] && 'focus-visible:ring-red-500',
+            )}
             type={isPasswordVisible ? 'text' : 'password'}
             id={name}
             placeholder={placeholder}

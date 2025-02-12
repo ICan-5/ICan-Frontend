@@ -20,7 +20,7 @@ export const SignUpSchema = z
         /^(?!.*\s)(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
         {
           message:
-            '비밀번호는 공백을 제외, 영문 대소문자, 숫자, 특수문자를 포함한 최소 8자 이상이어야 합니다.',
+            '비밀번호는 공백을 제외, 영문 대소문자, 숫자, 특수문자를 포함한 최소 8자 이상이어야 합니다',
         },
       )
       .min(8, { message: '비밀번호는 최소 8자 이상 입력 가능합니다' })
@@ -32,7 +32,7 @@ export const SignUpSchema = z
         /^(?!.*\s)(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
         {
           message:
-            '비밀번호는 공백을 제외, 영문 대소문자, 숫자, 특수문자를 포함한 최소 8자 이상이어야 합니다.',
+            '비밀번호는 공백을 제외, 영문 대소문자, 숫자, 특수문자를 포함한 최소 8자 이상이어야 합니다',
         },
       )
       .min(8, { message: '비밀번호는 최소 8자 이상 입력 가능합니다' })
@@ -42,7 +42,7 @@ export const SignUpSchema = z
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'password not matched',
+        message: '비밀번호와 비밀번호 확인이 일치하지 않습니다',
         path: ['confirmPassword'],
       });
     }
