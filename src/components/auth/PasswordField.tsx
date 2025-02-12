@@ -31,7 +31,7 @@ export default function PasswordField({
         <span className="mb-3">{label}</span>
         <div className="relative w-full">
           <input
-            className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1"
+            className="focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter py-3 pl-6 pr-14 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1"
             type={isPasswordVisible ? 'text' : 'password'}
             id={name}
             placeholder={placeholder}

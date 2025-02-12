@@ -21,8 +21,12 @@ export default function SignupForm() {
 
   return (
     <form className="mt-40 flex w-full flex-col items-center">
-      <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
-      <p className="mb-10 text-grayDarker">할 일을 계획하고 관리해요!</p>
+      <div className="px-4 text-center">
+        <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
+        <p className="mb-10 break-keep text-grayDarker">
+          할 일을 계획하고 관리해요!
+        </p>
+      </div>
       <div className="w-full max-w-screen-sm px-4">
         <TextField
           label="이름"
