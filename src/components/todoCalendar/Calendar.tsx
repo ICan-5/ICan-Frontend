@@ -78,8 +78,11 @@ export default function Calendar({
       const width = cell.clientWidth;
       document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
         const cellElement = el as HTMLElement;
-        cellElement.style.height = `${width}px`;
+        if (width < 88) {
+          cellElement.style.height = `${width}px`;
+        }
         cellElement.style.minHeight = `${width}px`;
+        cellElement.style.height = '88px';
       });
     }
   };
