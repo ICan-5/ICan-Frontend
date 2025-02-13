@@ -2,7 +2,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { DayCellContentArg } from '@fullcalendar/core';
+import { DayCellContentArg, EventClickArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
 import { useCallback, useEffect } from 'react';
 import cn from '@/utils/cn';
@@ -62,6 +62,14 @@ export default function Calendar({
   );
 
   /**
+   * 이벤트를 클릭해도 선택 날짜 변경
+   */
+  const handleEventClick = (info: EventClickArg) => {
+    if (info.event.start) {
+      onDateChange(new Date(info.event.start)); // 선택된 날짜 변경
+    }
+  };
+  /**
    * 날짜 셀 크기 업데이트
    */
   const updateCellSize = () => {
@@ -96,6 +104,7 @@ export default function Calendar({
       eventBorderColor="transparent"
       eventDisplay="block"
       dateClick={handleDateClick}
+      eventClick={handleEventClick}
       locale="kr"
       headerToolbar={false}
       height="auto"

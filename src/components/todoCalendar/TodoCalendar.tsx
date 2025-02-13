@@ -111,7 +111,6 @@ export default function TodoCalendar() {
     const calendarEl = document.querySelector('.fc-view-harness');
     if (calendarEl) {
       setCalendarHeight(calendarEl.clientHeight);
-      console.log(calendarEl.clientHeight);
     }
   };
 
@@ -127,9 +126,20 @@ export default function TodoCalendar() {
   };
 
   useEffect(() => {
-    updateCalendarHeight();
-    window.addEventListener('resize', updateCalendarHeight);
-    return () => window.removeEventListener('resize', updateCalendarHeight);
+    const calendarEl = document.querySelector('.fc-view-harness');
+    if (calendarEl) {
+      const observer = new MutationObserver(() => {
+        updateCalendarHeight();
+      });
+
+      observer.observe(calendarEl, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+      return () => observer.disconnect();
+    }
+    return undefined;
   }, []);
 
   return (
@@ -139,7 +149,7 @@ export default function TodoCalendar() {
         onDateChange={setSelectedDate}
       />
       <div className="flex h-full w-full flex-col items-center md:flex-row">
-        <div className="h-full w-full flex-grow md:w-[70%]">
+        <div className="h-full w-full flex-grow transition-all duration-300 ease-in-out md:w-[70%]">
           <Calendar
             todos={todos}
             selectedDate={selectedDate}
@@ -148,7 +158,7 @@ export default function TodoCalendar() {
           />
         </div>
         <div
-          className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 md:w-[30%]"
+          className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
           style={{ height: calendarHeight }}
         >
           <TodoList
