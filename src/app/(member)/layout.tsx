@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-100">
       <Navbar />
-      <div className="overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }

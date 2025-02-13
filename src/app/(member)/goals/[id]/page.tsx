@@ -1,3 +1,9 @@
-export default function Page({ params }: { params: { id: string } }) {
-  return <div>Goal {params.id} Page</div>;
+import GoalDetailPage from '@/components/goalDetail/GoalDetail';
+
+export default function Page() {
+  return (
+    <div>
+      <GoalDetailPage />
+    </div>
+  );
 }
