@@ -56,7 +56,7 @@ export default function TodoListItem({
   }, [menuOpen]);
 
   return (
-    <div>
+    <div className="pr-4">
       <h3 className="text-md mb-2 font-semibold text-gray-600">
         {type} ({todoList.length})
       </h3>
