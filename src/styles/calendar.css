@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FullCalendar 날짜 셀 높이 고정 */
-.fc-daygrid-day {
-  @apply h-[120px] overflow-hidden bg-white; /* Tailwind로 높이 고정 */
+.fc-day {
+  @apply bg-white;
 }
 
 /* 이벤트 스타일 */
@@ -17,7 +16,12 @@
   @apply bg-white !important;
 }
 
-/* 이벤트 개수가 많아지더라도 높이 고정 */
+/* 세 번째 이벤트부터 안보이게 설정 */
 .fc-daygrid-day-events > *:nth-child(n + 3) {
-  display: none !important; /* 세 번째 이벤트부터 안보이게 설정 */
+  display: none !important;
+}
+
+/* 각 셀의 높이 초기화 */
+.fc-daygrid-day {
+  min-height: unset !important;
 }
