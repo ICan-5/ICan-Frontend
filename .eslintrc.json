@@ -61,7 +61,7 @@
           "**/components/**/*.tsx" // Components 디렉토리
         ]
       }
-    ]
+    ],
     // defaultProps로 설정하지 않고, 함수 파라미터에서 직접 기본값을 지정
     "react/require-default-props": [
       "error",
