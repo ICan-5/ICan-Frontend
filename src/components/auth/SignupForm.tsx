@@ -27,12 +27,13 @@ export default function SignupForm() {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
 
       if (response.status === 200) {
         alert(data.message);
         router.push('/login');
-      } else if (response.status === 500) {
+      } else {
         alert(data.message);
       }
     } catch (e) {
