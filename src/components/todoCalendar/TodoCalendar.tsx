@@ -294,7 +294,7 @@ export default function TodoCalendar() {
         </div>
         {isCalendarReady ? (
           <div
-            className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
+            className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 pr-0 transition-all duration-200 ease-in-out md:w-[30%]"
             style={{ height: calendarHeight }}
           >
             <TodoList
