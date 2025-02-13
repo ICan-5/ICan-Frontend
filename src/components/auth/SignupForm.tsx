@@ -6,21 +6,54 @@ import Button from './Button';
 import { useForm } from 'react-hook-form';
 import { SignUpSchema, ValidationSchemaType } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+
+export type SignUpFormData = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function SignupForm() {
+  const router = useRouter();
+
+  const onSubmit = async (formData: SignUpFormData) => {
+    try {
+      const response = await fetch('api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (response.status === 200) {
+        alert(data.message);
+        router.push('/login');
+      } else if (response.status === 500) {
+        alert(data.message);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const {
     register,
-    watch,
+    handleSubmit,
     formState: { errors },
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(SignUpSchema),
     mode: 'onChange',
   });
 
-  console.log('🟢 현재 errors 객체:', errors);
-
   return (
-    <form className="mt-40 flex w-full flex-col items-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mt-40 flex w-full flex-col items-center"
+    >
       <div className="px-4 text-center">
         <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
         <p className="mb-10 break-keep text-grayDarker">
