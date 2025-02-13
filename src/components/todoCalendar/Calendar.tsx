@@ -24,7 +24,7 @@ const renderDayCellContent = (info: DayCellContentArg, selectedDate: Date) => {
       <span
         className={cn(
           'flex items-center justify-center',
-          'h-8 w-8',
+          'h-6 w-6',
           'rounded-full',
           isSelectedDate && 'bg-purple-500 text-white',
         )}
