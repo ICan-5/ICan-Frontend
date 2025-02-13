@@ -8,8 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faStickyNote,
   faAnglesRight,
-  faChevronDown,
-  faChevronUp,
+  faAngleDown,
 } from '@fortawesome/free-solid-svg-icons';
 //fontawesome 버그 제거
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -266,9 +265,12 @@ export default function GoalDetailPage() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold">예정된 할 일</h3>
               <FontAwesomeIcon
-                icon={futureTodoCollapsed ? faChevronDown : faChevronUp}
-                className="cursor-pointer text-gray-500"
-                onClick={() => toggleCollapse('futureTodo')}
+                className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${
+                  futureTodoCollapsed ? 'rotate-180' : 'rotate-0'
+                }`}
+                icon={faAngleDown}
+                size="xl"
+                onClick={() => setFutureTodoCollapsed(!futureTodoCollapsed)}
               />
             </div>
             {!futureTodoCollapsed && (
@@ -291,9 +293,12 @@ export default function GoalDetailPage() {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold">지난 할 일</h3>
                 <FontAwesomeIcon
-                  icon={pastTodoCollapsed ? faChevronDown : faChevronUp}
-                  className="cursor-pointer text-gray-500"
-                  onClick={() => toggleCollapse('pastTodo')}
+                  className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${
+                    pastTodoCollapsed ? 'rotate-180' : 'rotate-0'
+                  }`}
+                  icon={faAngleDown}
+                  size="xl"
+                  onClick={() => setPastTodoCollapsed(!pastTodoCollapsed)}
                 />
               </div>
               {!pastTodoCollapsed && (
