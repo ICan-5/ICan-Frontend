@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
 import TodoCalendar from '@/components/todoCalendar/TodoCalendar';
+import Loading from './loading';
 
 export default function Page() {
   return (
-    <div>
+    <Suspense fallback={<Loading />}>
       <TodoCalendar />
-    </div>
+    </Suspense>
   );
 }

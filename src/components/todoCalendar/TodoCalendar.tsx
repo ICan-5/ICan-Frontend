@@ -6,6 +6,7 @@ import Calendar from './Calendar';
 import CalendarHeader from './CalendarHeader';
 import TodoList from './TodoList';
 import { TodoType } from '@/types/todos';
+import Loading from '@/app/(member)/todoCalendar/loading';
 
 const initialTodos = [
   {
@@ -223,6 +224,7 @@ const initialTodos = [
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+  const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const calendarRef = useRef<FullCalendar>(null);
 
@@ -233,6 +235,7 @@ export default function TodoCalendar() {
     const calendarEl = document.querySelector('.fc-view-harness');
     if (calendarEl) {
       setCalendarHeight(calendarEl.clientHeight);
+      setIsCalendarReady(true);
     }
   };
 
@@ -247,6 +250,9 @@ export default function TodoCalendar() {
     );
   };
 
+  /**
+   * 할 일 삭제
+   */
   const handleDeleteTodo = (id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
@@ -254,6 +260,7 @@ export default function TodoCalendar() {
   useEffect(() => {
     const calendarEl = document.querySelector('.fc-view-harness');
     if (calendarEl) {
+      updateCalendarHeight();
       const observer = new MutationObserver(() => {
         updateCalendarHeight();
       });
@@ -270,10 +277,12 @@ export default function TodoCalendar() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <CalendarHeader
-        calendarRef={calendarRef}
-        onDateChange={setSelectedDate}
-      />
+      {isCalendarReady && (
+        <CalendarHeader
+          calendarRef={calendarRef}
+          onDateChange={setSelectedDate}
+        />
+      )}
       <div className="flex h-full w-full flex-col items-center md:flex-row">
         <div className="h-full w-full flex-grow transition-all duration-300 ease-in-out md:w-[70%]">
           <Calendar
@@ -283,21 +292,25 @@ export default function TodoCalendar() {
             calendarRef={calendarRef}
           />
         </div>
-        <div
-          className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
-          style={{ height: calendarHeight }}
-        >
-          <TodoList
-            selectedDate={selectedDate}
-            onToggleTodo={handleToggleTodo}
-            todos={todos.filter(
-              (todo) =>
-                new Date(todo.date).toDateString() ===
-                selectedDate.toDateString(),
-            )}
-            onDeleteTodo={handleDeleteTodo}
-          />
-        </div>
+        {isCalendarReady ? (
+          <div
+            className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
+            style={{ height: calendarHeight }}
+          >
+            <TodoList
+              selectedDate={selectedDate}
+              onToggleTodo={handleToggleTodo}
+              todos={todos.filter(
+                (todo) =>
+                  new Date(todo.date).toDateString() ===
+                  selectedDate.toDateString(),
+              )}
+              onDeleteTodo={handleDeleteTodo}
+            />
+          </div>
+        ) : (
+          <Loading />
+        )}
       </div>
     </div>
   );
