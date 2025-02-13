@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import Calendar from './Calendar';
 import CalendarHeader from './CalendarHeader';
@@ -101,7 +101,19 @@ const initialTodos = [
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+  const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const calendarRef = useRef<FullCalendar>(null);
+
+  /**
+   * 캘린더 높이 가져와서 TodoList에 적용
+   */
+  const updateCalendarHeight = () => {
+    const calendarEl = document.querySelector('.fc-view-harness');
+    if (calendarEl) {
+      setCalendarHeight(calendarEl.clientHeight);
+      console.log(calendarEl.clientHeight);
+    }
+  };
 
   /**
    * 할 일의 체크박스 상태 변경
@@ -114,8 +126,14 @@ export default function TodoCalendar() {
     );
   };
 
+  useEffect(() => {
+    updateCalendarHeight();
+    window.addEventListener('resize', updateCalendarHeight);
+    return () => window.removeEventListener('resize', updateCalendarHeight);
+  }, []);
+
   return (
-    <div className="flex h-[80%] flex-col items-center p-4">
+    <div className="flex flex-col items-center p-4">
       <CalendarHeader
         calendarRef={calendarRef}
         onDateChange={setSelectedDate}
@@ -129,7 +147,10 @@ export default function TodoCalendar() {
             calendarRef={calendarRef}
           />
         </div>
-        <div className="mb-auto h-full w-full flex-grow bg-white p-4 md:w-[30%]">
+        <div
+          className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 md:w-[30%]"
+          style={{ height: calendarHeight }}
+        >
           <TodoList
             selectedDate={selectedDate}
             onToggleTodo={handleToggleTodo}
@@ -139,6 +160,12 @@ export default function TodoCalendar() {
                 selectedDate.toDateString(),
             )}
           />
+          <button
+            type="button"
+            className="w-full rounded-lg border border-gray-300 p-3 text-sm font-medium text-gray-600 hover:bg-gray-100"
+          >
+            새 할일 생성
+          </button>
         </div>
       </div>
     </div>

@@ -27,6 +27,8 @@ const config: Config = {
 
         // 밝은 회색 계열
         grayLightest: '#F1F1F1', // 가장 밝은 회색 (흰색에 가까운 회색)
+
+        calBorder: '#ddd',
       },
     },
   },

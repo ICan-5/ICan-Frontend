@@ -17,14 +17,14 @@ export default function TodoList({ selectedDate, todos, onToggleTodo }: Props) {
   const incompleteTodos = todos.filter((todo) => !todo.done);
   const compoleteTodos = todos.filter((todo) => todo.done);
   return (
-    <div className="flex h-full flex-col overflow-y-auto">
-      <h2 className="mb-3 text-lg font-bold">
+    <div className="flex h-full flex-col">
+      <h2 className="mb-3 flex justify-between text-lg font-bold">
         {selectedDate.toLocaleDateString('ko-KR', {
           month: 'long',
           day: 'numeric',
         })}
       </h2>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto">
         <TodoListItem
           todoList={incompleteTodos}
           type="미완료"
