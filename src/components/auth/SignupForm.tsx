@@ -28,7 +28,6 @@ export default function SignupForm() {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
 
       if (response.status === 200) {
