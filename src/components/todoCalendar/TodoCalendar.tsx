@@ -76,7 +76,8 @@ const initialTodos = [
   },
   {
     id: 7,
-    title: '할일이 길어지면 어쩌구 저쩌구',
+    title:
+      '할일이 길어지면 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구',
     date: '2025-02-10',
     goal: {
       id: 3,
@@ -87,6 +88,127 @@ const initialTodos = [
   },
   {
     id: 8,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 9,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 10,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 11,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 12,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 13,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 14,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 15,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 16,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 17,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 18,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-10',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'bg-yellow-500',
+    },
+    done: false,
+  },
+  {
+    id: 19,
     title: '할일이 여러개면 어쩌구 저쩌구',
     date: '2025-02-10',
     goal: {
@@ -123,6 +245,10 @@ export default function TodoCalendar() {
         todo.id === id ? { ...todo, done: !todo.done } : todo,
       ),
     );
+  };
+
+  const handleDeleteTodo = (id: number) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
   useEffect(() => {
@@ -169,13 +295,8 @@ export default function TodoCalendar() {
                 new Date(todo.date).toDateString() ===
                 selectedDate.toDateString(),
             )}
+            onDeleteTodo={handleDeleteTodo}
           />
-          <button
-            type="button"
-            className="w-full rounded-lg border border-gray-300 p-3 text-sm font-medium text-gray-600 hover:bg-gray-100"
-          >
-            새 할일 생성
-          </button>
         </div>
       </div>
     </div>
