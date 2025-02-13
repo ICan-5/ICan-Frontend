@@ -16,6 +16,10 @@
   @apply bg-white !important;
 }
 
+.fc-event {
+  font-size: 12px !important;
+}
+
 /* 세 번째 이벤트부터 안보이게 설정 */
 .fc-daygrid-day-events > *:nth-child(n + 3) {
   display: none !important;
@@ -24,4 +28,12 @@
 /* 각 셀의 높이 초기화 */
 .fc-daygrid-day {
   min-height: unset !important;
+}
+
+.fc-daygrid-day-top > a {
+  padding-bottom: 1px !important;
+}
+
+.fc-daygrid-day-events {
+  line-height: 1.3 !important; /* ✅ 이벤트 간의 간격을 줄임 */
 }
