@@ -53,8 +53,6 @@ export default function GoalDetailPage() {
   // 리스트 접기/펼치기 상태
   const [pastTodoCollapsed, setPastTodoCollapsed] = useState(false);
   const [futureTodoCollapsed, setFutureTodoCollapsed] = useState(false);
-  const [pastDoneCollapsed, setPastDoneCollapsed] = useState(false);
-  const [futureDoneCollapsed, setFutureDoneCollapsed] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
   const listMenuRefTodo = useRef<HTMLDivElement>(null);
@@ -112,8 +110,6 @@ export default function GoalDetailPage() {
     }
   };
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   // 각 리스트마다 토글 메뉴바
   const toggleListMenu = (
     index: number,
@@ -148,28 +144,6 @@ export default function GoalDetailPage() {
           prevIndex === index ? null : index,
         );
       }
-    }
-  };
-
-  // 리스트 접기/펼치기 토글 함수
-  const toggleCollapse = (
-    listCategory: 'pastTodo' | 'futureTodo' | 'pastDone' | 'futureDone',
-  ) => {
-    switch (listCategory) {
-      case 'pastTodo':
-        setPastTodoCollapsed((prev) => !prev);
-        break;
-      case 'futureTodo':
-        setFutureTodoCollapsed((prev) => !prev);
-        break;
-      case 'pastDone':
-        setPastDoneCollapsed((prev) => !prev);
-        break;
-      case 'futureDone':
-        setFutureDoneCollapsed((prev) => !prev);
-        break;
-      default:
-        break;
     }
   };
 
