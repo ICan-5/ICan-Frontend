@@ -1,22 +1,29 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import GoalProgress from './GoalProgress';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
-  toggleMenu: () => void;
-  isMenuOpen: boolean;
-  menuRef: React.RefObject<HTMLDivElement>;
   doneItems: { task: string; date: string }[];
   todoItems: { task: string; date: string }[];
 };
 
-export default function GoalHeader({
-  toggleMenu,
-  isMenuOpen,
-  menuRef,
-  doneItems,
-  todoItems,
-}: Props) {
+export default function GoalHeader({ doneItems, todoItems }: Props) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -28,7 +35,7 @@ export default function GoalHeader({
           <FontAwesomeIcon
             icon={faEllipsisV}
             className="cursor-pointer text-gray-500"
-            onClick={toggleMenu}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           />
           {isMenuOpen && (
             <div className="absolute right-12 mt-2 rounded bg-white shadow-md">
