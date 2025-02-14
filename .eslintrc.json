@@ -23,7 +23,13 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error", // Prettier 규칙을 ESLint 오류로 처리
+    "prettier/prettier": [
+      "error",
+      {
+        "pluginSearchDirs": ["."],
+        "tailwindConfig": "./tailwind.config.ts"
+      }
+    ], // Prettier 규칙을 ESLint 오류로 처리
     "no-console": "warn", // console.log 사용 시 경고
     "eqeqeq": "error", // === 사용 강제
     "no-var": "error", // var 금지
