@@ -8,18 +8,25 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+interface TodoItem {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
+
 interface GoalBasketProps {
   basketItems: string[];
   setBasketItems: (items: string[]) => void;
-  setTodoItems: (items: { task: string; date: string }[]) => void;
-  todoItems: { task: string; date: string }[];
+  setTotalItems: React.Dispatch<React.SetStateAction<TodoItem[]>>;
+  totalItems: TodoItem[];
 }
 
 export default function GoalBasket({
   basketItems,
   setBasketItems,
-  setTodoItems,
-  todoItems,
+  setTotalItems,
+  totalItems,
 }: GoalBasketProps) {
   const [selectedDates, setSelectedDates] = useState<{
     [key: string]: Date | null;
@@ -32,14 +39,31 @@ export default function GoalBasket({
       const day = String(date.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
 
-      const newTodoItem = { task: item, date: formattedDate };
-      setTodoItems([...todoItems, newTodoItem]);
+      //장바구니에서 새로 추가된 할 일은 뒷번호로 부여
+      const newId = Math.max(...totalItems.map((item) => item.id), 0) + 1;
+
+      const newTodoItem: TodoItem = {
+        id: newId,
+        task: item,
+        date: formattedDate,
+        done: false,
+      };
+
+      setTotalItems((prevItems) => [...prevItems, newTodoItem]);
+
       setBasketItems(basketItems.filter((basketItem) => basketItem !== item));
 
       const newSelectedDates = { ...selectedDates };
       delete newSelectedDates[item];
       setSelectedDates(newSelectedDates);
     }
+  };
+
+  const handleDeleteBasketItem = (itemToDelete: string) => {
+    setBasketItems(basketItems.filter((item) => item !== itemToDelete));
+    const newSelectedDates = { ...selectedDates };
+    delete newSelectedDates[itemToDelete];
+    setSelectedDates(newSelectedDates);
   };
 
   return (
@@ -75,7 +99,10 @@ export default function GoalBasket({
                       }
                     />
                   </div>
-                  <button className="flex items-center justify-center p-1">
+                  <button
+                    className="flex items-center justify-center p-1"
+                    onClick={() => handleDeleteBasketItem(item)}
+                  >
                     <FontAwesomeIcon
                       icon={faTrashCan}
                       className="text-red-400"

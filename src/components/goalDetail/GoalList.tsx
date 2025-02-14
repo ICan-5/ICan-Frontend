@@ -2,13 +2,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
+interface TodoItem {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
+
 interface GoalListProps {
-  items: { task: string; date: string; originalIndex: number }[];
-  onCheckboxClick: (index: number, listType: 'todo' | 'done') => void;
+  items: TodoItem[];
+  onCheckboxClick: (id: number) => void;
   listType: 'todo' | 'done';
-  toggleListMenu: (index: number, listType: 'todo' | 'done') => void;
-  todoItemIndex: number;
-  doneItemIndex: number;
+  toggleListMenu: (index: number) => void;
+  selectedIndex: number | null;
   listMenuRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -17,14 +23,13 @@ export default function GoalList({
   onCheckboxClick,
   listType,
   toggleListMenu,
-  todoItemIndex,
-  doneItemIndex,
+  selectedIndex,
   listMenuRef,
 }: GoalListProps) {
   return (
     <div>
-      {items.map((item, originalIndex) => (
-        <div key={originalIndex} className="relative mb-4">
+      {items.map((item, index) => (
+        <div key={item.id} className="relative mb-4">
           {listType === 'todo' && (
             <div className="text-sm text-gray-500">{item.date}</div>
           )}
@@ -32,8 +37,8 @@ export default function GoalList({
             <div className="flex items-center">
               <input
                 type="checkbox"
-                checked={listType === 'done'}
-                onChange={() => onCheckboxClick(originalIndex, listType)}
+                checked={item.done}
+                onChange={() => onCheckboxClick(item.id)}
                 className="mr-2"
               />
               <span
@@ -53,18 +58,14 @@ export default function GoalList({
                 icon={faEllipsisV}
                 className="cursor-pointer text-gray-500"
                 onClick={() => {
-                  if (
-                    (listType === 'todo' && todoItemIndex === originalIndex) ||
-                    (listType === 'done' && doneItemIndex === originalIndex)
-                  ) {
-                    toggleListMenu(-1, listType);
+                  if (selectedIndex === index) {
+                    toggleListMenu(-1);
                   } else {
-                    toggleListMenu(originalIndex, listType);
+                    toggleListMenu(index);
                   }
                 }}
               />
-              {(listType === 'todo' && todoItemIndex === originalIndex) ||
-              (listType === 'done' && doneItemIndex === originalIndex) ? (
+              {selectedIndex === index && (
                 <div
                   ref={listMenuRef}
                   className="absolute right-0 z-10 mt-2 rounded bg-white shadow-md"
@@ -76,7 +77,7 @@ export default function GoalList({
                     삭제하기
                   </button>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         </div>

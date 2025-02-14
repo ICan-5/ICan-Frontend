@@ -1,4 +1,3 @@
-// GoalHeader.tsx
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import GoalProgress from './GoalProgress';
@@ -46,7 +45,6 @@ export default function GoalHeader({
           )}
         </div>
       </div>
-      {/* GoalProgress 컴포넌트 사용 */}
       <GoalProgress doneItems={doneItems} todoItems={todoItems} />
     </div>
   );

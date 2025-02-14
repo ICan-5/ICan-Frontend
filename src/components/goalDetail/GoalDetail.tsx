@@ -1,179 +1,139 @@
-'use client';
-
-import { useState, useRef, useEffect } from 'react';
-import GoalHeader from '@/components/goalDetail/GoalHeader';
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import GoalList from '@/components/goalDetail/GoalList';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faStickyNote,
-  faAnglesRight,
-  faAngleDown,
-} from '@fortawesome/free-solid-svg-icons';
-//fontawesome 버그 제거
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false;
 
-export default function GoalDetailPage() {
-  const [todoItems, setTodoItems] = useState([
-    { task: '운동하기', date: '2025-02-11' },
-    { task: '책 읽기', date: '2025-02-12' },
-    { task: '자바스크립트 1챕터', date: '2025-02-13' },
-    { task: '친구들 만나기', date: '2025-02-20' },
-  ]);
+interface TodoItem {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
 
-  const [doneItems, setDoneItems] = useState<{ task: string; date: string }[]>(
-    [],
-  );
-  const [basketItems, setBasketItems] = useState(['스터디 준비', '집안일']);
+interface GoalDetailProps {
+  todos: TodoItem[];
+  setTodos: Dispatch<SetStateAction<TodoItem[]>>;
+  baskets: string[];
+  setBaskets: Dispatch<SetStateAction<string[]>>;
+}
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface SelectedItemIndex {
+  today: number | null;
+  future: number | null;
+  past: number | null;
+}
 
-  // 메뉴바 사용으로 인덱스 각각 나눔
-  const [todoItemIndexToday, setTodoItemIndexToday] = useState<number | null>(
-    null,
-  );
-  const [todoItemIndexFuture, setTodoItemIndexFuture] = useState<number | null>(
-    null,
-  );
-  const [todoItemIndexPast, setTodoItemIndexPast] = useState<number | null>(
-    null,
-  );
-  const [doneItemIndexToday, setDoneItemIndexToday] = useState<number | null>(
-    null,
-  );
-  const [doneItemIndexFuture, setDoneItemIndexFuture] = useState<number | null>(
-    null,
-  );
-  const [doneItemIndexPast, setDoneItemIndexPast] = useState<number | null>(
-    null,
-  );
+export default function GoalDetail({
+  todos,
+  setTodos,
+  baskets,
+  setBaskets,
+}: GoalDetailProps) {
+  const todoItems = todos.filter((item) => !item.done);
+  const doneItems = todos.filter((item) => item.done);
 
-  // 리스트 접기/펼치기 상태
+  //메뉴바 이슈로 인해 나눔
+  const [selectedTodoItemIndex, setSelectedTodoItemIndex] =
+    useState<SelectedItemIndex>({
+      today: null,
+      future: null,
+      past: null,
+    });
+
+  const [selectedDoneItemIndex, setSelectedDoneItemIndex] =
+    useState<SelectedItemIndex>({
+      today: null,
+      future: null,
+      past: null,
+    });
+
   const [pastTodoCollapsed, setPastTodoCollapsed] = useState(false);
   const [futureTodoCollapsed, setFutureTodoCollapsed] = useState(false);
-
-  const menuRef = useRef<HTMLDivElement>(null);
   const listMenuRefTodo = useRef<HTMLDivElement>(null);
   const listMenuRefDone = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
       if (
-        listMenuRefTodo.current &&
-        !listMenuRefTodo.current.contains(event.target as Node)
+        !listMenuRefTodo.current?.contains(event.target as Node) &&
+        !listMenuRefDone.current?.contains(event.target as Node)
       ) {
-        setTodoItemIndexToday(null);
-        setTodoItemIndexFuture(null);
-        setTodoItemIndexPast(null);
-      }
-      if (
-        listMenuRefDone.current &&
-        !listMenuRefDone.current.contains(event.target as Node)
-      ) {
-        setDoneItemIndexToday(null);
-        setDoneItemIndexFuture(null);
-        setDoneItemIndexPast(null);
+        setSelectedTodoItemIndex({
+          today: null,
+          future: null,
+          past: null,
+        });
+        setSelectedDoneItemIndex({
+          today: null,
+          future: null,
+          past: null,
+        });
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const moveToDone = (index: number) => {
-    const item = todoItems[index];
-    setTodoItems((prev) => prev.filter((_, i) => i !== index));
-    setDoneItems((prev) => [...prev, item]);
+  const onCheckboxClick = (itemId: number) => {
+    setTodos((prevItems: TodoItem[]) =>
+      prevItems.map((item: TodoItem) =>
+        item.id === itemId ? { ...item, done: !item.done } : item,
+      ),
+    );
   };
 
-  const moveToTodo = (index: number) => {
-    const item = doneItems[index];
-    setDoneItems((prev) => prev.filter((_, i) => i !== index));
-    setTodoItems((prev) => [...prev, item]);
-  };
-
-  const onCheckboxClick = (
-    originalIndex: number,
-    listType: 'todo' | 'done',
-  ) => {
-    if (listType === 'todo') {
-      moveToDone(originalIndex);
-    } else {
-      moveToTodo(originalIndex);
-    }
-  };
-
-  // 각 리스트마다 토글 메뉴바
-  const toggleListMenu = (
+  const toggleTodoListMenu = (
     index: number,
-    listType: 'todo' | 'done',
     listCategory: 'today' | 'future' | 'past',
   ) => {
-    if (listType === 'todo') {
-      if (listCategory === 'today') {
-        setTodoItemIndexToday((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      } else if (listCategory === 'future') {
-        setTodoItemIndexFuture((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      } else {
-        setTodoItemIndexPast((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      }
-    } else {
-      if (listCategory === 'today') {
-        setDoneItemIndexToday((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      } else if (listCategory === 'future') {
-        setDoneItemIndexFuture((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      } else {
-        setDoneItemIndexPast((prevIndex) =>
-          prevIndex === index ? null : index,
-        );
-      }
-    }
+    setSelectedTodoItemIndex((prev) => ({
+      ...prev,
+      [listCategory]: prev[listCategory] === index ? null : index,
+    }));
+  };
+
+  const toggleDoneListMenu = (
+    index: number,
+    listCategory: 'today' | 'future' | 'past',
+  ) => {
+    setSelectedDoneItemIndex((prev) => ({
+      ...prev,
+      [listCategory]: prev[listCategory] === index ? null : index,
+    }));
   };
 
   const today = new Date();
 
-  // 날짜 기준으로 할 일 나누기
-  const filterItems = (items: { task: string; date: string }[]) => {
-    const todayWithoutTime = new Date(today);
-    todayWithoutTime.setHours(0, 0, 0, 0);
+  const filterItems = (items: TodoItem[]) => {
+    const current = new Date(today);
+    current.setHours(0, 0, 0, 0);
 
     return items.reduce(
-      (acc, item, index) => {
+      (acc, item) => {
         const itemDate = new Date(item.date);
         const itemDateWithoutTime = new Date(itemDate.setHours(0, 0, 0, 0));
 
-        if (itemDateWithoutTime < todayWithoutTime) {
-          acc.past.push({ ...item, originalIndex: index });
+        if (itemDateWithoutTime < current) {
+          acc.past.push(item);
         } else if (
-          itemDateWithoutTime.toDateString() === todayWithoutTime.toDateString()
+          itemDateWithoutTime.toDateString() === current.toDateString()
         ) {
-          acc.today.push({ ...item, originalIndex: index });
+          acc.today.push(item);
         } else {
-          acc.future.push({ ...item, originalIndex: index });
+          acc.future.push(item);
         }
         return acc;
       },
       {
-        past: [] as { task: string; date: string; originalIndex: number }[],
-        today: [] as { task: string; date: string; originalIndex: number }[],
-        future: [] as { task: string; date: string; originalIndex: number }[],
+        past: [] as TodoItem[],
+        today: [] as TodoItem[],
+        future: [] as TodoItem[],
       },
     );
   };
@@ -183,6 +143,7 @@ export default function GoalDetailPage() {
     today: todayTodoItems,
     future: futureTodoItems,
   } = filterItems(todoItems);
+
   const {
     past: pastDoneItems,
     today: todayDoneItems,
@@ -190,30 +151,9 @@ export default function GoalDetailPage() {
   } = filterItems(doneItems);
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
-      <div className="mb-6 rounded-2xl bg-white p-6 shadow">
-        <GoalHeader
-          toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
-          isMenuOpen={isMenuOpen}
-          menuRef={menuRef}
-          doneItems={doneItems}
-          todoItems={todoItems}
-        />
-      </div>
-      <div className="mb-6 rounded-2xl bg-blue-100 p-3 shadow">
-        <h2 className="mb-4 flex items-center justify-between text-lg font-bold">
-          <div className="flex items-center">
-            <FontAwesomeIcon
-              icon={faStickyNote}
-              className="mr-2 text-blue-400"
-            />
-            노트 모아보기
-          </div>
-          <FontAwesomeIcon icon={faAnglesRight} className="text-blue-400" />
-        </h2>
-      </div>
-
+    <div>
       <div className="flex flex-col gap-6 md:flex-row md:items-start">
+        {/* Todo */}
         <div className="basis-1/2 rounded-2xl bg-white p-6 shadow">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="mb-4 text-lg font-bold">To do</h3>
@@ -221,17 +161,15 @@ export default function GoalDetailPage() {
               <span className="text-blue-400">+ 할 일 추가</span>
             </div>
           </div>
+
           <h3 className="mt-6 text-lg font-bold">오늘 할 일</h3>
           <GoalList
             items={todayTodoItems}
-            onCheckboxClick={(index) =>
-              onCheckboxClick(todayTodoItems[index].originalIndex, 'todo')
-            }
+            onCheckboxClick={onCheckboxClick}
             listType="todo"
-            toggleListMenu={(index) => toggleListMenu(index, 'todo', 'today')}
+            toggleListMenu={(index) => toggleTodoListMenu(index, 'today')}
             listMenuRef={listMenuRefTodo}
-            todoItemIndex={todoItemIndexToday ?? -1}
-            doneItemIndex={doneItemIndexToday ?? -1}
+            selectedIndex={selectedTodoItemIndex.today}
           />
 
           {/* 예정된 할 일 */}
@@ -250,94 +188,76 @@ export default function GoalDetailPage() {
             {!futureTodoCollapsed && (
               <GoalList
                 items={futureTodoItems}
-                onCheckboxClick={(index) =>
-                  onCheckboxClick(futureTodoItems[index].originalIndex, 'todo')
-                }
+                onCheckboxClick={onCheckboxClick}
                 listType="todo"
-                toggleListMenu={(index) =>
-                  toggleListMenu(index, 'todo', 'future')
-                }
+                toggleListMenu={(index) => toggleTodoListMenu(index, 'future')}
                 listMenuRef={listMenuRefTodo}
-                todoItemIndex={todoItemIndexFuture ?? -1}
-                doneItemIndex={doneItemIndexFuture ?? -1}
+                selectedIndex={selectedTodoItemIndex.future}
               />
             )}
-            {/* 지난 할 일 */}
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold">지난 할 일</h3>
-                <FontAwesomeIcon
-                  className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${
-                    pastTodoCollapsed ? 'rotate-180' : 'rotate-0'
-                  }`}
-                  icon={faAngleDown}
-                  size="xl"
-                  onClick={() => setPastTodoCollapsed(!pastTodoCollapsed)}
-                />
-              </div>
-              {!pastTodoCollapsed && (
-                <GoalList
-                  items={pastTodoItems}
-                  onCheckboxClick={(index) =>
-                    onCheckboxClick(pastTodoItems[index].originalIndex, 'todo')
-                  }
-                  listType="todo"
-                  toggleListMenu={(index) =>
-                    toggleListMenu(index, 'todo', 'past')
-                  }
-                  listMenuRef={listMenuRefTodo}
-                  todoItemIndex={todoItemIndexPast ?? -1}
-                  doneItemIndex={doneItemIndexPast ?? -1}
-                />
-              )}
+          </div>
+
+          {/*지난 할일*/}
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold">지난 할 일</h3>
+              <FontAwesomeIcon
+                className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${
+                  pastTodoCollapsed ? 'rotate-180' : 'rotate-0'
+                }`}
+                icon={faAngleDown}
+                size="xl"
+                onClick={() => setPastTodoCollapsed(!pastTodoCollapsed)}
+              />
             </div>
+            {!pastTodoCollapsed && (
+              <GoalList
+                items={pastTodoItems}
+                onCheckboxClick={onCheckboxClick}
+                listType="todo"
+                toggleListMenu={(index) => toggleTodoListMenu(index, 'past')}
+                listMenuRef={listMenuRefTodo}
+                selectedIndex={selectedTodoItemIndex.past}
+              />
+            )}
           </div>
         </div>
+
+        {/* Done & 할 일 장바구니*/}
         <div className="basis-1/2 space-y-6">
           <div className="rounded-2xl bg-gray-200 p-6 shadow">
             <h3 className="mb-4 text-lg font-bold">Done</h3>
             <GoalList
               items={todayDoneItems}
-              onCheckboxClick={(index) =>
-                onCheckboxClick(todayDoneItems[index].originalIndex, 'done')
-              }
+              onCheckboxClick={onCheckboxClick}
               listType="done"
-              toggleListMenu={(index) => toggleListMenu(index, 'done', 'today')}
+              toggleListMenu={(index) => toggleDoneListMenu(index, 'today')}
               listMenuRef={listMenuRefDone}
-              todoItemIndex={todoItemIndexToday ?? -1}
-              doneItemIndex={doneItemIndexToday ?? -1}
+              selectedIndex={selectedDoneItemIndex.today}
             />
             <GoalList
               items={futureDoneItems}
-              onCheckboxClick={(index) =>
-                onCheckboxClick(futureDoneItems[index].originalIndex, 'done')
-              }
+              onCheckboxClick={onCheckboxClick}
               listType="done"
-              toggleListMenu={(index) =>
-                toggleListMenu(index, 'done', 'future')
-              }
+              toggleListMenu={(index) => toggleDoneListMenu(index, 'future')}
               listMenuRef={listMenuRefDone}
-              todoItemIndex={todoItemIndexFuture ?? -1}
-              doneItemIndex={doneItemIndexFuture ?? -1}
+              selectedIndex={selectedDoneItemIndex.future}
             />
             <GoalList
               items={pastDoneItems}
-              onCheckboxClick={(index) =>
-                onCheckboxClick(pastDoneItems[index].originalIndex, 'done')
-              }
+              onCheckboxClick={onCheckboxClick}
               listType="done"
-              toggleListMenu={(index) => toggleListMenu(index, 'done', 'past')}
+              toggleListMenu={(index) => toggleDoneListMenu(index, 'past')}
               listMenuRef={listMenuRefDone}
-              todoItemIndex={todoItemIndexPast ?? -1}
-              doneItemIndex={doneItemIndexPast ?? -1}
+              selectedIndex={selectedDoneItemIndex.past}
             />
           </div>
           <div className="mt-6">
             <GoalBasket
-              basketItems={basketItems}
-              setBasketItems={setBasketItems}
-              todoItems={todoItems}
-              setTodoItems={setTodoItems}
+              basketItems={baskets}
+              setBasketItems={setBaskets}
+              totalItems={todos}
+              setTotalItems={setTodos}
             />
           </div>
         </div>
