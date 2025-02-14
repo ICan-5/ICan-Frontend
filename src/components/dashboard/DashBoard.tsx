@@ -17,6 +17,10 @@ type Props = {
 export default function DashBoard({ today }: Props) {
   const [todayList, setTodayList] = useState(today);
 
+  /**
+   * @param id : 할일 id
+   * checkbox 클릭 함수
+   */
   const toggleTodayItem = (id: number) => {
     setTodayList((prev) =>
       prev.map((item) =>

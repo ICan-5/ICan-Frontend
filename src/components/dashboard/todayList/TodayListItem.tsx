@@ -18,13 +18,16 @@ export default function TodayListItem({ todo, onToggleItem }: Props) {
       <input
         className="mr-2 flex-none cursor-pointer"
         type="checkbox"
-        name="todo"
+        id={`todo${todo.id}`}
         defaultChecked={todo.done}
         onChange={() => onToggleItem(todo.id)}
       />
-      <p className="text-overflow mr-auto cursor-pointer hover:underline">
+      <label
+        htmlFor={`todo${todo.id}`}
+        className="text-overflow mr-auto cursor-pointer"
+      >
         {todo.title}
-      </p>
+      </label>
       {todo.note && (
         <div className="flex cursor-pointer items-center justify-center p-1">
           <FontAwesomeIcon
