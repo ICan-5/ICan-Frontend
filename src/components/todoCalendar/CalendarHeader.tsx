@@ -62,7 +62,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handleTodayClick}
-          className="bg-gray-200 rounded-lg p-4"
+          className="rounded-lg bg-gray-200 p-4"
         >
           Today
         </button>
@@ -71,7 +71,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handlePrevMonthClick}
-          className="bg-gray-200 hover:bg-gray-300 mr-2 rounded-lg px-3 py-2 text-sm font-medium"
+          className="mr-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
         >
           ←
         </button>
@@ -84,7 +84,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handleNextMonthClick}
-          className="bg-gray-200 hover:bg-gray-300 ml-2 rounded-lg px-3 py-2 text-sm font-medium"
+          className="ml-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
         >
           →
         </button>

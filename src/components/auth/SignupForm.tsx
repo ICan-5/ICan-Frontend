@@ -25,7 +25,7 @@ export default function SignupForm() {
           name="confirmPassword"
           placeholder="비밀번호 확인을 입력해주세요"
         />
-        <div className="mb-12"></div>
+        <div className="mb-12" />
         <Button label="회원가입하기" type="submit" />
         <p className="text-center">
           이미 회원이신가요?{' '}
