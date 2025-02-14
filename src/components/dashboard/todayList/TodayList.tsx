@@ -38,8 +38,8 @@ export default function TodayList({ todayList, onToggleItem }: Props) {
           onClick={() => router.push('./todoCalendar')}
         >
           모두 보기
-          <div>
-            <FontAwesomeIcon icon={faAngleRight} />
+          <div className="flex h-6 w-6 items-center justify-center">
+            <FontAwesomeIcon icon={faAngleRight} className="h-4 w-4" />
           </div>
         </button>
       </section>
