@@ -1,12 +1,13 @@
 'use client';
+
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import TextField from './TextField';
 import PasswordField from './PasswordField';
 import Button from './Button';
-import { useForm } from 'react-hook-form';
 import { SignUpSchema, ValidationSchemaType } from '@/lib/validation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 
 export type SignUpFormData = {
   name: string;
@@ -90,7 +91,7 @@ export default function SignupForm() {
           register={register}
           errors={errors}
         />
-        <div className="mb-12"></div>
+        <div className="mb-12" />
         <Button label="회원가입하기" type="submit" />
         <p className="text-center">
           이미 회원이신가요?{' '}

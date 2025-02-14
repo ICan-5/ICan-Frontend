@@ -1,6 +1,7 @@
-import { ValidationSchemaType } from '@/lib/validation';
-import ErrorMessage from './ErrorMessage';
+/* eslint-disable react/jsx-props-no-spreading */
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import ErrorMessage from './ErrorMessage';
+import { ValidationSchemaType } from '@/lib/validation';
 import cn from '@/utils/cn';
 
 type Props = {
