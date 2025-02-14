@@ -94,6 +94,27 @@ export default function Calendar({
     return () => window.removeEventListener('resize', updateCellSize);
   }, []);
 
+  /**
+   * 사이드 바가 접히거나 펼쳐지면 캘린더 크기 재조정
+   */
+  useEffect(() => {
+    const sidebar = document.querySelector('header'); // 사이드바 선택
+    if (!sidebar) return undefined;
+
+    const observer = new MutationObserver(() => {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 200);
+    });
+
+    observer.observe(sidebar, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <FullCalendar
       ref={calendarRef}
