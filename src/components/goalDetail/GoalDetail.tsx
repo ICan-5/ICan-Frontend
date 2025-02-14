@@ -7,25 +7,25 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false;
 
-interface TodoItem {
+type TodoItemProps = {
   id: number;
   task: string;
   date: string;
   done: boolean;
-}
+};
 
-interface GoalDetailProps {
-  todos: TodoItem[];
-  setTodos: Dispatch<SetStateAction<TodoItem[]>>;
+type GoalDetailProps = {
+  todos: TodoItemProps[];
+  setTodos: Dispatch<SetStateAction<TodoItemProps[]>>;
   baskets: string[];
   setBaskets: Dispatch<SetStateAction<string[]>>;
-}
+};
 
-interface SelectedItemIndex {
+type SelectedItemIndex = {
   today: number | null;
   future: number | null;
   past: number | null;
-}
+};
 
 export default function GoalDetail({
   todos,
@@ -81,8 +81,8 @@ export default function GoalDetail({
   }, []);
 
   const onCheckboxClick = (itemId: number) => {
-    setTodos((prevItems: TodoItem[]) =>
-      prevItems.map((item: TodoItem) =>
+    setTodos((prevItems: TodoItemProps[]) =>
+      prevItems.map((item: TodoItemProps) =>
         item.id === itemId ? { ...item, done: !item.done } : item,
       ),
     );
@@ -110,7 +110,7 @@ export default function GoalDetail({
 
   const today = new Date();
 
-  const filterItems = (items: TodoItem[]) => {
+  const filterItems = (items: TodoItemProps[]) => {
     const current = new Date(today);
     current.setHours(0, 0, 0, 0);
 
@@ -131,9 +131,9 @@ export default function GoalDetail({
         return acc;
       },
       {
-        past: [] as TodoItem[],
-        today: [] as TodoItem[],
-        future: [] as TodoItem[],
+        past: [] as TodoItemProps[],
+        today: [] as TodoItemProps[],
+        future: [] as TodoItemProps[],
       },
     );
   };

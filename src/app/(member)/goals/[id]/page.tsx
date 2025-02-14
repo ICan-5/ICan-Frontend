@@ -6,18 +6,18 @@ import { faAnglesRight, faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 
-interface TodoItem {
+type Props = {
   id: number;
   task: string;
   date: string;
   done: boolean;
-}
+};
 
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const [todos, setTodos] = useState<TodoItem[]>([
+  const [todos, setTodos] = useState<Props[]>([
     { id: 1, task: '운동하기', date: '2025-02-11', done: false },
     { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
     { id: 3, task: '자바스크립트 1챕터', date: '2025-02-14', done: false },

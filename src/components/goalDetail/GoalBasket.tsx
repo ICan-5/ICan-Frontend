@@ -8,19 +8,19 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-interface TodoItem {
+type TodoItemProps = {
   id: number;
   task: string;
   date: string;
   done: boolean;
-}
+};
 
-interface GoalBasketProps {
+type GoalBasketProps = {
   basketItems: string[];
   setBasketItems: (items: string[]) => void;
-  setTotalItems: React.Dispatch<React.SetStateAction<TodoItem[]>>;
-  totalItems: TodoItem[];
-}
+  setTotalItems: React.Dispatch<React.SetStateAction<TodoItemProps[]>>;
+  totalItems: TodoItemProps[];
+};
 
 export default function GoalBasket({
   basketItems,
@@ -42,7 +42,7 @@ export default function GoalBasket({
       //장바구니에서 새로 추가된 할 일은 뒷번호로 부여
       const newId = Math.max(...totalItems.map((item) => item.id), 0) + 1;
 
-      const newTodoItem: TodoItem = {
+      const newTodoItem: TodoItemProps = {
         id: newId,
         task: item,
         date: formattedDate,

@@ -2,13 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import GoalProgress from './GoalProgress';
 
-interface GoalHeaderProps {
+type Props = {
   toggleMenu: () => void;
   isMenuOpen: boolean;
   menuRef: React.RefObject<HTMLDivElement>;
   doneItems: { task: string; date: string }[];
   todoItems: { task: string; date: string }[];
-}
+};
 
 export default function GoalHeader({
   toggleMenu,
@@ -16,7 +16,7 @@ export default function GoalHeader({
   menuRef,
   doneItems,
   todoItems,
-}: GoalHeaderProps) {
+}: Props) {
   return (
     <div>
       <div className="flex items-center justify-between">

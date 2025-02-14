@@ -2,21 +2,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
-interface TodoItem {
+type TodoItemProps = {
   id: number;
   task: string;
   date: string;
   done: boolean;
-}
+};
 
-interface GoalListProps {
-  items: TodoItem[];
+type GoalListProps = {
+  items: TodoItemProps[];
   onCheckboxClick: (id: number) => void;
   listType: 'todo' | 'done';
   toggleListMenu: (index: number) => void;
   selectedIndex: number | null;
   listMenuRef: React.RefObject<HTMLDivElement>;
-}
+};
 
 export default function GoalList({
   items,
