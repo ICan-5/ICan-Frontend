@@ -1,22 +1,29 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import GoalProgress from './GoalProgress';
+import { useEffect, useRef, useState } from 'react';
 
-interface GoalHeaderProps {
-  toggleMenu: () => void;
-  isMenuOpen: boolean;
-  menuRef: React.RefObject<HTMLDivElement>;
-  doneItems: { task: string; date: string }[];
-  todoItems: { task: string; date: string }[];
-}
+type Props = {
+  doneItems: number;
+  todoItems: number;
+};
 
-export default function GoalHeader({
-  toggleMenu,
-  isMenuOpen,
-  menuRef,
-  doneItems,
-  todoItems,
-}: GoalHeaderProps) {
+export default function GoalHeader({ doneItems, todoItems }: Props) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -28,10 +35,13 @@ export default function GoalHeader({
           <FontAwesomeIcon
             icon={faEllipsisV}
             className="cursor-pointer text-gray-500"
-            onClick={toggleMenu}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           />
           {isMenuOpen && (
-            <div className="absolute right-12 mt-2 rounded bg-white shadow-md">
+            <div
+              className="absolute right-12 mt-2 rounded bg-white shadow-md"
+              ref={menuRef}
+            >
               <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
                 목표 색상 변경
               </button>

@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 
 interface GoalProgressProps {
-  doneItems: { task: string; date: string }[];
-  todoItems: { task: string; date: string }[];
+  doneItems: number;
+  todoItems: number;
 }
 
 // 목표 진행 그래프
@@ -11,7 +11,7 @@ export default function GoalProgress({
   todoItems,
 }: GoalProgressProps) {
   const progress =
-    (doneItems.length / (todoItems.length + doneItems.length)) * 100;
+    (doneItems / (todoItems+ doneItems)) * 100;
 
   return (
     <div className="mt-6">
