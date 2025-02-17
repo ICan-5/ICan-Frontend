@@ -30,12 +30,12 @@ export default function PasswordField({
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>
-        <span className="mb-3">{label}</span>
+        <span className="mb-4 font-semibold">{label}</span>
         <div className="relative w-full">
           <input
             className={cn(
-              'focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter py-3 pl-6 pr-14 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1',
-              errors[name] && 'focus-visible:ring-red-500',
+              'focus-visible:ring-ring w-full rounded-xl bg-slate50 py-3 pl-6 pr-14 placeholder-grayLight transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
+              errors[name] && 'bg-warn50 focus-visible:ring-red-500',
             )}
             type={isPasswordVisible ? 'text' : 'password'}
             id={name}

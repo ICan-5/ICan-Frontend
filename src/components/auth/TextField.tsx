@@ -24,11 +24,11 @@ export default function TextField({
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>
-        <span className="mb-3">{label}</span>
+        <span className="mb-4 font-semibold">{label}</span>
         <input
           className={cn(
-            'focus-visible:ring-ring placeholder:text-muted-foreground w-full rounded-full border border-grayLighter px-6 py-3 placeholder-grayLight shadow-sm transition-colors focus:outline-none focus:ring-grayLight focus-visible:ring-1',
-            errors[name] && 'focus-visible:ring-red-500',
+            'focus-visible:ring-ring w-full rounded-xl bg-slate50 px-6 py-3 font-normal placeholder-grayLight transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
+            errors[name] && 'bg-warn50 focus-visible:ring-red-500',
           )}
           id={name} // label을 연결
           type={type}

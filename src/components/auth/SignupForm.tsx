@@ -44,7 +44,7 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(SignUpSchema),
     mode: 'onChange',
@@ -53,7 +53,7 @@ export default function SignupForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-40 flex w-full flex-col items-center"
+      className="my-40 flex w-full flex-col items-center"
     >
       <div className="px-4 text-center">
         <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
@@ -90,14 +90,11 @@ export default function SignupForm() {
           register={register}
           errors={errors}
         />
-        <div className="mb-12" />
-        <Button label="회원가입하기" type="submit" />
+        <div className="mb-8" />
+        <Button label="회원가입하기" type="submit" disabled={!isValid} />
         <p className="text-center">
           이미 회원이신가요?{' '}
-          <Link
-            className="text-blue-600 underline underline-offset-2"
-            href="/login"
-          >
+          <Link className="ml-1 text-slate500" href="/login">
             로그인
           </Link>
         </p>
