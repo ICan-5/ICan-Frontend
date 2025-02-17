@@ -21,7 +21,7 @@ const config: Config = {
         '50L': ['3.125rem', { lineHeight: '1.25rem', fontWeight: '300' }],
       },
       colors: {
-        gs00: '#000000',
+        gs00: '#FFFFFF',
         gs50: '#F8FAFC',
         gs100: '#F1F5F9',
         gs200: '#E2E8F0',
@@ -33,7 +33,7 @@ const config: Config = {
         gs800: '#1E293B',
         gs900: '#0F172A',
         gs950: '#020617',
-        gsBk: '#FFFFFF',
+        gsBk: '#000000',
 
         warn50: '#FFF2F2',
         warn500: '#EE1E1E',
