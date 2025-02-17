@@ -1,9 +1,5 @@
-import Calendar from "@/components/todoCalendar/Calendar";
+import TodoCalendar from '@/components/todoCalendar/TodoCalendar';
 
 export default function Page() {
-  return (
-    <div>
-      <Calendar />
-    </div>
-  );
+  return <TodoCalendar />;
 }
