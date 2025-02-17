@@ -4,10 +4,11 @@ import GoalProgress from './GoalProgress';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
-  progress: number;
+  doneItems: number;
+  todoItems: number;
 };
 
-export default function GoalHeader({ progress }: Props) {
+export default function GoalHeader({ doneItems, todoItems }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +38,10 @@ export default function GoalHeader({ progress }: Props) {
             onClick={() => setIsMenuOpen((prev) => !prev)}
           />
           {isMenuOpen && (
-            <div className="absolute right-12 mt-2 rounded bg-white shadow-md">
+            <div
+              className="absolute right-12 mt-2 rounded bg-white shadow-md"
+              ref={menuRef}
+            >
               <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
                 목표 색상 변경
               </button>
@@ -51,7 +55,7 @@ export default function GoalHeader({ progress }: Props) {
           )}
         </div>
       </div>
-      <GoalProgress progress={progress} />
+      <GoalProgress doneItems={doneItems} todoItems={todoItems} />
     </div>
   );
 }
