@@ -1,15 +1,11 @@
 import { motion } from 'framer-motion';
 
 type Props = {
-  doneItems: { task: string; date: string }[];
-  todoItems: { task: string; date: string }[];
+  progress: number;
 };
 
 // 목표 진행 그래프
-export default function GoalProgress({ doneItems, todoItems }: Props) {
-  const progress =
-    (doneItems.length / (todoItems.length + doneItems.length)) * 100;
-
+export default function GoalProgress({ progress }: Props) {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between">

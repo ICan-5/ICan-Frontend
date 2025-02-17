@@ -16,7 +16,7 @@ type Props = {
 export default function Page() {
   const [todos, setTodos] = useState<Props[]>([
     { id: 1, task: '운동하기', date: '2025-02-11', done: false },
-    { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
+    { id: 2, task: '책 읽기', date: '2025-02-17', done: false },
     { id: 3, task: '자바스크립트 1챕터', date: '2025-02-14', done: false },
     { id: 4, task: '친구들 만나기', date: '2025-02-20', done: false },
   ]);
@@ -26,11 +26,13 @@ export default function Page() {
 
   const todoItems = todos.filter((item) => !item.done);
   const doneItems = todos.filter((item) => item.done);
+  const progress =
+    (doneItems.length / (todoItems.length + doneItems.length)) * 100;
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
       <div className="mb-6 rounded-2xl bg-white p-6 shadow">
-        <GoalHeader doneItems={doneItems} todoItems={todoItems} />
+        <GoalHeader progress={progress} />
       </div>
       <div className="mb-6 rounded-2xl bg-blue-100 p-3 shadow">
         <h2 className="mb-4 flex items-center text-lg font-bold">

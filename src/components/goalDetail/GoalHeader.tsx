@@ -4,11 +4,10 @@ import GoalProgress from './GoalProgress';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
-  doneItems: { task: string; date: string }[];
-  todoItems: { task: string; date: string }[];
+  progress: number;
 };
 
-export default function GoalHeader({ doneItems, todoItems }: Props) {
+export default function GoalHeader({ progress }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +51,7 @@ export default function GoalHeader({ doneItems, todoItems }: Props) {
           )}
         </div>
       </div>
-      <GoalProgress doneItems={doneItems} todoItems={todoItems} />
+      <GoalProgress progress={progress} />
     </div>
   );
 }
