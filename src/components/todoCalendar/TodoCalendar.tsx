@@ -222,9 +222,29 @@ const initialTodos = [
   },
 ];
 
+const initialBasketList = [
+  { id: 101, title: '코딩강의 듣기' },
+  { id: 102, title: '할일 2' },
+  { id: 103, title: '할일 2' },
+  { id: 104, title: '할일 2' },
+  { id: 105, title: '할일 2' },
+  { id: 106, title: '할일 2' },
+  { id: 107, title: '할일 2' },
+  { id: 108, title: '할일 2' },
+  { id: 109, title: '할일 2' },
+  { id: 110, title: '할일 2' },
+  { id: 111, title: '할일 2' },
+  { id: 112, title: '할일 2' },
+  { id: 113, title: '할일 2' },
+  { id: 114, title: '할일 2' },
+  { id: 115, title: '할일 2' },
+  { id: 116, title: '할일 2' },
+];
+
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+  const [basketList, setBasketList] = useState(initialBasketList);
   const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const calendarRef = useRef<FullCalendar>(null);
@@ -259,6 +279,10 @@ export default function TodoCalendar() {
    */
   const handleDeleteTodo = (id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  const handleDeleteBasketTodo = (id: number) => {
+    setBasketList((prev) => prev.filter((todo) => todo.id !== id));
   };
 
   useEffect(() => {
@@ -322,7 +346,10 @@ export default function TodoCalendar() {
         )}
       </div>
       <div className="w-full bg-white">
-        <TodoBasket />
+        <TodoBasket
+          basketList={basketList}
+          onDeleteBasketTodo={handleDeleteBasketTodo}
+        />
       </div>
     </div>
   );
