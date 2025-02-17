@@ -70,7 +70,7 @@ export default function Page() {
         <GoalHeader doneItems={doneItems.length} todoItems={todoItems.length} />
       </div>
       <div className="bg-slate200 mb-6 rounded-2xl p-3 shadow">
-        <h2 className="mb-4 flex items-center text-lg font-bold">
+        <h2 className="text-18R mb-4 flex items-center font-bold">
           <FontAwesomeIcon icon={faFilePen} className="text-slate500 mr-2" />
           노트 모아보기
           <FontAwesomeIcon
