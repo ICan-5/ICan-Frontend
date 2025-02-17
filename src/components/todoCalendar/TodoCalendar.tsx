@@ -7,6 +7,7 @@ import CalendarHeader from './CalendarHeader';
 import TodoList from './TodoList';
 import { TodoType } from '@/types/todos';
 import Loading from '../common/Loading';
+import TodoBasket from './TodoBasket';
 
 const initialTodos = [
   {
@@ -319,6 +320,9 @@ export default function TodoCalendar() {
         ) : (
           <Loading />
         )}
+      </div>
+      <div className="w-full bg-white">
+        <TodoBasket />
       </div>
     </div>
   );
