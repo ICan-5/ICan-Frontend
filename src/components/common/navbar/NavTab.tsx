@@ -16,7 +16,7 @@ export default function NavTab() {
   const pathname = usePathname();
 
   return (
-    <div className="mt-2 flex w-full flex-1 flex-col gap-1 overflow-y-hidden border-t-[1px] py-2">
+    <div className="mt-2 flex w-full flex-1 flex-col gap-3 overflow-y-hidden border-t-[1px] py-2">
       <section className="flex flex-none flex-col gap-1">
         {tabs.map((tab) => (
           <NavTabItem

@@ -44,13 +44,13 @@ export default function NavGoal() {
     <div className="flex h-full flex-col overflow-y-hidden">
       <div
         className={cn(
-          'flex flex-none items-center gap-3 overflow-hidden whitespace-nowrap rounded-md p-2 text-gray-400',
+          'flex flex-none items-center gap-3 overflow-hidden whitespace-nowrap rounded-md px-2 py-3 text-gray-400',
           {
             'bg-secondary text-primary': pathname.startsWith('/goals'),
           },
         )}
       >
-        <div className="flex items-center justify-center">
+        <div className="flex h-7 w-7 items-center justify-center">
           <FontAwesomeIcon className="h-4 w-4" icon={faFlag} size="sm" />
         </div>
         <p className="text-m flex-1 text-left font-medium">목표</p>

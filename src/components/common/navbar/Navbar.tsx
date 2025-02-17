@@ -14,7 +14,7 @@ export default function Navbar() {
     <header
       className={cn(
         'relative left-0 top-0 flex h-screen flex-none flex-col items-start bg-white p-4 transition-all duration-300',
-        { 'w-16': isFolded, 'w-60': !isFolded },
+        { 'w-16': isFolded, 'w-72': !isFolded },
       )}
     >
       <button
