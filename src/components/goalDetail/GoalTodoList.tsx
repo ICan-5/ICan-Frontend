@@ -74,7 +74,7 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
           <div className={`max-h-96 ${isFutureFold && 'hidden'}`}>
             {Object.entries(groupedTodos.upcoming).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
-                <div className="text-16M text-gray-600">{date}</div>
+                <div className="text-16M text-gs700">{date}</div>
                 <div>
                   {todos.map((todo: Todo) => (
                     <GoalListItem

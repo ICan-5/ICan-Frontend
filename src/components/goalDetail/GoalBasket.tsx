@@ -29,7 +29,7 @@ export default function GoalBasket({
           basketItems.map((item, index) => (
             <li
               key={item.id}
-              className="flex items-center justify-between text-gray-700"
+              className="text-gs700 flex items-center justify-between"
             >
               <span>{item.task}</span>
               <div className="flex items-center space-x-3">
