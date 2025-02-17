@@ -9,18 +9,16 @@ type Props = {
     done: boolean;
     note: boolean;
   };
-  onToggleItem: (id: number) => void;
 };
 
-export default function TodayListItem({ todo, onToggleItem }: Props) {
+export default function TodayListItem({ todo }: Props) {
   return (
     <div className="flex h-8 w-full items-center rounded-md px-2 py-1 text-sm hover:bg-gray-100 hover:text-primary">
       <input
         className="mr-2 flex-none cursor-pointer"
         type="checkbox"
         id={`todo${todo.id}`}
-        defaultChecked={todo.done}
-        onChange={() => onToggleItem(todo.id)}
+        checked={todo.done}
       />
       <label
         htmlFor={`todo${todo.id}`}
