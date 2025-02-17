@@ -281,8 +281,19 @@ export default function TodoCalendar() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
+  /**
+   * 장바구니에서 할 일 삭제
+   * @param id 삭제할 할 일의 id
+   */
   const handleDeleteBasketTodo = (id: number) => {
     setBasketList((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  /**
+   * 모든 장바구니 삭제
+   */
+  const handleDeleteAllBasket = () => {
+    setBasketList([]);
   };
 
   useEffect(() => {
@@ -349,6 +360,7 @@ export default function TodoCalendar() {
         <TodoBasket
           basketList={basketList}
           onDeleteBasketTodo={handleDeleteBasketTodo}
+          onDeleteAllBasket={handleDeleteAllBasket}
         />
       </div>
     </div>
