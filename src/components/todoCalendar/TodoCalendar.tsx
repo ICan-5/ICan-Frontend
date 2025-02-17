@@ -232,10 +232,13 @@ export default function TodoCalendar() {
    * 캘린더 높이 가져와서 TodoList에 적용
    */
   const updateCalendarHeight = () => {
-    const calendarEl = document.querySelector('.fc-view-harness');
-    if (calendarEl) {
-      setCalendarHeight(calendarEl.clientHeight);
-      setIsCalendarReady(true);
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
+      if (calendarEl) {
+        setCalendarHeight(calendarEl.clientHeight);
+        setIsCalendarReady(true);
+      }
     }
   };
 
@@ -258,20 +261,25 @@ export default function TodoCalendar() {
   };
 
   useEffect(() => {
-    const calendarEl = document.querySelector('.fc-view-harness');
-    if (calendarEl) {
-      updateCalendarHeight();
-      const observer = new MutationObserver(() => {
-        updateCalendarHeight();
-      });
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
 
-      observer.observe(calendarEl, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-      return () => observer.disconnect();
+      if (calendarEl) {
+        updateCalendarHeight();
+        const observer = new MutationObserver(() => {
+          updateCalendarHeight();
+        });
+
+        observer.observe(calendarEl, {
+          attributes: true,
+          childList: true,
+          subtree: true,
+        });
+        return () => observer.disconnect();
+      }
     }
+
     return undefined;
   }, []);
 
