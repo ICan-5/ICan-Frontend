@@ -18,13 +18,13 @@ export default function GoalProgress({
         <h3>Progress</h3>
         <h3>{progress.toFixed(0)}%</h3>
       </div>
-      <div className="bg-gs200 mt-2 h-3 w-full overflow-hidden rounded-full">
+      <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-gs200">
         <motion.div
-          className="bg-slate300 h-3 rounded-full"
+          className="h-3 rounded-full bg-slate300"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-        ></motion.div>
+        />
       </div>
     </div>
   );

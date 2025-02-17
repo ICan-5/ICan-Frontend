@@ -40,19 +40,25 @@ export default function GoalListItem({ item, onToggle }: Props) {
         </span>
       </div>
       <div className="flex items-center">
-        <FontAwesomeIcon icon={faFileLines} className="text-slate400 mr-2" />
+        <FontAwesomeIcon icon={faFileLines} className="mr-2 text-slate400" />
         <FontAwesomeIcon
           icon={faEllipsisV}
-          className="text-gs500 cursor-pointer"
+          className="cursor-pointer text-gs500"
           onClick={() => setIsMenuOpen(true)}
         />
       </div>
       {isMenuOpen && (
-        <div className="bg-gs00 absolute right-0 z-10 mt-2 rounded shadow-md">
-          <button className="text-gs700 hover:bg-gs200 text-14R block w-full px-4 py-2">
+        <div className="absolute right-0 z-10 mt-2 rounded bg-gs00 shadow-md">
+          <button
+            type="button"
+            className="block w-full px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+          >
             수정하기
           </button>
-          <button className="text-gs700 hover:bg-gs200 text-14R block w-full px-4 py-2">
+          <button
+            type="button"
+            className="block w-full px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+          >
             삭제하기
           </button>
         </div>

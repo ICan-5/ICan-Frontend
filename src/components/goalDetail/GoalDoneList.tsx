@@ -5,7 +5,6 @@ import GoalListItem from './GoalListItem';
 type Done = { id: number; task: string; date: string; done: boolean };
 
 type Props = {
-  type: 'done';
   list: Done[];
   onToggle: (id: number) => void;
 };
@@ -17,8 +16,8 @@ export default function GoalDoneList({ list, onToggle }: Props) {
   );
 
   return (
-    <div className="bg-gs200 rounded-2xl p-6 shadow">
-      <h3 className="text-18R mb-4 font-bold">Done</h3>
+    <div className="rounded-2xl bg-gs200 p-6 shadow">
+      <h3 className="mb-4 text-18R font-bold">Done</h3>
       {sortedList.map((done) => (
         <GoalListItem key={done.id} item={done} onToggle={onToggle} />
       ))}

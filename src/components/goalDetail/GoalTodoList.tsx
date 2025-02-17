@@ -9,7 +9,6 @@ import GoalListItem from './GoalListItem';
 type Todo = { id: number; task: string; date: string; done: boolean };
 
 type Props = {
-  type: 'todo';
   list: Todo[];
   onToggle: (id: number) => void;
 };
@@ -20,7 +19,7 @@ type GroupedTodos = {
   upcoming: Record<string, Todo[]>;
 };
 
-export default function GoalTodoList({ type, list, onToggle }: Props) {
+export default function GoalTodoList({ list, onToggle }: Props) {
   const groupedTodos: GroupedTodos = {
     past: {},
     today: {},
@@ -34,8 +33,15 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
    * todolist -> {날짜: todolist[]}[] 형식으로 변환해주는 함수
    */
   list.forEach(({ id, task, date, done }) => {
-    const category =
-      date < today ? 'past' : date === today ? 'today' : 'upcoming';
+    let category: keyof GroupedTodos;
+
+    if (date < today) {
+      category = 'past';
+    } else if (date === today) {
+      category = 'today';
+    } else {
+      category = 'upcoming';
+    }
 
     if (!groupedTodos[category][date]) {
       groupedTodos[category][date] = [];
@@ -46,24 +52,24 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
-      <div className="bg-gs00 w-full rounded-2xl p-6 shadow">
+      <div className="w-full rounded-2xl bg-gs00 p-6 shadow">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-18R mb-4 font-bold">To do</h3>
+          <h3 className="mb-4 text-18R font-bold">To do</h3>
           <div className="flex cursor-pointer items-center">
             <span className="text-slate400">+ 할 일 추가</span>
           </div>
         </div>
-        <h3 className="text-18R mt-6 font-bold">오늘 할 일</h3>
+        <h3 className="mt-6 text-18R font-bold">오늘 할 일</h3>
         {groupedTodos.today[today] &&
           groupedTodos.today[today].map((todo) => (
             <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
           ))}
         <div className="mt-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-18R mb-3 font-bold">예정된 할 일</h3>
+            <h3 className="mb-3 text-18R font-bold">예정된 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'text-gs500 h-4 w-4 transition-transform duration-300',
+                'h-4 w-4 text-gs500 transition-transform duration-300',
                 isFutureFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
@@ -90,10 +96,10 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
         </div>
         <div className="mt-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-18R mb-3 font-bold">지난 할 일</h3>
+            <h3 className="mb-3 text-18R font-bold">지난 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'text-gs500 h-4 w-4 transition-transform duration-300',
+                'h-4 w-4 text-gs500 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
