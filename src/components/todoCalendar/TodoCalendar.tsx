@@ -6,7 +6,7 @@ import Calendar from './Calendar';
 import CalendarHeader from './CalendarHeader';
 import TodoList from './TodoList';
 import { TodoType } from '@/types/todos';
-import Loading from '@/app/(member)/todoCalendar/loading';
+import Loading from '../common/Loading';
 
 const initialTodos = [
   {
