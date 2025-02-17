@@ -1,7 +1,9 @@
 'use client';
+
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+
 type Props = {
   label: string;
   name: string;
