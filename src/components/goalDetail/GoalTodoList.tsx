@@ -46,24 +46,24 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
-      <div className="w-full rounded-2xl bg-white p-6 shadow">
+      <div className="bg-gs00 w-full rounded-2xl p-6 shadow">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="mb-4 text-lg font-bold">To do</h3>
+          <h3 className="text-18R mb-4 font-bold">To do</h3>
           <div className="flex cursor-pointer items-center">
-            <span className="text-blue-400">+ 할 일 추가</span>
+            <span className="text-slate400">+ 할 일 추가</span>
           </div>
         </div>
-        <h3 className="mt-6 text-lg font-bold">오늘 할 일</h3>
+        <h3 className="text-18R mt-6 font-bold">오늘 할 일</h3>
         {groupedTodos.today[today] &&
           groupedTodos.today[today].map((todo) => (
             <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
           ))}
         <div className="mt-6">
           <div className="flex items-center justify-between">
-            <h3 className="mb-3 text-lg font-bold">예정된 할 일</h3>
+            <h3 className="text-18R mb-3 font-bold">예정된 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'h-4 w-4 text-gray-500 transition-transform duration-300',
+                'text-gs500 h-4 w-4 transition-transform duration-300',
                 isFutureFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
@@ -74,7 +74,7 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
           <div className={`max-h-96 ${isFutureFold && 'hidden'}`}>
             {Object.entries(groupedTodos.upcoming).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
-                <div className="text-md font-medium text-gray-600">{date}</div>
+                <div className="text-16M text-gray-600">{date}</div>
                 <div>
                   {todos.map((todo: Todo) => (
                     <GoalListItem
@@ -90,10 +90,10 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
         </div>
         <div className="mt-6">
           <div className="flex items-center justify-between">
-            <h3 className="mb-3 text-lg font-bold">지난 할 일</h3>
+            <h3 className="text-18R mb-3 font-bold">지난 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'h-4 w-4 text-gray-500 transition-transform duration-300',
+                'text-gs500 h-4 w-4 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
@@ -104,7 +104,7 @@ export default function GoalTodoList({ type, list, onToggle }: Props) {
           <div className={`max-h-96 ${isPastFold && 'hidden'}`}>
             {Object.entries(groupedTodos.past).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
-                <div className="text-md font-medium text-gray-700">{date}</div>
+                <div className="text-16M text-gs700">{date}</div>
                 <div>
                   {todos.map((todo: Todo) => (
                     <GoalListItem

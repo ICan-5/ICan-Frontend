@@ -28,8 +28,6 @@ export default function GoalListItem({ item, onToggle }: Props) {
       className="relative mt-1 flex items-center justify-between"
       ref={menuRef}
     >
-      {' '}
-      {/* relative 추가 */}
       <div className="flex items-center">
         <input
           type="checkbox"
@@ -37,24 +35,24 @@ export default function GoalListItem({ item, onToggle }: Props) {
           onChange={() => onToggle(item.id)}
           className="mr-2"
         />
-        <span className={item.done ? 'text-gray-500 line-through' : ''}>
+        <span className={item.done ? 'text-gs500 line-through' : ''}>
           {item.task}
         </span>
       </div>
       <div className="flex items-center">
-        <FontAwesomeIcon icon={faFileLines} className="mr-2 text-blue-400" />
+        <FontAwesomeIcon icon={faFileLines} className="text-slate400 mr-2" />
         <FontAwesomeIcon
           icon={faEllipsisV}
-          className="cursor-pointer text-gray-500"
+          className="text-gs500 cursor-pointer"
           onClick={() => setIsMenuOpen(true)}
         />
       </div>
       {isMenuOpen && (
-        <div className="absolute right-0 z-10 mt-2 rounded bg-white shadow-md">
-          <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+        <div className="bg-gs00 absolute right-0 z-10 mt-2 rounded shadow-md">
+          <button className="text-gs700 hover:bg-gs200 text-14R block w-full px-4 py-2">
             수정하기
           </button>
-          <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+          <button className="text-gs700 hover:bg-gs200 text-14R block w-full px-4 py-2">
             삭제하기
           </button>
         </div>

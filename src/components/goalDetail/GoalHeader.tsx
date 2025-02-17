@@ -27,28 +27,28 @@ export default function GoalHeader({ doneItems, todoItems }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="flex items-center text-xl font-bold">
-          <FontAwesomeIcon icon={faFlag} className="mr-2 text-blue-500" />
+        <h1 className="text-18R flex items-center font-bold">
+          <FontAwesomeIcon icon={faFlag} className="text-slate500 mr-2" />
           임시 목표
         </h1>
         <div ref={menuRef}>
           <FontAwesomeIcon
             icon={faEllipsisV}
-            className="cursor-pointer text-gray-500"
+            className="text-gs500 cursor-pointer"
             onClick={() => setIsMenuOpen((prev) => !prev)}
           />
           {isMenuOpen && (
             <div
-              className="absolute right-12 mt-2 rounded bg-white shadow-md"
+              className="bg-gs00 absolute right-12 mt-2 rounded shadow-md"
               ref={menuRef}
             >
-              <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
+              <button className="hover:bg-gs200 text-14R block w-full px-4 py-2 text-left text-gray-700">
                 목표 색상 변경
               </button>
-              <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
+              <button className="hover:bg-gs200 text-14R block w-full px-4 py-2 text-left text-gray-700">
                 수정하기
               </button>
-              <button className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200">
+              <button className="hover:bg-gs200 text-14R block w-full px-4 py-2 text-left text-gray-700">
                 삭제하기
               </button>
             </div>

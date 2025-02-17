@@ -17,8 +17,8 @@ export default function GoalDoneList({ list, onToggle }: Props) {
   );
 
   return (
-    <div className="rounded-2xl bg-gray-200 p-6 shadow">
-      <h3 className="mb-4 text-lg font-bold">Done</h3>
+    <div className="bg-gs200 rounded-2xl p-6 shadow">
+      <h3 className="text-18R mb-4 font-bold">Done</h3>
       {sortedList.map((done) => (
         <GoalListItem key={done.id} item={done} onToggle={onToggle} />
       ))}

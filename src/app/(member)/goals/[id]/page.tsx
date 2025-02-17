@@ -4,7 +4,7 @@ import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
-import { faAnglesRight, faStickyNote } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesRight, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -65,17 +65,17 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
-      <div className="mb-6 rounded-2xl bg-white p-6 shadow">
+    <div className="bg-gs100 min-h-screen w-full px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
+      <div className="bg-gs00 mb-6 rounded-2xl p-6 shadow">
         <GoalHeader doneItems={doneItems.length} todoItems={todoItems.length} />
       </div>
-      <div className="mb-6 rounded-2xl bg-blue-100 p-3 shadow">
+      <div className="bg-slate200 mb-6 rounded-2xl p-3 shadow">
         <h2 className="mb-4 flex items-center text-lg font-bold">
-          <FontAwesomeIcon icon={faStickyNote} className="mr-2 text-blue-400" />
+          <FontAwesomeIcon icon={faFilePen} className="text-slate500 mr-2" />
           노트 모아보기
           <FontAwesomeIcon
             icon={faAnglesRight}
-            className="ml-auto text-blue-400"
+            className="text-slate500 ml-auto"
           />
         </h2>
       </div>
