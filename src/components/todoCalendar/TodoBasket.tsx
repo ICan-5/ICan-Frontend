@@ -33,7 +33,7 @@ export default function TodoBasket({
             key={todo.id}
             className="flex w-[150px] items-center justify-between gap-3 rounded-lg border p-3 shadow-sm"
           >
-            <span>{todo.title}</span>
+            <span className="truncate">{todo.title}</span>
             <button
               type="button"
               className="text-gray-500"
