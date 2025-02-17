@@ -356,13 +356,13 @@ export default function TodoCalendar() {
           <Loading />
         )}
       </div>
-      <div className="w-full bg-white">
+      {isCalendarReady && (
         <TodoBasket
           basketList={basketList}
           onDeleteBasketTodo={handleDeleteBasketTodo}
           onDeleteAllBasket={handleDeleteAllBasket}
         />
-      </div>
+      )}
     </div>
   );
 }

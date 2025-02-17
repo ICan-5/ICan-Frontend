@@ -10,7 +10,7 @@ export default function TodoBasket({
   onDeleteAllBasket,
 }: Props) {
   return (
-    <div className="p-3">
+    <div className="w-full bg-white p-3">
       <div className="mb-3 flex items-center gap-4">
         <span className="text-lg font-semibold">할 일 장바구니</span>
         <button
