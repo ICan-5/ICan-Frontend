@@ -8,6 +8,7 @@ import TextField from './TextField';
 import PasswordField from './PasswordField';
 import Button from './Button';
 import { SignUpSchema, ValidationSchemaType } from '@/lib/validation';
+import signup from '@/services/auth';
 
 export type SignUpFormData = {
   name: string;
@@ -20,24 +21,11 @@ export default function SignupForm() {
   const router = useRouter();
 
   const onSubmit = async (formData: SignUpFormData) => {
-    try {
-      const response = await fetch('api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
+    const { success, message } = await signup(formData);
 
-      if (response.status === 200) {
-        alert(data.message);
-        router.push('/login');
-      } else {
-        alert(data.message);
-      }
-    } catch (e) {
-      console.error(e);
+    alert(message);
+    if (success) {
+      router.push('/login');
     }
   };
 

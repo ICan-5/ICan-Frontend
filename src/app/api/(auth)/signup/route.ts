@@ -1,22 +1,11 @@
-import { SignUpSchema } from '@/lib/validation';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
+import { SignUpSchema } from '@/lib/validation';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
+const teamId = 'teamIdtest';
 
-async function checkEmailExists(email: string) {
-  const response = await fetch(`${apiUrl}/${teamId}/user`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const result = await response.json();
-  return result;
-}
-
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const formData = await req.json();
 
@@ -24,25 +13,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     // 필드 재검증
     const validatedFields = SignUpSchema.safeParse({
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
+      name,
+      email,
+      password,
+      confirmPassword,
     });
 
     // 검증 실패 시
     if (!validatedFields.success) {
       return NextResponse.json(
         { message: '잘못된 입력값이 있습니다.' },
-        { status: 400 },
-      );
-    }
-
-    // 중복된 이메일 확인
-    const emailExists = await checkEmailExists(email);
-    if (emailExists) {
-      return NextResponse.json(
-        { message: '중복된 이메일입니다.' },
         { status: 400 },
       );
     }
@@ -62,8 +42,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         password: hashedPassword, // 해싱된 비밀번호
       }),
     });
-
-    const result = await response.json();
 
     if (!response.ok) {
       return NextResponse.json(

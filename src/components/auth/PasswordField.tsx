@@ -43,18 +43,15 @@ export default function PasswordField({
             autoComplete="off"
             {...register(name)}
           />
-          <button type="button" onClick={() => handleTogglePasswordVisible()}>
-            {isPasswordVisible ? (
-              <FontAwesomeIcon
-                className="absolute right-6 top-1/2 h-6 w-6 -translate-y-1/2 text-grayDarker"
-                icon={faEye}
-              />
-            ) : (
-              <FontAwesomeIcon
-                className="absolute right-6 top-1/2 h-6 w-6 -translate-y-1/2 text-grayDarker"
-                icon={faEyeSlash}
-              />
-            )}
+          <button
+            type="button"
+            onClick={() => handleTogglePasswordVisible()}
+            aria-label="password-visible-button"
+          >
+            <FontAwesomeIcon
+              className="absolute right-6 top-1/2 h-6 w-6 -translate-y-1/2 text-grayDarker"
+              icon={isPasswordVisible ? faEye : faEyeSlash}
+            />
           </button>
         </div>
         {errors[name] && <ErrorMessage message={errors[name]?.message || ''} />}
