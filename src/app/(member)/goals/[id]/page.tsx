@@ -21,7 +21,7 @@ type TodoItem = {
 
 export default function Page() {
   const [todos, setTodos] = useState<TodoItem[]>([
-    { id: 1, task: '운동하기', date: '2025-02-17', done: false },
+    { id: 1, task: '운동하기', date: '2025-02-18', done: false },
     { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
     { id: 3, task: '자바스크립트 1챕터', date: '2025-02-17', done: false },
     { id: 4, task: '친구들 만나기', date: '2025-02-20', done: false },
