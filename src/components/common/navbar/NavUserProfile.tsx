@@ -1,6 +1,11 @@
 import Image from 'next/image';
+import cn from '@/utils/cn';
 
-export default function NavUserProfile() {
+type Props = {
+  isFolded: boolean;
+};
+
+export default function NavUserProfile({ isFolded }: Props) {
   // TODO:: API연결 되면 밑 데이터 삭제
   // 프로필 데이터 받아오기
   const data = {
@@ -10,9 +15,12 @@ export default function NavUserProfile() {
   };
 
   return (
-    <div className="my-6 flex h-16 w-full flex-none items-center gap-3 2xl:my-8">
+    <div className="my-6 flex h-16 w-full flex-none items-center gap-3 overflow-hidden 2xl:my-8">
       <Image
-        className="h-12 w-12 2xl:h-16 2xl:w-16"
+        className={cn(
+          'h-12 w-12 transition-all duration-300 2xl:h-16 2xl:w-16',
+          { 'ml-1 h-10 w-10 2xl:h-10 2xl:w-10': isFolded },
+        )}
         src={data.image || '/images/profile.png'}
         width="64"
         height="64"

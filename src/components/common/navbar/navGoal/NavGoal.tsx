@@ -29,7 +29,11 @@ const tempGoalList = [
   { id: 3, title: 'Next14 공부하기' },
 ];
 
-export default function NavGoal() {
+type Props = {
+  headerFolded: boolean;
+};
+
+export default function NavGoal({ headerFolded }: Props) {
   const pathname = usePathname();
   const [goalList, setGoalList] = useState(tempGoalList);
   const [isFolded, setIsFolded] = useState<boolean>(false);
@@ -58,12 +62,17 @@ export default function NavGoal() {
         className={cn(
           'flex flex-none items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-gs600',
           '2xl:rounded-xl 2xl:px-2 2xl:py-3',
-          {
-            'bg-slate50 text-gsBk': pathname.startsWith('/goals'),
-          },
+          { 'bg-slate50 text-gsBk': pathname.startsWith('/goals') },
         )}
       >
-        <div className="flex h-7 w-7 items-center justify-center">
+        <div
+          className={cn(
+            'flex h-7 w-7 items-center justify-center transition-all duration-300',
+            {
+              'w-10 p-3 2xl:p-2': headerFolded,
+            },
+          )}
+        >
           <FontAwesomeIcon className="h-4 w-4" icon={faFontAwesome} size="sm" />
         </div>
         <p className="flex-1 text-left text-14M font-medium 2xl:text-16M">
@@ -84,7 +93,10 @@ export default function NavGoal() {
           />
         </button>
         <button
-          className="flex h-6 w-6 items-center justify-center rounded-2xl border-2 border-gs200 bg-gs00 text-gs400 hover:border-slate500 hover:text-slate500 2xl:h-7 2xl:w-7"
+          className={cn(
+            'flex h-6 w-6 items-center justify-center rounded-2xl border border-gs200 bg-gs00 text-gs400',
+            'hover:border-slate500 hover:text-slate500 2xl:h-7 2xl:w-7',
+          )}
           type="button"
           onClick={addGoalList}
         >
@@ -93,9 +105,10 @@ export default function NavGoal() {
       </div>
       <div
         className={cn(
-          'relative flex h-full max-h-[364px] flex-col gap-1 overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[404px]',
+          'relative flex h-full max-h-[328px] flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[368px]',
           'origin-top transition-transform duration-300 ease-in-out',
           { 'scale-y-0': isFolded },
+          { 'invisible overflow-hidden': headerFolded },
         )}
       >
         {showNewGoal && (

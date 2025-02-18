@@ -4,13 +4,20 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import cn from '@/utils/cn';
 
 type Props = {
+  isFolded: boolean;
   icon: IconProp;
   path: string;
   title: string;
   isSelected: boolean;
 };
 
-export default function NavTabItem({ icon, path, title, isSelected }: Props) {
+export default function NavTabItem({
+  isFolded,
+  icon,
+  path,
+  title,
+  isSelected,
+}: Props) {
   return (
     <Link
       href={path}
@@ -20,7 +27,12 @@ export default function NavTabItem({ icon, path, title, isSelected }: Props) {
         { 'bg-slate50 text-gsBk': isSelected },
       )}
     >
-      <div className="flex h-7 w-7 items-center justify-center">
+      <div
+        className={cn(
+          'flex h-7 w-7 items-center justify-center transition-all duration-300',
+          { 'w-10 p-3 2xl:p-2': isFolded },
+        )}
+      >
         <FontAwesomeIcon className="h-4 w-4" icon={icon} size="sm" />
       </div>
       <p className="text-14M font-medium 2xl:text-16M">{title}</p>

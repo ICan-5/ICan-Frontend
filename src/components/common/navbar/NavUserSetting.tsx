@@ -19,7 +19,7 @@ export default function NavUserSetting({ isFolded }: Props) {
         )}
       >
         <div
-          className={`flex h-7 w-7 items-center justify-center transition-all duration-300 ${isFolded && 'w-10 p-3'}`}
+          className={`flex h-7 w-7 items-center justify-center transition-all duration-300 ${isFolded && 'w-10 p-3 2xl:p-2'}`}
         >
           <FontAwesomeIcon className="h-4 w-4" icon={faGear} size="sm" />
         </div>
@@ -33,7 +33,7 @@ export default function NavUserSetting({ isFolded }: Props) {
         )}
       >
         <div
-          className={`flex h-7 w-7 items-center justify-center transition-all duration-300 ${isFolded && 'w-10 p-3'}`}
+          className={`flex h-7 w-7 items-center justify-center transition-all duration-300 ${isFolded && 'w-10 p-3 2xl:p-2'}`}
         >
           <FontAwesomeIcon
             className="h-4 w-4"
