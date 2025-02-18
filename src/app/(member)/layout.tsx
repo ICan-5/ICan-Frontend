@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-100 will-change-scroll">
       <Navbar />
-      <div className="w-full overflow-y-auto overscroll-contain">
+      <div className="ml-16 flex-1 overflow-y-auto overscroll-contain sm:ml-0">
         {children}
       </div>
     </div>
