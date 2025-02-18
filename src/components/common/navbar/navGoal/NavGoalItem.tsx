@@ -12,15 +12,15 @@ export default function NavGoalItem({ id, title, isSelected }: Props) {
     <Link
       href={`/goals/${id}`}
       className={cn(
-        'flex flex-none cursor-pointer items-center gap-5 overflow-hidden rounded-md px-3 py-2',
-        'text-xs text-gray-400 hover:bg-gray-100',
+        'flex flex-none cursor-pointer items-center gap-4 overflow-hidden rounded-md p-2',
+        'text-gray-400 hover:bg-gs50',
         {
-          'bg-gray-100 text-gray-600': isSelected,
+          'bg-gs50 text-gray-600': isSelected,
         },
       )}
     >
-      <span>•</span>
-      <span className="text-overflow">{title}</span>
+      <span className="ml-2 h-2 w-2 rounded-md bg-goal01" />
+      <span className="text-overflow text-12R 2xl:text-14R">{title}</span>
     </Link>
   );
 }
