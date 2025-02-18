@@ -100,7 +100,7 @@ export default function Calendar({
    * 사이드 바가 접히거나 펼쳐지면 캘린더 크기 재조정
    */
   useEffect(() => {
-    const sidebar = document.querySelector('header'); // 사이드바 선택
+    const sidebar = document.querySelector('nav'); // 사이드바 선택
     if (!sidebar) return undefined;
 
     const observer = new MutationObserver(() => {
