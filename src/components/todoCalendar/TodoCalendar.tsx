@@ -7,6 +7,7 @@ import CalendarHeader from './CalendarHeader';
 import TodoList from './TodoList';
 import { TodoType } from '@/types/todos';
 import Loading from '../common/Loading';
+import TodoBasket from './TodoBasket';
 
 const initialTodos = [
   {
@@ -221,9 +222,29 @@ const initialTodos = [
   },
 ];
 
+const initialBasketList = [
+  { id: 101, title: '코딩강의 듣기' },
+  { id: 102, title: '할 일이 길어지면 어쩌구 저쩌구' },
+  { id: 103, title: '할 일 52' },
+  { id: 104, title: '할 일 62' },
+  { id: 105, title: '할 일 72' },
+  { id: 106, title: '할 일 82' },
+  { id: 107, title: '할 일 92' },
+  { id: 108, title: '할 일 102' },
+  { id: 109, title: '할 일 112' },
+  { id: 110, title: '할 일 122' },
+  { id: 111, title: '할 일 132' },
+  { id: 112, title: '할 일 142' },
+  { id: 113, title: '할 일 152' },
+  { id: 114, title: '할 일 162' },
+  { id: 115, title: '할 일 172' },
+  { id: 116, title: '할 일 182' },
+];
+
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+  const [basketList, setBasketList] = useState(initialBasketList);
   const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const calendarRef = useRef<FullCalendar>(null);
@@ -258,6 +279,21 @@ export default function TodoCalendar() {
    */
   const handleDeleteTodo = (id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  /**
+   * 장바구니에서 할 일 삭제
+   * @param id 삭제할 할 일의 id
+   */
+  const handleDeleteBasketTodo = (id: number) => {
+    setBasketList((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  /**
+   * 모든 장바구니 삭제
+   */
+  const handleDeleteAllBasket = () => {
+    setBasketList([]);
   };
 
   useEffect(() => {
@@ -320,6 +356,13 @@ export default function TodoCalendar() {
           <Loading />
         )}
       </div>
+      {isCalendarReady && (
+        <TodoBasket
+          basketList={basketList}
+          onDeleteBasketTodo={handleDeleteBasketTodo}
+          onDeleteAllBasket={handleDeleteAllBasket}
+        />
+      )}
     </div>
   );
 }
