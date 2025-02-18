@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SignUpSchema } from '@/lib/validation';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const teamId = 'teamIdtest';
+const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
 export async function POST(req: NextRequest) {
   try {
