@@ -2,13 +2,17 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cn from '@/utils/cn';
 import NavUserProfile from './NavUserProfile';
 import NavTab from './NavTab';
 
 export default function Navbar() {
-  const [isFolded, setIsFolded] = useState<boolean>(window.innerWidth <= 640);
+  const [isFolded, setIsFolded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsFolded(window.innerWidth <= 640);
+  }, []);
 
   return (
     <>
