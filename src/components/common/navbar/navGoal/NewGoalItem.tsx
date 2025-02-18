@@ -49,11 +49,11 @@ export default function NewGoalItem({ onCloseInput, onAddNewItem }: Props) {
   });
 
   return (
-    <div className="flex flex-none cursor-pointer items-center gap-5 rounded-md bg-gray-100 py-1 pl-3 text-xs text-gray-400">
-      <span>•</span>
+    <div className="flex flex-none cursor-pointer items-center gap-4 rounded-md bg-gs50 px-2 py-1 text-14R text-gray-400 2xl:rounded-lg">
+      <span className="ml-2 h-2 w-2 rounded-md bg-goal01" />
       <input
         ref={inputRef}
-        className="text-overflow p-1"
+        className="text-overflow p-1 text-12R 2xl:text-14R"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onBlur={handleBlur}
