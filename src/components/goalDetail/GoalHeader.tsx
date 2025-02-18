@@ -6,9 +6,10 @@ import GoalProgress from './GoalProgress';
 type Props = {
   doneItems: number;
   todoItems: number;
+  id: string;
 };
 
-export default function GoalHeader({ doneItems, todoItems }: Props) {
+export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -27,9 +28,9 @@ export default function GoalHeader({ doneItems, todoItems }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="flex items-center text-18R font-bold">
+        <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          임시 목표
+          임시 목표 {id}
         </h1>
         <div ref={menuRef}>
           <FontAwesomeIcon

@@ -4,6 +4,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { faAnglesRight, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import Link from 'next/link';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
@@ -19,7 +20,7 @@ type TodoItem = {
   done: boolean;
 };
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
     { id: 1, task: '운동하기', date: '2025-02-18', done: false },
     { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
@@ -66,18 +67,24 @@ export default function Page() {
   return (
     <div className="min-h-screen w-full bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
       <div className="mb-6 rounded-2xl bg-gs00 p-6 shadow">
-        <GoalHeader doneItems={doneItems.length} todoItems={todoItems.length} />
+        <GoalHeader
+          doneItems={doneItems.length}
+          todoItems={todoItems.length}
+          id={params.id}
+        />
       </div>
-      <div className="mb-6 rounded-2xl bg-slate200 p-3 shadow">
-        <h2 className="mb-4 flex items-center text-18R font-bold">
-          <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
-          노트 모아보기
-          <FontAwesomeIcon
-            icon={faAnglesRight}
-            className="ml-auto text-slate500"
-          />
-        </h2>
-      </div>
+      <Link href={`/note/${params.id}`} className="block">
+        <div className="mb-6 cursor-pointer rounded-2xl bg-slate200 p-3 shadow">
+          <h2 className="mb-4 flex items-center text-18SB">
+            <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
+            노트 모아보기
+            <FontAwesomeIcon
+              icon={faAnglesRight}
+              className="ml-auto text-slate500"
+            />
+          </h2>
+        </div>
+      </Link>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <GoalTodoList list={todoItems} onToggle={toggleTodos} />
         <div className="flex flex-col gap-4">
