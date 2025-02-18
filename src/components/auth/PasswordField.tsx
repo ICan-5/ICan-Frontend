@@ -9,7 +9,7 @@ import cn from '@/utils/cn';
 
 type Props = {
   label: string;
-  name: keyof ValidationSchemaType;
+  name: 'password' | 'confirmPassword';
   placeholder?: string;
   register: UseFormRegister<ValidationSchemaType>;
   errors: FieldErrors<ValidationSchemaType>;
@@ -30,7 +30,7 @@ export default function PasswordField({
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>
-        <span className="mb-4 font-semibold">{label}</span>
+        <span className="mb-3">{label}</span>
         <div className="relative w-full">
           <input
             className={cn(
@@ -43,7 +43,6 @@ export default function PasswordField({
             autoComplete="off"
             {...register(name)}
           />
-          {/* <span>{errors}</span> */}
           <button type="button" onClick={() => handleTogglePasswordVisible()}>
             {isPasswordVisible ? (
               <FontAwesomeIcon
