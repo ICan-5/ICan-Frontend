@@ -8,6 +8,12 @@ export interface TodoType {
   id: number;
   title: string;
   date: string;
-  goal: Goals;
+  goal: Goal | null;
   done: boolean;
+}
+
+export interface BasketType {
+  id: number;
+  title: string;
+  goal: Goal | null;
 }

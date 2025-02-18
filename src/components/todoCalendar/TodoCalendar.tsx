@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import Calendar from './Calendar';
 import CalendarHeader from './CalendarHeader';
 import TodoList from './TodoList';
-import { TodoType } from '@/types/todos';
+import { BasketType, TodoType } from '@/types/todos';
 import Loading from '../common/Loading';
 import TodoBasket from './TodoBasket';
 
@@ -223,28 +223,28 @@ const initialTodos = [
 ];
 
 const initialBasketList = [
-  { id: 101, title: '코딩강의 듣기' },
-  { id: 102, title: '할 일이 길어지면 어쩌구 저쩌구' },
-  { id: 103, title: '할 일 52' },
-  { id: 104, title: '할 일 62' },
-  { id: 105, title: '할 일 72' },
-  { id: 106, title: '할 일 82' },
-  { id: 107, title: '할 일 92' },
-  { id: 108, title: '할 일 102' },
-  { id: 109, title: '할 일 112' },
-  { id: 110, title: '할 일 122' },
-  { id: 111, title: '할 일 132' },
-  { id: 112, title: '할 일 142' },
-  { id: 113, title: '할 일 152' },
-  { id: 114, title: '할 일 162' },
-  { id: 115, title: '할 일 172' },
-  { id: 116, title: '할 일 182' },
+  { id: 101, title: '코딩강의 듣기', goal: null },
+  { id: 102, title: '할 일이 길어지면 어쩌구 저쩌구', goal: null },
+  { id: 103, title: '할 일 52', goal: null },
+  { id: 104, title: '할 일 62', goal: null },
+  { id: 105, title: '할 일 72', goal: null },
+  { id: 106, title: '할 일 82', goal: null },
+  { id: 107, title: '할 일 92', goal: null },
+  { id: 108, title: '할 일 102', goal: null },
+  { id: 109, title: '할 일 112', goal: null },
+  { id: 110, title: '할 일 122', goal: null },
+  { id: 111, title: '할 일 132', goal: null },
+  { id: 112, title: '할 일 142', goal: null },
+  { id: 113, title: '할 일 152', goal: null },
+  { id: 114, title: '할 일 162', goal: null },
+  { id: 115, title: '할 일 172', goal: null },
+  { id: 116, title: '할 일 182', goal: null },
 ];
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [todos, setTodos] = useState<TodoType[]>(initialTodos);
-  const [basketList, setBasketList] = useState(initialBasketList);
+  const [basketList, setBasketList] = useState<BasketType[]>(initialBasketList);
   const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const calendarRef = useRef<FullCalendar>(null);
@@ -296,6 +296,26 @@ export default function TodoCalendar() {
     setBasketList([]);
   };
 
+  /**
+   * 드랍 시 todo에 추가 & 장바구니에서 제거
+   * @returns
+   */
+  const handleDropTodo = (date: string, todoId: number) => {
+    const draggedTodo = basketList.find((todo) => todo.id === todoId);
+    if (!draggedTodo) return;
+
+    const newTodo: TodoType = {
+      id: todoId,
+      title: draggedTodo.title,
+      date,
+      goal: draggedTodo.goal || null,
+      done: false,
+    };
+
+    setTodos((prev) => [...prev, newTodo]);
+    setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
+  };
+
   useEffect(() => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
@@ -334,6 +354,7 @@ export default function TodoCalendar() {
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
             calendarRef={calendarRef}
+            onDropTodo={handleDropTodo}
           />
         </div>
         {isCalendarReady ? (

@@ -40,6 +40,7 @@ type Props = {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   calendarRef: React.RefObject<FullCalendar>;
+  onDropTodo: (date: string, todoId: number) => void;
 };
 
 /**
@@ -50,6 +51,7 @@ export default function Calendar({
   selectedDate,
   onDateChange,
   calendarRef,
+  onDropTodo,
 }: Props) {
   /**
    * 각 날짜 칸을 클릭을 처리하는 핸들러
@@ -123,7 +125,7 @@ export default function Calendar({
       events={todos.map((event) => ({
         ...event,
         id: event.id.toString(),
-        className: event.goal.color,
+        className: event.goal?.color || 'bg-slate950',
       }))}
       eventBorderColor="transparent"
       eventDisplay="block"
@@ -135,6 +137,14 @@ export default function Calendar({
       contentHeight="100%"
       dayCellContent={(info) => renderDayCellContent(info, selectedDate)}
       dayCellDidMount={updateCellSize}
+      droppable
+      eventReceive={(info) => {
+        const todoId = Number(info.event.id);
+        const date = info.event.startStr;
+
+        onDropTodo(date, todoId);
+        info.event.remove();
+      }}
     />
   );
 }
