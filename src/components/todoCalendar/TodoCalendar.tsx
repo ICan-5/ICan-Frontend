@@ -238,7 +238,15 @@ const initialBasketList = [
   { id: 113, title: '할 일 152', goal: null },
   { id: 114, title: '할 일 162', goal: null },
   { id: 115, title: '할 일 172', goal: null },
-  { id: 116, title: '할 일 182', goal: null },
+  {
+    id: 116,
+    title: '할 일 182',
+    goal: {
+      id: 1,
+      title: '강의 듣기',
+      color: 'bg-red-500',
+    },
+  },
 ];
 
 export default function TodoCalendar() {
@@ -298,7 +306,6 @@ export default function TodoCalendar() {
 
   /**
    * 드랍 시 todo에 추가 & 장바구니에서 제거
-   * @returns
    */
   const handleDropTodo = (date: string, todoId: number) => {
     const draggedTodo = basketList.find((todo) => todo.id === todoId);

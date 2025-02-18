@@ -53,7 +53,7 @@ export default function TodoBasket({
         {basketList.map((todo) => (
           <div
             key={todo.id}
-            className="draggable-todo flex w-[150px] items-center justify-between gap-3 rounded-lg border p-3 shadow-sm"
+            className="draggable-todo flex w-[150px] cursor-grab items-center justify-between gap-3 rounded-lg border p-3 shadow-sm active:cursor-grabbing"
             draggable
             data-id={todo.id}
           >
