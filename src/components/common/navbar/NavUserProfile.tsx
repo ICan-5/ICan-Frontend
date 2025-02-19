@@ -19,7 +19,7 @@ export default function NavUserProfile({ isFolded }: Props) {
       <Image
         className={cn(
           'h-12 w-12 transition-all duration-300 2xl:h-16 2xl:w-16',
-          { 'ml-1 scale-0 2xl:h-10 2xl:w-10': isFolded },
+          { 'ml-1 opacity-0 2xl:h-10 2xl:w-10': isFolded },
         )}
         src={data.image || '/images/profile.png'}
         width="64"
@@ -28,10 +28,10 @@ export default function NavUserProfile({ isFolded }: Props) {
         priority
       />
       <div className="flex w-full flex-col gap-1 overflow-hidden">
-        <span className="text-overflow w-full text-14SB font-semibold text-gsBk">
+        <span className="text-overflow text-14SB w-full font-semibold text-gsBk">
           {data.name}
         </span>
-        <span className="text-overflow w-full text-12M text-gs400">
+        <span className="text-overflow text-12M w-full text-gs400">
           {data.email}
         </span>
       </div>
