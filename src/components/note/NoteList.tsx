@@ -32,6 +32,11 @@ export default function NoteList({ notes }: NoteListProps) {
 
   return (
     <div>
+      {notes.length === 0 && (
+        <div className="w-4/5 py-8 text-center text-gs500">
+          노트가 아직 없습니다.
+        </div>
+      )}
       {notes.map((note) => (
         <div
           key={note.id}
