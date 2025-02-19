@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import cn from '@/utils/cn';
+import Icon from '@/components/common/Icon/Icon';
 
 type Props = {
   isFolded: boolean;
@@ -27,14 +27,12 @@ export default function NavTabItem({
         { 'bg-slate50 text-gsBk': isSelected },
       )}
     >
-      <div
-        className={cn(
-          'flex h-7 w-7 items-center justify-center transition-all duration-300',
-          { 'w-10 p-3 2xl:p-2': isFolded },
-        )}
-      >
-        <FontAwesomeIcon className="h-4 w-4" icon={icon} size="sm" />
-      </div>
+      <Icon
+        icon={icon}
+        className={cn('transition-all duration-300', {
+          'w-10 p-3 2xl:p-2': isFolded,
+        })}
+      />
       <p className="text-14M font-medium 2xl:text-16M">{title}</p>
     </Link>
   );

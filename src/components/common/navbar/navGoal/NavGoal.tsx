@@ -9,6 +9,7 @@ import { useState } from 'react';
 import cn from '@/utils/cn';
 import NavGoalItem from './NavGoalItem';
 import NewGoalItem from './NewGoalItem';
+import Icon from '@/components/common/Icon/Icon';
 
 // TODO:: 목표 리스트 mock 데이터, API 연결하면 삭제
 const tempGoalList = [
@@ -60,21 +61,17 @@ export default function NavGoal({ headerFolded }: Props) {
     <div className="flex h-full flex-col overflow-y-hidden">
       <div
         className={cn(
-          'flex flex-none items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-gs600',
-          '2xl:rounded-xl 2xl:px-2 2xl:py-3',
+          'flex flex-none items-center gap-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-gs600',
+          '2xl:gap-2 2xl:rounded-xl 2xl:px-2 2xl:py-3',
           { 'bg-slate50 text-gsBk': pathname.startsWith('/goals') },
         )}
       >
-        <div
-          className={cn(
-            'flex h-7 w-7 items-center justify-center transition-all duration-300',
-            {
-              'w-10 p-3 2xl:p-2': headerFolded,
-            },
-          )}
-        >
-          <FontAwesomeIcon className="h-4 w-4" icon={faFontAwesome} size="sm" />
-        </div>
+        <Icon
+          icon={faFontAwesome}
+          className={cn('transition-all duration-300', {
+            'w-10 p-3 2xl:p-2': headerFolded,
+          })}
+        />
         <p className="flex-1 text-left text-14M font-medium 2xl:text-16M">
           목표
         </p>
