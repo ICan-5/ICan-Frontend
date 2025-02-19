@@ -37,6 +37,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .clip-circle-40 {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 0% 80%);
+  }
 }
 
 @layer components {
