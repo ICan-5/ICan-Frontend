@@ -29,10 +29,10 @@ export default function TextField<T extends FieldValues>({
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>
-        <span className="mb-4 font-semibold">{label}</span>
+        <span className="mb-4 text-16SB">{label}</span>
         <input
           className={cn(
-            'focus-visible:ring-ring w-full rounded-xl bg-slate50 px-6 py-3 font-normal placeholder-grayLight transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
+            'focus-visible:ring-ring h-12 w-full rounded-xl bg-slate50 px-4 py-3 text-16R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
             errors[name] && 'bg-warn50 focus-visible:ring-red-500',
           )}
           id={name} // label을 연결

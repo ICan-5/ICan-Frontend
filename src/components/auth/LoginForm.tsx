@@ -37,7 +37,7 @@ export default function LoginForm() {
         <TextField
           label="아이디"
           name="id"
-          placeholder="아이디를 입력해주세요"
+          placeholder="이메일을 입력해주세요"
           register={register}
           errors={errors}
         />
@@ -50,7 +50,7 @@ export default function LoginForm() {
         />
         <div className="mb-8" />
         <Button label="회원가입하기" type="submit" disabled={!isValid} />
-        <p className="text-center">
+        <p className="text-center text-14M">
           I:can이 처음이신가요?{' '}
           <Link className="ml-1 text-slate500" href="/signup">
             회원가입
