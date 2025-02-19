@@ -20,6 +20,7 @@ const config: Config = {
         '18R': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }],
         '18M': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '500' }],
         '18SB': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '600' }],
+        '40L': ['2.125rem', { lineHeight: '2rem', fontWeight: '300' }],
         '50L': ['3.125rem', { lineHeight: '1.25rem', fontWeight: '300' }],
       },
       colors: {
