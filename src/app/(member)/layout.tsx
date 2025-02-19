@@ -6,7 +6,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-100 will-change-scroll">
+    <div className="flex h-screen w-screen overflow-hidden bg-gs100 will-change-scroll">
       <Navbar />
       <div className="ml-16 flex-1 overflow-y-auto overscroll-contain sm:ml-0">
         {children}
