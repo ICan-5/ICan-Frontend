@@ -42,7 +42,7 @@ export default function TextInput<T extends FieldValues>({
             type="text"
             placeholder={placeholder}
             className={cn(
-              'w-full rounded-xl border bg-slate-50 px-4 py-3 focus:outline-none',
+              'w-full rounded-xl border bg-slate50 px-4 py-3 focus:outline-none',
               'text-gsBk placeholder:text-gs400',
               {
                 'border-warn500 bg-warn50 focus:border-warn500': hasError,
