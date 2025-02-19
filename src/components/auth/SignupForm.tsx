@@ -80,7 +80,7 @@ export default function SignupForm() {
         />
         <div className="mb-8" />
         <Button label="회원가입하기" type="submit" disabled={!isValid} />
-        <p className="text-center">
+        <p className="text-center text-14M">
           이미 회원이신가요?{' '}
           <Link className="ml-1 text-slate500" href="/login">
             로그인
