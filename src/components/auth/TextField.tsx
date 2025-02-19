@@ -1,26 +1,31 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 import ErrorMessage from './ErrorMessage';
-import { ValidationSchemaType } from '@/lib/validation';
 import cn from '@/utils/cn';
 
-type Props = {
+type Props<T extends FieldValues> = {
   label: string;
-  name: keyof ValidationSchemaType;
+  name: Path<T>;
+
   type?: string;
   placeholder?: string;
-  register: UseFormRegister<ValidationSchemaType>;
-  errors: FieldErrors<ValidationSchemaType>;
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
 };
 
-export default function TextField({
+export default function TextField<T extends FieldValues>({
   label,
   name,
   type = 'text', // 기본값 'text'
   placeholder = '입력창에 입력해주세요',
   register,
   errors,
-}: Props) {
+}: Props<T>) {
   return (
     <div className="mb-6 w-full">
       <label className="flex flex-col" htmlFor={name}>
@@ -36,7 +41,9 @@ export default function TextField({
           {...register(name)}
         />
       </label>
-      {errors[name] && <ErrorMessage message={errors[name]?.message || ''} />}
+      {errors[name] && (
+        <ErrorMessage message={String(errors[name]?.message || '')} />
+      )}
     </div>
   );
 }

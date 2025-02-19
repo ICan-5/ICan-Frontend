@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import Button from './Button';
+import { LoginSchema, LoginSchemaType } from '@/lib/validation';
 
 export type LoginFormType = {
-  email: string;
+  id: string;
   password: string;
 };
 export default function LoginForm() {
@@ -15,7 +17,10 @@ export default function LoginForm() {
     register,
     // handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginFormType>({});
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(LoginSchema),
+    mode: 'onChange',
+  });
 
   return (
     <form
@@ -31,7 +36,7 @@ export default function LoginForm() {
       <div className="w-full max-w-screen-sm px-4">
         <TextField
           label="아이디"
-          name="email"
+          name="id"
           placeholder="아이디를 입력해주세요"
           register={register}
           errors={errors}
@@ -46,7 +51,7 @@ export default function LoginForm() {
         <div className="mb-8" />
         <Button label="회원가입하기" type="submit" disabled={!isValid} />
         <p className="text-center">
-          I:can 이용이 처음이신가요?{' '}
+          I:can이 처음이신가요?{' '}
           <Link className="ml-1 text-slate500" href="/signup">
             회원가입
           </Link>

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import TextField from './TextField';
 import PasswordField from './PasswordField';
 import Button from './Button';
-import { SignUpSchema, ValidationSchemaType } from '@/lib/validation';
+import { SignUpSchema, SignUpSchemaType } from '@/lib/validation';
 import signup from '@/services/auth';
 
 export type SignUpFormData = {
@@ -33,7 +33,7 @@ export default function SignupForm() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ValidationSchemaType>({
+  } = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
     mode: 'onChange',
   });

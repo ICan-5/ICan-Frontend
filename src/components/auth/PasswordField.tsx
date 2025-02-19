@@ -2,26 +2,30 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { ValidationSchemaType } from '@/lib/validation';
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 import ErrorMessage from './ErrorMessage';
 import cn from '@/utils/cn';
 
-type Props = {
+type Props<T extends FieldValues> = {
   label: string;
-  name: 'password' | 'confirmPassword';
+  name: Path<T>;
   placeholder?: string;
-  register: UseFormRegister<ValidationSchemaType>;
-  errors: FieldErrors<ValidationSchemaType>;
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
 };
 
-export default function PasswordField({
+export default function PasswordField<T extends FieldValues>({
   label, // 레이블
   name,
   placeholder = '비밀번호를 입력해주세요',
   register,
   errors,
-}: Props) {
+}: Props<T>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const handleTogglePasswordVisible = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -38,7 +42,7 @@ export default function PasswordField({
               errors[name] && 'bg-warn50 focus-visible:ring-red-500',
             )}
             type={isPasswordVisible ? 'text' : 'password'}
-            id={name}
+            id={String(name)}
             placeholder={placeholder}
             autoComplete="off"
             {...register(name)}
@@ -54,7 +58,9 @@ export default function PasswordField({
             />
           </button>
         </div>
-        {errors[name] && <ErrorMessage message={errors[name]?.message || ''} />}
+        {errors[name] && (
+          <ErrorMessage message={String(errors[name]?.message || '')} />
+        )}
       </label>
     </div>
   );
