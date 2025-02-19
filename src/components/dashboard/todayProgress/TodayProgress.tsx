@@ -14,7 +14,7 @@ export default function TodayProgress({ progress }: Props) {
       <TodayGraph progress={progress} />
       <p
         className={cn(
-          'text-40L absolute left-0 top-1/2 flex w-full flex-col items-center gap-7 md:text-50L',
+          '!text-40L absolute left-0 top-1/2 flex w-full flex-col items-center gap-4 md:gap-7 md:!text-50L',
           progress > 0 ? 'text-slate500' : 'text-gs400',
         )}
       >
