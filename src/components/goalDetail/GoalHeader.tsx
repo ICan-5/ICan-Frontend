@@ -45,13 +45,13 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
             >
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full border-b px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
               >
                 목표 색상 변경
               </button>
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full border-b px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
               >
                 수정하기
               </button>
