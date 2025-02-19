@@ -26,7 +26,7 @@ export default function TodayList({ todayList }: Props) {
       <section className="mb-2 flex w-full flex-none items-start">
         <p className="mr-auto flex flex-col">
           <span className="text-lg">
-            안녕, <strong className="text-primary">민지</strong>! 🖐️
+            안녕, <strong className="text-slate500">민지</strong>! 🖐️
           </span>
           <span className="text-sm text-gray-400">{formattedDate}</span>
         </p>
