@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
           id={params.id}
         />
       </div>
-      <Link href={`/note/${params.id}`} className="block">
+      <Link href={`${params.id}/note`} className="block">
         <div className="mb-6 cursor-pointer rounded-2xl bg-slate200 p-3 shadow">
           <h2 className="mb-4 flex items-center text-18SB">
             <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
