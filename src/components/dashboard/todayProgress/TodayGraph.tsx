@@ -31,11 +31,11 @@ export default function TodayGraph({ progress }: Props) {
         viewBox="0 0 120 120"
       >
         <circle
+          className="stroke-gs200"
           cx="60"
           cy="60"
           r={50}
           fill="none"
-          stroke="#ddd"
           strokeWidth="6"
           strokeDasharray={circumference}
           strokeDashoffset={circumference * (1 / 3)}
@@ -49,7 +49,7 @@ export default function TodayGraph({ progress }: Props) {
         viewBox="0 0 120 120"
       >
         <circle
-          className="transition-all duration-[2000ms]"
+          className="stroke-slate500 transition-all duration-[2000ms]"
           cx="60"
           cy="60"
           r={50}
