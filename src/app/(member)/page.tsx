@@ -1,4 +1,4 @@
-import TodayProgress from '@/components/dashboard/todayGraph/TodayProgress';
+import TodayProgress from '@/components/dashboard/todayProgress/TodayProgress';
 import TodayList from '@/components/dashboard/todayList/TodayList';
 
 export default function Page() {
