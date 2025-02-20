@@ -10,13 +10,15 @@ type Note = {
   title: string;
   todo: string;
   content: string;
+  date: string;
 };
 
 type NoteItemProps = {
   note: Note;
+  goalId: string;
 };
 
-export default function NoteItem({ note }: NoteItemProps) {
+export default function NoteItem({ note, goalId }: NoteItemProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -72,7 +74,7 @@ export default function NoteItem({ note }: NoteItemProps) {
         {/* 제목 (클릭하면 모달 열림) */}
         <button
           type="button"
-          className="mt-2 w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-blue-500"
+          className="mt-2 w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"
           onClick={() => setIsModalOpen((prev) => !prev)}
         >
           {note.title}
@@ -90,6 +92,7 @@ export default function NoteItem({ note }: NoteItemProps) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         note={note}
+        goalId={goalId}
       />
     </>
   );

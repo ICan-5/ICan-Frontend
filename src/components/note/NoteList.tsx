@@ -6,13 +6,15 @@ type Note = {
   title: string;
   todo: string;
   content: string;
+  date: string;
 };
 
 type NoteListProps = {
   notes: Note[];
+  goalId: string;
 };
 
-export default function NoteList({ notes }: NoteListProps) {
+export default function NoteList({ notes, goalId }: NoteListProps) {
   return (
     <div>
       {notes.length === 0 && (
@@ -21,7 +23,7 @@ export default function NoteList({ notes }: NoteListProps) {
         </div>
       )}
       {notes.map((note) => (
-        <NoteItem key={note.id} note={note} />
+        <NoteItem key={note.id} note={note} goalId={goalId} />
       ))}
     </div>
   );
