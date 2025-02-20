@@ -1,6 +1,7 @@
 import { faFileLines, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 type Props = {
   item: { id: number; task: string; date: string; done: boolean };
@@ -9,19 +10,9 @@ type Props = {
 
 export default function GoalListItem({ item, onToggle }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const menuRef = useClickOutside<HTMLDivElement>(() => {
+    setIsMenuOpen(false);
+  });
 
   return (
     <div
