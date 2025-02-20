@@ -66,9 +66,11 @@ export default function DropDownInput<T extends FieldValues>({
                     },
                   )}
                 >
-                  {field.value
-                    ? options.find((opt) => opt.id === field.value.id)?.title
-                    : placeholder}
+                  <span className="truncate">
+                    {field.value
+                      ? options.find((opt) => opt.id === field.value.id)?.title
+                      : placeholder}
+                  </span>
                   <FontAwesomeIcon
                     icon={faAngleDown}
                     className={cn('h-4 w-4', { 'rotate-180': open })}
@@ -79,6 +81,7 @@ export default function DropDownInput<T extends FieldValues>({
                   className={cn(
                     'z-50 w-[var(--button-width)] overflow-hidden rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
                     'border-x-2 border-b-2 border-slate400',
+                    'focus:border-x-2 focus:border-b-2 focus:border-slate400',
                   )}
                 >
                   <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
