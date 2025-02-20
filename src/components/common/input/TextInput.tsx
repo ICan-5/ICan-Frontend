@@ -27,7 +27,7 @@ export default function TextInput<T extends FieldValues>({
 }: Props<T>) {
   const hasError = !!errors?.[name];
   return (
-    <div className="flex w-full flex-col gap-1 bg-white p-5">
+    <div className="flex w-full flex-col gap-1">
       {label && (
         <label htmlFor={String(name)} className="text-16SB">
           {label}
@@ -43,7 +43,7 @@ export default function TextInput<T extends FieldValues>({
             placeholder={placeholder}
             className={cn(
               'w-full rounded-xl border bg-slate50 px-4 py-3 focus:outline-none',
-              'text-gsBk placeholder:text-gs400',
+              'text-16R text-gsBk placeholder:text-gs400',
               {
                 'border-warn500 bg-warn50 focus:border-warn500': hasError,
                 'border-transparent focus:border-slate500': !hasError,
