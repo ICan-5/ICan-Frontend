@@ -54,7 +54,7 @@ export default function TodayList({ todayList }: Props) {
         ))}
         {!todayList.length && (
           <div className="flex h-full flex-1 flex-col items-center justify-center gap-2 2xl:gap-3">
-            <span className="text-12M text-gs500 2xl:text-14M">
+            <span className="text-12M text-gs400 2xl:text-14M">
               오늘의 할 일이 없어요.
             </span>
             <Button variant="outline" size="medium">
