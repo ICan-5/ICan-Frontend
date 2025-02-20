@@ -7,7 +7,7 @@ type Props = {
   value?: string;
   onClick?: () => void;
   isFocus: boolean;
-  setIsFocus: (focused: boolean) => void;
+  setIsFocus: (isFocus: boolean) => void;
 };
 
 // date picker의 ref를 받아와야 해서 함수 표현식으로 컴포넌트 생성

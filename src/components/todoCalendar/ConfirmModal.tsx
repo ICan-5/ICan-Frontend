@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 type Props = {
   onClose: () => void;
   onConfirm: () => void;
@@ -7,9 +9,13 @@ function ConfirmModal({ onClose, onConfirm }: Props) {
   return (
     <div className="flex w-[450px] flex-col gap-6 rounded-lg bg-white p-6">
       <div className="flex w-full flex-col items-center justify-center gap-1">
-        <div className="px-4 py-2">
-          <div className="h-[52px] w-[52px] rounded-full bg-gs400" />
-        </div>
+        <Image
+          className="px-4 py-2"
+          src="/images/exclude.png"
+          width="84"
+          height="68"
+          alt="excludeImage"
+        />
         <span className="text-18M">정말 나가시겠어요?</span>
         <span className="text-14M text-gs400">
           작성한 내용이 모두 사라집니다.
