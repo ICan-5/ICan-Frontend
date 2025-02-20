@@ -35,7 +35,7 @@ export default function DropDownInput<T extends FieldValues>({
   disabled = false,
 }: Props<T>) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="relative w-full">
       {label && (
         <label htmlFor={String(name)} className="text-16SB">
           {label}
@@ -54,60 +54,58 @@ export default function DropDownInput<T extends FieldValues>({
               <div className={cn('relative w-full rounded-xl transition-all')}>
                 <ListboxButton
                   className={cn(
-                    'flex h-[50px] w-full items-center justify-between px-4 py-3 text-16R transition-all duration-200',
+                    'flex w-full items-center justify-between px-4 py-3 text-16R',
                     {
-                      'rounded-xl border border-transparent bg-slate50 text-gs400':
-                        !open,
-                      'rounded-t-xl border-x-2 border-t-2 border-slate400 bg-gs00 text-gsBk':
-                        open,
+                      'rounded-xl bg-slate50 text-gs400': !open,
+                      'rounded-t-xl bg-gs00 text-gsBk': open,
                     },
                     { 'text-gsBk': field.value?.id },
+                    {
+                      'border-x-2 border-t-2 border-slate400': open,
+                      'border border-transparent': !open,
+                    },
                   )}
                 >
-                  <span className="truncate">
-                    {field.value
-                      ? options.find((opt) => opt.id === field.value.id)?.title
-                      : placeholder}
-                  </span>
+                  {field.value
+                    ? options.find((opt) => opt.id === field.value.id)?.title
+                    : placeholder}
                   <FontAwesomeIcon
+                    size="sm"
                     icon={faAngleDown}
-                    className={cn('h-4 w-4', { 'rotate-180': open })}
+                    className={cn({ 'rotate-180': open })}
                   />
                 </ListboxButton>
-                <ListboxOptions
-                  anchor="bottom"
-                  className={cn(
-                    'z-50 w-[var(--button-width)] overflow-hidden rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
-                    'border-x-2 border-b-2 border-slate400',
-                    'focus:border-x-2 focus:border-b-2 focus:border-slate400',
-                  )}
-                >
-                  <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
+                {open && (
+                  <ListboxOptions
+                    anchor="bottom"
+                    className={cn(
+                      'z-20 w-[var(--button-width)] rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
+                      'border-x-2 border-b-2 border-slate400',
+                    )}
+                  >
                     {/* 구분선 */}
                     <div className="h-[1px] w-full bg-gs200" />
-                    <div className="max-h-40 overflow-y-auto">
-                      {options.map((option) => (
-                        <ListboxOption
-                          key={option.id}
-                          value={option}
+                    {options.map((option) => (
+                      <ListboxOption
+                        key={option.id}
+                        value={option}
+                        className={cn(
+                          'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
+                          'border-b border-dashed border-gs200 last:border-none',
+                          'data-[focus]:bg-gs100',
+                        )}
+                      >
+                        <span
                           className={cn(
-                            'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
-                            'border-b border-dashed border-gs200 last:border-none',
-                            'data-[focus]:bg-gs100',
+                            'h-2 w-2 rounded-full',
+                            colorClasses[option.color] ?? '',
                           )}
-                        >
-                          <span
-                            className={cn(
-                              'h-2 w-2 rounded-full',
-                              colorClasses[option.color] ?? '',
-                            )}
-                          />
-                          <span className="truncate">{option.title}</span>
-                        </ListboxOption>
-                      ))}
-                    </div>
-                  </div>
-                </ListboxOptions>
+                        />
+                        {option.title}
+                      </ListboxOption>
+                    ))}
+                  </ListboxOptions>
+                )}
               </div>
             )}
           </Listbox>
