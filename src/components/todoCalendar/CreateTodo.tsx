@@ -10,6 +10,13 @@ const options = [
   { id: 1, title: '자바스크립트 기초 챕터4 듣기', color: 'goal01' },
   { id: 2, title: 'React 프로젝트 만들기', color: 'goal02' },
   { id: 3, title: 'Next.js 학습하기', color: 'goal01' },
+  { id: 4, title: '또 다른 목표', color: 'goal01' },
+  {
+    id: 5,
+    title:
+      '목표가 길어지면 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구',
+    color: 'goal01',
+  },
 ];
 
 const createTodoSchema = z.object({
