@@ -53,7 +53,7 @@ export default function DropDownInput<T extends FieldValues>({
               <div className={cn('relative w-full rounded-xl transition-all')}>
                 <ListboxButton
                   className={cn(
-                    'flex w-full items-center justify-between px-4 py-3 text-16R',
+                    'flex h-[50px] w-full items-center justify-between px-4 py-3 text-16R',
                     {
                       'rounded-xl bg-slate50 text-gs400': !open,
                       'rounded-t-xl bg-gs00 text-gsBk': open,
@@ -69,19 +69,18 @@ export default function DropDownInput<T extends FieldValues>({
                     ? options.find((opt) => opt.id === field.value.id)?.title
                     : placeholder}
                   <FontAwesomeIcon
-                    size="sm"
                     icon={faAngleDown}
-                    className={cn({ 'rotate-180': open })}
+                    className={cn('h-4 w-4', { 'rotate-180': open })}
                   />
                 </ListboxButton>
-                {open && (
-                  <ListboxOptions
-                    anchor="bottom"
-                    className={cn(
-                      'z-20 w-[var(--button-width)] rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
-                      'border-x-2 border-b-2 border-slate400',
-                    )}
-                  >
+                <ListboxOptions
+                  anchor="bottom"
+                  className={cn(
+                    'z-20 w-[var(--button-width)] overflow-hidden rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
+                    'border-x-2 border-b-2 border-slate400',
+                  )}
+                >
+                  <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
                     {/* 구분선 */}
                     <div className="h-[1px] w-full bg-gs200" />
                     {options.map((option) => (
@@ -103,8 +102,8 @@ export default function DropDownInput<T extends FieldValues>({
                         {option.title}
                       </ListboxOption>
                     ))}
-                  </ListboxOptions>
-                )}
+                  </div>
+                </ListboxOptions>
               </div>
             )}
           </Listbox>
