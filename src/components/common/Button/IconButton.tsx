@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable react/jsx-props-no-spreading */
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
