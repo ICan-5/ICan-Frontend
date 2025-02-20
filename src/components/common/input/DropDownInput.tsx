@@ -17,6 +17,7 @@ const colorClasses: Record<string, string> = {
   success: 'bg-success500',
 };
 
+// 제네릭 사용하여 컴포넌트를 호출 할 때 타입 전달 받음
 type Props<T extends FieldValues> = {
   name: Path<T>;
   label?: string;
@@ -34,7 +35,7 @@ export default function DropDownInput<T extends FieldValues>({
   disabled = false,
 }: Props<T>) {
   return (
-    <div className="relative w-full">
+    <div className="flex flex-col gap-2">
       {label && (
         <label htmlFor={String(name)} className="text-16SB">
           {label}

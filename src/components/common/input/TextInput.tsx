@@ -27,7 +27,7 @@ export default function TextInput<T extends FieldValues>({
 }: Props<T>) {
   const hasError = !!errors?.[name];
   return (
-    <div className="flex w-full flex-col gap-1">
+    <div className="flex w-full flex-col gap-2">
       {label && (
         <label htmlFor={String(name)} className="text-16SB">
           {label}
