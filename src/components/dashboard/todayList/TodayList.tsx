@@ -2,9 +2,9 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
-import TodayListItem from './TodayListItem';
 import Button from '@/components/common/Button/Button';
 import Icon from '@/components/common/Icon/Icon';
+import SimpleTodo from '@/components/common/Todo/SimpleTodo';
 
 // TOOD:: 나중에 할일 Type정해지면 todolist: Todo[]
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
     title: string;
     date: string;
     done: boolean;
-    note: boolean;
+    noteId: number | null;
   }[];
 };
 
@@ -22,7 +22,6 @@ export default function TodayList({ todayList }: Props) {
   const formattedDate = formatter.format(new Date());
 
   const todoList = todayList.filter((e) => !e.done);
-  const doneList = todayList.filter((e) => e.done);
 
   return (
     <div className="relative flex min-h-48 w-full flex-1 flex-col overflow-hidden rounded-2xl bg-white p-4 md:h-full md:px-6 md:py-4">
@@ -47,10 +46,12 @@ export default function TodayList({ todayList }: Props) {
       </section>
       <div className="flex h-full w-full flex-1 flex-col overflow-y-auto">
         {todoList.map((todo) => (
-          <TodayListItem todo={todo} key={todo.id} />
-        ))}
-        {doneList.map((todo) => (
-          <TodayListItem todo={todo} key={todo.id} />
+          <SimpleTodo
+            key={todo.id}
+            title={todo.title}
+            done={todo.done}
+            noteId={todo.noteId}
+          />
         ))}
         {!todayList.length && (
           <div className="flex h-full flex-1 flex-col items-center justify-center gap-2 2xl:gap-3">
