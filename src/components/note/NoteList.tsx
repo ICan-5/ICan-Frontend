@@ -1,10 +1,11 @@
 import React from 'react';
-import NoteItem from './NoteItem';
+import NoteItem from '@/components/note/NoteItem';
 
 type Note = {
   id: number;
   title: string;
   todo: string;
+  content: string;
 };
 
 type NoteListProps = {
