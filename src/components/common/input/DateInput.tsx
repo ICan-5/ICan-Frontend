@@ -3,6 +3,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { ko } from 'date-fns/locale';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { useState } from 'react';
 import CustomDateInput from './CustomDateInput';
 
 // 제네릭 사용하여 컴포넌트를 호출 할 때 타입 전달 받음
@@ -17,6 +18,7 @@ export default function DateInput<T extends FieldValues>({
   label,
   control,
 }: Props<T>) {
+  const [isFocus, setIsFocus] = useState(false);
   return (
     <div className="flex flex-col gap-2">
       {label && (
@@ -34,7 +36,10 @@ export default function DateInput<T extends FieldValues>({
             dateFormat="yyyy.MM.dd EEEE"
             locale={ko}
             shouldCloseOnSelect
-            customInput={<CustomDateInput />}
+            onCalendarClose={() => setIsFocus(false)}
+            customInput={
+              <CustomDateInput isFocus={isFocus} setIsFocus={setIsFocus} />
+            }
           />
         )}
       />
