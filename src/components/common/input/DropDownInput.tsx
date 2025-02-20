@@ -84,25 +84,27 @@ export default function DropDownInput<T extends FieldValues>({
                   <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
                     {/* 구분선 */}
                     <div className="h-[1px] w-full bg-gs200" />
-                    {options.map((option) => (
-                      <ListboxOption
-                        key={option.id}
-                        value={option}
-                        className={cn(
-                          'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
-                          'border-b border-dashed border-gs200 last:border-none',
-                          'data-[focus]:bg-gs100',
-                        )}
-                      >
-                        <span
+                    <div className="max-h-48 overflow-y-auto">
+                      {options.map((option) => (
+                        <ListboxOption
+                          key={option.id}
+                          value={option}
                           className={cn(
-                            'h-2 w-2 rounded-full',
-                            colorClasses[option.color] ?? '',
+                            'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
+                            'border-b border-dashed border-gs200 last:border-none',
+                            'data-[focus]:bg-gs100',
                           )}
-                        />
-                        {option.title}
-                      </ListboxOption>
-                    ))}
+                        >
+                          <span
+                            className={cn(
+                              'h-2 w-2 rounded-full',
+                              colorClasses[option.color] ?? '',
+                            )}
+                          />
+                          {option.title}
+                        </ListboxOption>
+                      ))}
+                    </div>
                   </div>
                 </ListboxOptions>
               </div>
