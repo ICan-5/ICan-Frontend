@@ -1,6 +1,17 @@
 import clsx, { ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
+import fontSize from '@/presets/fontSize';
+import colors from '@/presets/colors';
 
-const cn = (...input: ClassValue[]) => twMerge(clsx(input));
+const customTwMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      'font-size': [...Object.keys(fontSize).map((e) => `text-${e}`)],
+      'text-color': [...Object.keys(colors).map((e) => `text-${e}`)],
+    },
+  },
+});
+
+const cn = (...input: ClassValue[]) => customTwMerge(clsx(input));
 
 export default cn;
