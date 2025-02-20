@@ -1,4 +1,4 @@
-import { faCalendar } from '@fortawesome/free-regular-svg-icons';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { forwardRef } from 'react';
 import cn from '@/utils/cn';
@@ -28,7 +28,7 @@ const CustomDateInput = forwardRef<HTMLButtonElement, Props>(
         )}
       >
         <FontAwesomeIcon icon={faCalendar} className="h-4 w-4 text-gs600" />
-        <span className={cn(value ? 'text-bk' : 'text-gs400')}>
+        <span className={cn(value ? 'text-gsBk' : 'text-gs400')}>
           {value || '날짜를 선택해주세요'}
         </span>
       </button>
