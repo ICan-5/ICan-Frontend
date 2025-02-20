@@ -32,7 +32,7 @@ export default function SimpleTodo({ title, done, noteId }: Props) {
       <IconButton
         className={cn('rounded-2xl bg-gs50 text-slate500', {
           'group-hover:bg-gs00': !done,
-          'invisible pl-1 group-hover:visible': noteId === null && !done,
+          'pl-1 md:invisible md:group-hover:visible': noteId === null && !done,
           invisible: noteId === null && done,
         })}
         icon={noteIcon}
