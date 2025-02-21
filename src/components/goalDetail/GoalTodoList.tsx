@@ -5,12 +5,15 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import GoalListItem from './GoalListItem';
+import GoalTodoModal from './GoalTodoModal';
 
 type Todo = { id: number; task: string; date: string; done: boolean };
 
 type Props = {
   list: Todo[];
   onToggle: (id: number) => void;
+  onAdd: (task: string, date: string) => void;
+  id: String;
 };
 
 type GroupedTodos = {
@@ -19,19 +22,13 @@ type GroupedTodos = {
   upcoming: Record<string, Todo[]>;
 };
 
-export default function GoalTodoList({ list, onToggle }: Props) {
-  const groupedTodos: GroupedTodos = {
-    past: {},
-    today: {},
-    upcoming: {},
-  };
+export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id: string }) {
+  const groupedTodos: GroupedTodos = { past: {}, today: {}, upcoming: {} };
   const today = new Date().toISOString().split('T')[0];
   const [isFutureFold, setIsFutureFold] = useState<boolean>(true);
   const [isPastFold, setIsPastFold] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  /**
-   * todolist -> {날짜: todolist[]}[] 형식으로 변환해주는 함수
-   */
   list.forEach(({ id, task, date, done }) => {
     let category: keyof GroupedTodos;
 
@@ -55,15 +52,17 @@ export default function GoalTodoList({ list, onToggle }: Props) {
       <div className="w-full rounded-2xl bg-gs00 p-6 shadow">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="mb-4 text-18R font-bold">To do</h3>
-          <div className="flex cursor-pointer items-center">
+          <div
+            className="flex cursor-pointer items-center"
+            onClick={() => setIsModalOpen(true)}
+          >
             <span className="text-slate400">+ 할 일 추가</span>
           </div>
         </div>
         <h3 className="mt-6 text-18R font-bold">오늘 할 일</h3>
-        {groupedTodos.today[today] &&
-          groupedTodos.today[today].map((todo) => (
-            <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
-          ))}
+        {groupedTodos.today[today]?.map((todo) => (
+          <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
+        ))}
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-3 text-18R font-bold">예정된 할 일</h3>
@@ -81,15 +80,9 @@ export default function GoalTodoList({ list, onToggle }: Props) {
             {Object.entries(groupedTodos.upcoming).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
                 <div className="text-16M text-gs700">{date}</div>
-                <div>
-                  {todos.map((todo: Todo) => (
-                    <GoalListItem
-                      key={todo.id}
-                      item={todo}
-                      onToggle={onToggle}
-                    />
-                  ))}
-                </div>
+                {todos.map((todo) => (
+                  <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
+                ))}
               </div>
             ))}
           </div>
@@ -111,20 +104,17 @@ export default function GoalTodoList({ list, onToggle }: Props) {
             {Object.entries(groupedTodos.past).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
                 <div className="text-16M text-gs700">{date}</div>
-                <div>
-                  {todos.map((todo: Todo) => (
-                    <GoalListItem
-                      key={todo.id}
-                      item={todo}
-                      onToggle={onToggle}
-                    />
-                  ))}
-                </div>
+                {todos.map((todo) => (
+                  <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
+                ))}
               </div>
             ))}
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <GoalTodoModal onClose={() => setIsModalOpen(false)} onAdd={onAdd} goalId={id}/>
+      )}
     </div>
   );
 }

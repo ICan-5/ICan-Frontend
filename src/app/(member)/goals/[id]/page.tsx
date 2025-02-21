@@ -23,9 +23,9 @@ type TodoItem = {
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
     { id: 1, task: '운동하기', date: '2025-02-18', done: false },
-    { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
+    { id: 2, task: '책 읽기', date: '2025-02-21', done: false },
     { id: 3, task: '자바스크립트 1챕터', date: '2025-02-17', done: false },
-    { id: 4, task: '친구들 만나기', date: '2025-02-20', done: false },
+    { id: 4, task: '친구들 만나기', date: '2025-02-26', done: false },
   ]);
   const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
     { id: 1, task: '스터디 준비하기' },
@@ -64,6 +64,16 @@ export default function Page({ params }: { params: { id: string } }) {
     deleteBasket(id);
   };
 
+  const addTodo = (task: string, date: string) => {
+    const newTodo: TodoItem = {
+      id: Math.floor(Math.random() * 10000),
+      task,
+      date,
+      done: false,
+    };
+    setTodos((prev) => [...prev, newTodo]);
+  };
+
   return (
     <div className="min-h-screen w-full bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
       <div className="mb-6 rounded-2xl bg-gs00 p-6 shadow">
@@ -86,7 +96,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
       </Link>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <GoalTodoList list={todoItems} onToggle={toggleTodos} />
+        <GoalTodoList list={todoItems} onToggle={toggleTodos} onAdd={addTodo} id={params.id}/>
         <div className="flex flex-col gap-4">
           <GoalDoneList list={doneItems} onToggle={toggleTodos} />
           <GoalBasket
