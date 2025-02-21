@@ -47,9 +47,7 @@ export async function POST(req: NextRequest) {
     }
     // 200 OK
     return NextResponse.json({ message: '회원가입 완료!' }, { status: 200 });
-  } catch (error) {
-    console.error('회원가입 오류:', error);
-
+  } catch {
     return NextResponse.json(
       { message: '서버에서 문제가 발생했습니다. 다시 시도해주세요.' },
       { status: 500 },
