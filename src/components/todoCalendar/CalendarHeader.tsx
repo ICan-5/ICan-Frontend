@@ -1,3 +1,5 @@
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
 
@@ -9,6 +11,7 @@ type Props = {
 /**
  * 캘린더 헤더 부분
  * (달력의 연도와 달, 오늘로 이동하는 버튼, 달 이동 버튼)
+ * Todo:: Today 버튼 공용 컴포넌트에서 가져오기
  *
  * @param calendarRef 달력
  * @param onDateChange 선택 날짜 변경
@@ -57,26 +60,18 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
   };
 
   return (
-    <div className="mb-4 flex w-full items-center justify-between">
-      <div className="w-1/4">
-        <button
-          type="button"
-          onClick={handleTodayClick}
-          className="rounded-lg bg-gray-200 p-4"
-        >
-          Today
-        </button>
-      </div>
-      <div className="flex w-1/2 flex-grow-0 items-center justify-center">
+    <div className="flex w-full items-center justify-between rounded-t-[20px] border border-gs200 bg-gs50 px-6 py-3">
+      <div className="w-1/4" />
+      <div className="flex flex-1 items-center justify-center gap-3">
         <button
           type="button"
           onClick={handlePrevMonthClick}
-          className="mr-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
+          className="flex h-7 w-7 items-center justify-center"
         >
-          ←
+          <FontAwesomeIcon className="h-4 w-4" icon={faAngleLeft} />
         </button>
-        <span className="inline-block min-w-32 flex-shrink-0 text-center text-lg font-semibold">
-          {viewMonth.toLocaleDateString('en-US', {
+        <span className="inline-block min-w-32 flex-shrink-0 text-center text-20M text-gsBk">
+          {viewMonth.toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: 'long',
           })}
@@ -84,12 +79,20 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handleNextMonthClick}
-          className="ml-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
+          className="flex h-7 w-7 items-center justify-center"
         >
-          →
+          <FontAwesomeIcon className="h-4 w-4" icon={faAngleRight} />
         </button>
       </div>
-      <div className="w-1/4" />
+      <div className="flex w-1/4 justify-end">
+        <button
+          type="button"
+          onClick={handleTodayClick}
+          className="w-[84px] rounded-3xl border border-slate500 py-2 text-14M text-slate500"
+        >
+          오늘
+        </button>
+      </div>
     </div>
   );
 }
