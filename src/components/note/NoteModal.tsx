@@ -26,7 +26,7 @@ export default function NoteModal({
   return (
     <div className="fixed inset-0 z-10 flex justify-end bg-gsBk/50">
       {/* 모달 컨테이너 */}
-      <div className="h-full w-[40%] overflow-y-auto bg-white p-6 shadow-lg">
+      <div className="h-full w-[35%] overflow-y-auto bg-white p-6 shadow-lg">
         {/* 닫기 버튼 */}
         <button
           type="button"

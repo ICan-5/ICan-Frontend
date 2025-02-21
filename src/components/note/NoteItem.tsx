@@ -4,6 +4,7 @@ import { faLayerGroup, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useRef, useEffect } from 'react';
 import NoteModal from '@/components/note/NoteModal';
+import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
 
 type Note = {
   id: number;
@@ -21,7 +22,12 @@ type NoteItemProps = {
 export default function NoteItem({ note, goalId }: NoteItemProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleDelete = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,6 +69,7 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
                 <button
                   type="button"
                   className="block w-full px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                  onClick={() => setIsDeleteModalOpen(true)}
                 >
                   삭제하기
                 </button>
@@ -93,6 +100,11 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
         onClose={() => setIsModalOpen(false)}
         note={note}
         goalId={goalId}
+      />
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={handleDelete}
       />
     </>
   );
