@@ -47,8 +47,8 @@ export default function TextInput<T extends FieldValues>({
               {
                 'border-warn500 bg-warn50 focus:border-warn500': hasError,
                 'border-transparent focus:border-slate500': !hasError,
+                'bg-gs200': disabled,
               },
-              { 'bg-gs200': disabled },
             )}
             disabled={disabled}
           />

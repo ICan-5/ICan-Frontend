@@ -54,16 +54,14 @@ export default function DropDownInput<T extends FieldValues>({
               <div className={cn('relative w-full rounded-xl transition-all')}>
                 <ListboxButton
                   className={cn(
-                    'flex h-[50px] w-full items-center justify-between px-4 py-3 text-16R',
+                    'flex h-[50px] w-full items-center justify-between px-4 py-3 text-16R transition-all duration-200',
                     {
-                      'rounded-xl bg-slate50 text-gs400': !open,
-                      'rounded-t-xl bg-gs00 text-gsBk': open,
+                      'rounded-xl border border-transparent bg-slate50 text-gs400':
+                        !open,
+                      'rounded-t-xl border-x-2 border-t-2 border-slate400 bg-gs00 text-gsBk':
+                        open,
                     },
                     { 'text-gsBk': field.value?.id },
-                    {
-                      'border-x-2 border-t-2 border-slate400': open,
-                      'border border-transparent': !open,
-                    },
                   )}
                 >
                   <span className="truncate">
