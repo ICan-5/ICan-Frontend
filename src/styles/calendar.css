@@ -51,3 +51,10 @@
   outline: 2px solid #3b82f6 !important;
   outline-offset: -2px;
 }
+
+.fc-daygrid-day-number {
+  padding: 8px !important;
+}
+.fc-daygrid-day-top {
+  flex-direction: row !important;
+}
