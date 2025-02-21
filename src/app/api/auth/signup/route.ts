@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { SignUpSchema } from '@/lib/validation';
 
@@ -27,9 +26,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 비밀번호 해싱
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
-
     // 외부 API로 요청
     const response = await fetch(`${apiUrl}/${teamId}/user`, {
       method: 'POST',
@@ -37,9 +33,9 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: formData.email,
-        name: formData.name,
-        password: hashedPassword, // 해싱된 비밀번호
+        email,
+        name,
+        password,
       }),
     });
 
