@@ -8,6 +8,7 @@ import TodoList from './TodoList';
 import { BasketType, TodoType } from '@/types/todos';
 import Loading from '../common/Loading';
 import TodoBasket from './TodoBasket';
+import TodoModal from './TodoModal';
 
 const initialTodos = [
   {
@@ -255,7 +256,11 @@ export default function TodoCalendar() {
   const [basketList, setBasketList] = useState<BasketType[]>(initialBasketList);
   const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const calendarRef = useRef<FullCalendar>(null);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   /**
    * 캘린더 높이 가져와서 TodoList에 적용
@@ -378,6 +383,7 @@ export default function TodoCalendar() {
                   selectedDate.toDateString(),
               )}
               onDeleteTodo={handleDeleteTodo}
+              onOpenModal={handleOpenModal}
             />
           </div>
         ) : (
@@ -389,6 +395,13 @@ export default function TodoCalendar() {
           basketList={basketList}
           onDeleteBasketTodo={handleDeleteBasketTodo}
           onDeleteAllBasket={handleDeleteAllBasket}
+        />
+      )}
+
+      {isModalOpen && (
+        <TodoModal
+          selectedDate={selectedDate}
+          onCloseModal={handleCloseModal}
         />
       )}
     </div>
