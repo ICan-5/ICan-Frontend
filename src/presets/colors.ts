@@ -1,5 +1,6 @@
 const colors = {
   gs00: '#FFFFFF',
+  gs20: '#FCFDFE',
   gs50: '#F8FAFC',
   gs100: '#F1F5F9',
   gs200: '#E2E8F0',
