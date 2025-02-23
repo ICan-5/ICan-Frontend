@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import cn from '@/utils/cn';
 
 type Props = {
@@ -41,9 +41,6 @@ export default function NavUserProfile({ isFolded }: Props) {
         <span className="text-overflow w-full text-12M text-gs400">
           {user?.email}
         </span>
-        <button type="button" onClick={() => signOut()}>
-          로그아웃
-        </button>
       </div>
     </div>
   );
