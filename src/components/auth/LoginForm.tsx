@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import Button from './Button';
@@ -23,17 +23,11 @@ export default function LoginForm() {
     mode: 'onChange',
   });
 
-  const { data: session, status } = useSession();
-
-  console.log('session_____________-', session);
-  console.log('session status_____________-', status);
-
   const onSubmit = async (data: LoginFormType) => {
     const { email, password } = data;
     const res = await signIn('credentials', {
       email,
       password,
-      redirect: false,
     });
 
     if (res?.error) {
