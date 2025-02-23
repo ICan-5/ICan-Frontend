@@ -5,13 +5,7 @@ import { authConfig } from './auth.config';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
-export const {
-  handlers,
-  auth,
-  signIn,
-  signOut,
-  // update,
-} = NextAuth({
+export const { handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -23,7 +17,6 @@ export const {
         password: { label: '비밀번호', type: 'password' },
       },
       authorize: async (credentials) => {
-        // console.log('credentials$$$$$$$$$$', credentials);
         if (Credentials === null) return null;
         const { email, password } = credentials;
 
@@ -39,12 +32,12 @@ export const {
               password,
             }),
           });
-          const user = await res.json();
-          // console.log('user: ___________', user);
+          const data = await res.json();
 
-          if (!user) {
+          if (!data) {
             throw new Error('사용자를 찾을 수 없습니다.');
           }
+          const { user } = data;
           return user;
         } catch (error) {
           throw new Error(error as string);
@@ -53,13 +46,11 @@ export const {
     }),
   ],
   callbacks: {
-    // jwt 콜백 함수
     // 사용자 정보를 바탕으로 JWT 토큰을 생성
     async jwt({ token, user }) {
-      // console.log('token_________ : ', token, 'user_________ : ', user);
-      if (user) {
+      if (user?.accessToken && user?.refreshToken) {
         return {
-          ...token, // 기존 token을 복사
+          ...token,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
         };
@@ -68,11 +59,16 @@ export const {
     },
     async session({ session, token }) {
       // JWT 토큰에서 액세스 토큰과 리프레시 토큰을 세션에 추가
-      return {
-        ...session,
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-      };
+      if (token?.accessToken && token?.refreshToken) {
+        return {
+          ...session,
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+        };
+      }
+      return session;
     },
   },
 });
+
+export const { auth } = NextAuth(authConfig);
