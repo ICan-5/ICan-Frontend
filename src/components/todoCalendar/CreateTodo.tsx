@@ -5,6 +5,7 @@ import TextInput from '@/components/common/input/TextInput';
 import DropDownInput from '@/components/common/input/DropDownInput';
 import DateInput from '../common/input/DateInput';
 import cn from '@/utils/cn';
+import Button from '../common/button/Button';
 
 const options = [
   { id: 1, title: '자바스크립트 기초 챕터4 듣기', color: 'goal01' },
@@ -90,22 +91,21 @@ export default function CreateTodo({
           />
         </div>
         <div className="flex w-full flex-row gap-2">
-          <button
-            type="button"
-            className="w-full rounded-lg bg-gs100 px-[102px] py-[15px] text-16SB"
+          <Button
+            size="full"
             onClick={() => onShowConfirmModal(watchedValues)}
+            className="bg-gs100 py-4 text-gs600 hover:bg-gs100 focus:bg-gs100 active:bg-gs100"
           >
             취소
-          </button>
-          <button
+          </Button>
+          <Button
+            size="full"
             type="submit"
-            className={cn('w-full rounded-lg px-[102px] py-[15px] text-16SB', {
-              'bg-slate500 text-gs00': isValid,
-              'bg-gs200 text-gs400': !isValid,
-            })}
+            disabled={!isValid}
+            className={cn('py-4')}
           >
             확인
-          </button>
+          </Button>
         </div>
       </div>
     </form>

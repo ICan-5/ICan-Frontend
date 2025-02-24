@@ -1,5 +1,6 @@
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from '../common/button/Button';
 
 type Props = {
   onClose: () => void;
@@ -24,20 +25,20 @@ function ConfirmModal({ onClose, onConfirm }: Props) {
         </span>
       </div>
       <div className="flex w-full flex-row gap-2">
-        <button
-          type="button"
+        <Button
+          size="full"
           onClick={onClose}
-          className="flex w-full justify-center rounded-xl bg-gs100 py-3 text-16SB text-gs600"
+          className="bg-gs100 py-4 text-gs600 hover:bg-gs100 focus:bg-gs100 active:bg-gs100"
         >
           취소
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          size="full"
           onClick={onConfirm}
-          className="flex w-full justify-center rounded-xl bg-warn500 py-3 text-16SB text-gs00"
+          className="bg-warn500 py-4 text-gs00 hover:bg-warn500 focus:bg-warn500 active:bg-warn500"
         >
           나가기
-        </button>
+        </Button>
       </div>
     </div>
   );
