@@ -34,6 +34,7 @@ export default function DropDownInput<T extends FieldValues>({
   control,
   disabled = false,
 }: Props<T>) {
+  const extendOptions = [{ id: 0, title: '목표 없음', color: '' }, ...options];
   return (
     <div className="relative w-full">
       {label && (
@@ -47,63 +48,72 @@ export default function DropDownInput<T extends FieldValues>({
         render={({ field }) => (
           <Listbox
             value={field.value}
-            onChange={(selected) => field.onChange(selected)}
+            onChange={(selected) =>
+              field.onChange(selected.id === 0 ? null : selected)
+            }
             disabled={disabled}
           >
             {({ open }) => (
               <div className={cn('relative w-full rounded-xl transition-all')}>
                 <ListboxButton
+                  id={String(name)}
                   className={cn(
-                    'flex w-full items-center justify-between px-4 py-3 text-16R',
+                    'flex w-full items-center justify-between px-4 py-3 text-16R transition-all duration-200',
                     {
-                      'rounded-xl bg-slate50 text-gs400': !open,
-                      'rounded-t-xl bg-gs00 text-gsBk': open,
+                      'rounded-xl border border-transparent bg-slate50 text-gs400':
+                        !open,
+                      'rounded-t-xl border-x-2 border-t-2 border-slate400 bg-gs00 text-gsBk':
+                        open,
                     },
                     { 'text-gsBk': field.value?.id },
-                    {
-                      'border-x-2 border-t-2 border-slate400': open,
-                      'border border-transparent': !open,
-                    },
                   )}
                 >
-                  {field.value
-                    ? options.find((opt) => opt.id === field.value.id)?.title
-                    : placeholder}
+                  <span className="truncate">
+                    {field.value
+                      ? options.find((opt) => opt.id === field.value.id)?.title
+                      : placeholder}
+                  </span>
                   <FontAwesomeIcon
-                    size="sm"
                     icon={faAngleDown}
-                    className={cn({ 'rotate-180': open })}
+                    className={cn('h-4 w-4', { 'rotate-180': open })}
                   />
                 </ListboxButton>
                 {open && (
                   <ListboxOptions
                     anchor="bottom"
                     className={cn(
-                      'z-20 w-[var(--button-width)] rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
+                      'z-50 w-[var(--button-width)] overflow-hidden rounded-b-xl bg-gs00 pt-3 [--anchor-gap:-10px]',
                       'border-x-2 border-b-2 border-slate400',
+                      'focus:border-x-2 focus:border-b-2 focus:border-slate400',
                     )}
                   >
-                    {/* 구분선 */}
-                    <div className="h-[1px] w-full bg-gs200" />
-                    {options.map((option) => (
-                      <ListboxOption
-                        key={option.id}
-                        value={option}
-                        className={cn(
-                          'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
-                          'border-b border-dashed border-gs200 last:border-none',
-                          'data-[focus]:bg-gs100',
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            'h-2 w-2 rounded-full',
-                            colorClasses[option.color] ?? '',
-                          )}
-                        />
-                        {option.title}
-                      </ListboxOption>
-                    ))}
+                    <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
+                      {/* 구분선 */}
+                      <div className="h-[1px] w-full bg-gs200" />
+                      <div className="max-h-40 overflow-y-auto">
+                        {extendOptions.map((option) => (
+                          <ListboxOption
+                            key={option.id}
+                            value={option}
+                            className={cn(
+                              'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
+                              'border-b border-dashed border-gs200 last:border-none',
+                              'data-[focus]:bg-gs100',
+                            )}
+                          >
+                            {option.id !== 0 && (
+                              <span
+                                className={cn(
+                                  'h-2 w-2 rounded-full',
+                                  colorClasses[option.color] ?? '',
+                                )}
+                              />
+                            )}
+                            <span className="truncate">{option.title}</span>
+                          </ListboxOption>
+                        ))}
+                      </div>
+                    </div>
                   </ListboxOptions>
                 )}
               </div>
