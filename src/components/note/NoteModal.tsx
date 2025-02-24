@@ -28,13 +28,13 @@ export default function NoteModal({
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 z-10 bg-black/50"
+            className="fixed inset-0 z-10 bg-gsBk/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
           <motion.div
-            className="fixed inset-y-0 right-0 z-20 w-[35%] bg-white p-6 shadow-lg"
+            className="fixed inset-y-0 right-0 z-20 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[50%] xl:w-[50%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -43,7 +43,7 @@ export default function NoteModal({
             {/* 닫기 버튼 */}
             <button
               type="button"
-              className="mb-4 text-18R text-gs500 hover:text-black"
+              className="mb-4 text-18R text-gs500 hover:text-gsBk"
               onClick={onClose}
             >
               <FontAwesomeIcon icon={faXmark} />
