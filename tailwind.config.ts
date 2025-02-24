@@ -19,6 +19,14 @@ const config: Config = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /bg-goal(01|02)-(100|DEFAULT)/,
+    },
+    {
+      pattern: /text-goal(01|02)/,
+    },
+  ],
   plugins: [],
 };
 export default config;

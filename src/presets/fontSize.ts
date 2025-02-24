@@ -3,6 +3,7 @@ const fontSize: {
 } = {
   '12R': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }],
   '12M': ['0.75rem', { lineHeight: '1rem', fontWeight: '500' }],
+  '12SB': ['0.75rem', { lineHeight: '1rem', fontWeight: '600' }],
 
   '14R': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }],
   '14M': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '500' }],

@@ -1,13 +1,13 @@
 import { TodoType } from '@/types/todos';
 import TodoListItem from './TodoListItem';
 
-type Props = {
+interface Props {
   selectedDate: Date;
   todos: TodoType[];
   onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
   onOpenModal: () => void;
-};
+}
 
 /**
  * 각 날짜의 할 일 목록을 보여주는 컴포넌트
@@ -25,7 +25,7 @@ export default function TodoList({
   const incompleteTodos = todos.filter((todo) => !todo.done);
   const compoleteTodos = todos.filter((todo) => todo.done);
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <h2 className="mb-3 flex justify-between text-lg font-bold">
         {selectedDate.toLocaleDateString('ko-KR', {
           month: 'long',
