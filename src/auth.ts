@@ -9,7 +9,7 @@ if (!apiUrl) {
   throw new Error('필수 환경 변수가 설정되지 않았습니다.');
 }
 
-export const { handlers, signIn, signOut } = NextAuth({
+export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -84,5 +84,3 @@ export const { handlers, signIn, signOut } = NextAuth({
     },
   },
 });
-
-export const { auth } = NextAuth(authConfig);
