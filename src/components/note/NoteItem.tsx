@@ -47,7 +47,7 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
       <div className="mb-4 w-4/5 rounded-2xl border bg-gs00 p-4 shadow-md">
         {/* 상단 아이콘 */}
         <div className="flex items-center justify-between">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate100 text-slate300">
+          <div className="flex size-7 items-center justify-center rounded-full bg-slate100 text-slate300">
             <FontAwesomeIcon icon={faLayerGroup} />
           </div>
 
@@ -78,7 +78,7 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
           </div>
         </div>
 
-        {/* 제목 (클릭하면 모달 열림) */}
+        {/* 제목 */}
         <button
           type="button"
           className="mt-2 w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"

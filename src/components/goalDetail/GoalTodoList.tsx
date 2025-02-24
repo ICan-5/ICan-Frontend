@@ -104,7 +104,7 @@ export default function GoalTodoList({ list, onToggle }: Props) {
             <h3 className="mb-3 text-18R font-bold">지난 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'h-4 w-4 text-gs500 transition-transform duration-300',
+                'size-4 text-gs500 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
