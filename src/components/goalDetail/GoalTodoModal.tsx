@@ -84,6 +84,7 @@ export default function GoalTodoModal({
             onChange={(selectedDate) => selectedDate && setDate(selectedDate)}
             dateFormat="yyyy/MM/dd"
             className="w-full rounded-md border p-2"
+            wrapperClassName="w-full"
           />
         </div>
 

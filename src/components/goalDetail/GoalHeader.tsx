@@ -3,11 +3,11 @@ import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import GoalProgress from './GoalProgress';
 
-type Props = {
+interface Props {
   doneItems: number;
   todoItems: number;
   id: string;
-};
+}
 
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

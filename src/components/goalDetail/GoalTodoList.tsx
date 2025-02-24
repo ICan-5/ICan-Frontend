@@ -7,22 +7,32 @@ import cn from '@/utils/cn';
 import GoalListItem from './GoalListItem';
 import GoalTodoModal from './GoalTodoModal';
 
-type Todo = { id: number; task: string; date: string; done: boolean };
+interface Todo {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
 
-type Props = {
+interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
   onAdd: (task: string, date: string) => void;
-  id: String;
-};
+  goalId: string;
+}
 
-type GroupedTodos = {
+interface GroupedTodos {
   past: Record<string, Todo[]>;
   today: Record<string, Todo[]>;
   upcoming: Record<string, Todo[]>;
-};
+}
 
-export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id: string }) {
+export default function GoalTodoList({
+  list,
+  onToggle,
+  onAdd,
+  goalId,
+}: Props & { goalId: string }) {
   const groupedTodos: GroupedTodos = { past: {}, today: {}, upcoming: {} };
   const today = new Date().toISOString().split('T')[0];
   const [isFutureFold, setIsFutureFold] = useState<boolean>(true);
@@ -50,8 +60,8 @@ export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
       <div className="w-full rounded-2xl bg-gs00 p-6 shadow">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="mb-4 text-18R font-bold">To do</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="mb-3 text-18R font-bold">To do</h3>
           <div
             className="flex cursor-pointer items-center"
             onClick={() => setIsModalOpen(true)}
@@ -59,7 +69,7 @@ export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id
             <span className="text-slate400">+ 할 일 추가</span>
           </div>
         </div>
-        <h3 className="mt-6 text-18R font-bold">오늘 할 일</h3>
+        <h3 className="mt-3 text-18R font-bold">오늘 할 일</h3>
         {groupedTodos.today[today]?.map((todo) => (
           <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
         ))}
@@ -113,7 +123,11 @@ export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id
         </div>
       </div>
       {isModalOpen && (
-        <GoalTodoModal onClose={() => setIsModalOpen(false)} onAdd={onAdd} goalId={id}/>
+        <GoalTodoModal
+          onClose={() => setIsModalOpen(false)}
+          onAdd={onAdd}
+          goalId={goalId}
+        />
       )}
     </div>
   );

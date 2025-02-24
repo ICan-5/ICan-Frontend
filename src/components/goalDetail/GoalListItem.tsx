@@ -2,10 +2,10 @@ import { faFileLines, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 
-type Props = {
+interface Props {
   item: { id: number; task: string; date: string; done: boolean };
   onToggle: (id: number) => void;
-};
+}
 
 export default function GoalListItem({ item, onToggle }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -7,11 +7,11 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-type Props = {
+interface Props {
   basketItems: { id: number; task: string }[];
   onPickDate: (index: number, date: Date | null) => void;
   onDelete: (index: number) => void;
-};
+}
 
 export default function GoalBasket({
   basketItems,

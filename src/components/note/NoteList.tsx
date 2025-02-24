@@ -1,18 +1,18 @@
 import React from 'react';
 import NoteItem from '@/components/note/NoteItem';
 
-type Note = {
+interface Note {
   id: number;
   title: string;
   todo: string;
   content: string;
   date: string;
-};
+}
 
-type NoteListProps = {
+interface NoteListProps {
   notes: Note[];
   goalId: string;
-};
+}
 
 export default function NoteList({ notes, goalId }: NoteListProps) {
   return (

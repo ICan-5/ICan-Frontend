@@ -13,12 +13,12 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 
 config.autoAddCss = false;
 
-type TodoItem = {
+interface TodoItem {
   id: number;
   task: string;
   date: string;
   done: boolean;
-};
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
@@ -85,7 +85,7 @@ export default function Page({ params }: { params: { id: string } }) {
       </div>
       <Link href={`${params.id}/note`} className="block">
         <div className="mb-6 cursor-pointer rounded-2xl bg-slate200 p-3 shadow">
-          <h2 className="mb-4 flex items-center text-18SB">
+          <h2 className="mb-2 flex items-center text-18SB">
             <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
             노트 모아보기
             <FontAwesomeIcon
@@ -96,7 +96,12 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
       </Link>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <GoalTodoList list={todoItems} onToggle={toggleTodos} onAdd={addTodo} id={params.id}/>
+        <GoalTodoList
+          list={todoItems}
+          onToggle={toggleTodos}
+          onAdd={addTodo}
+          goalId={params.id}
+        />
         <div className="flex flex-col gap-4">
           <GoalDoneList list={doneItems} onToggle={toggleTodos} />
           <GoalBasket
