@@ -9,10 +9,10 @@ import TextField from './TextField';
 import Button from './Button';
 import { LoginSchema, LoginSchemaType } from '@/lib/validation';
 
-export type LoginFormType = {
+export interface Props {
   email: string;
   password: string;
-};
+}
 export default function LoginForm() {
   const {
     register,
@@ -23,7 +23,7 @@ export default function LoginForm() {
     mode: 'onChange',
   });
 
-  const onSubmit = async (data: LoginFormType) => {
+  const onSubmit = async (data: Props) => {
     const { email, password } = data;
     const res = await signIn('credentials', {
       email,
