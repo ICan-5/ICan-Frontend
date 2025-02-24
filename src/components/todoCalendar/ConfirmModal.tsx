@@ -12,7 +12,7 @@ function ConfirmModal({ onClose, onConfirm }: Props) {
     <div className="flex w-[450px] flex-col gap-6 rounded-lg bg-gs00 p-6">
       <div className="flex w-full flex-col items-center justify-center gap-1">
         <div className="px-4 py-2">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400">
+          <div className="flex size-16 items-center justify-center rounded-full bg-gray-400">
             <FontAwesomeIcon
               icon={faExclamation}
               className="text-3xl text-gs00"

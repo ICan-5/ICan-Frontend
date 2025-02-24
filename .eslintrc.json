@@ -74,7 +74,8 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "tailwindcss/no-contradicting-classname": "error",
-    "tailwindcss/enforces-shorthand": "warn"
+    "tailwindcss/enforces-shorthand": "warn",
+    "tailwindcss/no-custom-classname": "off"
   },
   "settings": {
     "import/resolver": {

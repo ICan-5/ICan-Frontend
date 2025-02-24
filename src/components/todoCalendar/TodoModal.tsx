@@ -17,7 +17,7 @@ function TodoModal({ selectedDate, onCloseModal }: Props) {
   };
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
       {!showConfirmModal && (
         <div className="flex w-[520px] flex-col gap-6 rounded-lg bg-gs00 p-6">
           <h2 className="text-18SB">할 일 생성</h2>
