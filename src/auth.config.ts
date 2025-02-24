@@ -23,6 +23,7 @@ export const authConfig = {
       if (nextUrl.pathname.startsWith('/')) {
         // 로그인 안 된 상태
         if (!isLoggedIn) {
+          // return true;
           return Response.redirect(new URL('/login', nextUrl));
         }
         return true; // 로그인된 사용자는 대시보드 페이지 접근 허용

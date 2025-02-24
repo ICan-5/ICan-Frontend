@@ -34,7 +34,7 @@ export default function NoteModal({
             exit={{ opacity: 0 }}
           />
           <motion.div
-            className="fixed inset-y-0 right-0 z-20 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[50%] xl:w-[50%]"
+            className="fixed inset-y-0 right-0 z-20 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}

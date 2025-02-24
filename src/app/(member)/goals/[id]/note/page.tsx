@@ -48,7 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </Link>
         노트 모아보기
       </div>
-      <div className="mb-3 h-[52px] w-2/3 rounded-xl bg-gs00 p-3 shadow">
+      <div className="mb-3 h-[52px] w-[70%] rounded-xl bg-gs00 p-3 shadow">
         <NoteHeader id={params.id} />
       </div>
       <div>
