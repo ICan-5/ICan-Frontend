@@ -59,7 +59,7 @@ export const SignUpSchema = z
 
 // 로그인 스키마
 export const LoginSchema = z.object({
-  id: z.string().regex(EMAIL_VALIDATION, {
+  email: z.string().regex(EMAIL_VALIDATION, {
     message: ERROR_MESSAGE.email.invalidId,
   }),
   password: z

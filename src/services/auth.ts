@@ -1,8 +1,8 @@
-import { SignUpFormData } from '@/components/auth/SignupForm';
+import { Props } from '@/components/auth/SignupForm';
 
-export default async function signup(formData: SignUpFormData) {
+export default async function signup(formData: Props) {
   try {
-    const response = await fetch('api/signup', {
+    const response = await fetch('api/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
