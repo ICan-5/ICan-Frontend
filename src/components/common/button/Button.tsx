@@ -1,29 +1,39 @@
 'use client';
 
 /* eslint-disable react/jsx-props-no-spreading */
+import { cva, VariantProps } from 'class-variance-authority';
 import cn from '@/utils/cn';
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline';
-  size?: 'default' | 'medium' | 'full';
-}
+const ButtonVariants = cva(
+  'flex items-center justify-center rounded-lg py-2 2xl:rounded-xl 2xl:py-3', // 공통 스타일
+  {
+    variants: {
+      variant: {
+        default:
+          '!text-14SB 2xl:!text-16SB bg-slate500 text-gs00 hover:bg-slate800 focus:bg-slate800 active:bg-slate800 disabled:bg-gs200 disabled:text-gs400',
+        outline:
+          '!text-14M 2xl:!text-16M border border-slate500 bg-gs00 text-slate500 hover:border-slate800 hover:text-slate800 focus:border-slate800 focus:text-slate800 active:border-slate800 active:text-slate800 disabled:border-gs400 disabled:text-gs400',
+      },
+      size: {
+        default: 'px-2 py-1',
+        medium: 'px-6 2xl:px-8',
+        full: 'w-full',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  },
+);
 
-const classNames: { [key: string]: string } = {
-  default:
-    '!text-14SB rounded-lg bg-slate500 text-gs00 hover:bg-slate800 focus:bg-slate800 active:bg-slate800 disabled:bg-gs200 disabled:text-gs400 2xl:rounded-xl 2xl:!text-16SB',
-  outline:
-    'rounded-lg border border-slate500 bg-gs00 !text-14M text-slate500 hover:border-slate800 hover:text-slate800 focus:border-slate800 focus:text-slate800 active:border-slate800 active:text-slate800 disabled:border-gs400 disabled:text-gs400 2xl:rounded-xl 2xl:!text-16M',
-};
-
-const sizes: { [key: string]: string } = {
-  default: '',
-  medium: 'px-6 2xl:px-8',
-  full: 'w-full',
-};
+interface ButtonProps
+  extends VariantProps<typeof ButtonVariants>,
+    React.HTMLAttributes<HTMLButtonElement> {}
 
 export default function Button({
-  variant = 'default',
-  size = 'default',
+  variant,
+  size,
   className,
   children,
   ...props
@@ -31,12 +41,7 @@ export default function Button({
   return (
     <button
       type="button"
-      className={cn(
-        'flex items-center justify-center py-2 2xl:py-3',
-        classNames[variant],
-        sizes[size],
-        className,
-      )}
+      className={cn(ButtonVariants({ variant, size }), className)}
       {...props}
     >
       {children}
