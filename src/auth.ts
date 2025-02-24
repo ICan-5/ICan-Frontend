@@ -5,6 +5,10 @@ import { authConfig } from './auth.config';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
+if (!apiUrl || !teamId) {
+  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
+}
+
 export const { handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
@@ -32,6 +36,10 @@ export const { handlers, signIn, signOut } = NextAuth({
               password,
             }),
           });
+          if (!res.ok) {
+            throw new Error(`로그인 실패: ${res.status} ${res.statusText}`);
+          }
+
           const data = await res.json();
 
           if (!data) {
@@ -40,7 +48,11 @@ export const { handlers, signIn, signOut } = NextAuth({
           const { user } = data;
           return user;
         } catch (error) {
-          throw new Error(error as string);
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : '알 수 없는 오류가 발생했습니다.';
+          throw new Error(`인증 실패: ${errorMessage}`);
         }
       },
     }),

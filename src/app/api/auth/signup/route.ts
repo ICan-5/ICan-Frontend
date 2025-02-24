@@ -4,6 +4,10 @@ import { SignUpSchema } from '@/lib/validation';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
+if (!apiUrl || !teamId) {
+  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
+}
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.json();
