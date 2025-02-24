@@ -2,7 +2,7 @@ import React from 'react';
 import GoalListItem from './GoalListItem';
 
 // Done 타입 정의
-interface Done {
+interface DoneProps {
   id: number;
   task: string;
   date: string;
@@ -10,7 +10,7 @@ interface Done {
 }
 
 interface Props {
-  list: Done[];
+  list: DoneProps[];
   onToggle: (id: number) => void;
 }
 
