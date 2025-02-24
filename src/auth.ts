@@ -3,9 +3,9 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
+// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
-if (!apiUrl || !teamId) {
+if (!apiUrl) {
   throw new Error('필수 환경 변수가 설정되지 않았습니다.');
 }
 
@@ -25,7 +25,7 @@ export const { handlers, signIn, signOut } = NextAuth({
         const { email, password } = credentials;
 
         try {
-          const res = await fetch(`${apiUrl}/${teamId}/auth/login`, {
+          const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -36,11 +36,13 @@ export const { handlers, signIn, signOut } = NextAuth({
               password,
             }),
           });
-          if (!res.ok) {
-            throw new Error(`로그인 실패: ${res.status} ${res.statusText}`);
+          if (!response.ok) {
+            throw new Error(
+              `로그인 실패: ${response.status} ${response.statusText}`,
+            );
           }
 
-          const data = await res.json();
+          const data = await response.json();
 
           if (!data) {
             throw new Error('사용자를 찾을 수 없습니다.');
