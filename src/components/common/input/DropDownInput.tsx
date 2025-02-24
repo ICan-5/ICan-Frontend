@@ -89,7 +89,7 @@ export default function DropDownInput<T extends FieldValues>({
                   >
                     <div className={cn(open ? 'animate-dropdown' : 'hidden')}>
                       {/* 구분선 */}
-                      <div className="h-[1px] w-full bg-gs200" />
+                      <div className="h-px w-full bg-gs200" />
                       <div className="max-h-40 overflow-y-auto">
                         {extendOptions.map((option) => (
                           <ListboxOption

@@ -27,7 +27,7 @@ const CustomDateInput = forwardRef<HTMLButtonElement, Props>(
           { 'border border-slate500': isFocus },
         )}
       >
-        <FontAwesomeIcon icon={faCalendar} className="h-4 w-4 text-gs600" />
+        <FontAwesomeIcon icon={faCalendar} className="size-4 text-gs600" />
         <span className={cn(value ? 'text-gsBk' : 'text-gs400')}>
           {value || '날짜를 선택해주세요'}
         </span>
