@@ -62,11 +62,11 @@ export default function CheckTodo({
         <input id={`${id}`} type="checkbox" checked={done} className="hidden" />
         <span
           className={cn(
-            'flex h-4 w-4 flex-none items-center justify-center rounded-[4px] border border-slate500 bg-gs00 2xl:h-5 2xl:w-5',
+            'flex size-4 flex-none items-center justify-center rounded-[4px] border border-slate500 bg-gs00 2xl:h-5 2xl:w-5',
             { 'border-0 bg-gs400 text-gs00': done },
           )}
         >
-          {done && <FontAwesomeIcon className="h-3 w-3" icon={faCheck} />}
+          {done && <FontAwesomeIcon className="size-3" icon={faCheck} />}
         </span>
         <p className="flex w-full flex-col 2xl:gap-1">
           <span className="verflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M">
