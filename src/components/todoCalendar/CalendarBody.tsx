@@ -12,7 +12,6 @@ import { TodoType } from '@/types/todos';
  * 각 날짜 숫자를 커스텀한 UI
  *
  * @param info 각 날짜 정보
- * @param selectedDate 선택된 날짜
  */
 const renderDayCellContent = (info: DayCellContentArg) => {
   const dateText = info.date.getDate().toString();
@@ -24,7 +23,7 @@ const renderDayCellContent = (info: DayCellContentArg) => {
     <div
       className={cn(
         'flex items-center justify-center rounded-sm p-2',
-        'h-5 w-5',
+        'size-5',
         isToday && 'bg-slate500 text-white',
         isSunday && 'text-warn500',
       )}
@@ -34,13 +33,13 @@ const renderDayCellContent = (info: DayCellContentArg) => {
   );
 };
 
-type Props = {
+interface Props {
   todos: TodoType[];
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   calendarRef: React.RefObject<FullCalendar>;
   onDropTodo: (date: string, todoId: number) => void;
-};
+}
 
 export default function CalendarBody({
   todos,
@@ -77,6 +76,7 @@ export default function CalendarBody({
       onDateChange(new Date(info.event.start)); // 선택된 날짜 변경
     }
   };
+
   /**
    * 날짜 셀 크기 업데이트
    */
@@ -86,19 +86,27 @@ export default function CalendarBody({
       const width = cell.clientWidth;
       document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
         const cellElement = el as HTMLElement;
-        if (width < 120) {
+        if (width < 118) {
           cellElement.style.height = `${width}px`;
+          cellElement.style.minHeight = `${width}px`;
         } else {
-          cellElement.style.height = '120px';
+          cellElement.style.height = '124px';
+          cellElement.style.minHeight = '124px';
         }
-        cellElement.style.minHeight = `${width}px`;
       });
     }
   };
 
+  const getColorClasses = (color?: string) => {
+    return cn({
+      'bg-slate100 text-slate500': !color, // 기본 색상
+      [`bg-${color}-100 text-${color}`]: color, // 동적 색상 적용
+    });
+  };
+
   useEffect(() => {
     window.addEventListener('resize', updateCellSize);
-    updateCellSize(); // 초기 설정
+    updateCellSize();
 
     return () => window.removeEventListener('resize', updateCellSize);
   }, []);
@@ -132,7 +140,7 @@ export default function CalendarBody({
       events={todos.map((event) => ({
         ...event,
         id: event.id.toString(),
-        className: event.goal?.color || 'bg-slate950',
+        className: getColorClasses(event.goal?.color),
       }))}
       eventBorderColor="transparent"
       eventDisplay="block"

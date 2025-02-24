@@ -2,11 +2,11 @@ import { Draggable } from '@fullcalendar/interaction';
 import { useEffect, useRef } from 'react';
 import { Goal } from '@/types/todos';
 
-type Props = {
+interface Props {
   basketList: { id: number; title: string; goal: Goal | null }[];
   onDeleteBasketTodo: (id: number) => void;
   onDeleteAllBasket: () => void;
-};
+}
 
 export default function TodoBasket({
   basketList,

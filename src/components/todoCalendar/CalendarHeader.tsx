@@ -3,15 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
 
-type Props = {
+interface Props {
   calendarRef: React.RefObject<FullCalendar>;
   onDateChange: (date: Date) => void;
-};
+}
 
 /**
  * 캘린더 헤더 부분
  * (달력의 연도와 달, 오늘로 이동하는 버튼, 달 이동 버튼)
- * Todo:: Today 버튼 공용 컴포넌트에서 가져오기
  *
  * @param calendarRef 달력
  * @param onDateChange 선택 날짜 변경
@@ -66,9 +65,9 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handlePrevMonthClick}
-          className="flex h-7 w-7 items-center justify-center"
+          className="flex size-7 items-center justify-center"
         >
-          <FontAwesomeIcon className="h-4 w-4" icon={faAngleLeft} />
+          <FontAwesomeIcon className="size-4" icon={faAngleLeft} />
         </button>
         <span className="inline-block min-w-32 flex-shrink-0 text-center text-20M text-gsBk">
           {viewMonth.toLocaleDateString('ko-KR', {
@@ -79,9 +78,9 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <button
           type="button"
           onClick={handleNextMonthClick}
-          className="flex h-7 w-7 items-center justify-center"
+          className="flex size-7 items-center justify-center"
         >
-          <FontAwesomeIcon className="h-4 w-4" icon={faAngleRight} />
+          <FontAwesomeIcon className="size-4" icon={faAngleRight} />
         </button>
       </div>
       <div className="flex w-1/4 justify-end">
