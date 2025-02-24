@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SignUpSchema } from '@/lib/validation';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
+// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
-if (!apiUrl || !teamId) {
+if (!apiUrl) {
   throw new Error('필수 환경 변수가 설정되지 않았습니다.');
 }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 외부 API로 요청
-    const response = await fetch(`${apiUrl}/${teamId}/user`, {
+    const response = await fetch(`${apiUrl}/api/v1/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
