@@ -1,8 +1,11 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import TodayListItem from './TodayListItem';
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { auth } from '@/auth';
+import Button from '@/components/common/button/Button';
+import Icon from '@/components/common/icon/Icon';
+import SimpleTodo from '@/components/common/todo/SimpleTodo';
 
 // TOOD:: 나중에 할일 Type정해지면 todolist: Todo[]
 type Props = {
@@ -20,7 +23,6 @@ export default async function TodayList({ todayList }: Props) {
   const formattedDate = formatter.format(new Date());
 
   const todoList = todayList.filter((e) => !e.done);
-  const doneList = todayList.filter((e) => e.done);
 
   const session = await auth(); // 세션 가져오기
 
