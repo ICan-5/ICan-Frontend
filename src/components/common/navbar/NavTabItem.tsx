@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import cn from '@/utils/cn';
-import Icon from '@/components/common/Icon/Icon';
+import Icon from '@/components/common/icon/Icon';
 
 type Props = {
   isFolded: boolean;

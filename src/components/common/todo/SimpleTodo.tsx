@@ -2,13 +2,13 @@
 
 import { faFileLines, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import cn from '@/utils/cn';
-import IconButton from '../Button/IconButton';
+import IconButton from '../button/IconButton';
 
-type Props = {
+interface Props {
   title: string;
   done: boolean;
   noteId: number | null;
-};
+}
 
 export default function SimpleTodo({ title, done, noteId }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;

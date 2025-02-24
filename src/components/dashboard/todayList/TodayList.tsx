@@ -2,9 +2,9 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
-import Button from '@/components/common/Button/Button';
-import Icon from '@/components/common/Icon/Icon';
-import SimpleTodo from '@/components/common/Todo/SimpleTodo';
+import Button from '@/components/common/button/Button';
+import Icon from '@/components/common/icon/Icon';
+import SimpleTodo from '@/components/common/todo/SimpleTodo';
 
 // TOOD:: 나중에 할일 Type정해지면 todolist: Todo[]
 type Props = {

@@ -9,10 +9,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import cn from '@/utils/cn';
-import IconButton from '../Button/IconButton';
+import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
-type Props = {
+interface Props {
   id: number;
   title: string;
   goalTitle?: string;
@@ -21,12 +21,12 @@ type Props = {
   onCheck?: () => void;
   onClickNote?: () => void;
   onDelete?: () => void;
-};
+}
 
 /**
  *
- * id: 노트 id
- * title: 노트 title
+ * id: 할 일 id
+ * title: 할 일 title
  * goalTitle: 목표 이름, 없을 수 있음
  * done: 할 일 완료 여부
  * noteId: 할 일과 관련된 노트 id, 없을 수 있음
