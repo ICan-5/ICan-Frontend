@@ -80,21 +80,51 @@ export default function CalendarBody({
   /**
    * 날짜 셀 크기 업데이트
    */
-  const updateCellSize = () => {
-    const cell = document.querySelector('.fc-daygrid-day');
-    if (cell) {
-      const width = cell.clientWidth;
-      document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
-        const cellElement = el as HTMLElement;
-        if (width < 118) {
-          cellElement.style.height = `${width}px`;
-          cellElement.style.minHeight = `${width}px`;
-        } else {
-          cellElement.style.height = '124px';
-          cellElement.style.minHeight = '124px';
-        }
-      });
-    }
+
+  const handleDayCellMount = (info: { el: HTMLElement }) => {
+    // 반응형에 맞춰 셀 크기 업데이트
+    const updateCellSize = () => {
+      const cell = document.querySelector('.fc-daygrid-day');
+      if (cell) {
+        const width = cell.clientWidth;
+        document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
+          const cellElement = el as HTMLElement;
+          if (width < 118) {
+            cellElement.style.height = `${width}px`;
+            cellElement.style.minHeight = `${width}px`;
+          } else {
+            cellElement.style.height = '124px';
+            cellElement.style.minHeight = '124px';
+          }
+        });
+      }
+    };
+    // 숨겨진 이벤트 개수 표시
+    const updateMoreCount = () => {
+      setTimeout(() => {
+        const events = info.el.querySelectorAll('.fc-event');
+
+        // 숨겨진 이벤트 개수 계산
+        const hiddenEvents = Array.from(events).filter(
+          (e) => (e as HTMLElement).offsetHeight === 0,
+        ).length;
+
+        const moreCountEl = document.createElement('div');
+        moreCountEl.className =
+          'event-more-count absolute top-2 right-2 text-12SB text-gs500';
+        info.el.appendChild(moreCountEl);
+
+        // 숨겨진 이벤트가 있으면 텍스트 추가, 없으면 숨김
+        moreCountEl.textContent =
+          hiddenEvents > 0 ? `+ ${hiddenEvents} more` : '';
+        moreCountEl.style.opacity = hiddenEvents > 0 ? '1' : '0';
+      }, 100);
+    };
+
+    updateCellSize();
+    updateMoreCount();
+
+    window.addEventListener('resize', updateCellSize);
   };
 
   const getColorClasses = (color?: string) => {
@@ -103,13 +133,6 @@ export default function CalendarBody({
       [`bg-${color}-100 text-${color}`]: color, // 동적 색상 적용
     });
   };
-
-  useEffect(() => {
-    window.addEventListener('resize', updateCellSize);
-    updateCellSize();
-
-    return () => window.removeEventListener('resize', updateCellSize);
-  }, []);
 
   /**
    * 사이드 바가 접히거나 펼쳐지면 캘린더 크기 재조정
@@ -153,7 +176,7 @@ export default function CalendarBody({
       contentHeight="100%"
       dayCellContent={(info) => renderDayCellContent(info)}
       dayCellClassNames={(info) => getDayCellClassNames(info)}
-      dayCellDidMount={updateCellSize}
+      dayCellDidMount={handleDayCellMount}
       droppable
       eventReceive={(info) => {
         const todoId = Number(info.event.id);

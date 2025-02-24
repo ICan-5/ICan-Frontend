@@ -13,6 +13,12 @@
   min-height: unset !important;
   max-width: 120px !important;
   border: 0.5px solid #e2e8f0 !important;
+  position: relative !important;
+}
+
+.fc-daygrid-day.selected {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: -2px;
 }
 
 .fc-col-header-cell {
@@ -25,11 +31,6 @@
 
 .fc-day-other {
   @apply bg-gs20;
-}
-
-.fc-daygrid-day.selected {
-  outline: 2px solid #3b82f6 !important;
-  outline-offset: -2px;
 }
 
 .fc-daygrid-day-number {
@@ -46,7 +47,7 @@
 
 /* 이벤트 스타일 */
 .fc-event {
-  @apply text-12SB mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] !important;
+  @apply mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] text-12SB !important;
   border-radius: 2px;
   line-height: 0.75rem;
 }
