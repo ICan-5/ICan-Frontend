@@ -1,9 +1,12 @@
-import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { SignUpSchema } from '@/lib/validation';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
+// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
+
+if (!apiUrl) {
+  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,19 +30,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 비밀번호 해싱
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
-
     // 외부 API로 요청
-    const response = await fetch(`${apiUrl}/${teamId}/user`, {
+    const response = await fetch(`${apiUrl}/api/v1/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: formData.email,
-        name: formData.name,
-        password: hashedPassword, // 해싱된 비밀번호
+        email,
+        name,
+        password,
       }),
     });
 
@@ -51,9 +51,7 @@ export async function POST(req: NextRequest) {
     }
     // 200 OK
     return NextResponse.json({ message: '회원가입 완료!' }, { status: 200 });
-  } catch (error) {
-    console.error('회원가입 오류:', error);
-
+  } catch {
     return NextResponse.json(
       { message: '서버에서 문제가 발생했습니다. 다시 시도해주세요.' },
       { status: 500 },

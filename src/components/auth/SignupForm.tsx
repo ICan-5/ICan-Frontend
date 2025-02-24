@@ -10,17 +10,17 @@ import Button from './Button';
 import { SignUpSchema, SignUpSchemaType } from '@/lib/validation';
 import signup from '@/services/auth';
 
-export type SignUpFormData = {
+export interface Props {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
-};
+}
 
 export default function SignupForm() {
   const router = useRouter();
 
-  const onSubmit = async (formData: SignUpFormData) => {
+  const onSubmit = async (formData: Props) => {
     const { success, message } = await signup(formData);
 
     alert(message);
@@ -45,7 +45,7 @@ export default function SignupForm() {
     >
       <div className="px-4 text-center">
         <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
-        <p className="mb-10 break-keep text-grayDarker">
+        <p className="text-grayDarker mb-10 break-keep">
           할 일을 계획하고 관리해요!
         </p>
       </div>
