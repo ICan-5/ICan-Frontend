@@ -8,7 +8,7 @@ import {
 import ErrorMessage from './ErrorMessage';
 import cn from '@/utils/cn';
 
-type Props<T extends FieldValues> = {
+interface Props<T extends FieldValues> {
   label: string;
   name: Path<T>;
 
@@ -16,7 +16,7 @@ type Props<T extends FieldValues> = {
   placeholder?: string;
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
-};
+}
 
 export default function TextField<T extends FieldValues>({
   label,

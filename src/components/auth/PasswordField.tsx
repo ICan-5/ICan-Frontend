@@ -11,13 +11,13 @@ import {
 import ErrorMessage from './ErrorMessage';
 import cn from '@/utils/cn';
 
-type Props<T extends FieldValues> = {
+interface Props<T extends FieldValues> {
   label: string;
   name: Path<T>;
   placeholder?: string;
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
-};
+}
 
 export default function PasswordField<T extends FieldValues>({
   label, // 레이블

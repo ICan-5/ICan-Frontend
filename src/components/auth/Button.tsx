@@ -1,8 +1,8 @@
-type Props = {
+interface Props {
   label: string;
   type?: 'submit' | 'button';
   disabled?: boolean;
-};
+}
 
 export default function Button({ label, type, disabled }: Props) {
   return (
