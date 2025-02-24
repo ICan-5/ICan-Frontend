@@ -109,20 +109,39 @@ export default function CalendarBody({
           (e) => (e as HTMLElement).offsetHeight === 0,
         ).length;
 
-        const moreCountEl = document.createElement('div');
-        moreCountEl.className =
-          'event-more-count absolute top-2 right-2 text-12SB text-gs500';
-        info.el.appendChild(moreCountEl);
+        let moreCountEl = info.el.querySelector(
+          '.event-more-count',
+        ) as HTMLElement;
+        if (!moreCountEl) {
+          moreCountEl = document.createElement('div');
+          moreCountEl.className =
+            'event-more-count absolute top-2 right-2 text-12SB text-gs500';
+          info.el.appendChild(moreCountEl);
+        }
 
         // 숨겨진 이벤트가 있으면 텍스트 추가, 없으면 숨김
-        moreCountEl.textContent =
-          hiddenEvents > 0 ? `+ ${hiddenEvents} more` : '';
-        moreCountEl.style.opacity = hiddenEvents > 0 ? '1' : '0';
+        const cellWidth = info.el.clientWidth;
+        if (hiddenEvents > 0) {
+          if (cellWidth > 88) {
+            moreCountEl.textContent = `+${hiddenEvents} more`;
+          } else if (cellWidth >= 50) {
+            moreCountEl.textContent = `+${hiddenEvents}`;
+          } else {
+            moreCountEl.textContent = '';
+          }
+
+          moreCountEl.style.opacity = '1';
+        } else {
+          moreCountEl.style.opacity = '0';
+        }
       }, 100);
     };
 
     updateCellSize();
     updateMoreCount();
+
+    const observer = new ResizeObserver(updateMoreCount);
+    observer.observe(info.el);
 
     window.addEventListener('resize', updateCellSize);
   };
