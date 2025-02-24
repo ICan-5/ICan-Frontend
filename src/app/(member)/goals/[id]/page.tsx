@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const addTodo = (task: string, date: string) => {
     const newTodo: TodoItem = {
-      id: Math.floor(Math.random() * 10000),
+      id: Date.now() + Math.floor(Math.random() * 1000),
       task,
       date,
       done: false,

@@ -27,17 +27,12 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({
-  list,
-  onToggle,
-  onAdd,
-  goalId,
-}: Props & { goalId: string }) {
+export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: {}, upcoming: {} };
   const today = new Date().toISOString().split('T')[0];
-  const [isFutureFold, setIsFutureFold] = useState<boolean>(true);
-  const [isPastFold, setIsPastFold] = useState<boolean>(true);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isFutureFold, setIsFutureFold] = useState(true);
+  const [isPastFold, setIsPastFold] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   list.forEach(({ id, task, date, done }) => {
     let category: keyof GroupedTodos;
@@ -50,29 +45,32 @@ export default function GoalTodoList({
       category = 'upcoming';
     }
 
-    if (!groupedTodos[category][date]) {
-      groupedTodos[category][date] = [];
-    }
-
+    // 날짜별 배열이 없으면 초기화
+    groupedTodos[category][date] = groupedTodos[category][date] || [];
     groupedTodos[category][date].push({ id, task, done, date });
   });
 
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
       <div className="w-full rounded-2xl bg-gs00 p-6 shadow">
+        {/* 헤더 */}
         <div className="flex items-center justify-between">
           <h3 className="mb-3 text-18R font-bold">To do</h3>
           <div
-            className="flex cursor-pointer items-center"
+            className="cursor-pointer text-slate400"
             onClick={() => setIsModalOpen(true)}
           >
-            <span className="text-slate400">+ 할 일 추가</span>
+            + 할 일 추가
           </div>
         </div>
+
+        {/* 오늘 할 일 */}
         <h3 className="mt-3 text-18R font-bold">오늘 할 일</h3>
         {groupedTodos.today[today]?.map((todo) => (
           <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
         ))}
+
+        {/* 예정된 할 일 */}
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-3 text-18R font-bold">예정된 할 일</h3>
@@ -86,7 +84,7 @@ export default function GoalTodoList({
               onClick={() => setIsFutureFold((prev) => !prev)}
             />
           </div>
-          <div className={`max-h-96 ${isFutureFold && 'hidden'}`}>
+          <div className={isFutureFold ? 'hidden' : 'block max-h-96'}>
             {Object.entries(groupedTodos.upcoming).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
                 <div className="text-16M text-gs700">{date}</div>
@@ -97,6 +95,8 @@ export default function GoalTodoList({
             ))}
           </div>
         </div>
+
+        {/* 지난 할 일 */}
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-3 text-18R font-bold">지난 할 일</h3>
@@ -110,7 +110,7 @@ export default function GoalTodoList({
               onClick={() => setIsPastFold((prev) => !prev)}
             />
           </div>
-          <div className={`max-h-96 ${isPastFold && 'hidden'}`}>
+          <div className={isPastFold ? 'hidden' : 'block max-h-96'}>
             {Object.entries(groupedTodos.past).map(([date, todos]) => (
               <div key={date} className="relative mb-4">
                 <div className="text-16M text-gs700">{date}</div>
@@ -122,6 +122,8 @@ export default function GoalTodoList({
           </div>
         </div>
       </div>
+
+      {/* 할 일 추가 모달 */}
       {isModalOpen && (
         <GoalTodoModal
           onClose={() => setIsModalOpen(false)}
