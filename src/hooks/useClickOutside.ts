@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export function useClickOutside<T extends HTMLElement>(callback: () => void) {
+export function useClickOutside<T extends HTMLElement>(callback?: () => void) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<T>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback();
+        if (callback) callback();
+        else setIsOpen(false);
       }
     };
 
@@ -18,5 +20,5 @@ export function useClickOutside<T extends HTMLElement>(callback: () => void) {
     };
   }, [callback]);
 
-  return ref;
+  return [ref, isOpen, setIsOpen] as const;
 }

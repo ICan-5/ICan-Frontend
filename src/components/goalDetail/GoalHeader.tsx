@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
 import GoalProgress from './GoalProgress';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
@@ -11,10 +10,8 @@ type Props = {
 };
 
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useClickOutside<HTMLDivElement>(() => {
-    setIsMenuOpen(false);
-  });
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   return (
     <div>

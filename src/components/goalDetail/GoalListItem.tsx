@@ -1,6 +1,5 @@
 import { faFileLines, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
 type Props = {
@@ -9,10 +8,8 @@ type Props = {
 };
 
 export default function GoalListItem({ item, onToggle }: Props) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useClickOutside<HTMLDivElement>(() => {
-    setIsMenuOpen(false);
-  });
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   return (
     <div

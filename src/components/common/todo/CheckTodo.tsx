@@ -7,7 +7,6 @@ import {
   faFileLines,
   faFilePen,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
@@ -45,10 +44,7 @@ export default function CheckTodo({
   onDelete,
 }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const menuRef = useClickOutside(() => {
-    setIsMenuOpen(false);
-  });
+  const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside();
 
   return (
     <>
