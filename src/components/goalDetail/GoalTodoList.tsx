@@ -7,22 +7,32 @@ import cn from '@/utils/cn';
 import GoalListItem from './GoalListItem';
 import GoalTodoModal from './GoalTodoModal';
 
-type Todo = { id: number; task: string; date: string; done: boolean };
+interface Todo {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
 
-type Props = {
+interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
   onAdd: (task: string, date: string) => void;
-  id: String;
-};
+  goalId: string;
+}
 
-type GroupedTodos = {
+interface GroupedTodos {
   past: Record<string, Todo[]>;
   today: Record<string, Todo[]>;
   upcoming: Record<string, Todo[]>;
-};
+}
 
-export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id: string }) {
+export default function GoalTodoList({
+  list,
+  onToggle,
+  onAdd,
+  goalId,
+}: Props & { goalId: string }) {
   const groupedTodos: GroupedTodos = { past: {}, today: {}, upcoming: {} };
   const today = new Date().toISOString().split('T')[0];
   const [isFutureFold, setIsFutureFold] = useState<boolean>(true);
@@ -113,7 +123,11 @@ export default function GoalTodoList({ list, onToggle, onAdd, id }: Props & { id
         </div>
       </div>
       {isModalOpen && (
-        <GoalTodoModal onClose={() => setIsModalOpen(false)} onAdd={onAdd} goalId={id}/>
+        <GoalTodoModal
+          onClose={() => setIsModalOpen(false)}
+          onAdd={onAdd}
+          goalId={goalId}
+        />
       )}
     </div>
   );

@@ -2,12 +2,17 @@ import React from 'react';
 import GoalListItem from './GoalListItem';
 
 // Done 타입 정의
-type Done = { id: number; task: string; date: string; done: boolean };
+interface Done {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+}
 
-type Props = {
+interface Props {
   list: Done[];
   onToggle: (id: number) => void;
-};
+}
 
 export default function GoalDoneList({ list, onToggle }: Props) {
   // 오래된 날짜 순으로 정렬

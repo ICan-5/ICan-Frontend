@@ -6,18 +6,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import NoteModal from '@/components/note/NoteModal';
 import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
 
-type Note = {
+interface Note {
   id: number;
   title: string;
   todo: string;
   content: string;
   date: string;
-};
+}
 
-type NoteItemProps = {
+interface NoteItemProps {
   note: Note;
   goalId: string;
-};
+}
 
 export default function NoteItem({ note, goalId }: NoteItemProps) {
   const [openMenu, setOpenMenu] = useState(false);

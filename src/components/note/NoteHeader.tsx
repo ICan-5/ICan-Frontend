@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 
-type Props = {
+interface Props {
   id: string;
-};
+}
 export default function NoteHeader({ id }: Props) {
   return (
     <div className="flex items-center justify-between">

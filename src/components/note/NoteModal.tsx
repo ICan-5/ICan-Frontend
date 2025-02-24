@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-type NoteModalProps = {
+interface NoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   note: {
@@ -13,7 +13,7 @@ type NoteModalProps = {
     date: string;
   };
   goalId: string;
-};
+}
 
 export default function NoteModal({
   isOpen,
