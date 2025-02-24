@@ -8,8 +8,8 @@ import { useState } from 'react';
 import cn from '@/utils/cn';
 import NavGoalItem from './NavGoalItem';
 import NewGoalItem from './NewGoalItem';
-import Icon from '@/components/common/Icon/Icon';
-import IconButton from '../../Button/IconButton';
+import Icon from '@/components/common/icon/Icon';
+import IconButton from '@/components/common/button/IconButton';
 
 // TODO:: 목표 리스트 mock 데이터, API 연결하면 삭제
 const tempGoalList = [

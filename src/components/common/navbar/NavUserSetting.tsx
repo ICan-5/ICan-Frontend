@@ -2,7 +2,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons/faRightFromBracket';
 import Link from 'next/link';
 import cn from '@/utils/cn';
-import Icon from '@/components/common/Icon/Icon';
+import Icon from '@/components/common/icon/Icon';
 
 type Props = {
   isFolded: boolean;
