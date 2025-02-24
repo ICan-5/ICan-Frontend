@@ -5,11 +5,11 @@ import { useGoals } from '@/hooks/useGoals';
 import GoalProgress from './GoalProgress';
 import { Goal } from '@/types/goals';
 
-type Props = {
+interface Props {
   doneItems: number;
   todoItems: number;
   id: string;
-};
+}
 
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const [menuRef, isMenuOpen, setIsMenuOpen] =
