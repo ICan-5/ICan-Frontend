@@ -2,7 +2,8 @@
 
 import { faLayerGroup, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 type Note = {
   id: number;
@@ -15,21 +16,8 @@ type NoteItemProps = {
 };
 
 export default function NoteItem({ note }: NoteItemProps) {
-  const [openMenu, setOpenMenu] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   return (
     <div className="mb-4 w-4/5 rounded-2xl border bg-gs00 p-4 shadow-md">
@@ -44,9 +32,9 @@ export default function NoteItem({ note }: NoteItemProps) {
           <FontAwesomeIcon
             icon={faEllipsisV}
             className="cursor-pointer text-gs500"
-            onClick={() => setOpenMenu((prev) => !prev)}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           />
-          {openMenu && (
+          {isMenuOpen && (
             <div className="absolute right-0 z-10 mt-2 w-24 rounded bg-gs00 shadow-md">
               <button
                 type="button"
