@@ -1,13 +1,16 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 
-export const useClickOutside = () => {
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export function useClickOutside<T extends HTMLElement>(callback?: () => void) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        if (callback) callback();
+        else setIsOpen(false);
       }
     };
 
@@ -15,7 +18,7 @@ export const useClickOutside = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [callback]);
 
-  return [menuRef, isMenuOpen, setIsMenuOpen] as const;
-};
+  return [ref, isOpen, setIsOpen] as const;
+}

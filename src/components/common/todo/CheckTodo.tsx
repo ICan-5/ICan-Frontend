@@ -44,7 +44,8 @@ export default function CheckTodo({
   onDelete,
 }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
-  const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside();
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   return (
     <>
