@@ -1,6 +1,7 @@
 'use client';
 
 import { faFileLines, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 
@@ -29,15 +30,18 @@ export default function SimpleTodo({ title, done, noteId }: Props) {
       >
         {title}
       </span>
-      <IconButton
-        className={cn('rounded-2xl bg-gs50 text-slate500', {
-          'group-hover:bg-gs00': !done,
-          'pl-1 md:invisible md:group-hover:visible': noteId === null && !done,
-          invisible: noteId === null && done,
-        })}
-        icon={noteIcon}
-        onClick={clickNote}
-      />
+      <Link href={noteId ? `/note/${noteId}` : `/note/create`}>
+        <IconButton
+          className={cn('rounded-2xl bg-gs50 text-slate500', {
+            'group-hover:bg-gs00': !done,
+            'pl-1 md:invisible md:group-hover:visible':
+              noteId === null && !done,
+            invisible: noteId === null && done,
+          })}
+          icon={noteIcon}
+          onClick={clickNote}
+        />
+      </Link>
     </div>
   );
 }
