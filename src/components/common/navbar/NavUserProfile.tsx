@@ -26,7 +26,7 @@ export default function NavUserProfile({ isFolded }: Props) {
       <Image
         className={cn(
           'h-12 w-12 transition-all duration-300 2xl:h-16 2xl:w-16',
-          { 'ml-1 scale-0 2xl:h-10 2xl:w-10': isFolded },
+          { 'ml-1 opacity-0 2xl:h-10 2xl:w-10': isFolded },
         )}
         src={user?.image || '/images/profile.png'}
         width="64"

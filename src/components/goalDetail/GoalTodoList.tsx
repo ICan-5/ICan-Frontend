@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import cn from '@/utils/cn';
-import GoalListItem from './GoalListItem';
+import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 
 interface Todo {
@@ -12,12 +12,14 @@ interface Todo {
   task: string;
   date: string;
   done: boolean;
+  noteId?: number | null;
 }
 
 interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
   onAdd: (task: string, date: string) => void;
+  onDelete?: (id: number) => void;
   goalId: string;
 }
 
@@ -27,7 +29,13 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
+export default function GoalTodoList({
+  list,
+  onToggle,
+  onAdd,
+  onDelete,
+  goalId,
+}: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: {}, upcoming: {} };
   const today = new Date().toISOString().split('T')[0];
   const [isFutureFold, setIsFutureFold] = useState(true);
@@ -45,7 +53,6 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
       category = 'upcoming';
     }
 
-    // 날짜별 배열이 없으면 초기화
     groupedTodos[category][date] = groupedTodos[category][date] || [];
     groupedTodos[category][date].push({ id, task, done, date });
   });
@@ -67,7 +74,15 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
         {/* 오늘 할 일 */}
         <h3 className="mt-3 text-18R font-bold">오늘 할 일</h3>
         {groupedTodos.today[today]?.map((todo) => (
-          <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
+          <CheckTodo
+            key={todo.id}
+            id={todo.id}
+            title={todo.task}
+            done={todo.done}
+            noteId={todo.noteId ?? null}
+            onCheck={() => onToggle(todo.id)}
+            onDelete={onDelete ? () => onDelete(todo.id) : undefined}
+          />
         ))}
 
         {/* 예정된 할 일 */}
@@ -76,7 +91,7 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
             <h3 className="mb-3 text-18R font-bold">예정된 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'h-4 w-4 text-gs500 transition-transform duration-300',
+                'size-4 text-gs500 transition-transform duration-300',
                 isFutureFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
@@ -85,14 +100,27 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
             />
           </div>
           <div className={isFutureFold ? 'hidden' : 'block max-h-96'}>
-            {Object.entries(groupedTodos.upcoming).map(([date, todos]) => (
-              <div key={date} className="relative mb-4">
-                <div className="text-16M text-gs700">{date}</div>
-                {todos.map((todo) => (
-                  <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
-                ))}
-              </div>
-            ))}
+            {Object.entries(groupedTodos.upcoming)
+              .sort(
+                ([aDate], [bDate]) =>
+                  new Date(aDate).getTime() - new Date(bDate).getTime(),
+              )
+              .map(([date, todos]) => (
+                <div key={date} className="relative mb-4">
+                  <div className="text-16M text-gs700">{date}</div>
+                  {todos.map((todo) => (
+                    <CheckTodo
+                      key={todo.id}
+                      id={todo.id}
+                      title={todo.task}
+                      done={todo.done}
+                      noteId={todo.noteId ?? null}
+                      onCheck={() => onToggle(todo.id)}
+                      onDelete={onDelete ? () => onDelete(todo.id) : undefined}
+                    />
+                  ))}
+                </div>
+              ))}
           </div>
         </div>
 
@@ -102,7 +130,7 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
             <h3 className="mb-3 text-18R font-bold">지난 할 일</h3>
             <FontAwesomeIcon
               className={cn(
-                'h-4 w-4 text-gs500 transition-transform duration-300',
+                'size-4 text-gs500 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
               icon={faAngleDown}
@@ -111,14 +139,27 @@ export default function GoalTodoList({ list, onToggle, onAdd, goalId }: Props) {
             />
           </div>
           <div className={isPastFold ? 'hidden' : 'block max-h-96'}>
-            {Object.entries(groupedTodos.past).map(([date, todos]) => (
-              <div key={date} className="relative mb-4">
-                <div className="text-16M text-gs700">{date}</div>
-                {todos.map((todo) => (
-                  <GoalListItem key={todo.id} item={todo} onToggle={onToggle} />
-                ))}
-              </div>
-            ))}
+            {Object.entries(groupedTodos.past)
+              .sort(
+                ([aDate], [bDate]) =>
+                  new Date(aDate).getTime() - new Date(bDate).getTime(),
+              )
+              .map(([date, todos]) => (
+                <div key={date} className="relative mb-4">
+                  <div className="text-16M text-gs700">{date}</div>
+                  {todos.map((todo) => (
+                    <CheckTodo
+                      key={todo.id}
+                      id={todo.id}
+                      title={todo.task}
+                      done={todo.done}
+                      noteId={todo.noteId ?? null}
+                      onCheck={() => onToggle(todo.id)}
+                      onDelete={onDelete ? () => onDelete(todo.id) : undefined}
+                    />
+                  ))}
+                </div>
+              ))}
           </div>
         </div>
       </div>

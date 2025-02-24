@@ -1,5 +1,5 @@
 import React from 'react';
-import GoalListItem from './GoalListItem';
+import CheckTodo from '../common/todo/CheckTodo';
 
 // Done 타입 정의
 interface DoneProps {
@@ -7,14 +7,16 @@ interface DoneProps {
   task: string;
   date: string;
   done: boolean;
+  noteId: number | null;
 }
 
 interface Props {
   list: DoneProps[];
   onToggle: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 
-export default function GoalDoneList({ list, onToggle }: Props) {
+export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
   // 오래된 날짜 순으로 정렬
   const sortedList = [...list].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -24,7 +26,15 @@ export default function GoalDoneList({ list, onToggle }: Props) {
     <div className="rounded-2xl bg-gs200 p-6 shadow">
       <h3 className="mb-4 text-18R font-bold">Done</h3>
       {sortedList.map((done) => (
-        <GoalListItem key={done.id} item={done} onToggle={onToggle} />
+        <CheckTodo
+          key={done.id}
+          id={done.id}
+          title={done.task}
+          done={done.done}
+          noteId={done.noteId}
+          onCheck={() => onToggle(done.id)}
+          onDelete={onDelete ? () => onDelete(done.id) : undefined}
+        />
       ))}
     </div>
   );

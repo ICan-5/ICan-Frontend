@@ -18,6 +18,7 @@ interface TodoItem {
   task: string;
   date: string;
   done: boolean;
+  noteId?: number | null;
 }
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -25,7 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
     { id: 1, task: '운동하기', date: '2025-02-18', done: false },
     { id: 2, task: '책 읽기', date: '2025-02-21', done: false },
     { id: 3, task: '자바스크립트 1챕터', date: '2025-02-17', done: false },
-    { id: 4, task: '친구들 만나기', date: '2025-02-26', done: false },
+    { id: 4, task: '친구들 만나기', date: '2025-02-28', done: false },
   ]);
   const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
     { id: 1, task: '스터디 준비하기' },
@@ -103,7 +104,13 @@ export default function Page({ params }: { params: { id: string } }) {
           goalId={params.id}
         />
         <div className="flex flex-col gap-4">
-          <GoalDoneList list={doneItems} onToggle={toggleTodos} />
+          <GoalDoneList
+            list={doneItems.map((item) => ({
+              ...item,
+              noteId: item.noteId ?? null,
+            }))}
+            onToggle={toggleTodos}
+          />
           <GoalBasket
             basketItems={baskets}
             onPickDate={pickDate}
