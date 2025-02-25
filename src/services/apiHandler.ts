@@ -15,18 +15,24 @@ export function apiHandler(fn: (req: NextRequest) => Promise<Response>) {
       const res = await fn(req);
       // 여기서 refresh 처리
       if (!res.ok)
-        return NextResponse.json({
-          message:
-            ERROR_MESSAGES[res.status as keyof typeof ERROR_MESSAGES] ||
-            ERROR_MESSAGES.default,
-          status: res.status,
-        });
-
+        return NextResponse.json(
+          {
+            message:
+              ERROR_MESSAGES[res.status as keyof typeof ERROR_MESSAGES] ||
+              ERROR_MESSAGES.default,
+          },
+          {
+            status: res.status,
+          },
+        );
       return res;
     } catch {
-      return new Response(JSON.stringify({ message: ERROR_MESSAGES.default }), {
-        status: 500,
-      });
+      return NextResponse.json(
+        { message: ERROR_MESSAGES.default },
+        {
+          status: 500,
+        },
+      );
     }
   };
 }

@@ -9,7 +9,6 @@ export const CODEITURL = `${process.env.CODEIT_API_URL}/${process.env.TEAM_ID}`;
  */
 export const headers = async () => {
   const session = await auth();
-  console.log(session?.accessToken);
   if (!session?.accessToken)
     return { 'Content-Type': 'application/json' } as HeadersInit;
   return {
