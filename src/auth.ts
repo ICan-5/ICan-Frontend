@@ -48,7 +48,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             throw new Error('사용자를 찾을 수 없습니다.');
           }
           const { user } = data;
-          return user;
+          return {
+            ...user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          };
         } catch (error) {
           const errorMessage =
             error instanceof Error
