@@ -19,7 +19,7 @@ type Props = {
 
 export default function NavGoal({ headerFolded }: Props) {
   const pathname = usePathname();
-  const { data: goalList } = useGoals([]);
+  const { data: goalList, isFetching } = useGoals();
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
 
@@ -74,7 +74,7 @@ export default function NavGoal({ headerFolded }: Props) {
       </div>
       <div
         className={cn(
-          'relative flex h-full max-h-[328px] flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[368px]',
+          'relative flex h-full max-h-[336px] flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[376px]',
           'origin-top transition-transform duration-300 ease-in-out',
           { 'scale-y-0': isFolded },
           { 'invisible overflow-hidden': headerFolded },
@@ -83,6 +83,13 @@ export default function NavGoal({ headerFolded }: Props) {
         {showNewGoal && (
           <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
+        {isFetching &&
+          Array.from({ length: 6 }, (_, i) => i + 1).map((e) => (
+            <div
+              key={e}
+              className="my-1 flex h-6 w-full animate-pulse rounded-md bg-gs100 2xl:h-8"
+            />
+          ))}
         {goalList.map((goal: Goal) => (
           <NavGoalItem
             id={goal.goalId}

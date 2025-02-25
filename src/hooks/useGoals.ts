@@ -13,11 +13,13 @@ const addGoal = async (title: string) => {
   return res.json();
 };
 
-export const useGoals = (initialData: Goal[]) => {
+export const useGoals = () => {
   return useQuery({
     queryKey: ['goals'],
     queryFn: fetchGoals,
-    initialData,
+    initialData: [],
+    retry: false,
+    throwOnError: false,
   });
 };
 
