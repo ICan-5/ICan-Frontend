@@ -7,6 +7,7 @@ import CalendarHeader from './CalendarHeader';
 interface Props {
   todos: Todo[];
   selectedDate: Date;
+  isCalendarLoaded: boolean;
   calendarDivRef: React.RefObject<HTMLDivElement>;
   onDateChange: (date: Date) => void;
   onDropTodo: (date: string, todoId: number) => void;
@@ -24,6 +25,7 @@ interface Props {
 export default function Calendar({
   todos,
   selectedDate,
+  isCalendarLoaded,
   calendarDivRef,
   onDateChange,
   onDropTodo,
@@ -31,7 +33,9 @@ export default function Calendar({
   const calendarRef = useRef<FullCalendar>(null);
   return (
     <div ref={calendarDivRef}>
-      <CalendarHeader calendarRef={calendarRef} onDateChange={onDateChange} />
+      {isCalendarLoaded && (
+        <CalendarHeader calendarRef={calendarRef} onDateChange={onDateChange} />
+      )}
       <CalendarBody
         todos={todos}
         selectedDate={selectedDate}

@@ -51,7 +51,7 @@
 
 /* 이벤트 스타일 */
 .fc-event {
-  @apply text-12SB mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] !important;
+  @apply mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] text-12SB !important;
   border-radius: 2px;
   line-height: 0.75rem;
 }

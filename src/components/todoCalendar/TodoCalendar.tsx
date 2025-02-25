@@ -6,6 +6,7 @@ import Calendar from './Calendar';
 import TodoList from './TodoList';
 import { Basket, Todo } from '@/types/todos';
 import TodoModal from './TodoModal';
+import Loading from '../common/Loading';
 
 // import Loading from '../common/Loading';
 // import TodoBasket from './TodoBasket';
@@ -285,6 +286,7 @@ export default function TodoCalendar() {
   const [basketList, setBasketList] = useState<Basket[]>(initialBasketList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
+  const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -355,6 +357,7 @@ export default function TodoCalendar() {
     if (calendarRef.current) {
       const observer = new MutationObserver(() => {
         updateCalendarHeight();
+        setIsCalendarLoaded(true);
       });
       observer.observe(calendarRef.current, {
         attributes: true,
@@ -368,7 +371,7 @@ export default function TodoCalendar() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3 p-[20px] md:flex-row xl:p-[50px] 2xl:p-[80px]">
+    <div className="flex flex-col gap-3 p-[20px] md:flex-row xl:p-[40px] 2xl:px-20 2xl:pt-[60px]">
       <div className="max-w-[600px] flex-1 xl:max-w-[840px]">
         <Calendar
           todos={todos}
@@ -376,40 +379,28 @@ export default function TodoCalendar() {
           onDateChange={setSelectedDate}
           onDropTodo={handleDropTodo}
           calendarDivRef={calendarRef}
+          isCalendarLoaded={isCalendarLoaded}
         />
+        {!isCalendarLoaded && <Loading />}
       </div>
-      <div
-        className="size-full md:w-[300px] xl:w-[350px]"
-        style={{ height: calendarHeight }}
-      >
-        <TodoList
-          selectedDate={selectedDate}
-          onToggleTodo={handleToggleTodo}
-          todos={todos.filter(
-            (todo) =>
-              new Date(todo.date).toDateString() ===
-              selectedDate.toDateString(),
-          )}
-          onDeleteTodo={handleDeleteTodo}
-          onOpenModal={handleOpenModal}
-        />
-      </div>
-      {/* </div> */}
-      {/* <div className="h-full w-full flex-grow transition-all duration-300 ease-in-out md:w-[70%]">
-          <Calendar
-          todos={todos}
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          calendarRef={calendarRef}
-          onDropTodo={handleDropTodo}
+      {isCalendarLoaded && (
+        <div
+          className="size-full md:w-[300px] xl:w-[350px]"
+          style={{ height: calendarHeight }}
+        >
+          <TodoList
+            selectedDate={selectedDate}
+            onToggleTodo={handleToggleTodo}
+            todos={todos.filter(
+              (todo) =>
+                new Date(todo.date).toDateString() ===
+                selectedDate.toDateString(),
+            )}
+            onDeleteTodo={handleDeleteTodo}
+            onOpenModal={handleOpenModal}
           />
-          </div> */}
-      {/* {isCalendarReady ? ( */}
-      {/* ) : (
-          <Loading />
-          )} */}
-      {/* <div className="flex h-full w-full flex-col items-center md:flex-row">
-      </div> */}
+        </div>
+      )}
       {/* {isCalendarReady && (
         <TodoBasket
           basketList={basketList}
