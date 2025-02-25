@@ -6,6 +6,7 @@ type Props = {
   todos: TodoType[];
   onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
+  onOpenModal: () => void;
 };
 
 /**
@@ -19,6 +20,7 @@ export default function TodoList({
   todos,
   onToggleTodo,
   onDeleteTodo,
+  onOpenModal,
 }: Props) {
   const incompleteTodos = todos.filter((todo) => !todo.done);
   const compoleteTodos = todos.filter((todo) => todo.done);
@@ -48,6 +50,7 @@ export default function TodoList({
       </div>
       <button
         type="button"
+        onClick={() => onOpenModal()}
         className="w-full rounded-lg border border-gray-300 p-3 text-sm font-medium text-gray-600 hover:bg-gray-100"
       >
         새 할일 생성

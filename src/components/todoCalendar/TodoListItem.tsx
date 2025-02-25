@@ -73,7 +73,7 @@ export default function TodoListItem({
             />
             <div
               onClick={() => onToggleTodo(todo.id)}
-              className="flex-grow cursor-pointer overflow-hidden"
+              className="grow cursor-pointer overflow-hidden"
             >
               {todo.goal && (
                 <p className="truncate text-sm text-gray-400">

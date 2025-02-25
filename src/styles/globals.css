@@ -47,3 +47,19 @@ body {
     @apply overflow-hidden text-ellipsis whitespace-nowrap break-words;
   }
 }
+
+@layer utilities {
+  @keyframes dropdown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  .animate-dropdown {
+    animation: dropdown 0.4s ease forwards;
+  }
+}
