@@ -1,53 +1,53 @@
 'use client';
 
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { z } from 'zod';
+import { useForm, Controller } from 'react-hook-form';
+import TextInput from '@/components/common/input/TextInput';
+import DateInput from '../common/input/DateInput';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-interface Props {
-  goalId: string;
-  onClose: () => void;
-  onAdd: (task: string, date: string) => void;
-}
-
-const GoalTodoSchema = z.object({
+const createTodoSchema = z.object({
   title: z
     .string()
-    .nonempty('제목을 입력해주세요.')
-    .max(30, '제목은 30자 이하여야 합니다.'),
+    .nonempty('제목을 입력해주세요')
+    .max(30, '제목은 30자 이하여야 합니다'),
+  goal: z.any().nullable().optional(),
   date: z.date().optional(),
 });
 
-export default function GoalTodoModal({ goalId, onClose, onAdd }: Props) {
-  const [task, setTask] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [error, setError] = useState<string | null>(null);
+type CreateTodoFormData = z.infer<typeof createTodoSchema>;
 
-  const handleTaskChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTask = e.target.value;
-    setTask(newTask);
+type Props = {
+  goalId: string;
+  onClose: () => void;
+  onAdd: (task: string, date: string) => void;
+};
 
-    if (newTask.length > 30) {
-      setError('제목은 30자 이하여야 합니다.');
-    } else {
-      setError(null);
+export default function CreateTodo({
+  goalId,
+  onClose,
+  onAdd,
+}: Props) {
+  const onSubmit = (data: CreateTodoFormData) => {
+    if (data.date) {
+      const formattedDate = data.date.toISOString().split('T')[0];
+      onAdd(data.title, formattedDate);
+      onClose();
     }
   };
 
-  const handleSubmit = () => {
-    const result = GoalTodoSchema.safeParse({ title: task, date });
-
-    if (!result.success) {
-      setError(result.error.errors.map((err) => err.message).join(' '));
-      return;
-    }
-
-    setError(null);
-    const formattedDate = date.toISOString().split('T')[0];
-    onAdd(task, formattedDate);
-    onClose();
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<CreateTodoFormData>({
+    mode: 'onChange',
+    resolver: zodResolver(createTodoSchema),
+    defaultValues: {
+      title: '',
+      date: new Date(),
+    },
+  });
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -62,28 +62,26 @@ export default function GoalTodoModal({ goalId, onClose, onAdd }: Props) {
           className="w-full cursor-not-allowed rounded-md border bg-gray-100 p-2 text-gray-600"
         />
 
-        <p className="mt-4">할 일 제목</p>
-        <input
+        <Controller
           name="title"
-          type="text"
-          placeholder="할 일을 입력하세요"
-          value={task}
-          onChange={handleTaskChange}
-          className="w-full rounded-md border p-2"
+          control={control}
+          render={({ field }) => (
+            <TextInput
+              {...field}
+              label="할 일 제목"
+              control={control}
+              errors={errors}
+              placeholder="할 일을 입력하세요"
+            />
+          )}
         />
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-
         <div className="relative mt-3">
-          <p>날짜</p>
-          <DatePicker
-            selected={date}
-            onChange={(selectedDate) => selectedDate && setDate(selectedDate)}
-            dateFormat="yyyy/MM/dd"
-            className="w-full rounded-md border p-2"
-            wrapperClassName="w-full"
+          <DateInput
+            name="date"
+            control={control}
+            label="날짜"
           />
         </div>
-
         <div className="mt-4 flex justify-end gap-2">
           <button
             type="button"
@@ -94,7 +92,7 @@ export default function GoalTodoModal({ goalId, onClose, onAdd }: Props) {
           </button>
           <button
             type="button"
-            onClick={handleSubmit}
+            onClick={handleSubmit(onSubmit)}
             className="rounded-md bg-blue-500 px-4 py-2 text-white"
           >
             추가
