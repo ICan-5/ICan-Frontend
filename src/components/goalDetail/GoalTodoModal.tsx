@@ -2,9 +2,9 @@
 
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 const createTodoSchema = z.object({
   title: z
@@ -23,11 +23,7 @@ type Props = {
   onAdd: (task: string, date: string) => void;
 };
 
-export default function CreateTodo({
-  goalId,
-  onClose,
-  onAdd,
-}: Props) {
+export default function CreateTodo({ goalId, onClose, onAdd }: Props) {
   const onSubmit = (data: CreateTodoFormData) => {
     if (data.date) {
       const formattedDate = data.date.toISOString().split('T')[0];
@@ -39,7 +35,7 @@ export default function CreateTodo({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<CreateTodoFormData>({
     mode: 'onChange',
     resolver: zodResolver(createTodoSchema),
@@ -54,33 +50,31 @@ export default function CreateTodo({
       <div className="w-96 rounded-lg bg-white p-6 shadow-lg">
         <h2 className="mb-4 text-lg font-bold">할 일 추가</h2>
 
-        <p>목표</p>
+        <p className="text-16SB text-gsBk">목표</p>
         <input
           type="text"
           value={`임시목표 ${goalId}`}
           readOnly
-          className="w-full cursor-not-allowed rounded-md border bg-gray-100 p-2 text-gray-600"
+          className="mb-3 w-full cursor-not-allowed rounded-md border bg-gray-100 p-2 text-gray-600"
         />
-
         <Controller
           name="title"
           control={control}
           render={({ field }) => (
             <TextInput
-              {...field}
+              value={field.value}
+              onChange={field.onChange}
+              name={field.name}
               label="할 일 제목"
               control={control}
               errors={errors}
-              placeholder="할 일을 입력하세요"
+              placeholder="할 일을 입력하세요."
             />
           )}
         />
+
         <div className="relative mt-3">
-          <DateInput
-            name="date"
-            control={control}
-            label="날짜"
-          />
+          <DateInput name="date" control={control} label="날짜" />
         </div>
         <div className="mt-4 flex justify-end gap-2">
           <button

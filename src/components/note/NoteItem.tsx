@@ -59,7 +59,10 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
                 <button
                   type="button"
                   className="block w-full px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                  onClick={() => setIsDeleteModalOpen(true)}
+                  onClick={() => {
+                    setIsDeleteModalOpen(true);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   삭제하기
                 </button>

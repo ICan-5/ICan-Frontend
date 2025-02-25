@@ -76,7 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="min-h-screen w-[85%] bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-16">
+    <div className="min-h-screen w-full max-w-[1200px] bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-16">
       <div className="mb-6 rounded-2xl bg-gs00 p-6 shadow">
         <GoalHeader
           doneItems={doneItems.length}

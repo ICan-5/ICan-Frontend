@@ -20,15 +20,17 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
           임시 목표 {id}
         </h1>
-        <div ref={menuRef} className="relative">
-          <FontAwesomeIcon
-            icon={faEllipsisV}
-            className="cursor-pointer text-gs500"
+        <div className="relative">
+          <button
+            type="button"
+            className="cursor-pointer bg-transparent p-0"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-          />
+          >
+            <FontAwesomeIcon icon={faEllipsisV} className="text-gs500" />
+          </button>
           {isMenuOpen && (
             <div
-              className="absolute mt-2 w-[120px] rounded bg-gs00 shadow-md"
+              className="absolute right-5 mt-2 w-[120px] rounded bg-gs00 shadow-md"
               ref={menuRef}
             >
               <button

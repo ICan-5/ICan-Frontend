@@ -1,3 +1,6 @@
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -14,8 +17,17 @@ export default function ConfirmDeleteModal({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gsBk bg-opacity-30">
       <div className="w-80 rounded-lg bg-gs00 p-6 shadow-lg">
+        <div className="mb-4 flex justify-center">
+          <FontAwesomeIcon
+            icon={faCircleExclamation}
+            className="text-50L text-gs500"
+          />
+        </div>
+        <p className="text-center text-18SB text-gs800">
+          노트를 정말 삭제하시겠어요?
+        </p>
         <p className="text-center text-16R text-gs800">
-          노트를 정말 삭제하시겠어요? <br /> 삭제된 노트는 복구할 수 없어요.
+          삭제된 노트는 복구할 수 없어요.
         </p>
         <div className="mt-4 flex justify-between">
           <button
