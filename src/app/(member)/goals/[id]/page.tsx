@@ -76,8 +76,8 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-[1200px] bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-16">
-      <div className="mb-6 rounded-2xl bg-gs00 p-6 shadow">
+    <div className="min-h-screen w-full max-w-[1200px] bg-gs100 px-4 py-8 sm:px-4 lg:px-6 xl:px-20">
+      <div className="my-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
         <GoalHeader
           doneItems={doneItems.length}
           todoItems={todoItems.length}
@@ -85,8 +85,8 @@ export default function Page({ params }: { params: { id: string } }) {
         />
       </div>
       <Link href={`${params.id}/note`} className="block">
-        <div className="mb-6 cursor-pointer rounded-2xl bg-slate200 p-3 shadow">
-          <h2 className="mb-2 flex items-center text-18SB">
+        <div className="mb-6 h-[60px] cursor-pointer rounded-2xl bg-slate100 px-6 py-4 shadow">
+          <h2 className="flex items-center text-18SB">
             <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
             노트 모아보기
             <FontAwesomeIcon
@@ -96,14 +96,14 @@ export default function Page({ params }: { params: { id: string } }) {
           </h2>
         </div>
       </Link>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <GoalTodoList
           list={todoItems}
           onToggle={toggleTodos}
           onAdd={addTodo}
           goalId={params.id}
         />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
           <GoalDoneList
             list={doneItems.map((item) => ({
               ...item,

@@ -55,7 +55,7 @@ export default function CreateTodo({ goalId, onClose, onAdd }: Props) {
           type="text"
           value={`임시목표 ${goalId}`}
           readOnly
-          className="mb-3 w-full cursor-not-allowed rounded-md border bg-gray-100 p-2 text-gray-600"
+          className="mb-3 w-full cursor-not-allowed rounded-lg bg-gray-100 p-2 px-4 py-3 text-16R text-gray-600"
         />
         <Controller
           name="title"

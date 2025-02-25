@@ -25,17 +25,25 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
   return (
     <div className="rounded-2xl bg-gs200 p-6 shadow">
       <h3 className="mb-4 text-18R font-bold">Done</h3>
-      {sortedList.map((done) => (
-        <CheckTodo
-          key={done.id}
-          id={done.id}
-          title={done.task}
-          done={done.done}
-          noteId={done.noteId}
-          onCheck={() => onToggle(done.id)}
-          onDelete={onDelete ? () => onDelete(done.id) : undefined}
-        />
-      ))}
+
+      {/* ✅ 완료된 할 일이 없을 경우 */}
+      {sortedList.length === 0 ? (
+        <div className="flex items-center justify-center py-6 text-gs500">
+          다 한 일이 아직 없어요
+        </div>
+      ) : (
+        sortedList.map((done) => (
+          <CheckTodo
+            key={done.id}
+            id={done.id}
+            title={done.task}
+            done={done.done}
+            noteId={done.noteId}
+            onCheck={() => onToggle(done.id)}
+            onDelete={onDelete ? () => onDelete(done.id) : undefined}
+          />
+        ))
+      )}
     </div>
   );
 }
