@@ -107,7 +107,7 @@ export default function CalendarBody({
     };
     // 숨겨진 이벤트 개수 표시
     const updateMoreCount = () => {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         const events = info.el.querySelectorAll('.fc-event');
 
         // 숨겨진 이벤트 개수 계산
@@ -140,7 +140,7 @@ export default function CalendarBody({
         } else {
           moreCountEl.style.opacity = '0';
         }
-      }, 100);
+      });
     };
 
     updateCellSize();
