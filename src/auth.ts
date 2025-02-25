@@ -47,6 +47,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           if (!data) {
             throw new Error('사용자를 찾을 수 없습니다.');
           }
+
           const { user } = data;
           return {
             ...user,
@@ -73,15 +74,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           refreshToken: user.refreshToken,
         };
       }
-      return token; // user가 없으면 기존 token을 그대로 반환
+      return token;
     },
     async session({ session, token }) {
-      // JWT 토큰에서 액세스 토큰과 리프레시 토큰을 세션에 추가
-      if (token?.accessToken && token?.refreshToken) {
+      // JWT 토큰에서 액세스 토큰만 세션에 추가
+      if (token?.accessToken) {
         return {
           ...session,
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
+          accessToken: token.accessToken, // 리프레시 토큰은 제외하기
         };
       }
       return session;
