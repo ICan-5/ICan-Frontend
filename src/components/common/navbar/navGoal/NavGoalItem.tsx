@@ -20,7 +20,9 @@ export default function NavGoalItem({ id, title, isSelected }: Props) {
       )}
     >
       <span className="ml-2 h-2 w-2 rounded-md bg-goal01" />
-      <span className="text-overflow text-12R 2xl:text-14R">{title}</span>
+      <span className="text-overflow h-4 text-12R 2xl:h-5 2xl:text-14R">
+        {title}
+      </span>
     </Link>
   );
 }

@@ -10,25 +10,8 @@ import NavGoalItem from './NavGoalItem';
 import NewGoalItem from './NewGoalItem';
 import Icon from '@/components/common/icon/Icon';
 import IconButton from '@/components/common/button/IconButton';
-
-// TODO:: 목표 리스트 mock 데이터, API 연결하면 삭제
-const tempGoalList = [
-  { id: 1, title: '자바스크립트 공부하기' },
-  { id: 2, title: '리액트 공부하기' },
-  { id: 13, title: 'Next14 공부하기' },
-  { id: 22, title: '리액트 공부하기' },
-  { id: 33, title: 'Next14 공부하기' },
-  { id: 42, title: '리액트 공부하기' },
-  { id: 53, title: 'Next14 공부하기' },
-  { id: 62, title: '리액트 공부하기' },
-  { id: 73, title: 'Next14 공부하기' },
-  { id: 82, title: '리액트 공부하기' },
-  { id: 93, title: 'Next14 공부하기' },
-  { id: 102, title: '리액트 공부하기' },
-  { id: 113, title: 'Next14 공부하기' },
-  { id: 122, title: '리액트 공부하기' },
-  { id: 133, title: 'Next14 공부하기' },
-];
+import { Goal } from '@/types/goals';
+import { useGoals } from '@/hooks/useGoals';
 
 type Props = {
   headerFolded: boolean;
@@ -36,7 +19,7 @@ type Props = {
 
 export default function NavGoal({ headerFolded }: Props) {
   const pathname = usePathname();
-  const [goalList, setGoalList] = useState(tempGoalList);
+  const { data: goalList } = useGoals([]);
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
 
@@ -98,19 +81,14 @@ export default function NavGoal({ headerFolded }: Props) {
         )}
       >
         {showNewGoal && (
-          <NewGoalItem
-            onCloseInput={() => setShowNewGoal(false)}
-            onAddNewItem={(newItem) =>
-              setGoalList((prev) => [...prev, newItem])
-            }
-          />
+          <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
-        {goalList.map((goal) => (
+        {goalList.map((goal: Goal) => (
           <NavGoalItem
-            id={goal.id}
+            id={goal.goalId}
             title={goal.title}
-            isSelected={pathname === `/goals/${goal.id}`}
-            key={goal.id}
+            isSelected={pathname === `/goals/${goal.goalId}`}
+            key={goal.goalId}
           />
         ))}
       </div>
