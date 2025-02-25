@@ -95,12 +95,12 @@ export default function CalendarBody({
         const width = cell.clientWidth;
         document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
           const cellElement = el as HTMLElement;
-          if (width < 118) {
+          if (width < 96) {
             cellElement.style.height = `${width}px`;
             cellElement.style.minHeight = `${width}px`;
           } else {
-            cellElement.style.height = '124px';
-            cellElement.style.minHeight = '124px';
+            cellElement.style.height = '100px';
+            cellElement.style.minHeight = '100px';
           }
         });
       }

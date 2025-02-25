@@ -372,7 +372,7 @@ export default function TodoCalendar() {
 
   return (
     <div className="flex flex-col gap-3 p-[20px] md:flex-row xl:p-[40px] 2xl:px-20 2xl:pt-[60px]">
-      <div className="max-w-[600px] flex-1 xl:max-w-[840px]">
+      <div className="max-w-[560px] flex-1 2xl:max-w-[840px]">
         <Calendar
           todos={todos}
           selectedDate={selectedDate}
@@ -385,7 +385,7 @@ export default function TodoCalendar() {
       </div>
       {isCalendarLoaded && (
         <div
-          className="size-full md:w-[300px] xl:w-[350px]"
+          className="size-full md:w-[280px] xl:w-[350px]"
           style={{ height: calendarHeight }}
         >
           <TodoList
