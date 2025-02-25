@@ -31,7 +31,7 @@ export default function TodoList({
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
 
   const incompleteTodos = todos.filter((todo) => !todo.done);
-  const compoleteTodos = todos.filter((todo) => todo.done);
+  const completeTodos = todos.filter((todo) => todo.done);
 
   return (
     <div className="flex size-full flex-col rounded-[20px] border-2 border-gs200 bg-gs00">
@@ -55,11 +55,17 @@ export default function TodoList({
             미완료({incompleteTodos.length})
           </h3>
           <div className="h-full overflow-y-auto">
-            <TodoListItem
-              todoList={incompleteTodos}
-              onToggleTodo={onToggleTodo}
-              onDeleteTodo={onDeleteTodo}
-            />
+            {incompleteTodos.length > 0 ? (
+              <TodoListItem
+                todoList={incompleteTodos}
+                onToggleTodo={onToggleTodo}
+                onDeleteTodo={onDeleteTodo}
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
+                등록된 할 일이 없습니다.
+              </div>
+            )}
           </div>
         </div>
 
@@ -72,7 +78,7 @@ export default function TodoList({
         >
           <div className="flex justify-between">
             <h3 className="mb-2 text-14M text-gs500">
-              완료 ({compoleteTodos.length})
+              완료 ({completeTodos.length})
             </h3>
             <button
               type="button"
@@ -87,11 +93,17 @@ export default function TodoList({
           </div>
           {isCompletedOpen && (
             <div className="h-full overflow-y-auto">
-              <TodoListItem
-                todoList={compoleteTodos}
-                onToggleTodo={onToggleTodo}
-                onDeleteTodo={onDeleteTodo}
-              />
+              {completeTodos.length > 0 ? (
+                <TodoListItem
+                  todoList={completeTodos}
+                  onToggleTodo={onToggleTodo}
+                  onDeleteTodo={onDeleteTodo}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
+                  완료된 할 일이 없습니다.
+                </div>
+              )}
             </div>
           )}
         </div>
