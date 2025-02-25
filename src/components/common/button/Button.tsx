@@ -10,9 +10,9 @@ const ButtonVariants = cva(
     variants: {
       variant: {
         default:
-          '!text-14SB 2xl:!text-16SB bg-slate500 text-gs00 hover:bg-slate800 focus:bg-slate800 active:bg-slate800 disabled:bg-gs200 disabled:text-gs400',
+          'bg-slate500 !text-14SB text-gs00 hover:bg-slate800 focus:bg-slate800 active:bg-slate800 disabled:bg-gs200 disabled:text-gs400 2xl:!text-16SB',
         outline:
-          '!text-14M 2xl:!text-16M border border-slate500 bg-gs00 text-slate500 hover:border-slate800 hover:text-slate800 focus:border-slate800 focus:text-slate800 active:border-slate800 active:text-slate800 disabled:border-gs400 disabled:text-gs400',
+          'border border-slate500 bg-gs00 !text-14M text-slate500 hover:border-slate800 hover:text-slate800 focus:border-slate800 focus:text-slate800 active:border-slate800 active:text-slate800 disabled:border-gs400 disabled:text-gs400 2xl:!text-16M',
       },
       size: {
         default: 'px-2 py-1',

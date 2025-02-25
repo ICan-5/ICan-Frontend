@@ -51,7 +51,7 @@
 
 /* 이벤트 스타일 */
 .fc-event {
-  @apply mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] text-12SB !important;
+  @apply text-12SB mx-0 overflow-hidden text-ellipsis whitespace-nowrap px-[6px] py-[2px] !important;
   border-radius: 2px;
   line-height: 0.75rem;
 }
@@ -71,8 +71,8 @@
   display: none !important;
 }
 
-/* 📌 화면 너비가 768px 이하일 때 → 3번째 이벤트부터 숨김 */
-@media (max-width: 1024px) {
+/* 📌 화면 너비가 1440px 이하일 때 → 3번째 이벤트부터 숨김 */
+@media (max-width: 1440px) {
   .fc-daygrid-day-events > *:nth-child(n + 3) {
     display: none !important;
   }
@@ -84,8 +84,8 @@
   }
 }
 
-/* 📌 화면 너비가 480px 이하일 때 → 2번째 이벤트부터 숨김 */
-@media (max-width: 768px) {
+/* 📌 화면 너비가 1024px 이하일 때 → 2번째 이벤트부터 숨김 */
+@media (max-width: 1024px) {
   .fc-daygrid-day-events > *:nth-child(n + 2) {
     display: none !important;
   }

@@ -1,5 +1,11 @@
+import { faAngleUp, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Todo } from '@/types/todos';
 import TodoListItem from './TodoListItem';
+import Button from '../common/button/Button';
+import Icon from '../common/icon/Icon';
+import cn from '@/utils/cn';
 
 interface Props {
   selectedDate: Date;
@@ -22,39 +28,79 @@ export default function TodoList({
   onDeleteTodo,
   onOpenModal,
 }: Props) {
+  const [isCompletedOpen, setIsCompletedOpen] = useState(true);
+
   const incompleteTodos = todos.filter((todo) => !todo.done);
   const compoleteTodos = todos.filter((todo) => todo.done);
+
   return (
-    <div className="flex size-full flex-col">
-      <h2 className="mb-3 flex justify-between text-lg font-bold">
-        {selectedDate.toLocaleDateString('ko-KR', {
-          month: 'long',
-          day: 'numeric',
-        })}
-      </h2>
-      <div className="mb-4 flex flex-1 flex-col gap-4 overflow-y-auto">
-        <TodoListItem
-          todoList={incompleteTodos}
-          type="미완료"
-          onToggleTodo={onToggleTodo}
-          isCompleted={false}
-          onDeleteTodo={onDeleteTodo}
-        />
-        <TodoListItem
-          todoList={compoleteTodos}
-          type="완료"
-          onToggleTodo={onToggleTodo}
-          isCompleted
-          onDeleteTodo={onDeleteTodo}
-        />
+    <div className="flex size-full flex-col rounded-[20px] border-2 border-gs200 bg-gs00">
+      {/* header */}
+      <div className="flex items-center justify-between border-b-2 border-gs200 p-4">
+        <h2 className="text-18SB text-gsBk">할일</h2>
+        <p className="text-14M text-gs500">
+          {`${selectedDate.getFullYear()}년 ${String(selectedDate.getMonth() + 1).padStart(2, '0')}월 ${String(selectedDate.getDate()).padStart(2, '0')}일`}
+        </p>
       </div>
-      <button
-        type="button"
-        onClick={() => onOpenModal()}
-        className="w-full rounded-lg border border-gray-300 p-3 text-sm font-medium text-gray-600 hover:bg-gray-100"
-      >
-        새 할일 생성
-      </button>
+      {/* 할 일 목록 */}
+      <div className="flex flex-1 flex-col gap-8 overflow-hidden p-4">
+        {/* 미완료 */}
+        <div
+          className={cn(
+            'flex min-h-0 flex-1 flex-col transition-all duration-500 ease-in-out',
+            isCompletedOpen ? 'max-h-[50%]' : 'max-h-[85%]',
+          )}
+        >
+          <h3 className="mb-2 text-14M text-gs500">
+            미완료({incompleteTodos.length})
+          </h3>
+          <div className="h-full overflow-y-auto">
+            <TodoListItem
+              todoList={incompleteTodos}
+              onToggleTodo={onToggleTodo}
+              onDeleteTodo={onDeleteTodo}
+            />
+          </div>
+        </div>
+
+        {/* 완료 */}
+        <div
+          className={cn(
+            'flex flex-col overflow-hidden transition-all duration-500 ease-in-out',
+            isCompletedOpen ? 'h-[40%]' : 'h-5',
+          )}
+        >
+          <div className="flex justify-between">
+            <h3 className="mb-2 text-14M text-gs500">
+              완료 ({compoleteTodos.length})
+            </h3>
+            <button
+              type="button"
+              className={cn('size-5 transition-transform duration-300', {
+                'rotate-0': !isCompletedOpen,
+                'rotate-180': isCompletedOpen,
+              })}
+              onClick={() => setIsCompletedOpen((prev) => !prev)}
+            >
+              <FontAwesomeIcon icon={faAngleUp} className="size-3" />
+            </button>
+          </div>
+          {isCompletedOpen && (
+            <div className="h-full overflow-y-auto">
+              <TodoListItem
+                todoList={compoleteTodos}
+                onToggleTodo={onToggleTodo}
+                onDeleteTodo={onDeleteTodo}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="px-4 py-5">
+        <Button variant="outline" size="full" onClick={() => onOpenModal()}>
+          <Icon icon={faPlus} />새 할일 생성
+        </Button>
+      </div>
     </div>
   );
 }

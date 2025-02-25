@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
+import React, { useEffect, useRef, useState } from 'react';
 import Calendar from './Calendar';
 
 import TodoList from './TodoList';
@@ -285,9 +284,8 @@ export default function TodoCalendar() {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const [basketList, setBasketList] = useState<Basket[]>(initialBasketList);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
-  // const [calendarHeight, setCalendarHeight] = useState<number>(0);
-  const calendarRef = useRef<FullCalendar>(null);
+  const [calendarHeight, setCalendarHeight] = useState<number>(0);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -295,17 +293,11 @@ export default function TodoCalendar() {
   /**
    * 캘린더 높이 가져와서 TodoList에 적용
    */
-  // const updateCalendarHeight = () => {
-  //   if (calendarRef.current) {
-  //     const calendarApi = calendarRef.current.getApi();
-  //     const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
-  //     console.log(calendarEl);
-  //     if (calendarEl) {
-  //       setCalendarHeight(calendarEl.clientHeight);
-  //       setIsCalendarReady(true);
-  //     }
-  //   }
-  // };
+  const updateCalendarHeight = () => {
+    if (calendarRef.current) {
+      setCalendarHeight(calendarRef.current.clientHeight);
+    }
+  };
 
   /**
    * 할 일의 체크박스 상태 변경
@@ -359,43 +351,37 @@ export default function TodoCalendar() {
     setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
   };
 
-  // useEffect(() => {
-  //   if (calendarRef.current) {
-  //     const calendarApi = calendarRef.current.getApi();
-  //     const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
+  useEffect(() => {
+    if (calendarRef.current) {
+      const observer = new MutationObserver(() => {
+        updateCalendarHeight();
+      });
+      observer.observe(calendarRef.current, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+      return () => observer.disconnect();
+    }
 
-  //     if (calendarEl) {
-  //       updateCalendarHeight();
-  //       const observer = new MutationObserver(() => {
-  //         updateCalendarHeight();
-  //       });
-
-  //       observer.observe(calendarEl, {
-  //         attributes: true,
-  //         childList: true,
-  //         subtree: true,
-  //       });
-  //       return () => observer.disconnect();
-  //     }
-  //   }
-
-  //   return undefined;
-  // }, []);
+    return undefined;
+  }, []);
 
   return (
-    <div className="flex flex-col p-[20px] md:flex-row xl:p-[50px] 2xl:p-[80px]">
-      <Calendar
-        todos={todos}
-        selectedDate={selectedDate}
-        onDateChange={setSelectedDate}
-        onDropTodo={handleDropTodo}
-        calendarRef={calendarRef}
-      />
-      {/* <div
-        className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
+    <div className="flex flex-col gap-3 p-[20px] md:flex-row xl:p-[50px] 2xl:p-[80px]">
+      <div className="max-w-[600px] flex-1 xl:max-w-[840px]">
+        <Calendar
+          todos={todos}
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          onDropTodo={handleDropTodo}
+          calendarDivRef={calendarRef}
+        />
+      </div>
+      <div
+        className="size-full md:w-[300px] xl:w-[350px]"
         style={{ height: calendarHeight }}
-      > */}
-      <div className="lg:maw-w-[120px] 2xl:max-w-[350px]">
+      >
         <TodoList
           selectedDate={selectedDate}
           onToggleTodo={handleToggleTodo}
