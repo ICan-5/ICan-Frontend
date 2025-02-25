@@ -6,7 +6,13 @@ import { DayCellContentArg, EventClickArg } from '@fullcalendar/core';
 import '@/styles/calendar.css';
 import { useCallback, useEffect } from 'react';
 import cn from '@/utils/cn';
-import { TodoType } from '@/types/todos';
+import { Todo } from '@/types/todos';
+
+const goalColor: Record<string, string> = {
+  goal01: 'bg-goal01-100 text-goal01',
+  goal02: 'bg-goal02-100 text-goal02',
+  default: 'bg-slate100 text-slate500',
+};
 
 /**
  * 각 날짜 숫자를 커스텀한 UI
@@ -34,7 +40,7 @@ const renderDayCellContent = (info: DayCellContentArg) => {
 };
 
 interface Props {
-  todos: TodoType[];
+  todos: Todo[];
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   calendarRef: React.RefObject<FullCalendar>;
@@ -144,13 +150,11 @@ export default function CalendarBody({
     observer.observe(info.el);
 
     window.addEventListener('resize', updateCellSize);
-  };
 
-  const getColorClasses = (color?: string) => {
-    return cn({
-      'bg-slate100 text-slate500': !color, // 기본 색상
-      [`bg-${color}-100 text-${color}`]: color, // 동적 색상 적용
-    });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateCellSize);
+    };
   };
 
   /**
@@ -182,7 +186,7 @@ export default function CalendarBody({
       events={todos.map((event) => ({
         ...event,
         id: event.id.toString(),
-        className: getColorClasses(event.goal?.color),
+        className: goalColor[event.goal?.color || 'default'],
       }))}
       eventBorderColor="transparent"
       eventDisplay="block"
