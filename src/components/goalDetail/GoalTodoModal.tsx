@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { z } from 'zod';
 
-interface GoalTodoModalProps {
+interface Props {
   goalId: string;
   onClose: () => void;
   onAdd: (task: string, date: string) => void;
@@ -19,11 +19,7 @@ const GoalTodoSchema = z.object({
   date: z.date().optional(),
 });
 
-export default function GoalTodoModal({
-  goalId,
-  onClose,
-  onAdd,
-}: GoalTodoModalProps) {
+export default function GoalTodoModal({ goalId, onClose, onAdd }: Props) {
   const [task, setTask] = useState('');
   const [date, setDate] = useState(new Date());
   const [error, setError] = useState<string | null>(null);

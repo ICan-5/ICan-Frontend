@@ -1,4 +1,4 @@
-interface ConfirmDeleteModalProps {
+interface Props {
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
@@ -8,7 +8,7 @@ export default function ConfirmDeleteModal({
   isOpen,
   onClose,
   onDelete,
-}: ConfirmDeleteModalProps) {
+}: Props) {
   if (!isOpen) return null;
 
   return (

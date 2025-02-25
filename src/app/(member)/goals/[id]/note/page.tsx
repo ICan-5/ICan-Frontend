@@ -42,7 +42,7 @@ const notes = [
 export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen w-full bg-gs100 px-2 py-4 sm:px-8 lg:px-12 xl:px-16">
-      <div className="mb-3 mt-3 flex items-center gap-2 text-18SB">
+      <div className="my-3 flex items-center gap-2 text-18SB">
         <Link href={`/goals/${params.id}`}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </Link>

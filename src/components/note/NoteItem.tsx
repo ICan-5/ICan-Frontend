@@ -2,9 +2,10 @@
 
 import { faLayerGroup, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import NoteModal from '@/components/note/NoteModal';
 import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface Note {
   id: number;
@@ -20,27 +21,16 @@ interface NoteItemProps {
 }
 
 export default function NoteItem({ note, goalId }: NoteItemProps) {
-  const [openMenu, setOpenMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+
+  const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside<HTMLDivElement>(
+    () => setIsMenuOpen(false),
+  );
 
   const handleDelete = () => {
     setIsDeleteModalOpen(false);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <>
@@ -56,9 +46,9 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
             <FontAwesomeIcon
               icon={faEllipsisV}
               className="cursor-pointer text-gs500"
-              onClick={() => setOpenMenu((prev) => !prev)}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
             />
-            {openMenu && (
+            {isMenuOpen && (
               <div className="absolute right-0 z-10 mt-2 w-24 rounded bg-gs00 shadow-md">
                 <button
                   type="button"
