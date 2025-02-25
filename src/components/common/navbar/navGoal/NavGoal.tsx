@@ -94,6 +94,7 @@ export default function NavGoal({ headerFolded }: Props) {
           <NavGoalItem
             id={goal.goalId}
             title={goal.title}
+            color={goal.color}
             isSelected={pathname === `/goals/${goal.goalId}`}
             key={goal.goalId}
           />
