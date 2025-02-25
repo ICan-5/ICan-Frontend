@@ -1,9 +1,9 @@
-import { TodoType } from '@/types/todos';
+import { Todo } from '@/types/todos';
 import TodoListItem from './TodoListItem';
 
 interface Props {
   selectedDate: Date;
-  todos: TodoType[];
+  todos: Todo[];
   onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
   onOpenModal: () => void;
@@ -25,7 +25,7 @@ export default function TodoList({
   const incompleteTodos = todos.filter((todo) => !todo.done);
   const compoleteTodos = todos.filter((todo) => todo.done);
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex size-full flex-col">
       <h2 className="mb-3 flex justify-between text-lg font-bold">
         {selectedDate.toLocaleDateString('ko-KR', {
           month: 'long',

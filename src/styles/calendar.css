@@ -33,6 +33,10 @@
   @apply bg-gs20;
 }
 
+.fc-day-other .fc-event {
+  opacity: 0.5 !important;
+}
+
 .fc-daygrid-day-number {
   padding: 8px !important;
 }

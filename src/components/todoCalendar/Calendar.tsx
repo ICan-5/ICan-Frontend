@@ -1,10 +1,10 @@
 import FullCalendar from '@fullcalendar/react';
-import { TodoType } from '@/types/todos';
+import { Todo } from '@/types/todos';
 import CalendarBody from './CalendarBody';
 import CalendarHeader from './CalendarHeader';
 
 interface Props {
-  todos: TodoType[];
+  todos: Todo[];
   selectedDate: Date;
   calendarRef: React.RefObject<FullCalendar>;
   onDateChange: (date: Date) => void;
@@ -20,7 +20,7 @@ interface Props {
  * @param onDateChange 선택 날짜 변경 함수
  * @param onDropTodo 장바구니에서 드래그&드롭 한 요소 드롭 적용 함수
  */
-function Calendar({
+export default function Calendar({
   todos,
   selectedDate,
   calendarRef,
@@ -40,5 +40,3 @@ function Calendar({
     </div>
   );
 }
-
-export default Calendar;

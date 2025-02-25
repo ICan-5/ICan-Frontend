@@ -5,7 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import Calendar from './Calendar';
 
 import TodoList from './TodoList';
-import { BasketType, TodoType } from '@/types/todos';
+import { Basket, Todo } from '@/types/todos';
 import TodoModal from './TodoModal';
 
 // import Loading from '../common/Loading';
@@ -282,8 +282,8 @@ const initialBasketList = [
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [todos, setTodos] = useState<TodoType[]>(initialTodos);
-  const [basketList, setBasketList] = useState<BasketType[]>(initialBasketList);
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [basketList, setBasketList] = useState<Basket[]>(initialBasketList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
   // const [calendarHeight, setCalendarHeight] = useState<number>(0);
@@ -347,7 +347,7 @@ export default function TodoCalendar() {
     const draggedTodo = basketList.find((todo) => todo.id === todoId);
     if (!draggedTodo) return;
 
-    const newTodo: TodoType = {
+    const newTodo: Todo = {
       id: todoId,
       title: draggedTodo.title,
       date,
