@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import GoalProgress from './GoalProgress';
@@ -10,15 +11,31 @@ type Props = {
 };
 
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
+  const [title, setTitle] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [menuRef, isMenuOpen, setIsMenuOpen] =
     useClickOutside<HTMLDivElement>();
+  useEffect(() => {
+    const fetchGoal = async () => {
+      try {
+        const response = await fetch(`/api/goalDetail/goalTitle/${id}`);
+        const data = await response.json();
+        setTitle(data.title);
+      } catch (error) {
+        console.error('Error fetching goal:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGoal();
+  }, [id]);
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          임시 목표 {id}
+          {loading ? '로딩 중...' : title || '제목 없음'}
         </h1>
         <div className="relative">
           <button
