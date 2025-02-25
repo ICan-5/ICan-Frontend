@@ -76,7 +76,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <Button
           onClick={() => handleTodayClick()}
           variant="outline"
-          className="w-[84px] rounded-3xl py-2"
+          className="w-[84px] rounded-3xl py-2 2xl:rounded-3xl 2xl:py-2"
         >
           오늘
         </Button>
