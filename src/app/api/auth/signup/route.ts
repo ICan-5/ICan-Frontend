@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
         name,
         password,
       }),
+      cache: 'no-store',
     });
 
     if (!response.ok) {

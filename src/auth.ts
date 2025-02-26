@@ -2,13 +2,6 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
-
-if (!apiUrl) {
-  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
-}
-
 export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
@@ -25,21 +18,22 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         const { email, password } = credentials;
 
         try {
-          const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await fetch(
+            `${process.env.BACKEND_API_URL}/auth/login`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
+              cache: 'no-store',
             },
-            // credentials: 'include',
-            body: JSON.stringify({
-              email,
-              password,
-            }),
-          });
+          );
           if (!response.ok) {
-            throw new Error(
-              `로그인 실패: ${response.status} ${response.statusText}`,
-            );
+            throw new Error(`로그인 실패: ${response.status}`);
           }
 
           const data = await response.json();
@@ -47,8 +41,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           if (!data) {
             throw new Error('사용자를 찾을 수 없습니다.');
           }
+
           const { user } = data;
-          return user;
+          return {
+            ...user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          };
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -59,6 +58,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60, // 1시간 후 세션 만료
+  },
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     // 사용자 정보를 바탕으로 JWT 토큰을 생성
     async jwt({ token, user }) {
@@ -69,11 +73,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           refreshToken: user.refreshToken,
         };
       }
-      return token; // user가 없으면 기존 token을 그대로 반환
+      return token;
     },
     async session({ session, token }) {
-      // JWT 토큰에서 액세스 토큰과 리프레시 토큰을 세션에 추가
-      if (token?.accessToken && token?.refreshToken) {
+      if (token?.accessToken) {
         return {
           ...session,
           accessToken: token.accessToken,
