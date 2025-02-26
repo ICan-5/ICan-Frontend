@@ -1,0 +1,19 @@
+export const ERROR_MESSAGES = {
+  400: '잘못된 요청입니다.',
+  401: '인증이 필요합니다.',
+  403: '권한이 없습니다.',
+  404: '리소스를 찾을 수 없습니다.',
+  500: '서버 오류가 발생했습니다.',
+  default: '알 수 없는 오류가 발생했습니다.',
+} as const;
+
+/**
+ * @param status HTTP 상태 코드
+ * @returns 해당하는 오류 메시지, 없으면 기본 메시지 반환
+ */
+export const getErrorMessage = (status: number): string => {
+  return (
+    ERROR_MESSAGES[status as keyof typeof ERROR_MESSAGES] ||
+    ERROR_MESSAGES.default
+  );
+};

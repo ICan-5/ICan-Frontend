@@ -2,7 +2,13 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+export const {
+  auth,
+  handlers,
+  signIn,
+  signOut,
+  unstable_update: update,
+} = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -65,7 +71,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET,
   callbacks: {
     // 사용자 정보를 바탕으로 JWT 토큰을 생성
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, trigger }) {
       if (user?.accessToken && user?.refreshToken) {
         return {
           ...token,
@@ -73,6 +79,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           refreshToken: user.refreshToken,
         };
       }
+
+      if (trigger === 'update' && session) {
+        return {
+          ...token,
+          accessToken: session.accessToken,
+          refreshToken: session.refreshToken,
+        };
+      }
+
       return token;
     },
     async session({ session, token }) {
