@@ -1,0 +1,24 @@
+.quill {
+  @apply flex;
+  @apply flex-col;
+  @apply h-full;
+}
+.ql-container.ql-snow {
+  height: calc(100% - 44px);
+  @apply border-none;
+  @apply flex-1;
+}
+.ql-editor {
+  @apply p-0;
+  height: 700px;
+}
+.ql-editor.ql-blank::before {
+  @apply left-0;
+  @apply not-italic;
+  @apply text-16R;
+  @apply text-gs400;
+}
+
+.ql-editor p {
+  @apply text-16R;
+}
