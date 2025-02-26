@@ -9,12 +9,6 @@ if (!apiUrl) {
 
 export async function GET(req: NextRequest) {
   const authorization = req.headers.get('authorization');
-  if (!req.headers) {
-    return NextResponse.json(
-      { message: 'req.headers가 없습니다' },
-      { status: 400 },
-    );
-  }
 
   try {
     // API로 요청
