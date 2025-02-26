@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactDOM from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface NoteModalProps {
@@ -26,7 +27,7 @@ export default function NoteModal({
 }: NoteModalProps) {
   const [modalRef] = useClickOutside<HTMLDivElement>(onClose);
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -43,7 +44,7 @@ export default function NoteModal({
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            transition={{ type: 'slid', stiffness: 300, damping: 30 }}
           >
             {/* 닫기 버튼 */}
             <button
@@ -85,4 +86,6 @@ export default function NoteModal({
       )}
     </AnimatePresence>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

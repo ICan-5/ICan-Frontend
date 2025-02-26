@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ReactDOM from 'react-dom';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
 
@@ -45,7 +46,7 @@ export default function CreateTodo({ goalId, onClose, onAdd }: Props) {
     },
   });
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 flex items-center justify-center bg-gsBk bg-opacity-50">
       <div className="w-96 rounded-lg bg-white p-6 shadow-lg">
         <h2 className="mb-4 text-lg font-bold">할 일 추가</h2>
@@ -95,4 +96,6 @@ export default function CreateTodo({ goalId, onClose, onAdd }: Props) {
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

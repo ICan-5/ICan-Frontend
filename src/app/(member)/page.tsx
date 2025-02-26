@@ -8,11 +8,6 @@ export default async function Page() {
   if (!session) {
     return <div>Loading...</div>;
   }
-  const { user, accessToken, refreshToken } = session;
-  console.log('__');
-  console.log('user:', user);
-  console.log('Access Token:', accessToken);
-  console.log('Refresh Token:', refreshToken);
   const todayList = [
     {
       id: 1,

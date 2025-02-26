@@ -1,5 +1,6 @@
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactDOM from 'react-dom';
 
 interface Props {
   isOpen: boolean;
@@ -14,7 +15,7 @@ export default function ConfirmDeleteModal({
 }: Props) {
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 flex items-center justify-center bg-gsBk bg-opacity-30">
       <div className="w-80 rounded-lg bg-gs00 p-6 shadow-lg">
         <div className="mb-4 flex justify-center">
@@ -48,4 +49,6 @@ export default function ConfirmDeleteModal({
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

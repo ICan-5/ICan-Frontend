@@ -41,14 +41,14 @@ const notes = [
 
 export default function Page({ params }: { params: { id: string } }) {
   return (
-    <div className="relative left-1/2 min-h-screen w-full max-w-screen-xl -translate-x-1/2 bg-gs100 px-20 py-4 sm:px-4 lg:px-6 xl:px-20">
-      <div className="mb-4 mt-6 flex items-center gap-2 text-18SB">
+    <div className="relative left-1/2 w-full max-w-screen-xl -translate-x-1/2 bg-gs100 px-20 py-4 sm:px-4 lg:px-6 xl:px-20">
+      <div className="mb-4 flex items-center gap-2 text-18SB">
         <Link href={`/goals/${params.id}`}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </Link>
         노트 모아보기
       </div>
-      <div className="relative left-1/2 mb-3 size-full h-[52px] max-w-screen-xl -translate-x-1/2 rounded-xl bg-gs00 p-3 shadow">
+      <div className="relative left-1/2 mb-3 h-[52px] w-full max-w-screen-xl -translate-x-1/2 rounded-xl bg-gs00 p-3 shadow">
         <NoteHeader id={params.id} />
       </div>
       <div>
