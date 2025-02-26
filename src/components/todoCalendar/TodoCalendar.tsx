@@ -371,8 +371,8 @@ export default function TodoCalendar() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3 p-[20px] md:flex-row xl:p-[40px] 2xl:px-20 2xl:pt-[60px]">
-      <div className="max-w-[560px] flex-1 2xl:max-w-[840px]">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
+      <div className="flex-1">
         <Calendar
           todos={todos}
           selectedDate={selectedDate}
