@@ -9,10 +9,6 @@ if (!apiUrl) {
 
 export async function GET(req: NextRequest) {
   const authorization = req.headers.get('authorization');
-  // console.log(
-  //   ' req.headers.get('authorization')???',
-  //   req.headers.get('authorization'),
-  // );
   if (!req.headers) {
     return NextResponse.json(
       { message: 'req.headers가 없습니다' },
@@ -27,9 +23,8 @@ export async function GET(req: NextRequest) {
       // headers: req.headers,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: authorization,
+        Authorization: authorization || '',
       },
-      credentials: 'include', // 쿠키 포함
     });
 
     if (!response.ok) {

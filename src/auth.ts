@@ -30,7 +30,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             headers: {
               'Content-Type': 'application/json',
             },
-            // credentials: 'include',
             body: JSON.stringify({
               email,
               password,
@@ -38,9 +37,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             cache: 'no-store',
           });
           if (!response.ok) {
-            throw new Error(
-              `로그인 실패: ${response.status} ${response.statusText}`,
-            );
+            throw new Error(`로그인 실패: ${response.status}`);
           }
 
           const data = await response.json();
