@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
+import { Goal } from '@/types/todos';
 
 interface Todo {
   id: number;
@@ -13,6 +14,7 @@ interface Todo {
   date: string;
   done: boolean;
   noteId?: number | null;
+  goal: Goal | null; // goal을 Goal 타입으로 수정
 }
 
 interface Props {
@@ -43,15 +45,15 @@ export default function GoalTodoList({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 할 일 분류
-  list.forEach(({ id, task, date, done, noteId }) => {
+  list.forEach(({ id, task, date, done, noteId, goal }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({ id, task, done, date, noteId });
+      groupedTodos.past[date].push({ id, task, done, date, noteId, goal });
     } else if (date === today) {
-      groupedTodos.today.push({ id, task, done, date, noteId });
+      groupedTodos.today.push({ id, task, done, date, noteId, goal });
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
-      groupedTodos.upcoming[date].push({ id, task, done, date, noteId });
+      groupedTodos.upcoming[date].push({ id, task, done, date, noteId, goal });
     }
   });
 
@@ -95,6 +97,7 @@ export default function GoalTodoList({
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.id)}
                     onDelete={onDelete ? () => onDelete(todo.id) : undefined}
+                    goal={todo.goal} // goal을 CheckTodo에 전달
                   />
                 ))}
               </div>
@@ -135,6 +138,7 @@ export default function GoalTodoList({
                             onDelete={
                               onDelete ? () => onDelete(todo.id) : undefined
                             }
+                            goal={todo.goal} // goal을 CheckTodo에 전달
                           />
                         ))}
                       </div>
@@ -178,6 +182,7 @@ export default function GoalTodoList({
                             onDelete={
                               onDelete ? () => onDelete(todo.id) : undefined
                             }
+                            goal={todo.goal} // goal을 CheckTodo에 전달
                           />
                         ))}
                       </div>

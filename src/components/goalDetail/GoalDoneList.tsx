@@ -1,5 +1,6 @@
 import React from 'react';
 import CheckTodo from '../common/todo/CheckTodo';
+import { Goal } from '@/types/todos'; // Goal 타입을 임포트
 
 // Done 타입 정의
 interface DoneProps {
@@ -8,6 +9,7 @@ interface DoneProps {
   date: string;
   done: boolean;
   noteId: number | null;
+  goal: Goal | null; // goal 타입을 string에서 Goal로 수정
 }
 
 interface Props {
@@ -41,6 +43,7 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
             noteId={done.noteId}
             onCheck={() => onToggle(done.id)}
             onDelete={onDelete ? () => onDelete(done.id) : undefined}
+            goal={done.goal} // goal을 전달
           />
         ))
       )}
