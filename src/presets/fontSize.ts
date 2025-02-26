@@ -3,6 +3,7 @@ const fontSize: {
 } = {
   '12R': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }],
   '12M': ['0.75rem', { lineHeight: '1rem', fontWeight: '500' }],
+  '12SB': ['0.75rem', { lineHeight: '1rem', fontWeight: '600' }],
 
   '14R': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }],
   '14M': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '500' }],
@@ -15,6 +16,8 @@ const fontSize: {
   '18R': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }],
   '18M': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '500' }],
   '18SB': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '600' }],
+
+  '20M': ['1.25rem', { lineHeight: '1.75rem', fontWeight: '500' }],
 
   '40L': ['2.125rem', { lineHeight: '2rem', fontWeight: '300' }],
   '50L': ['3.125rem', { lineHeight: '1.25rem', fontWeight: '300' }],
