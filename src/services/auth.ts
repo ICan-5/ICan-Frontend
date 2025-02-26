@@ -31,6 +31,7 @@ export async function getUser() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${session?.accessToken}`,
         },
+        cache: 'no-store',
       },
     );
 
