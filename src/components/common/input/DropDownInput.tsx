@@ -24,6 +24,7 @@ type Props<T extends FieldValues> = {
   options: Goal[];
   control: Control<T>;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 export default function DropDownInput<T extends FieldValues>({
   name,
@@ -32,6 +33,7 @@ export default function DropDownInput<T extends FieldValues>({
   options,
   control,
   disabled = false,
+  isLoading = false,
 }: Props<T>) {
   const extendOptions = [
     { goalId: 0, title: '목표 없음', color: '' },
@@ -53,7 +55,7 @@ export default function DropDownInput<T extends FieldValues>({
             onChange={(selected) =>
               field.onChange(selected.goalId === 0 ? null : selected)
             }
-            disabled={disabled}
+            disabled={disabled || isLoading}
           >
             {({ open }) => (
               <div className={cn('relative w-full rounded-xl transition-all')}>
@@ -66,19 +68,24 @@ export default function DropDownInput<T extends FieldValues>({
                         !open,
                       'rounded-t-xl border-x-2 border-t-2 border-slate400 bg-gs00 text-gsBk':
                         open,
+                      'cursor-not-allowed bg-gs200 text-gs400':
+                        disabled || isLoading,
                     },
                     { 'text-gsBk': field.value?.goalId },
                   )}
                 >
                   <span className="truncate">
-                    {field.value
-                      ? options.find((opt) => opt.goalId === field.value.goalId)
-                          ?.title
-                      : placeholder}
+                    {isLoading && '목표를 불러오는 중...'}
+                    {!isLoading &&
+                      field.value &&
+                      options.find((opt) => opt.goalId === field.value.goalId)
+                        ?.title}
+                    {!isLoading && !field.value && placeholder}
                   </span>
+
                   <FontAwesomeIcon
                     icon={faAngleDown}
-                    className={cn('h-4 w-4', { 'rotate-180': open })}
+                    className={cn('size-4', { 'rotate-180': open })}
                   />
                 </ListboxButton>
                 {open && (

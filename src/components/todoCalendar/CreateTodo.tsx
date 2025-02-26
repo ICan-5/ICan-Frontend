@@ -33,12 +33,10 @@ export default function CreateTodo({
   onShowConfirmModal,
   savedValues,
 }: Props) {
-  const { data: goalList, isLoading, error } = useGoals();
+  const { data: goalList, isLoading } = useGoals();
 
   // TODO:: tanstack query 도입 후 mutation 사용으로 변경
   const onSubmit = async (formData: TodoFormValues) => {
-    console.log(formData);
-    console.log(formData.date?.toISOString().split('T')[0]);
     const response = await fetch('/api/todos', {
       method: 'POST',
       body: JSON.stringify({
@@ -49,8 +47,6 @@ export default function CreateTodo({
     });
 
     if (!response.ok) throw new Error(getErrorMessage(response.status));
-    const data = await response.json();
-    console.log('할 일 생성 성공', data);
 
     onCloseModal();
   };
@@ -83,18 +79,14 @@ export default function CreateTodo({
             control={control}
             errors={errors}
           />
-          {isLoading && <p>목표를 불러오는 중...</p>}
-          {error && <p className="text-red-500">목표 불러오기 실패</p>}
-          {!isLoading && !error && (
-            <DropDownInput<TodoFormValues>
-              name="goal"
-              label="목표"
-              placeholder="목표를 선택해주세요"
-              options={goalList}
-              control={control}
-            />
-          )}
-
+          <DropDownInput<TodoFormValues>
+            name="goal"
+            label="목표"
+            placeholder="목표를 선택해주세요"
+            options={goalList}
+            control={control}
+            isLoading={isLoading}
+          />
           <DateInput<TodoFormValues>
             name="date"
             label="날짜"
