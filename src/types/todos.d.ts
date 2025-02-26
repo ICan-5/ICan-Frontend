@@ -1,10 +1,10 @@
 export interface Goal {
   id: number;
   title: string;
-  color: string;
+  color: string | 'default';
 }
 
-export interface TodoType {
+export interface Todo {
   id: number;
   title: string;
   date: string;
@@ -12,7 +12,7 @@ export interface TodoType {
   done: boolean;
 }
 
-export interface BasketType {
+export interface Basket {
   id: number;
   title: string;
   goal: Goal | null;

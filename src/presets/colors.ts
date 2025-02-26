@@ -1,5 +1,6 @@
 const colors = {
   gs00: '#FFFFFF',
+  gs20: '#FCFDFE',
   gs50: '#F8FAFC',
   gs100: '#F1F5F9',
   gs200: '#E2E8F0',
@@ -16,8 +17,15 @@ const colors = {
   warn50: '#FFF2F2',
   warn500: '#EE1E1E',
 
-  goal01: '#9747FF',
-  goal02: '#F86F65',
+  goal01: {
+    100: '#EFE6FB',
+    DEFAULT: '#9747FF',
+  },
+
+  goal02: {
+    100: '#FFE6E4',
+    DEFAULT: '#F86F65',
+  },
 
   slate50: '#EFF6FF',
   slate100: '#DBEAFE',

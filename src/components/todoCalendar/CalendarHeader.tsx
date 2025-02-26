@@ -1,10 +1,13 @@
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
+import IconButton from '../common/button/IconButton';
+import Button from '../common/button/Button';
 
-type Props = {
+interface Props {
   calendarRef: React.RefObject<FullCalendar>;
   onDateChange: (date: Date) => void;
-};
+}
 
 /**
  * 캘린더 헤더 부분
@@ -57,39 +60,27 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
   };
 
   return (
-    <div className="mb-4 flex w-full items-center justify-between">
-      <div className="w-1/4">
-        <button
-          type="button"
-          onClick={handleTodayClick}
-          className="rounded-lg bg-gray-200 p-4"
-        >
-          Today
-        </button>
-      </div>
-      <div className="flex w-1/2 flex-grow-0 items-center justify-center">
-        <button
-          type="button"
-          onClick={handlePrevMonthClick}
-          className="mr-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
-        >
-          ←
-        </button>
-        <span className="inline-block min-w-32 flex-shrink-0 text-center text-lg font-semibold">
-          {viewMonth.toLocaleDateString('en-US', {
+    <div className="flex w-full items-center justify-between rounded-t-[20px] border border-gs200 bg-gs50 px-6 py-3">
+      <div className="w-1/4" />
+      <div className="flex flex-1 items-center justify-center gap-3">
+        <IconButton icon={faAngleLeft} onClick={handlePrevMonthClick} />
+        <span className="inline-block min-w-32 shrink-0 text-center text-20M text-gsBk">
+          {viewMonth.toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: 'long',
           })}
         </span>
-        <button
-          type="button"
-          onClick={handleNextMonthClick}
-          className="ml-2 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-300"
-        >
-          →
-        </button>
+        <IconButton icon={faAngleRight} onClick={handleNextMonthClick} />
       </div>
-      <div className="w-1/4" />
+      <div className="flex w-1/4 justify-end">
+        <Button
+          onClick={() => handleTodayClick()}
+          variant="outline"
+          className="w-[84px] rounded-3xl py-2 2xl:rounded-3xl 2xl:py-2"
+        >
+          오늘
+        </Button>
+      </div>
     </div>
   );
 }

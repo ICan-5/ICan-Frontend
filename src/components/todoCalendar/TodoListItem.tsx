@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { TodoType } from '@/types/todos';
+import { Todo } from '@/types/todos';
 import cn from '@/utils/cn';
 
 type Props = {
-  todoList: TodoType[];
+  todoList: Todo[];
   type: '미완료' | '완료';
   onToggleTodo: (id: number) => void;
   isCompleted: boolean;
