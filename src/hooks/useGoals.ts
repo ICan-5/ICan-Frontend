@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Goal } from '@/types/goals';
 import { QUERY_KEY } from '@/constants/queryKey';
+import { getErrorMessage } from '@/constants/errorMessages';
 
 const fetchGoals = async () => {
   const res = await fetch('/api/goals');
-  if (!res.ok) throw new Error('목표 리스트를 불러오는데 실패했습니다.');
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
   return res.json();
 };
 
 const addGoal = async (title: string) => {
   const res = await fetch(`/api/goals?title=${title}`, { method: 'POST' });
-  if (!res.ok) throw new Error('목표 추가 실패');
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
+
   return res.json();
 };
 

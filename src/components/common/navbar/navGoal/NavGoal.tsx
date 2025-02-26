@@ -62,6 +62,7 @@ export default function NavGoal({ headerFolded }: Props) {
           className={cn('transition-transform duration-300', {
             'rotate-0': !isFolded,
             'rotate-180': isFolded,
+            invisible: goalList.length === 0,
           })}
           icon={faAngleDown}
           onClick={foldGoalList}

@@ -1,29 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { apiHandler } from '@/services/apiHandler';
-import {
-  BACKENDURL,
-  CODEITURL,
-  getConfig,
-  postConfig,
-} from '@/services/constants';
+import { fetchIntance } from '@/services/fetchInstance';
+import { getErrorMessage } from '@/constants/errorMessages';
 
-export const GET = apiHandler(async () => {
-  const res = await fetch(`${BACKENDURL}/goals`, await getConfig());
+export async function GET() {
+  const res = await fetchIntance({
+    base: 'BACKEND',
+    method: 'GET',
+    url: '/goals',
+  });
   return res;
-});
+}
 
-export const POST = apiHandler(async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
   const title = req.nextUrl.searchParams.get('title');
 
-  const res1 = await fetch(`${CODEITURL}/goals`, await postConfig({ title }));
-  if (!res1.ok) return NextResponse.json({ status: res1.status });
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'POST',
+    url: '/goals',
+    body: { title },
+  });
+
+  if (!res1.ok) {
+    const message = getErrorMessage(res1.status);
+    return NextResponse.json({ message }, { status: res1.status });
+  }
 
   const data = await res1.json();
   const { id } = data;
 
-  const res2 = await fetch(
-    `${BACKENDURL}/goals`,
-    await postConfig({ goalId: id, title }),
-  );
+  const res2 = await fetchIntance({
+    base: 'BACKEND',
+    method: 'POST',
+    url: '/goals',
+    body: { goalId: id, title },
+  });
   return res2;
-});
+}

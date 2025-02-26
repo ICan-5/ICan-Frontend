@@ -6,3 +6,14 @@ export const ERROR_MESSAGES = {
   500: '서버 오류가 발생했습니다.',
   default: '알 수 없는 오류가 발생했습니다.',
 } as const;
+
+/**
+ * @param status HTTP 상태 코드
+ * @returns 해당하는 오류 메시지, 없으면 기본 메시지 반환
+ */
+export const getErrorMessage = (status: number): string => {
+  return (
+    ERROR_MESSAGES[status as keyof typeof ERROR_MESSAGES] ||
+    ERROR_MESSAGES.default
+  );
+};
