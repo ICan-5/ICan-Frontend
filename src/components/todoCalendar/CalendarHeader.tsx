@@ -60,15 +60,15 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
   };
 
   return (
-    <div className="flex w-full items-center justify-between rounded-t-[20px] border border-gs200 bg-gs50 px-6 py-3">
+    <div className="flex w-full items-center justify-between rounded-t-[20px] border border-gs200 bg-gs50 p-3 xl:px-6">
       <div className="w-1/4" />
       <div className="flex flex-1 items-center justify-center gap-3">
         <IconButton icon={faAngleLeft} onClick={handlePrevMonthClick} />
-        <span className="inline-block min-w-32 shrink-0 text-center text-20M text-gsBk">
-          {viewMonth.toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: 'long',
-          })}
+        <span className="inline-block shrink-0 text-center text-20M text-gsBk">
+          <span className="hidden sm:inline">
+            {viewMonth.toLocaleDateString('ko-KR', { year: 'numeric' })}{' '}
+          </span>
+          {viewMonth.toLocaleDateString('ko-KR', { month: 'long' })}
         </span>
         <IconButton icon={faAngleRight} onClick={handleNextMonthClick} />
       </div>
@@ -76,7 +76,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
         <Button
           onClick={() => handleTodayClick()}
           variant="outline"
-          className="w-[84px] rounded-3xl py-2 2xl:rounded-3xl 2xl:py-2"
+          className="rounded-3xl px-4 py-1 xl:w-[84px] 2xl:rounded-3xl 2xl:py-2"
         >
           오늘
         </Button>

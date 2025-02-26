@@ -21,10 +21,6 @@
   outline-offset: -2px;
 }
 
-.fc-col-header-cell {
-  @apply border-[0.5px] border-gs200 bg-gs50 py-2 text-14M text-gs500 !important;
-}
-
 .fc-daygrid-day-top > a {
   padding-bottom: 1px !important;
 }
@@ -35,6 +31,10 @@
 
 .fc-day-other .fc-event {
   opacity: 0.5 !important;
+}
+
+.fc-day-other.fc-day-today {
+  @apply bg-gs20 !important;
 }
 
 .fc-daygrid-day-number {
@@ -66,14 +66,13 @@
   color: unset !important;
 }
 
-/* 기본: 4번째 이벤트부터 숨김 */
-.fc-daygrid-day-events > *:nth-child(n + 4) {
+/* 기본: 3번째 이벤트부터 숨김 */
+.fc-daygrid-day-events > *:nth-child(n + 3) {
   display: none !important;
 }
 
-/* 📌 화면 너비가 768px 이하일 때 → 3번째 이벤트부터 숨김 */
-@media (max-width: 1024px) {
-  .fc-daygrid-day-events > *:nth-child(n + 3) {
+@media (max-width: 1470px) {
+  .fc-daygrid-day-events > *:nth-child(n + 2) {
     display: none !important;
   }
   .fc-daygrid-day-events {
@@ -84,8 +83,7 @@
   }
 }
 
-/* 📌 화면 너비가 480px 이하일 때 → 2번째 이벤트부터 숨김 */
-@media (max-width: 768px) {
+/* @media (max-width: 1440px) {
   .fc-daygrid-day-events > *:nth-child(n + 2) {
     display: none !important;
   }
@@ -96,4 +94,4 @@
     margin-top: 0.15rem !important;
     padding-top: 4px !important;
   }
-}
+} */

@@ -10,11 +10,12 @@ import {
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { Goal } from '@/types/todos';
 
 interface Props {
   id: number;
   title: string;
-  goalTitle?: string;
+  goal: Goal | null;
   done: boolean;
   noteId: number | null;
   onCheck?: () => void;
@@ -24,19 +25,19 @@ interface Props {
 
 /**
  *
- * id: 할 일 id
- * title: 할 일 title
- * goalTitle: 목표 이름, 없을 수 있음
- * done: 할 일 완료 여부
- * noteId: 할 일과 관련된 노트 id, 없을 수 있음
- * onCheck: label,check를 클릭 함수
- * onClickNote: 노트 클릭했을 때 함수, 현재까지는 새 노트, 작성된 노트 구분없이 사용
- * onDelete: ... 클리하고 삭제하기 눌렀을 때 함수
+ * @prop id: 할 일 id
+ * @prop title: 할 일 title
+ * @prop goal: 목표, 없을 수 있음
+ * @prop done: 할 일 완료 여부
+ * @prop noteId: 할 일과 관련된 노트 id, 없을 수 있음
+ * @prop onCheck: label,check를 클릭 함수
+ * @prop onClickNote: 노트 클릭했을 때 함수, 현재까지는 새 노트, 작성된 노트 구분없이 사용
+ * @prop onDelete: ... 클리하고 삭제하기 눌렀을 때 함수
  */
 export default function CheckTodo({
   id,
   title,
-  goalTitle,
+  goal,
   done,
   noteId,
   onCheck,
@@ -59,7 +60,13 @@ export default function CheckTodo({
           if (onCheck) onCheck();
         }}
       >
-        <input id={`${id}`} type="checkbox" checked={done} className="hidden" />
+        <input
+          id={`${id}`}
+          type="checkbox"
+          checked={done}
+          className="hidden"
+          onChange={onCheck}
+        />
         <span
           className={cn(
             'flex size-4 flex-none items-center justify-center rounded-[4px] border border-slate500 bg-gs00 2xl:h-5 2xl:w-5',
@@ -68,14 +75,21 @@ export default function CheckTodo({
         >
           {done && <FontAwesomeIcon className="size-3" icon={faCheck} />}
         </span>
-        <p className="flex w-full flex-col 2xl:gap-1">
-          <span className="verflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M">
-            {goalTitle}
-          </span>
+        <p className="flex min-w-0 flex-1 flex-col 2xl:gap-1">
+          {goal !== null && !done && (
+            <span
+              className={cn(
+                'overflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M',
+                goal?.color ? `text-${goal.color}` : 'text-slate500',
+              )}
+            >
+              {goal?.title}
+            </span>
+          )}
           <span
             className={cn(
               done && 'text-gs400 line-through',
-              'w-full flex-1 overflow-hidden text-ellipsis whitespace-nowrap break-words text-14R 2xl:text-16R',
+              'overflow-hidden text-ellipsis whitespace-nowrap break-words text-14R 2xl:text-16R',
             )}
           >
             {title}
@@ -98,7 +112,10 @@ export default function CheckTodo({
           <IconButton
             className="flex-none rounded-2xl bg-gs50 text-gs400 group-hover:bg-gs00 md:hidden md:group-hover:flex"
             icon={faEllipsisVertical}
-            onClick={() => setIsMenuOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMenuOpen(true);
+            }}
           />
           {isMenuOpen && (
             <nav

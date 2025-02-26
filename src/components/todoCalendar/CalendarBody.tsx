@@ -39,6 +39,21 @@ const renderDayCellContent = (info: DayCellContentArg) => {
   );
 };
 
+/**
+ * 요일 헤더 반응형 UI
+ * 768 이하에서는 '요일'표시 제거
+ */
+const dayHeaderContent = (args: { text: string }) => {
+  return (
+    <div>
+      <div>
+        <span className="hidden md:inline">{args.text}</span>
+        <span className="md:hidden">{args.text.slice(0, 1)}</span>
+      </div>
+    </div>
+  );
+};
+
 interface Props {
   todos: Todo[];
   selectedDate: Date;
@@ -86,21 +101,31 @@ export default function CalendarBody({
   /**
    * 날짜 셀 크기 업데이트
    */
-
   const handleDayCellMount = (info: { el: HTMLElement }) => {
     // 반응형에 맞춰 셀 크기 업데이트
     const updateCellSize = () => {
       const cell = document.querySelector('.fc-daygrid-day');
+      const screenWidth = window.innerWidth;
+
       if (cell) {
         const width = cell.clientWidth;
         document.querySelectorAll('.fc-daygrid-day').forEach((el) => {
           const cellElement = el as HTMLElement;
-          if (width < 118) {
+
+          if (screenWidth <= 1470) {
+            if (width < 90) {
+              cellElement.style.height = `${width}px`;
+              cellElement.style.minHeight = `${width}px`;
+            } else {
+              cellElement.style.height = '80px';
+              cellElement.style.minHeight = '80px';
+            }
+          } else if (width < 96) {
             cellElement.style.height = `${width}px`;
             cellElement.style.minHeight = `${width}px`;
           } else {
-            cellElement.style.height = '124px';
-            cellElement.style.minHeight = '124px';
+            cellElement.style.height = '100px';
+            cellElement.style.minHeight = '100px';
           }
         });
       }
@@ -194,7 +219,9 @@ export default function CalendarBody({
       eventClick={handleEventClick}
       locale="kr"
       headerToolbar={false}
+      dayHeaderContent={dayHeaderContent}
       dayHeaderFormat={{ weekday: 'long' }}
+      dayHeaderClassNames="border-[0.5px] border-gs200 bg-gs50 !py-2 text-12M text-gs500 xl:text-14M"
       height="auto"
       contentHeight="100%"
       dayCellContent={(info) => renderDayCellContent(info)}
