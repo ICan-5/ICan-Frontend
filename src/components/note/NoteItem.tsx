@@ -36,7 +36,7 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
 
   return (
     <>
-      <div className="relative left-1/2 mb-4 w-full max-w-screen-xl -translate-x-1/2 rounded-xl border bg-gs00 shadow-md sm:max-h-[192px] md:max-h-[160px] lg:max-h-[164px]">
+      <div className="mb-4 rounded-xl border bg-gs00 shadow-md sm:max-h-[192px] md:max-h-[160px] lg:max-h-[164px]">
         <div className="p-6">
           {/* 상단 아이콘 */}
           <div className="flex items-center justify-between">
