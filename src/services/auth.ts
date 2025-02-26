@@ -19,21 +19,20 @@ export default async function signup(formData: Props) {
     return { success: false, message: '회원가입 요청 중 오류가 발생했습니다.' };
   }
 }
+const BASE_URL = typeof window === 'undefined' ? 'http://localhost:3000' : '';
+
 export async function getUser() {
   const session = await auth();
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_TEST_URL}/api/auth/settings`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        cache: 'no-store',
+    const response = await fetch(`${BASE_URL}/api/auth/settings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.accessToken}`,
       },
-    );
+      cache: 'no-store',
+    });
 
     const data = await response.json();
 

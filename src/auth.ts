@@ -80,11 +80,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // JWT 토큰에서 액세스 토큰만 세션에 추가
       if (token?.accessToken) {
         return {
           ...session,
-          accessToken: token.accessToken, // 리프레시 토큰은 제외하기
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
         };
       }
       return session;
