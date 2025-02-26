@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import { auth, update } from '@/auth';
 import { ERROR_MESSAGES, getErrorMessage } from '@/constants/errorMessages';
 
-export const BACKENDURL = process.env.BACKEND_API_URL;
-export const CODEITURL = `${process.env.CODEIT_API_URL}/${process.env.TEAM_ID}`;
+const URL = {
+  CODEIT: `${process.env.CODEIT_API_URL}/${process.env.TEAM_ID}`,
+  BACKEND: process.env.BACKEND_API_URL,
+  FRONTEND: process.env.FRONTEND_API_URL,
+};
 
 /**
  *
@@ -40,7 +43,7 @@ const handleTokenRefresh = async () => {
     return null;
   }
 
-  const res = await fetch(`${BACKENDURL}/auth/refresh`, {
+  const res = await fetch(`${URL.BACKEND}/auth/refresh`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${session?.refreshToken}` },
   });
@@ -61,7 +64,7 @@ const handleTokenRefresh = async () => {
  * @returns response
  */
 export const fetchIntance = async <T>(options: {
-  base: 'CODEIT' | 'BACKEND';
+  base: 'CODEIT' | 'BACKEND' | 'FRONTEND';
   url: string;
   method: 'POST' | 'GET' | 'PATCH' | 'DELETE';
   body?: T;
@@ -75,7 +78,7 @@ export const fetchIntance = async <T>(options: {
 
     if (!session?.accessToken) return NextResponse.json({ status: 401 });
 
-    const baseUrl = `${base === 'CODEIT' ? CODEITURL : BACKENDURL}${url}`;
+    const baseUrl = `${URL[base]}${url}`;
     let config = await getConfig(method, body);
     let res = await fetch(baseUrl, config);
 
