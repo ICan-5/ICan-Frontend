@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 
     if (!response.ok) {
       return NextResponse.json(
-        { message: '회원정보 조회 API 요청 실패', response },
+        { message: '회원정보 조회 API 요청 실패', status: response.status },
         { status: 500 },
       );
     }

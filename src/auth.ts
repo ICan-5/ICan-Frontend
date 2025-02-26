@@ -2,13 +2,6 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
-
-if (!apiUrl) {
-  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
-}
-
 export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
@@ -25,17 +18,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         const { email, password } = credentials;
 
         try {
-          const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await fetch(
+            `${process.env.BACKEND_API_URL}/auth/login`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
+              cache: 'no-store',
             },
-            body: JSON.stringify({
-              email,
-              password,
-            }),
-            cache: 'no-store',
-          });
+          );
           if (!response.ok) {
             throw new Error(`로그인 실패: ${response.status}`);
           }
