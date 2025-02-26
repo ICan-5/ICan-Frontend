@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface NoteModalProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ export default function NoteModal({
   note,
   goalId,
 }: NoteModalProps) {
+  const [modalRef] = useClickOutside<HTMLDivElement>(onClose);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -32,8 +35,10 @@ export default function NoteModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={onClose}
           />
           <motion.div
+            ref={modalRef}
             className="fixed inset-y-0 right-0 z-20 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
