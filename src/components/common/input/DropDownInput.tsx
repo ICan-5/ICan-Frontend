@@ -7,14 +7,13 @@ import {
 } from '@headlessui/react';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Goal } from '@/types/todos';
 import cn from '@/utils/cn';
+import { Goal } from '@/types/goals';
 
 const colorClasses: Record<string, string> = {
   goal01: 'bg-goal01',
   goal02: 'bg-goal02',
-  warn: 'bg-warn500',
-  success: 'bg-success500',
+  default: 'bg-slate500',
 };
 
 // 제네릭 사용하여 컴포넌트를 호출 할 때 타입 전달 받음
@@ -34,7 +33,10 @@ export default function DropDownInput<T extends FieldValues>({
   control,
   disabled = false,
 }: Props<T>) {
-  const extendOptions = [{ id: 0, title: '목표 없음', color: '' }, ...options];
+  const extendOptions = [
+    { goalId: 0, title: '목표 없음', color: '' },
+    ...options,
+  ];
   return (
     <div className="relative w-full">
       {label && (
@@ -49,7 +51,7 @@ export default function DropDownInput<T extends FieldValues>({
           <Listbox
             value={field.value}
             onChange={(selected) =>
-              field.onChange(selected.id === 0 ? null : selected)
+              field.onChange(selected.goalId === 0 ? null : selected)
             }
             disabled={disabled}
           >
@@ -65,12 +67,13 @@ export default function DropDownInput<T extends FieldValues>({
                       'rounded-t-xl border-x-2 border-t-2 border-slate400 bg-gs00 text-gsBk':
                         open,
                     },
-                    { 'text-gsBk': field.value?.id },
+                    { 'text-gsBk': field.value?.goalId },
                   )}
                 >
                   <span className="truncate">
                     {field.value
-                      ? options.find((opt) => opt.id === field.value.id)?.title
+                      ? options.find((opt) => opt.goalId === field.value.goalId)
+                          ?.title
                       : placeholder}
                   </span>
                   <FontAwesomeIcon
@@ -93,7 +96,7 @@ export default function DropDownInput<T extends FieldValues>({
                       <div className="max-h-40 overflow-y-auto">
                         {extendOptions.map((option) => (
                           <ListboxOption
-                            key={option.id}
+                            key={option.goalId}
                             value={option}
                             className={cn(
                               'flex cursor-pointer items-center gap-4 px-4 py-3 text-16R',
@@ -101,7 +104,7 @@ export default function DropDownInput<T extends FieldValues>({
                               'data-[focus]:bg-gs100',
                             )}
                           >
-                            {option.id !== 0 && (
+                            {option.goalId !== 0 && (
                               <span
                                 className={cn(
                                   'h-2 w-2 rounded-full',

@@ -10,7 +10,7 @@ import {
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 interface Props {
   id: number;

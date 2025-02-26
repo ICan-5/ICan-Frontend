@@ -6,19 +6,8 @@ import DropDownInput from '@/components/common/input/DropDownInput';
 import DateInput from '../common/input/DateInput';
 import cn from '@/utils/cn';
 import Button from '../common/button/Button';
-
-const options = [
-  { id: 1, title: '자바스크립트 기초 챕터4 듣기', color: 'goal01' },
-  { id: 2, title: 'React 프로젝트 만들기', color: 'goal02' },
-  { id: 3, title: 'Next.js 학습하기', color: 'goal01' },
-  { id: 4, title: '또 다른 목표', color: 'goal01' },
-  {
-    id: 5,
-    title:
-      '목표가 길어지면 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구',
-    color: 'goal01',
-  },
-];
+import { getErrorMessage } from '@/constants/errorMessages';
+import { useGoals } from '@/hooks/useGoals';
 
 const createTodoSchema = z.object({
   title: z
@@ -44,8 +33,25 @@ export default function CreateTodo({
   onShowConfirmModal,
   savedValues,
 }: Props) {
-  const onSubmit = (formData: TodoFormValues) => {
+  const { data: goalList, isLoading, error } = useGoals();
+
+  // TODO:: tanstack query 도입 후 mutation 사용으로 변경
+  const onSubmit = async (formData: TodoFormValues) => {
     console.log(formData);
+    console.log(formData.date?.toISOString().split('T')[0]);
+    const response = await fetch('/api/todos', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: formData.title,
+        goalId: formData.goal?.goalId,
+        date: formData.date?.toISOString().split('T')[0],
+      }),
+    });
+
+    if (!response.ok) throw new Error(getErrorMessage(response.status));
+    const data = await response.json();
+    console.log('할 일 생성 성공', data);
+
     onCloseModal();
   };
 
@@ -77,13 +83,18 @@ export default function CreateTodo({
             control={control}
             errors={errors}
           />
-          <DropDownInput<TodoFormValues>
-            name="goal"
-            label="목표"
-            placeholder="목표를 선택해주세요"
-            options={options}
-            control={control}
-          />
+          {isLoading && <p>목표를 불러오는 중...</p>}
+          {error && <p className="text-red-500">목표 불러오기 실패</p>}
+          {!isLoading && !error && (
+            <DropDownInput<TodoFormValues>
+              name="goal"
+              label="목표"
+              placeholder="목표를 선택해주세요"
+              options={goalList}
+              control={control}
+            />
+          )}
+
           <DateInput<TodoFormValues>
             name="date"
             label="날짜"
