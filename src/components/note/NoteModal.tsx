@@ -44,7 +44,7 @@ export default function NoteModal({
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'slid', stiffness: 300, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* 닫기 버튼 */}
             <button
