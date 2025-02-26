@@ -35,6 +35,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
               email,
               password,
             }),
+            cache: 'no-store',
           });
           if (!response.ok) {
             throw new Error(
@@ -64,6 +65,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60, // 1시간 후 세션 만료
+  },
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     // 사용자 정보를 바탕으로 JWT 토큰을 생성
     async jwt({ token, user }) {
