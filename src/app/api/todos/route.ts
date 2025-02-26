@@ -25,9 +25,22 @@ export async function POST(req: NextRequest) {
     base: 'BACKEND',
     url: '/todos',
     method: 'POST',
-    body: { todoId: id, goalId, date, done: false, title, createdAt },
+    body: {
+      todoId: id,
+      goalId: goalId ?? null,
+      date,
+      done: false,
+      title,
+      createdAt,
+    },
   });
 
-  const finalData = res2.json();
+  if (!res2.ok) {
+    const message = getErrorMessage(res2.status);
+    return NextResponse.json({ message }, { status: res2.status });
+  }
+
+  const finalData = await res2.json();
+  console.log(finalData);
   return NextResponse.json(finalData, { status: 201 });
 }
