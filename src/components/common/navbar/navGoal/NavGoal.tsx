@@ -90,7 +90,7 @@ export default function NavGoal({ headerFolded }: Props) {
               className="my-1 flex h-6 w-full animate-pulse rounded-md bg-gs100 2xl:h-8"
             />
           ))}
-        {goalList.map((goal: Goal) => (
+        {goalList?.map((goal: Goal) => (
           <NavGoalItem
             id={goal.goalId}
             title={goal.title}

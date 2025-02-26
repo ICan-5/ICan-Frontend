@@ -16,7 +16,7 @@ export const POST = apiHandler(async (req: NextRequest) => {
   const title = req.nextUrl.searchParams.get('title');
 
   const res1 = await fetch(`${CODEITURL}/goals`, await postConfig({ title }));
-  if (!res1.ok) return NextResponse.json({ status: 500 });
+  if (!res1.ok) return NextResponse.json({ status: res1.status });
 
   const data = await res1.json();
   const { id } = data;

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Goal } from '@/types/goals';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 const fetchGoals = async () => {
   const res = await fetch('/api/goals');
@@ -15,7 +16,7 @@ const addGoal = async (title: string) => {
 
 export const useGoals = () => {
   return useQuery({
-    queryKey: ['goals'],
+    queryKey: [QUERY_KEY.GOALS],
     queryFn: fetchGoals,
     initialData: [],
     retry: false,
@@ -28,7 +29,7 @@ export const useAddGoal = () => {
   return useMutation({
     mutationFn: (title: string) => addGoal(title),
     onSuccess: (newGoal: Goal) => {
-      queryClient.setQueryData(['goals'], (oldData: Goal[]) => {
+      queryClient.setQueryData([QUERY_KEY.GOALS], (oldData: Goal[]) => {
         if (!oldData) return [newGoal];
         return [...oldData, newGoal];
       });
