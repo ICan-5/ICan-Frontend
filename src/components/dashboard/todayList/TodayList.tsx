@@ -26,20 +26,18 @@ export default async function TodayList({ todayList }: Props) {
 
   const session = await auth(); // 세션 가져오기
 
-  if (!session) {
-    return <p>로그인 유저를 찾을 수 없습니다. 다시 로그인 해주세요</p>;
-  }
-
-  const { user } = session;
-
   return (
-    <div className="relative flex min-h-48 w-full flex-1 flex-col overflow-hidden rounded-2xl bg-white p-4 md:h-full md:px-6 md:py-4">
-      <section className="mb-2 flex w-full flex-none items-start">
-        <p className="mr-auto flex flex-col">
-          <span className="text-lg">
-            안녕, <strong className="text-slate500">{user?.name}</strong>! 🖐️
+    <div className="relative flex min-h-48 w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 md:h-full 2xl:rounded-3xl">
+      <section className="flex w-full flex-none items-start 2xl:mb-1">
+        <p className="mr-auto flex text-16M 2xl:text-18SB">
+          <span className="mr-1 hidden sm:inline-flex md:hidden xl:inline-flex">
+            안녕하세요,
+            <strong className="ml-1 text-slate500">
+              {session?.user?.name}
+            </strong>
+            님의
           </span>
-          <span className="text-sm text-gray-400">{formattedDate}</span>
+          <span>오늘의 일정입니다!👋</span>
         </p>
         <Link href="/todoCalendar">
           <button
@@ -47,13 +45,16 @@ export default async function TodayList({ todayList }: Props) {
             type="button"
           >
             모두 보기
-            <div className="flex h-6 w-6 items-center justify-center">
-              <FontAwesomeIcon icon={faAngleRight} className="h-4 w-4" />
+            <div className="flex size-6 items-center justify-center">
+              <FontAwesomeIcon icon={faAngleRight} className="size-4" />
             </div>
           </button>
         </Link>
       </section>
-      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto">
+      <span className="mb-1 text-12M text-gray-400 2xl:mb-2 2xl:text-14M">
+        {formattedDate}
+      </span>
+      <div className="flex size-full flex-1 flex-col overflow-y-auto">
         {todoList.map((todo) => (
           <SimpleTodo
             key={todo.id}
