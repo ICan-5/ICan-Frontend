@@ -18,7 +18,7 @@ export default function NoteList({ notes, goalId }: NoteListProps) {
   return (
     <div>
       {notes.length === 0 && (
-        <div className="max-w-screen-[1200px] w-full py-8 text-center text-gs500">
+        <div className="-translate-x-1/2l relative left-1/2 w-full max-w-screen-xl py-8 text-center text-gs500">
           아직 등록된 노트가 없어요.
         </div>
       )}
