@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import Button from './Button';
@@ -23,17 +24,25 @@ export default function LoginForm() {
     mode: 'onChange',
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: Props) => {
     const { email, password } = data;
     const res = await signIn('credentials', {
       email,
       password,
+      redirect: false,
     });
 
     if (res?.error) {
-      console.log('로그인 실패:', res.error);
+      if (res.error === 'Configuration') {
+        alert('잘못된 이메일 또는 비밀번호입니다. 다시 확인해 주세요.');
+      } else {
+        alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
     } else {
-      console.log('로그인 성공:', res);
+      alert('로그인 성공!');
+      router.push('/');
     }
   };
   return (
