@@ -13,7 +13,7 @@ export default function NavUserSetting({ isFolded }: Props) {
   return (
     <div className="flex flex-col items-start overflow-hidden rounded-2xl bg-gs50 px-1 text-gs500 2xl:px-2">
       <Link
-        href="/setting"
+        href="/settings"
         className={cn(
           'flex w-full items-center gap-1 overflow-hidden whitespace-nowrap rounded-lg py-2 text-gs600',
           'border-b border-gs200 2xl:gap-2 2xl:rounded-xl 2xl:py-3',

@@ -10,25 +10,8 @@ import NavGoalItem from './NavGoalItem';
 import NewGoalItem from './NewGoalItem';
 import Icon from '@/components/common/icon/Icon';
 import IconButton from '@/components/common/button/IconButton';
-
-// TODO:: 목표 리스트 mock 데이터, API 연결하면 삭제
-const tempGoalList = [
-  { id: 1, title: '자바스크립트 공부하기' },
-  { id: 2, title: '리액트 공부하기' },
-  { id: 13, title: 'Next14 공부하기' },
-  { id: 22, title: '리액트 공부하기' },
-  { id: 33, title: 'Next14 공부하기' },
-  { id: 42, title: '리액트 공부하기' },
-  { id: 53, title: 'Next14 공부하기' },
-  { id: 62, title: '리액트 공부하기' },
-  { id: 73, title: 'Next14 공부하기' },
-  { id: 82, title: '리액트 공부하기' },
-  { id: 93, title: 'Next14 공부하기' },
-  { id: 102, title: '리액트 공부하기' },
-  { id: 113, title: 'Next14 공부하기' },
-  { id: 122, title: '리액트 공부하기' },
-  { id: 133, title: 'Next14 공부하기' },
-];
+import { Goal } from '@/types/goals';
+import { useGoals } from '@/hooks/useGoals';
 
 type Props = {
   headerFolded: boolean;
@@ -36,7 +19,7 @@ type Props = {
 
 export default function NavGoal({ headerFolded }: Props) {
   const pathname = usePathname();
-  const [goalList, setGoalList] = useState(tempGoalList);
+  const { data: goalList, isFetching } = useGoals();
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
 
@@ -79,6 +62,7 @@ export default function NavGoal({ headerFolded }: Props) {
           className={cn('transition-transform duration-300', {
             'rotate-0': !isFolded,
             'rotate-180': isFolded,
+            invisible: goalList.length === 0,
           })}
           icon={faAngleDown}
           onClick={foldGoalList}
@@ -91,26 +75,29 @@ export default function NavGoal({ headerFolded }: Props) {
       </div>
       <div
         className={cn(
-          'relative flex h-full max-h-[328px] flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[368px]',
+          'relative flex h-full max-h-[336px] flex-col overflow-y-auto overflow-x-hidden whitespace-nowrap py-2 pl-6 2xl:max-h-[376px]',
           'origin-top transition-transform duration-300 ease-in-out',
           { 'scale-y-0': isFolded },
           { 'invisible overflow-hidden': headerFolded },
         )}
       >
         {showNewGoal && (
-          <NewGoalItem
-            onCloseInput={() => setShowNewGoal(false)}
-            onAddNewItem={(newItem) =>
-              setGoalList((prev) => [...prev, newItem])
-            }
-          />
+          <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
-        {goalList.map((goal) => (
+        {isFetching &&
+          Array.from({ length: 6 }, (_, i) => i + 1).map((e) => (
+            <div
+              key={e}
+              className="my-1 flex h-6 w-full animate-pulse rounded-md bg-gs100 2xl:h-8"
+            />
+          ))}
+        {goalList?.map((goal: Goal) => (
           <NavGoalItem
-            id={goal.id}
+            id={goal.goalId}
             title={goal.title}
-            isSelected={pathname === `/goals/${goal.id}`}
-            key={goal.id}
+            color={goal.color}
+            isSelected={pathname === `/goals/${goal.goalId}`}
+            key={goal.goalId}
           />
         ))}
       </div>

@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { Props } from '@/components/auth/SignupForm';
 
 export default async function signup(formData: Props) {
@@ -16,5 +17,31 @@ export default async function signup(formData: Props) {
   } catch (e) {
     console.error('회원가입 요청 중 오류가 발생했습니다.', e);
     return { success: false, message: '회원가입 요청 중 오류가 발생했습니다.' };
+  }
+}
+const BASE_URL = typeof window === 'undefined' ? 'http://localhost:3000' : '';
+
+export async function getUser() {
+  const session = await auth();
+
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/settings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      cache: 'no-store',
+    });
+
+    const data = await response.json();
+
+    return { user: data.user, success: response.ok, message: data.message };
+  } catch (e) {
+    console.error('회원정보 조회 요청 중 오류가 발생했습니다.', e);
+    return {
+      success: false,
+      message: '회원정보 조회 요청 중 오류가 발생했습니다.',
+    };
   }
 }

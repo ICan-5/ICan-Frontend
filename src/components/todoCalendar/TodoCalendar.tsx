@@ -1,25 +1,22 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
 import Calendar from './Calendar';
-import CalendarHeader from './CalendarHeader';
+
 import TodoList from './TodoList';
-import { BasketType, TodoType } from '@/types/todos';
-import Loading from '../common/Loading';
-import TodoBasket from './TodoBasket';
+import { Basket, Todo } from '@/types/todos';
 import TodoModal from './TodoModal';
+import Loading from '../common/Loading';
+
+// import Loading from '../common/Loading';
+// import TodoBasket from './TodoBasket';
 
 const initialTodos = [
   {
     id: 1,
     title: '할일 1',
     date: '2025-02-03',
-    goal: {
-      id: 1,
-      title: '강의 듣기',
-      color: 'bg-red-500',
-    },
+    goal: null,
     done: true,
   },
   {
@@ -29,7 +26,7 @@ const initialTodos = [
     goal: {
       id: 1,
       title: '강의 듣기',
-      color: 'bg-red-500',
+      color: 'goal01',
     },
     done: true,
   },
@@ -40,7 +37,7 @@ const initialTodos = [
     goal: {
       id: 2,
       title: '목표 2',
-      color: 'bg-indigo-500',
+      color: 'goal02',
     },
     done: true,
   },
@@ -51,7 +48,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: true,
   },
@@ -62,7 +59,7 @@ const initialTodos = [
     goal: {
       id: 4,
       title: '목표 4',
-      color: 'bg-green-500',
+      color: 'goal02',
     },
     done: true,
   },
@@ -73,7 +70,7 @@ const initialTodos = [
     goal: {
       id: 1,
       title: '강의 듣기',
-      color: 'bg-red-500',
+      color: 'goal01',
     },
     done: true,
   },
@@ -85,7 +82,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -96,7 +93,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -107,7 +104,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -118,7 +115,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -129,7 +126,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -140,7 +137,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -151,7 +148,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -162,7 +159,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -173,7 +170,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -184,7 +181,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -195,7 +192,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -206,7 +203,7 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
     },
     done: false,
   },
@@ -217,7 +214,40 @@ const initialTodos = [
     goal: {
       id: 3,
       title: '목표 3',
-      color: 'bg-yellow-500',
+      color: 'goal02',
+    },
+    done: false,
+  },
+  {
+    id: 20,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-03',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'goal02',
+    },
+    done: false,
+  },
+  {
+    id: 21,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-03',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'goal02',
+    },
+    done: false,
+  },
+  {
+    id: 22,
+    title: '할일이 여러개면 어쩌구 저쩌구',
+    date: '2025-02-03',
+    goal: {
+      id: 3,
+      title: '목표 3',
+      color: 'goal02',
     },
     done: false,
   },
@@ -245,19 +275,19 @@ const initialBasketList = [
     goal: {
       id: 1,
       title: '강의 듣기',
-      color: 'bg-red-500',
+      color: 'goal01',
     },
   },
 ];
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [todos, setTodos] = useState<TodoType[]>(initialTodos);
-  const [basketList, setBasketList] = useState<BasketType[]>(initialBasketList);
-  const [isCalendarReady, setIsCalendarReady] = useState<boolean>(false);
-  const [calendarHeight, setCalendarHeight] = useState<number>(0);
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [basketList, setBasketList] = useState<Basket[]>(initialBasketList);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const calendarRef = useRef<FullCalendar>(null);
+  const [calendarHeight, setCalendarHeight] = useState<number>(0);
+  const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -267,12 +297,7 @@ export default function TodoCalendar() {
    */
   const updateCalendarHeight = () => {
     if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
-      if (calendarEl) {
-        setCalendarHeight(calendarEl.clientHeight);
-        setIsCalendarReady(true);
-      }
+      setCalendarHeight(calendarRef.current.clientHeight);
     }
   };
 
@@ -298,16 +323,16 @@ export default function TodoCalendar() {
    * 장바구니에서 할 일 삭제
    * @param id 삭제할 할 일의 id
    */
-  const handleDeleteBasketTodo = (id: number) => {
-    setBasketList((prev) => prev.filter((todo) => todo.id !== id));
-  };
+  // const handleDeleteBasketTodo = (id: number) => {
+  //   setBasketList((prev) => prev.filter((todo) => todo.id !== id));
+  // };
 
   /**
    * 모든 장바구니 삭제
    */
-  const handleDeleteAllBasket = () => {
-    setBasketList([]);
-  };
+  // const handleDeleteAllBasket = () => {
+  //   setBasketList([]);
+  // };
 
   /**
    * 드랍 시 todo에 추가 & 장바구니에서 제거
@@ -316,7 +341,7 @@ export default function TodoCalendar() {
     const draggedTodo = basketList.find((todo) => todo.id === todoId);
     if (!draggedTodo) return;
 
-    const newTodo: TodoType = {
+    const newTodo: Todo = {
       id: todoId,
       title: draggedTodo.title,
       date,
@@ -330,67 +355,53 @@ export default function TodoCalendar() {
 
   useEffect(() => {
     if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      const calendarEl = (calendarApi as unknown as { el: HTMLElement })?.el;
-
-      if (calendarEl) {
+      const observer = new MutationObserver(() => {
         updateCalendarHeight();
-        const observer = new MutationObserver(() => {
-          updateCalendarHeight();
-        });
-
-        observer.observe(calendarEl, {
-          attributes: true,
-          childList: true,
-          subtree: true,
-        });
-        return () => observer.disconnect();
-      }
+        setIsCalendarLoaded(true);
+      });
+      observer.observe(calendarRef.current, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+      return () => observer.disconnect();
     }
 
     return undefined;
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-4">
-      {isCalendarReady && (
-        <CalendarHeader
-          calendarRef={calendarRef}
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
+      <div className="flex-1">
+        <Calendar
+          todos={todos}
+          selectedDate={selectedDate}
           onDateChange={setSelectedDate}
+          onDropTodo={handleDropTodo}
+          calendarDivRef={calendarRef}
+          isCalendarLoaded={isCalendarLoaded}
         />
-      )}
-      <div className="flex h-full w-full flex-col items-center md:flex-row">
-        <div className="h-full w-full flex-grow transition-all duration-300 ease-in-out md:w-[70%]">
-          <Calendar
-            todos={todos}
+        {!isCalendarLoaded && <Loading />}
+      </div>
+      {isCalendarLoaded && (
+        <div
+          className="size-full md:w-[280px] xl:w-[350px]"
+          style={{ height: calendarHeight }}
+        >
+          <TodoList
             selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            calendarRef={calendarRef}
-            onDropTodo={handleDropTodo}
+            onToggleTodo={handleToggleTodo}
+            todos={todos.filter(
+              (todo) =>
+                new Date(todo.date).toDateString() ===
+                selectedDate.toDateString(),
+            )}
+            onDeleteTodo={handleDeleteTodo}
+            onOpenModal={handleOpenModal}
           />
         </div>
-        {isCalendarReady ? (
-          <div
-            className="flex h-full w-full flex-grow flex-col justify-between border border-l-0 border-calBorder bg-white p-4 transition-all duration-200 ease-in-out md:w-[30%]"
-            style={{ height: calendarHeight }}
-          >
-            <TodoList
-              selectedDate={selectedDate}
-              onToggleTodo={handleToggleTodo}
-              todos={todos.filter(
-                (todo) =>
-                  new Date(todo.date).toDateString() ===
-                  selectedDate.toDateString(),
-              )}
-              onDeleteTodo={handleDeleteTodo}
-              onOpenModal={handleOpenModal}
-            />
-          </div>
-        ) : (
-          <Loading />
-        )}
-      </div>
-      {isCalendarReady && (
+      )}
+      {/* {isCalendarReady && (
         <TodoBasket
           basketList={basketList}
           onDeleteBasketTodo={handleDeleteBasketTodo}
@@ -398,6 +409,7 @@ export default function TodoCalendar() {
         />
       )}
 
+      )} */}
       {isModalOpen && (
         <TodoModal
           selectedDate={selectedDate}

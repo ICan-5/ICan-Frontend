@@ -66,13 +66,13 @@ export default async function Page() {
   const progress = Math.floor((completedCount / totalCount) * 100) / 100;
 
   return (
-    <div className="relative left-1/2 flex max-h-[1000px] w-full max-w-screen-2xl -translate-x-1/2 flex-col gap-4 overflow-auto p-4 md:h-screen md:gap-8 md:p-10">
+    <>
       <section className="flex min-h-48 flex-col gap-4 overflow-hidden md:h-1/3 md:flex-row md:gap-8">
         <TodayList todayList={todayList} />
         <TodayProgress progress={progress} />
       </section>
       <section className="flex h-1/3 gap-8" />
       <section className="flex h-1/3 gap-8" />
-    </div>
+    </>
   );
 }
