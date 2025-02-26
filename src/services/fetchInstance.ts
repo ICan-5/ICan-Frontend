@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { auth, update } from '@/auth';
 import { ERROR_MESSAGES, getErrorMessage } from '@/constants/errorMessages';
 
 export const BACKENDURL = process.env.BACKEND_API_URL;
@@ -42,14 +42,13 @@ const handleTokenRefresh = async () => {
 
   const res = await fetch(`${BACKENDURL}/auth/refresh`, {
     method: 'POST',
-    headers: { Authorization: session.refreshToken },
+    headers: { Authorization: `Bearer ${session?.refreshToken}` },
   });
 
   if (!res.ok) return null;
 
   const data = await res.json();
-  session.accessToken = data.accessToken;
-
+  update({ ...session, accessToken: data.accessToken });
   return session.accessToken;
 };
 
@@ -73,6 +72,7 @@ export const fetchIntance = async <T>(options: {
 
     // 요청
     const session = await auth();
+
     if (!session?.accessToken) return NextResponse.json({ status: 401 });
 
     const baseUrl = `${base === 'CODEIT' ? CODEITURL : BACKENDURL}${url}`;
@@ -87,14 +87,12 @@ export const fetchIntance = async <T>(options: {
           { message: ERROR_MESSAGES[401] },
           { status: 401 },
         );
-
       config = await getConfig(method, body);
       res = await fetch(baseUrl, config);
     }
-
     if (!res.ok) {
       const message = getErrorMessage(res.status);
-      return NextResponse.json({ message }, { status: 500 });
+      return NextResponse.json({ message }, { status: res.status });
     }
 
     return res;
