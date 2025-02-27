@@ -7,7 +7,7 @@ import TodoList from './TodoList';
 import { Basket } from '@/types/todos';
 import TodoModal from './TodoModal';
 import Loading from '../common/Loading';
-import { useMonthlyTodos } from '@/hooks/useMonthlyTodos';
+import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
 
 // import Loading from '../common/Loading';
 // import TodoBasket from './TodoBasket';
@@ -53,11 +53,18 @@ export default function TodoCalendar() {
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
+
+  // 한 달 단위 할 일
   const {
-    data: todos,
+    data: monthlyTodos,
     isLoading,
     error,
   } = useMonthlyTodos(currentYear, currentMonth);
+
+  // 하루 단위 할 일
+  const { data: dailyTodos } = useDailyTodos(
+    selectedDate.toLocaleDateString('sv-SE'),
+  );
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -151,7 +158,7 @@ export default function TodoCalendar() {
           <Loading />
         ) : (
           <Calendar
-            todos={todos}
+            todos={monthlyTodos}
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
             onDropTodo={handleDropTodo}
@@ -173,11 +180,7 @@ export default function TodoCalendar() {
           <TodoList
             selectedDate={selectedDate}
             onToggleTodo={handleToggleTodo}
-            todos={todos.filter(
-              (todo) =>
-                new Date(todo.date).toDateString() ===
-                selectedDate.toDateString(),
-            )}
+            todos={dailyTodos}
             onDeleteTodo={handleDeleteTodo}
             onOpenModal={handleOpenModal}
           />
