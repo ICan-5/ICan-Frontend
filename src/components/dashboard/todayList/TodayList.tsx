@@ -1,12 +1,10 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { auth } from '@/auth';
-import Button from '@/components/common/button/Button';
-import Icon from '@/components/common/icon/Icon';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
 import { getTodayList } from '@/services/dashboard';
+import TodayListEmpty from './TodayListEmpty';
 
 export default async function TodayList() {
   const session = await auth(); // 세션 가져오기
@@ -51,16 +49,7 @@ export default async function TodayList() {
             noteId={todo.noteId}
           />
         ))}
-        {!todayList.length && (
-          <div className="flex h-full flex-1 flex-col items-center justify-center gap-2 2xl:gap-3">
-            <span className="text-12M text-gs400 2xl:text-14M">
-              오늘의 할 일이 없어요.
-            </span>
-            <Button variant="outline" size="medium">
-              <Icon icon={faPlus} />새 할일 생성
-            </Button>
-          </div>
-        )}
+        {!todayList.length && <TodayListEmpty />}
       </div>
     </div>
   );
