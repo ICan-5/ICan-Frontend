@@ -15,37 +15,39 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="mb-2 flex items-center justify-between">
         <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
           임시 목표 {id}
         </h1>
-        <div ref={menuRef}>
-          <FontAwesomeIcon
-            icon={faEllipsisV}
-            className="cursor-pointer text-gs500"
+        <div className="relative">
+          <button
+            type="button"
+            className="cflex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-          />
+          >
+            <FontAwesomeIcon icon={faEllipsisV} className="text-gs500" />
+          </button>
           {isMenuOpen && (
             <div
-              className="absolute right-12 mt-2 rounded bg-gs00 shadow-md"
+              className="absolute right-4 mt-2 w-[120px] rounded bg-gs00 shadow-md"
               ref={menuRef}
             >
               <button
                 type="button"
-                className="block w-full border-b px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
               >
                 목표 색상 변경
               </button>
               <button
                 type="button"
-                className="block w-full border-b px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
               >
                 수정하기
               </button>
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
               >
                 삭제하기
               </button>
