@@ -92,8 +92,8 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100 p-4 sm:px-4 lg:px-6 xl:px-20">
-      <div className="my-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
+    <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
+      <div className="mb-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
         <GoalHeader
           doneItems={doneItems.length}
           todoItems={todoItems.length}

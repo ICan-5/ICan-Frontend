@@ -44,16 +44,20 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
               <FontAwesomeIcon icon={faLayerGroup} />
             </div>
 
-            {/* 메뉴 아이콘 */}
+            {/* 메뉴 아이콘 - 아이콘을 감싸는 정사각형 컨테이너 추가 */}
             <div className="relative" ref={menuRef}>
-              <FontAwesomeIcon
-                icon={faEllipsisVertical}
-                className="flex-none rounded-2xl bg-gs100 text-gs400"
+              <div
+                className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsMenuOpen((prev) => !prev);
                 }}
-              />
+              >
+                <FontAwesomeIcon
+                  icon={faEllipsisVertical}
+                  className="text-gs400"
+                />
+              </div>
               {isMenuOpen && (
                 <div className="absolute right-0 z-10 mt-2 w-24 rounded bg-gs00 shadow-md">
                   <button

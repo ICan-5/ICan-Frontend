@@ -40,7 +40,7 @@ export default function NoteModal({
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-20 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
+            className="fixed inset-y-0 right-0 z-10 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -58,7 +58,7 @@ export default function NoteModal({
             {/* 목표 제목 */}
             <div className="flex items-center justify-between">
               <h1 className="flex items-center gap-3 text-18SB">
-                <div className="flex size-8 items-center justify-center rounded-full bg-slate100 text-slate500">
+                <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
                   <FontAwesomeIcon icon={faFlag} />
                 </div>
                 임시 목표 {goalId}
@@ -67,7 +67,7 @@ export default function NoteModal({
 
             {/* To do */}
             <div className="my-2 flex items-center gap-2 text-gs600">
-              <span className="rounded bg-gs200 text-16M">To do</span>
+              <span className="rounded bg-gs200 p-1 text-16M">To do</span>
               <span className="text-16M">{note.todo}</span>
               <span className="ml-auto text-14R">{note.date}</span>
             </div>

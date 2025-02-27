@@ -27,7 +27,7 @@ interface Props {
 
 interface GroupedTodos {
   past: Record<string, Todo[]>;
-  today: Todo[]; // ✅ 오늘 할 일은 날짜 필요 없음
+  today: Todo[];
   upcoming: Record<string, Todo[]>;
 }
 
