@@ -1,15 +1,24 @@
 import React from 'react';
-import GoalListItem from './GoalListItem';
+import CheckTodo from '../common/todo/CheckTodo';
+import { Goal } from '@/types/todos';
 
 // Done 타입 정의
-type Done = { id: number; task: string; date: string; done: boolean };
+interface DoneProps {
+  id: number;
+  task: string;
+  date: string;
+  done: boolean;
+  noteId: number | null;
+  goal: Goal | null;
+}
 
-type Props = {
-  list: Done[];
+interface Props {
+  list: DoneProps[];
   onToggle: (id: number) => void;
-};
+  onDelete?: (id: number) => void;
+}
 
-export default function GoalDoneList({ list, onToggle }: Props) {
+export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
   // 오래된 날짜 순으로 정렬
   const sortedList = [...list].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -18,9 +27,25 @@ export default function GoalDoneList({ list, onToggle }: Props) {
   return (
     <div className="rounded-2xl bg-gs200 p-6 shadow">
       <h3 className="mb-4 text-18R font-bold">Done</h3>
-      {sortedList.map((done) => (
-        <GoalListItem key={done.id} item={done} onToggle={onToggle} />
-      ))}
+
+      {sortedList.length === 0 ? (
+        <div className="flex items-center justify-center py-6 text-gs500">
+          다 한 일이 아직 없어요
+        </div>
+      ) : (
+        sortedList.map((done) => (
+          <CheckTodo
+            key={done.id}
+            id={done.id}
+            title={done.task}
+            done={done.done}
+            noteId={done.noteId}
+            onCheck={() => onToggle(done.id)}
+            onDelete={onDelete ? () => onDelete(done.id) : undefined}
+            goal={done.goal} // goal을 전달
+          />
+        ))
+      )}
     </div>
   );
 }

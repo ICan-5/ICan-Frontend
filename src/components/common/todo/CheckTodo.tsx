@@ -10,7 +10,7 @@ import {
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 interface Props {
   id: number;
@@ -45,7 +45,8 @@ export default function CheckTodo({
   onDelete,
 }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
-  const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside();
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   return (
     <>
@@ -118,9 +119,10 @@ export default function CheckTodo({
             }}
           />
           {isMenuOpen && (
-            <nav
+            <div
               className="absolute right-0 z-10 mt-2 rounded bg-gs00 shadow-md"
               ref={menuRef}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
@@ -137,7 +139,7 @@ export default function CheckTodo({
               >
                 삭제하기
               </button>
-            </nav>
+            </div>
           )}
         </div>
       </label>

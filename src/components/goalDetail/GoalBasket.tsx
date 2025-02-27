@@ -7,11 +7,11 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-type Props = {
+interface Props {
   basketItems: { id: number; task: string }[];
   onPickDate: (index: number, date: Date | null) => void;
   onDelete: (index: number) => void;
-};
+}
 
 export default function GoalBasket({
   basketItems,
@@ -62,7 +62,9 @@ export default function GoalBasket({
           ))}
       </ul>
       {(!basketItems || basketItems.length === 0) && (
-        <p className="text-gs500">장바구니에 할 일이 없습니다.</p>
+        <p className="flex items-center justify-center py-6 text-gs500">
+          장바구니에 할 일이 없어요
+        </p>
       )}
     </div>
   );

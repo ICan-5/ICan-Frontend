@@ -10,22 +10,23 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { Goal } from '@/types/todos';
 
 config.autoAddCss = false;
 
-type TodoItem = {
+interface TodoItem {
   id: number;
   task: string;
   date: string;
   done: boolean;
-};
+  noteId?: number | null;
+  goal: Goal | null;
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
-    { id: 1, task: '운동하기', date: '2025-02-18', done: false },
-    { id: 2, task: '책 읽기', date: '2025-02-14', done: false },
-    { id: 3, task: '자바스크립트 1챕터', date: '2025-02-17', done: false },
-    { id: 4, task: '친구들 만나기', date: '2025-02-20', done: false },
+    { id: 1, task: '운동하기', date: '2025-02-18', done: false, goal: null },
+    { id: 2, task: '책 읽기', date: '2025-02-27', done: false, goal: null },
   ]);
   const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
     { id: 1, task: '스터디 준비하기' },
@@ -59,14 +60,26 @@ export default function Page({ params }: { params: { id: string } }) {
       task,
       date: formattedDate,
       done: false,
+      goal: null,
     };
     setTodos((prev) => [...prev, newTodos]);
     deleteBasket(id);
   };
 
+  const addTodo = (task: string, date: string) => {
+    const newTodo: TodoItem = {
+      id: Date.now() + Math.floor(Math.random() * 1000),
+      task,
+      date,
+      done: false,
+      goal: null,
+    };
+    setTodos((prev) => [...prev, newTodo]);
+  };
+
   return (
-    <div className="min-h-screen w-full bg-gs100 px-4 py-8 sm:px-8 lg:px-16 xl:px-24">
-      <div className="mb-6 rounded-2xl bg-gs00 p-6 shadow">
+    <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
+      <div className="mb-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
         <GoalHeader
           doneItems={doneItems.length}
           todoItems={todoItems.length}
@@ -74,8 +87,8 @@ export default function Page({ params }: { params: { id: string } }) {
         />
       </div>
       <Link href={`${params.id}/note`} className="block">
-        <div className="mb-6 cursor-pointer rounded-2xl bg-slate200 p-3 shadow">
-          <h2 className="mb-4 flex items-center text-18SB">
+        <div className="mb-6 h-[60px] cursor-pointer rounded-2xl bg-slate100 px-6 py-4 shadow">
+          <h2 className="flex items-center text-18SB">
             <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
             노트 모아보기
             <FontAwesomeIcon
@@ -85,10 +98,21 @@ export default function Page({ params }: { params: { id: string } }) {
           </h2>
         </div>
       </Link>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <GoalTodoList list={todoItems} onToggle={toggleTodos} />
-        <div className="flex flex-col gap-4">
-          <GoalDoneList list={doneItems} onToggle={toggleTodos} />
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <GoalTodoList
+          list={todoItems}
+          onToggle={toggleTodos}
+          onAdd={addTodo}
+          goalId={params.id}
+        />
+        <div className="flex flex-col gap-8">
+          <GoalDoneList
+            list={doneItems.map((item) => ({
+              ...item,
+              noteId: item.noteId ?? null,
+            }))}
+            onToggle={toggleTodos}
+          />
           <GoalBasket
             basketItems={baskets}
             onPickDate={pickDate}

@@ -1,7 +1,13 @@
 import TodayProgress from '@/components/dashboard/todayProgress/TodayProgress';
 import TodayList from '@/components/dashboard/todayList/TodayList';
+import { auth } from '@/auth';
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+
+  if (!session) {
+    return <div>Loading...</div>;
+  }
   const todayList = [
     {
       id: 1,
