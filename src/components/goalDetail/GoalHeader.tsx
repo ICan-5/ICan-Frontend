@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-import GoalProgress from './GoalProgress';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useGoalTitle } from '@/hooks/useGoalTitle';
+import GoalProgress from './GoalProgress';
 
 type Props = {
   doneItems: number;
@@ -13,35 +13,14 @@ type Props = {
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const [menuRef, isMenuOpen, setIsMenuOpen] =
     useClickOutside<HTMLDivElement>();
-  const [goalTitle, setGoalTitle] = useState<string>('목표 로딩 중...');
-
-  useEffect(() => {
-    // 목표 정보를 가져오는 함수
-    const fetchGoalInfo = async () => {
-      try {
-        const response = await fetch(`/api/goals/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch goal data');
-        }
-        const data = await response.json();
-        setGoalTitle(data.goalTitle || '목표');
-      } catch (error) {
-        console.error('Error fetching goal title:', error);
-        setGoalTitle('목표');
-      }
-    };
-
-    if (id) {
-      fetchGoalInfo();
-    }
-  }, [id]);
+  const { data: goalTitle, isLoading } = useGoalTitle(id);
 
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
         <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          {goalTitle}
+          {isLoading ? '목표 로딩 중...' : goalTitle}
         </h1>
         <div className="relative">
           <button

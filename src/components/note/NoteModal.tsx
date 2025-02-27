@@ -5,6 +5,7 @@ import { faFlag, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactDOM from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useGoalTitle } from '@/hooks/useGoalTitle';
 
 interface NoteModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ export default function NoteModal({
   goalId,
 }: NoteModalProps) {
   const [modalRef] = useClickOutside<HTMLDivElement>(onClose);
+  const { data: goalTitle } = useGoalTitle(goalId);
 
   const modalContent = (
     <AnimatePresence>
@@ -61,7 +63,7 @@ export default function NoteModal({
                 <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
                   <FontAwesomeIcon icon={faFlag} />
                 </div>
-                임시 목표 {goalId}
+                {goalTitle}
               </h1>
             </div>
 

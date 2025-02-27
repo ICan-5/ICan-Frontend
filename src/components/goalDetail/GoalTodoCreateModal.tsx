@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
-import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
+import { useGoalTitle } from '@/hooks/useGoalTitle';
 
 const createTodoSchema = z.object({
   title: z
@@ -24,20 +24,7 @@ type Props = {
 };
 
 export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
-  const [goalTitle, setGoalTitle] = useState<string>();
-
-  useEffect(() => {
-    const fetchGoalInfo = async () => {
-      const response = await fetch(`/api/goals/${goalId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch goal data');
-      }
-      const data = await response.json();
-      setGoalTitle(data.goalTitle);
-    };
-
-    fetchGoalInfo();
-  }, [goalId]);
+  const { data: goalTitle } = useGoalTitle(goalId);
 
   const onSubmit = async (data: CreateTodoFormData) => {
     const formattedDate = (() => {
