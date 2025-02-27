@@ -39,3 +39,5 @@ next-env.d.ts
 .eslintcache
 
 /.vscode/
+# Local Netlify folder
+.netlify
