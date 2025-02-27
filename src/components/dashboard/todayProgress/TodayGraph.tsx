@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-type Props = {
+interface Props {
   progress: number;
-};
+}
 
 export default function TodayGraph({ progress }: Props) {
   // 전체 원의 길이
