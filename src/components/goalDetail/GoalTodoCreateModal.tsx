@@ -4,7 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
-import { useGoalTitle } from '@/hooks/useGoalTitle';
+import { useGoals } from '@/hooks/useGoals';
+import { Goal } from '@/types/goals';
 
 const createTodoSchema = z.object({
   title: z
@@ -24,7 +25,11 @@ type Props = {
 };
 
 export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
-  const { data: goalTitle } = useGoalTitle(goalId);
+  const { data: goals } = useGoals();
+
+  const goalTitle = goals?.find(
+    (goal: Goal) => goal.goalId === Number(goalId),
+  )?.title;
 
   const onSubmit = async (data: CreateTodoFormData) => {
     const formattedDate = (() => {

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 interface Todo {
   id: number;

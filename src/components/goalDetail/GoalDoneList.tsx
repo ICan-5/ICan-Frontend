@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckTodo from '../common/todo/CheckTodo';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 // Done 타입 정의
 interface DoneProps {

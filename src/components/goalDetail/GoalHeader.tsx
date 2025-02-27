@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { useGoalTitle } from '@/hooks/useGoalTitle';
+import { useGoals } from '@/hooks/useGoals';
 import GoalProgress from './GoalProgress';
+import { Goal } from '@/types/goals';
 
 type Props = {
   doneItems: number;
@@ -13,14 +14,20 @@ type Props = {
 export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const [menuRef, isMenuOpen, setIsMenuOpen] =
     useClickOutside<HTMLDivElement>();
-  const { data: goalTitle, isLoading } = useGoalTitle(id);
+  const { data: goals, isLoading } = useGoals();
+
+  const goalTitle = goals?.find(
+    (goal: Goal) => goal.goalId === Number(id),
+  )?.title;
 
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
         <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          {isLoading ? '목표 로딩 중...' : goalTitle}
+          {isLoading
+            ? '목표 로딩 중...'
+            : goalTitle || '목표를 찾을 수 없습니다.'}
         </h1>
         <div className="relative">
           <button

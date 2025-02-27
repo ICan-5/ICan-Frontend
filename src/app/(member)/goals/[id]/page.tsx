@@ -10,7 +10,7 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 config.autoAddCss = false;
 

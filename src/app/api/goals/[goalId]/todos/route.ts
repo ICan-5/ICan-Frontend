@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
-import { getErrorMessage } from '@/constants/errorMessages';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -16,8 +15,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!res1.ok) {
-    const message = getErrorMessage(res1.status);
-    return NextResponse.json({ message }, { status: res1.status });
+    return res1;
   }
 
   const data = await res1.json();
@@ -36,13 +34,5 @@ export async function POST(req: NextRequest) {
       createdAt,
     },
   });
-
-  if (!res2.ok) {
-    const message = getErrorMessage(res2.status);
-    return NextResponse.json({ message }, { status: res2.status });
-  }
-
-  const finalData = await res2.json();
-  console.log('Final data:', finalData);
-  return NextResponse.json(finalData, { status: 201 });
+  return res2;
 }
