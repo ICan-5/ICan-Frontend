@@ -27,6 +27,7 @@ interface Props {
   onCheck?: () => void;
   onClickNote?: () => void;
   onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 /**
@@ -49,6 +50,7 @@ export default function CheckTodo({
   onCheck,
   onClickNote,
   onDelete,
+  onEdit,
 }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
   const [menuRef, isMenuOpen, setIsMenuOpen] =
@@ -141,6 +143,9 @@ export default function CheckTodo({
               <button
                 type="button"
                 className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                onClick={() => {
+                  if (onEdit) onEdit();
+                }}
               >
                 수정하기
               </button>
