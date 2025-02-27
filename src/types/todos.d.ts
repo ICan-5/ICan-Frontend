@@ -13,3 +13,5 @@ export interface Basket {
   title: string;
   goal: Goal | null;
 }
+
+export { Goal };
