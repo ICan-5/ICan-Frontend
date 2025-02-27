@@ -32,7 +32,7 @@ export default function NoteModal({
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 z-10 bg-gsBk/50"
+            className="fixed inset-0 z-40 bg-gsBk/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -67,7 +67,7 @@ export default function NoteModal({
 
             {/* To do */}
             <div className="my-2 flex items-center gap-2 text-gs600">
-              <span className="rounded bg-gs200 p-1 text-16M">To do</span>
+              <span className="rounded bg-gs200 px-1 text-16M">To do</span>
               <span className="text-16M">{note.todo}</span>
               <span className="ml-auto text-14R">{note.date}</span>
             </div>

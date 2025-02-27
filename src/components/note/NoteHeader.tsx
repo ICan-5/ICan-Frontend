@@ -6,7 +6,7 @@ interface Props {
 }
 export default function NoteHeader({ id }: Props) {
   return (
-    <h1 className="flex items-center gap-2 text-16R font-semibold">
+    <h1 className="flex items-center gap-2 px-3 text-16R font-semibold">
       <FontAwesomeIcon icon={faFlag} className="text-slate500" />
       임시 목표 {id}
     </h1>

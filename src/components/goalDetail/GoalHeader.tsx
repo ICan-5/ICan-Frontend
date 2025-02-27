@@ -23,7 +23,7 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
         <div className="relative">
           <button
             type="button"
-            className="cursor-pointer bg-transparent p-0"
+            className="cflex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
             <FontAwesomeIcon icon={faEllipsisV} className="text-gs500" />
@@ -41,13 +41,13 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
               </button>
               <button
                 type="button"
-                className="block w-full border-b px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
               >
                 수정하기
               </button>
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-left text-14R text-gs700 hover:bg-gs200"
+                className="block w-full px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
               >
                 삭제하기
               </button>

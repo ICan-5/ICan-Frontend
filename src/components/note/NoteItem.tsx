@@ -44,7 +44,6 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
               <FontAwesomeIcon icon={faLayerGroup} />
             </div>
 
-            {/* 메뉴 아이콘 - 아이콘을 감싸는 정사각형 컨테이너 추가 */}
             <div className="relative" ref={menuRef}>
               <div
                 className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
