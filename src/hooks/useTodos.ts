@@ -13,7 +13,7 @@ const fetchMonthlyTodos = async (year: number, month: number) => {
   return res.json();
 };
 
-const fetchDaliyTodos = async (date: string) => {
+const fetchDailyTodos = async (date: string) => {
   const res = await fetch(`api/todos/daily?date=${date}`);
   if (!res.ok) throw new Error(getErrorMessage(res.status));
   return res.json();
@@ -39,6 +39,22 @@ const addTodo = async (formData: TodoFormValues) => {
   }
 };
 
+const updateTodo = async (todoId: number, updatedFields: Partial<Todo>) => {
+  try {
+    const response = await fetch(`/api/todos/${todoId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updatedFields),
+    });
+
+    if (!response.ok) throw new Error(getErrorMessage(response.status));
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('할 일 수정 중 오류 발생', error);
+    throw error;
+  }
+};
+
 export const useMonthlyTodos = (year: number, month: number) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
@@ -52,7 +68,7 @@ export const useMonthlyTodos = (year: number, month: number) => {
 export const useDailyTodos = (date: string) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.DAILY_TODOS, date],
-    queryFn: () => fetchDaliyTodos(date),
+    queryFn: () => fetchDailyTodos(date),
     initialData: [],
     retry: false,
     throwOnError: false,
@@ -75,6 +91,34 @@ export const useAddTodo = () => {
           if (!oldData) return [newTodo];
           return [...oldData, newTodo];
         },
+      );
+
+      // 한 달 단위의 캐시는 무효화 -> 최신 데이터 유지
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
+      });
+    },
+  });
+};
+
+export const useUpdateTodo = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { todoId: number; updatedFields: Partial<Todo> }) =>
+      updateTodo(data.todoId, data.updatedFields),
+    onSuccess: (updatedTodo) => {
+      const { date } = updatedTodo;
+      const year = new Date(date).getFullYear();
+      const month = new Date(date).getMonth() + 1;
+
+      queryClient.setQueryData<Todo[]>(
+        [QUERY_KEY.DAILY_TODOS, date],
+        (oldTodos) =>
+          oldTodos
+            ? oldTodos.map((todo) =>
+                todo.todoId === updatedTodo.todoId ? updatedTodo : todo,
+              )
+            : [updatedTodo],
       );
 
       // 한 달 단위의 캐시는 무효화 -> 최신 데이터 유지

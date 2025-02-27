@@ -1,9 +1,9 @@
 import { Todo } from '@/types/todos';
 import CheckTodo from '../common/todo/CheckTodo';
+import { useUpdateTodo } from '@/hooks/useTodos';
 
 interface Props {
   todoList: Todo[];
-  onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
 }
 
@@ -14,11 +14,12 @@ interface Props {
  * @param isCompleted 완료 여부
 
  */
-export default function TodoListItem({
-  todoList,
-  onToggleTodo,
-  onDeleteTodo,
-}: Props) {
+export default function TodoListItem({ todoList, onDeleteTodo }: Props) {
+  const { mutate: updateTodo } = useUpdateTodo();
+
+  const handleToggleTodo = (todo: Todo) => {
+    updateTodo({ todoId: todo.todoId, updatedFields: { done: !todo.done } });
+  };
   return (
     <ul>
       {todoList.map((todo) => (
@@ -29,7 +30,7 @@ export default function TodoListItem({
             goal={todo.goal}
             done={todo.done}
             noteId={null}
-            onCheck={() => onToggleTodo(todo.todoId)}
+            onCheck={() => handleToggleTodo(todo)}
             onDelete={() => onDeleteTodo(todo.todoId)}
           />
         </li>
