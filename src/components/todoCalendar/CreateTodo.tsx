@@ -6,8 +6,8 @@ import DropDownInput from '@/components/common/input/DropDownInput';
 import DateInput from '../common/input/DateInput';
 import cn from '@/utils/cn';
 import Button from '../common/button/Button';
-import { getErrorMessage } from '@/constants/errorMessages';
 import { useGoals } from '@/hooks/useGoals';
+import { useAddTodo } from '@/hooks/useTodos';
 
 const createTodoSchema = z.object({
   title: z
@@ -34,24 +34,15 @@ export default function CreateTodo({
   savedValues,
 }: Props) {
   const { data: goalList, isLoading } = useGoals();
+  const { mutate: addTodo } = useAddTodo();
 
   // TODO:: tanstack query 도입 후 mutation 사용으로 변경
   const onSubmit = async (formData: TodoFormValues) => {
-    try {
-      const response = await fetch('/api/todos', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: formData.title,
-          goalId: formData.goal?.goalId,
-          date: formData.date?.toISOString().split('T')[0] || null,
-        }),
-      });
-
-      if (!response.ok) throw new Error(getErrorMessage(response.status));
-      onCloseModal();
-    } catch (error) {
-      console.log('할 일 생성 중 오류 발생', error);
-    }
+    addTodo(formData, {
+      onSuccess: () => {
+        onCloseModal();
+      },
+    });
   };
 
   const {
