@@ -7,7 +7,7 @@ export interface Todo {
   createdAt: string;
   title: string;
   done: boolean;
-  goal: Goal;
+  goal: Goal | null;
 }
 
 export interface Basket {

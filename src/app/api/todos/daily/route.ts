@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getErrorMessage } from '@/constants/errorMessages';
 import { fetchIntance } from '@/services/fetchInstance';
 
 export async function GET(req: NextRequest) {
@@ -19,17 +18,5 @@ export async function GET(req: NextRequest) {
     url: `/calendar/daily-todos?date=${date}`,
   });
 
-  if (!res.ok) {
-    return NextResponse.json(
-      { message: getErrorMessage(res.status) },
-      { status: res.status },
-    );
-  }
-
-  const data = await res.json();
-
-  if (!Array.isArray(data)) {
-    return NextResponse.json({ message: 'Data is not valid' }, { status: 500 });
-  }
-  return NextResponse.json(data, { status: 200 });
+  return res;
 }
