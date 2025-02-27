@@ -1,11 +1,13 @@
 import { Goal } from './goals';
 
 export interface Todo {
-  id: number;
-  title: string;
+  todoId: number;
+  noteId: number | null;
   date: string;
-  goal: Goal | null;
+  createdAt: string;
+  title: string;
   done: boolean;
+  goal: Goal;
 }
 
 export interface Basket {

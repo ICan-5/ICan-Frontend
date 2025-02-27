@@ -1,12 +1,13 @@
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import FullCalendar from '@fullcalendar/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '../common/button/IconButton';
 import Button from '../common/button/Button';
 
 interface Props {
   calendarRef: React.RefObject<FullCalendar>;
   onDateChange: (date: Date) => void;
+  onMonthChange: (year: number, month: number) => void;
 }
 
 /**
@@ -16,18 +17,30 @@ interface Props {
  * @param calendarRef 달력
  * @param onDateChange 선택 날짜 변경
  */
-export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
+export default function CalendarHeader({
+  calendarRef,
+  onDateChange,
+  onMonthChange,
+}: Props) {
   // 헤더에 있는 현재 달력의 달을 보여주기 위함
   const [viewMonth, setViewMonth] = useState<Date>(new Date());
 
-  /**
-   * 현재 달력 위치의 날짜로 업데이트
-   */
-  const updateCurrentView = () => {
+  useEffect(() => {
     const calendarApi = calendarRef.current?.getApi();
-    const currentDate = calendarApi?.getDate() ?? new Date();
-    setViewMonth(currentDate);
-  };
+    if (!calendarApi) return undefined;
+
+    const handleDatesSet = () => {
+      const newDate = new Date(calendarApi.getDate());
+      setViewMonth(newDate);
+      onMonthChange(newDate.getFullYear(), newDate.getMonth() + 1);
+    };
+
+    calendarApi.on('datesSet', handleDatesSet);
+
+    return () => {
+      calendarApi.off('datesSet', handleDatesSet);
+    };
+  }, [calendarRef, onMonthChange]);
 
   /**
    * today 버튼을 클릭했을 때
@@ -39,7 +52,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
     onDateChange(today);
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.today();
-    updateCurrentView();
+    // updateCurrentView();
   };
 
   /**
@@ -48,7 +61,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
   const handlePrevMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.prev();
-    updateCurrentView();
+    // updateCurrentView();
   };
 
   /**
@@ -56,7 +69,7 @@ export default function CalendarHeader({ calendarRef, onDateChange }: Props) {
    */ const handleNextMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.next();
-    updateCurrentView();
+    // updateCurrentView();
   };
 
   return (

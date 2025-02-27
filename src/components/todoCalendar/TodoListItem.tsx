@@ -22,15 +22,15 @@ export default function TodoListItem({
   return (
     <ul>
       {todoList.map((todo) => (
-        <li key={todo.id} className="last:border-0">
+        <li key={todo.todoId} className="last:border-0">
           <CheckTodo
-            id={todo.id}
+            id={todo.todoId}
             title={todo.title}
             goal={todo.goal}
             done={todo.done}
             noteId={null}
-            onCheck={() => onToggleTodo(todo.id)}
-            onDelete={() => onDeleteTodo(todo.id)}
+            onCheck={() => onToggleTodo(todo.todoId)}
+            onDelete={() => onDeleteTodo(todo.todoId)}
           />
         </li>
       ))}
