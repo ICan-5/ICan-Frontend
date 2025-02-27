@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckTodo from '../common/todo/CheckTodo';
-import { Goal } from '@/types/todos'; // Goal 타입을 임포트
+import { Goal } from '@/types/goals';
 
 // Done 타입 정의
 interface DoneProps {
@@ -9,7 +9,7 @@ interface DoneProps {
   date: string;
   done: boolean;
   noteId: number | null;
-  goal: Goal | null; // goal 타입을 string에서 Goal로 수정
+  goal: Goal | null;
 }
 
 interface Props {
@@ -28,7 +28,6 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
     <div className="rounded-2xl bg-gs200 p-6 shadow">
       <h3 className="mb-4 text-18R font-bold">Done</h3>
 
-      {/* ✅ 완료된 할 일이 없을 경우 */}
       {sortedList.length === 0 ? (
         <div className="flex items-center justify-center py-6 text-gs500">
           다 한 일이 아직 없어요

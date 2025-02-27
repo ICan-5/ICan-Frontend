@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 interface Todo {
   id: number;
@@ -14,7 +14,7 @@ interface Todo {
   date: string;
   done: boolean;
   noteId?: number | null;
-  goal: Goal | null; // goal을 Goal 타입으로 수정
+  goal: Goal | null;
 }
 
 interface Props {
@@ -138,7 +138,7 @@ export default function GoalTodoList({
                             onDelete={
                               onDelete ? () => onDelete(todo.id) : undefined
                             }
-                            goal={todo.goal} // goal을 CheckTodo에 전달
+                            goal={todo.goal}
                           />
                         ))}
                       </div>
@@ -182,7 +182,7 @@ export default function GoalTodoList({
                             onDelete={
                               onDelete ? () => onDelete(todo.id) : undefined
                             }
-                            goal={todo.goal} // goal을 CheckTodo에 전달
+                            goal={todo.goal}
                           />
                         ))}
                       </div>

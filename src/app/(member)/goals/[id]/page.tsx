@@ -10,7 +10,7 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 config.autoAddCss = false;
 
@@ -26,21 +26,7 @@ interface TodoItem {
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
     { id: 1, task: '운동하기', date: '2025-02-18', done: false, goal: null },
-    { id: 2, task: '책 읽기', date: '2025-02-21', done: false, goal: null },
-    {
-      id: 3,
-      task: '자바스크립트 1챕터',
-      date: '2025-02-17',
-      done: false,
-      goal: null,
-    },
-    {
-      id: 4,
-      task: '친구들 만나기',
-      date: '2025-02-28',
-      done: false,
-      goal: null,
-    },
+    { id: 2, task: '책 읽기', date: '2025-02-27', done: false, goal: null },
   ]);
   const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
     { id: 1, task: '스터디 준비하기' },
