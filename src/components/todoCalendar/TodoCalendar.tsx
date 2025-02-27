@@ -24,9 +24,10 @@ const initialTodos = [
     title: '할일 2',
     date: '2025-02-10',
     goal: {
-      id: 1,
+      goalId: 1,
       title: '강의 듣기',
       color: 'goal01',
+      createdAt: '2025-02-26T02:49:55.691312Z',
     },
     done: true,
   },
@@ -35,9 +36,10 @@ const initialTodos = [
     title: '할일 3',
     date: '2025-02-07',
     goal: {
-      id: 2,
+      goalId: 2,
       title: '목표 2',
       color: 'goal02',
+      createdAt: '2025-02-26T02:49:55.691312Z',
     },
     done: true,
   },
@@ -46,210 +48,12 @@ const initialTodos = [
     title: '할일 4',
     date: '2025-02-20',
     goal: {
-      id: 3,
+      goalId: 3,
       title: '목표 3',
       color: 'goal02',
+      createdAt: '2025-02-26T02:49:55.691312Z',
     },
     done: true,
-  },
-  {
-    id: 5,
-    title: '할일 5',
-    date: '2025-02-17',
-    goal: {
-      id: 4,
-      title: '목표 4',
-      color: 'goal02',
-    },
-    done: true,
-  },
-  {
-    id: 6,
-    title: '할일 6',
-    date: '2025-02-25',
-    goal: {
-      id: 1,
-      title: '강의 듣기',
-      color: 'goal01',
-    },
-    done: true,
-  },
-  {
-    id: 7,
-    title:
-      '할일이 길어지면 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 8,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 9,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 10,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 11,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 12,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 13,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 14,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 15,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 16,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 17,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 18,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 19,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-10',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 20,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-03',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 21,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-03',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
-  },
-  {
-    id: 22,
-    title: '할일이 여러개면 어쩌구 저쩌구',
-    date: '2025-02-03',
-    goal: {
-      id: 3,
-      title: '목표 3',
-      color: 'goal02',
-    },
-    done: false,
   },
 ];
 
@@ -273,9 +77,10 @@ const initialBasketList = [
     id: 116,
     title: '할 일 182',
     goal: {
-      id: 1,
+      goalId: 1,
       title: '강의 듣기',
       color: 'goal01',
+      createdAt: '2025-02-26T02:49:55.691312Z',
     },
   },
 ];
@@ -340,7 +145,6 @@ export default function TodoCalendar() {
   const handleDropTodo = (date: string, todoId: number) => {
     const draggedTodo = basketList.find((todo) => todo.id === todoId);
     if (!draggedTodo) return;
-
     const newTodo: Todo = {
       id: todoId,
       title: draggedTodo.title,
@@ -348,7 +152,6 @@ export default function TodoCalendar() {
       goal: draggedTodo.goal || null,
       done: false,
     };
-
     setTodos((prev) => [...prev, newTodo]);
     setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
   };

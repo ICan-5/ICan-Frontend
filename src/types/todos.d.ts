@@ -1,8 +1,4 @@
-export interface Goal {
-  id: number;
-  title: string;
-  color: string | 'default';
-}
+import { Goal } from './goals';
 
 export interface Todo {
   id: number;
