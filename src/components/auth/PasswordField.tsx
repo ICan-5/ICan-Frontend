@@ -53,7 +53,7 @@ export default function PasswordField<T extends FieldValues>({
             aria-label="password-visible-button"
           >
             <FontAwesomeIcon
-              className="absolute right-4 top-1/2 h-6 w-6 -translate-y-1/2"
+              className="absolute right-4 top-1/2 size-6 -translate-y-1/2"
               icon={isPasswordVisible ? faEye : faEyeSlash}
             />
           </button>
