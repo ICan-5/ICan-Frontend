@@ -19,7 +19,7 @@ export const getTodayList = async () => {
 
     const data: Todo[] = await res.json();
     const completedTodos = data
-      .filter((todo) => todo.done)
+      .filter((todo) => !todo.done)
       .map(({ todoId, noteId, title }) => ({ todoId, noteId, title }));
 
     return completedTodos;
