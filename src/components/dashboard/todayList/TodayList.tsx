@@ -1,14 +1,16 @@
+'use client';
+
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import { auth } from '@/auth';
+import { useSession } from 'next-auth/react';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
-import { getTodayList } from '@/services/dashboard';
 import TodayListEmpty from './TodayListEmpty';
+import { useTodayTodos } from '@/hooks/useTodayTodos';
 
-export default async function TodayList() {
-  const session = await auth(); // 세션 가져오기
-  const todayList = await getTodayList(); // 오늘 할일 리스트 가져오기
+export default function TodayList() {
+  const { data } = useSession();
+  const { data: todayList, isFetching } = useTodayTodos();
   const formatter = new Intl.DateTimeFormat('ko-KR', { dateStyle: 'long' });
   const formattedDate = formatter.format(new Date());
 
@@ -18,9 +20,7 @@ export default async function TodayList() {
         <p className="mr-auto flex text-16M 2xl:text-18SB">
           <span className="mr-1 hidden sm:inline-flex md:hidden xl:inline-flex">
             안녕하세요,
-            <strong className="ml-1 text-slate500">
-              {session?.user?.name}
-            </strong>
+            <strong className="ml-1 text-slate500">{data?.user?.name}</strong>
             님의
           </span>
           <span>오늘의 일정입니다!👋</span>
@@ -41,6 +41,13 @@ export default async function TodayList() {
         {formattedDate}
       </span>
       <div className="flex h-40 w-full flex-col overflow-y-auto 2xl:h-44">
+        {isFetching &&
+          Array.from({ length: 4 }, (_, i) => i + 1).map((e) => (
+            <div
+              key={e}
+              className="my-2 block h-6 w-full flex-none animate-pulse rounded-md bg-gs100 2xl:h-7"
+            />
+          ))}
         {todayList.map((todo) => (
           <SimpleTodo
             key={todo.todoId}
@@ -49,7 +56,7 @@ export default async function TodayList() {
             noteId={todo.noteId}
           />
         ))}
-        {!todayList.length && <TodayListEmpty />}
+        {!isFetching && !todayList.length && <TodayListEmpty />}
       </div>
     </div>
   );

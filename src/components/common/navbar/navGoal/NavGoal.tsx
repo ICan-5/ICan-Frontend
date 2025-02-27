@@ -68,7 +68,7 @@ export default function NavGoal({ headerFolded }: Props) {
           onClick={foldGoalList}
         />
         <IconButton
-          className="h-6 w-6 rounded-2xl border border-gs200 bg-gs00 text-gs400 hover:border-slate500 hover:text-slate500 2xl:h-7 2xl:w-7"
+          className="size-6 rounded-2xl border border-gs200 bg-gs00 text-gs400 hover:border-slate500 hover:text-slate500 2xl:size-7"
           icon={faPlus}
           onClick={addGoalList}
         />
