@@ -60,6 +60,7 @@ interface Props {
   onDateChange: (date: Date) => void;
   calendarRef: React.RefObject<FullCalendar>;
   onDropTodo: (date: string, todoId: number) => void;
+  onMonthChange: (year: number, month: number) => void;
 }
 
 export default function CalendarBody({
@@ -68,6 +69,7 @@ export default function CalendarBody({
   onDateChange,
   calendarRef,
   onDropTodo,
+  onMonthChange,
 }: Props) {
   /**
    * 셀에 클래스 부여
@@ -101,7 +103,7 @@ export default function CalendarBody({
   /**
    * 날짜 셀 크기 업데이트
    */
-  const handleDayCellMount = (info: { el: HTMLElement }) => {
+  const handleDayCellMount = () => {
     // 반응형에 맞춰 셀 크기 업데이트
     const updateCellSize = () => {
       const cell = document.querySelector('.fc-daygrid-day');
@@ -130,28 +132,35 @@ export default function CalendarBody({
         });
       }
     };
-    // 숨겨진 이벤트 개수 표시
-    const updateMoreCount = () => {
-      requestAnimationFrame(() => {
-        const events = info.el.querySelectorAll('.fc-event');
 
-        // 숨겨진 이벤트 개수 계산
+    updateCellSize();
+
+    window.addEventListener('resize', updateCellSize);
+
+    return () => {
+      window.removeEventListener('resize', updateCellSize);
+    };
+  };
+
+  const updateMoreCount = () => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.fc-daygrid-day').forEach((dayCell) => {
+        const events = dayCell.querySelectorAll('.fc-event');
         const hiddenEvents = Array.from(events).filter(
           (e) => (e as HTMLElement).offsetHeight === 0,
         ).length;
 
-        let moreCountEl = info.el.querySelector(
+        let moreCountEl = dayCell.querySelector(
           '.event-more-count',
         ) as HTMLElement;
         if (!moreCountEl) {
           moreCountEl = document.createElement('div');
           moreCountEl.className =
             'event-more-count absolute top-2 right-2 text-12SB text-gs500';
-          info.el.appendChild(moreCountEl);
+          dayCell.appendChild(moreCountEl);
         }
 
-        // 숨겨진 이벤트가 있으면 텍스트 추가, 없으면 숨김
-        const cellWidth = info.el.clientWidth;
+        const cellWidth = dayCell.clientWidth;
         if (hiddenEvents > 0) {
           if (cellWidth > 88) {
             moreCountEl.textContent = `+${hiddenEvents} more`;
@@ -163,24 +172,28 @@ export default function CalendarBody({
 
           moreCountEl.style.opacity = '1';
         } else {
+          moreCountEl.textContent = '';
           moreCountEl.style.opacity = '0';
         }
       });
-    };
-
-    updateCellSize();
-    updateMoreCount();
-
+    });
+  };
+  useEffect(() => {
     const observer = new ResizeObserver(updateMoreCount);
-    observer.observe(info.el);
-
-    window.addEventListener('resize', updateCellSize);
+    document.querySelectorAll('.fc-daygrid-day').forEach((dayCell) => {
+      observer.observe(dayCell);
+    });
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('resize', updateCellSize);
     };
-  };
+  }, []);
+
+  useEffect(() => {
+    if (todos.length > 0) {
+      updateMoreCount();
+    }
+  }, [todos]);
 
   /**
    * 사이드 바가 접히거나 펼쳐지면 캘린더 크기 재조정
@@ -210,7 +223,7 @@ export default function CalendarBody({
       initialView="dayGridMonth"
       events={todos.map((event) => ({
         ...event,
-        id: event.id.toString(),
+        id: event.todoId.toString(),
         className: goalColor[event.goal?.color || 'default'],
       }))}
       eventBorderColor="transparent"
@@ -234,6 +247,12 @@ export default function CalendarBody({
 
         onDropTodo(date, todoId);
         info.event.remove();
+      }}
+      datesSet={(info) => {
+        const newDate = new Date(info.view.currentStart);
+        const newYear = newDate.getFullYear();
+        const newMonth = newDate.getMonth() + 1;
+        onMonthChange(newYear, newMonth);
       }}
     />
   );

@@ -12,6 +12,12 @@ import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { Goal } from '@/types/goals';
 
+const goalColor: Record<string, string> = {
+  goal01: 'text-goal01',
+  goal02: 'text-goal02',
+  default: 'text-slate500',
+};
+
 interface Props {
   id: number;
   title: string;
@@ -56,6 +62,7 @@ export default function CheckTodo({
         className={cn(
           'group flex w-full cursor-pointer items-center justify-center gap-2 border-b border-dashed border-gs200 p-2 text-gsBk 2xl:gap-3 2xl:px-3 2xl:py-4',
           { 'hover:bg-slate50 hover:text-slate700': !done },
+          { 'bg-slate50 text-slate700': isMenuOpen },
         )}
         onClick={() => {
           if (onCheck) onCheck();
@@ -81,7 +88,7 @@ export default function CheckTodo({
             <span
               className={cn(
                 'overflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M',
-                goal?.color ? `text-${goal.color}` : 'text-slate500',
+                goalColor[goal?.color || 'default'],
               )}
             >
               {goal?.title}
@@ -98,9 +105,10 @@ export default function CheckTodo({
         </p>
         <IconButton
           className={cn(
-            'flex-none rounded-2xl bg-gs50 text-slate500 group-hover:bg-gs00',
+            'flex-none rounded-2xl bg-gs00 text-slate500 group-hover:bg-gs00',
             {
-              'invisible pl-1 group-hover:visible': noteId === null,
+              'opacity-100': isMenuOpen,
+              'opacity-0 group-hover:opacity-100': !isMenuOpen,
             },
           )}
           icon={noteIcon}
@@ -111,7 +119,13 @@ export default function CheckTodo({
         />
         <div className="relative">
           <IconButton
-            className="flex-none rounded-2xl bg-gs50 text-gs400 group-hover:bg-gs00 md:hidden md:group-hover:flex"
+            className={cn(
+              'flex-none rounded-2xl bg-gs00 text-gs400 transition-opacity',
+              {
+                'opacity-100': isMenuOpen,
+                'opacity-0 group-hover:opacity-100': !isMenuOpen,
+              },
+            )}
             icon={faEllipsisVertical}
             onClick={(e) => {
               e.stopPropagation();
