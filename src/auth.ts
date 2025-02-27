@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
 export const {
+  handlers: { GET, POST },
   auth,
   handlers,
   signIn,
