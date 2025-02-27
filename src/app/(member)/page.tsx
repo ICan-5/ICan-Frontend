@@ -6,8 +6,8 @@ import TodayListSkeleton from '@/components/dashboard/todayList/TodayListSkeleto
 
 export default function Page() {
   return (
-    <>
-      <section className="flex min-h-48 flex-col gap-4 overflow-hidden md:h-1/3 md:flex-row md:gap-8">
+    <div className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4 overflow-hidden md:flex-row md:gap-8">
         <Suspense fallback={<TodayListSkeleton />}>
           <TodayList />
         </Suspense>
@@ -15,8 +15,8 @@ export default function Page() {
           <TodayProgress />
         </Suspense>
       </section>
-      <section className="flex h-1/3 gap-8" />
-      <section className="flex h-1/3 gap-8" />
-    </>
+      <section className="flex flex-col" />
+      <section className="flex" />
+    </div>
   );
 }

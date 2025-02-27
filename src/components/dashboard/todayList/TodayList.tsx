@@ -13,7 +13,7 @@ export default async function TodayList() {
   const formattedDate = formatter.format(new Date());
 
   return (
-    <div className="relative flex min-h-48 w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 md:h-full 2xl:rounded-3xl">
+    <div className="relative flex w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 2xl:rounded-3xl">
       <section className="flex w-full flex-none items-start 2xl:mb-1">
         <p className="mr-auto flex text-16M 2xl:text-18SB">
           <span className="mr-1 hidden sm:inline-flex md:hidden xl:inline-flex">
@@ -27,7 +27,7 @@ export default async function TodayList() {
         </p>
         <Link href="/todoCalendar">
           <button
-            className="flex items-center gap-1 text-sm text-gray-400"
+            className="flex items-center gap-1 text-14M text-gray-400"
             type="button"
           >
             모두 보기
@@ -40,7 +40,7 @@ export default async function TodayList() {
       <span className="mb-1 text-12M text-gray-400 2xl:mb-2 2xl:text-14M">
         {formattedDate}
       </span>
-      <div className="flex size-full flex-1 flex-col overflow-y-auto">
+      <div className="flex h-40 w-full flex-col overflow-y-auto 2xl:h-44">
         {todayList.map((todo) => (
           <SimpleTodo
             key={todo.todoId}
