@@ -52,7 +52,6 @@ export default function CalendarHeader({
     onDateChange(today);
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.today();
-    // updateCurrentView();
   };
 
   /**
@@ -61,7 +60,6 @@ export default function CalendarHeader({
   const handlePrevMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.prev();
-    // updateCurrentView();
   };
 
   /**
@@ -69,7 +67,6 @@ export default function CalendarHeader({
    */ const handleNextMonthClick = () => {
     const calendarApi = calendarRef.current?.getApi();
     calendarApi?.next();
-    // updateCurrentView();
   };
 
   return (

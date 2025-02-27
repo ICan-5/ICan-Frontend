@@ -26,7 +26,7 @@ const addTodo = async (formData: TodoFormValues) => {
       body: JSON.stringify({
         title: formData.title,
         goalId: formData.goal?.goalId,
-        date: formData.date?.toISOString().split('T')[0] || null,
+        date: formData.date.toLocaleDateString('sv-SE'),
       }),
     });
 

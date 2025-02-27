@@ -15,7 +15,9 @@ const createTodoSchema = z.object({
     .nonempty('제목을 입력해주세요')
     .max(30, '제목은 30자 이하여야 합니다'),
   goal: z.any().nullable().optional(),
-  date: z.date().optional(),
+  date: z
+    .date({ required_error: '날짜를 선택해주세요' })
+    .refine((value) => value !== null, { message: '날짜를 선택해주세요' }),
 });
 
 export type TodoFormValues = z.infer<typeof createTodoSchema>;
