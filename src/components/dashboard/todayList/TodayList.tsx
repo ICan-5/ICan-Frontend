@@ -6,25 +6,13 @@ import { auth } from '@/auth';
 import Button from '@/components/common/button/Button';
 import Icon from '@/components/common/icon/Icon';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
+import { getTodayList } from '@/services/dashboard';
 
-// TOOD:: 나중에 할일 Type정해지면 todolist: Todo[]
-type Props = {
-  todayList: {
-    id: number;
-    title: string;
-    date: string;
-    done: boolean;
-    noteId: number | null;
-  }[];
-};
-
-export default async function TodayList({ todayList }: Props) {
+export default async function TodayList() {
+  const session = await auth(); // 세션 가져오기
+  const todayList = await getTodayList(); // 오늘 할일 리스트 가져오기
   const formatter = new Intl.DateTimeFormat('ko-KR', { dateStyle: 'long' });
   const formattedDate = formatter.format(new Date());
-
-  const todoList = todayList.filter((e) => !e.done);
-
-  const session = await auth(); // 세션 가져오기
 
   return (
     <div className="relative flex min-h-48 w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 md:h-full 2xl:rounded-3xl">
@@ -55,11 +43,11 @@ export default async function TodayList({ todayList }: Props) {
         {formattedDate}
       </span>
       <div className="flex size-full flex-1 flex-col overflow-y-auto">
-        {todoList.map((todo) => (
+        {todayList.map((todo) => (
           <SimpleTodo
-            key={todo.id}
+            key={todo.todoId}
             title={todo.title}
-            done={todo.done}
+            done={false}
             noteId={todo.noteId}
           />
         ))}

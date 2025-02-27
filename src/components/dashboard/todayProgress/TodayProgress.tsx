@@ -1,20 +1,20 @@
 import cn from '@/utils/cn';
 import TodayGraph from './TodayGraph';
+import { getTodayProgress } from '@/services/dashboard';
 
-type Props = {
-  progress: number;
-};
-
-export default function TodayProgress({ progress }: Props) {
+export default async function TodayProgress() {
+  const { total, completed } = await getTodayProgress();
+  const progress =
+    total === 0 ? 0 : Math.floor((completed / total) * 100) / 100;
   /**
    * @returns 진행도에 따른 문구
    * prgress에 맞는 문구를 리턴해주는 함수
    */
   const getProgressMessage = () => {
-    if (progress <= 10) return '차근차근 시작해볼까요?';
-    if (progress <= 30) return '좋아요! 조금씩 진행해 봐요';
-    if (progress <= 70) return '잘하고 있어요! 계속 가볼까요?';
-    if (progress < 100) return '거의 다 왔어요! 마지막까지 힘내요!';
+    if (progress <= 0.1) return '차근차근 시작해볼까요?';
+    if (progress <= 0.3) return '좋아요! 조금씩 진행해 봐요';
+    if (progress <= 0.7) return '잘하고 있어요! 계속 가볼까요?';
+    if (progress < 1) return '거의 다 왔어요! 마지막까지 힘내요!';
     return '대단해요! 오늘도 목표 달성!';
   };
 
