@@ -1,7 +1,7 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default async function TodayListSkeleton() {
+export default function TodayListSkeleton() {
   return (
     <div className="relative flex min-h-48 w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 md:h-full 2xl:rounded-3xl">
       <section className="flex w-full flex-none items-start 2xl:mb-1">
