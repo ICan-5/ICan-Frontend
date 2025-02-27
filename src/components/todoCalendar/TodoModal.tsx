@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import CreateTodo, { TodoFormValues } from './CreateTodo';
 import ConfirmModal from './ConfirmModal';
 
@@ -16,7 +17,7 @@ function TodoModal({ selectedDate, onCloseModal }: Props) {
     setShowConfirmModal(true);
   };
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
       {!showConfirmModal && (
         <div className="flex w-[520px] flex-col gap-6 rounded-lg bg-gs00 p-6">
@@ -35,7 +36,8 @@ function TodoModal({ selectedDate, onCloseModal }: Props) {
           onConfirm={onCloseModal}
         />
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }
 

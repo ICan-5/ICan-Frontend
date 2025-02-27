@@ -1,6 +1,6 @@
 import { Draggable } from '@fullcalendar/interaction';
 import { useEffect, useRef } from 'react';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 interface Props {
   basketList: { id: number; title: string; goal: Goal | null }[];
