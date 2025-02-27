@@ -40,7 +40,7 @@ export default function NoteModal({
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-10 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
+            className="fixed inset-y-0 right-0 z-40 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}

@@ -16,7 +16,7 @@ export default function ConfirmDeleteModal({
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 flex items-center justify-center bg-gsBk bg-opacity-30">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-gsBk bg-opacity-30">
       <div className="w-80 rounded-lg bg-gs00 p-6 shadow-lg">
         <div className="mb-4 flex justify-center">
           <FontAwesomeIcon
