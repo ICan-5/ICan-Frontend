@@ -9,6 +9,8 @@ const fetchTodayList = async () => {
   return data;
 };
 
+// TODO :: 할 일 생성 모달 query 훅 추가되면,
+// 추가할때 날짜가 오늘이면 QUERY_KEY.TODAY에도 추가되도록 수정
 export const useTodayTodos = () => {
   return useQuery({
     queryKey: [QUERY_KEY.TODAY],
