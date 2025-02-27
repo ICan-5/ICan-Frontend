@@ -7,7 +7,7 @@ import IconButton from '../button/IconButton';
 interface Props {
   title: string;
   done: boolean;
-  noteId: number | null;
+  noteId: string | null;
 }
 
 export default function SimpleTodo({ title, done, noteId }: Props) {
