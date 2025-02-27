@@ -19,7 +19,7 @@ export default async function signup(formData: Props) {
     return { success: false, message: '회원가입 요청 중 오류가 발생했습니다.' };
   }
 }
-const BASE_URL = typeof window === 'undefined' ? 'http://localhost:3000' : '';
+const BASE_URL = typeof window === 'undefined' ? 'http://localhost:3001' : '';
 
 export async function getUser() {
   const session = await auth();

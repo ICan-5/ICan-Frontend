@@ -11,6 +11,7 @@ interface Props {
   calendarDivRef: React.RefObject<HTMLDivElement>;
   onDateChange: (date: Date) => void;
   onDropTodo: (date: string, todoId: number) => void;
+  onMonthChange: (year: number, month: number) => void;
 }
 
 /**
@@ -21,6 +22,7 @@ interface Props {
  * @param calendarDivRef 전체 캘린더의 ref
  * @param onDateChange 선택 날짜 변경 함수
  * @param onDropTodo 장바구니에서 드래그&드롭 한 요소 드롭 적용 함수
+ * @param onMonthChange 달력의 달 변경 함수
  */
 export default function Calendar({
   todos,
@@ -29,12 +31,17 @@ export default function Calendar({
   calendarDivRef,
   onDateChange,
   onDropTodo,
+  onMonthChange,
 }: Props) {
   const calendarRef = useRef<FullCalendar>(null);
   return (
     <div ref={calendarDivRef}>
       {isCalendarLoaded && (
-        <CalendarHeader calendarRef={calendarRef} onDateChange={onDateChange} />
+        <CalendarHeader
+          calendarRef={calendarRef}
+          onDateChange={onDateChange}
+          onMonthChange={onMonthChange}
+        />
       )}
       <CalendarBody
         todos={todos}
@@ -42,6 +49,7 @@ export default function Calendar({
         onDateChange={onDateChange}
         calendarRef={calendarRef}
         onDropTodo={onDropTodo}
+        onMonthChange={onMonthChange}
       />
     </div>
   );

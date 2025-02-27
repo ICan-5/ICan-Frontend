@@ -35,12 +35,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  if (!res2.ok) {
-    const message = getErrorMessage(res2.status);
-    return NextResponse.json({ message }, { status: res2.status });
-  }
-
-  const finalData = await res2.json();
-  console.log(finalData);
-  return NextResponse.json(finalData, { status: 201 });
+  return res2;
 }
