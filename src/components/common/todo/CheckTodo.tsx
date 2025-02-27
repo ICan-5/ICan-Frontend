@@ -12,6 +12,12 @@ import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { Goal } from '@/types/goals';
 
+const goalColor: Record<string, string> = {
+  goal01: 'text-goal01',
+  goal02: 'text-goal02',
+  default: 'text-slate500',
+};
+
 interface Props {
   id: number;
   title: string;
@@ -81,7 +87,7 @@ export default function CheckTodo({
             <span
               className={cn(
                 'overflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M',
-                goal?.color ? `text-${goal.color}` : 'text-slate500',
+                goalColor[goal?.color || 'default'],
               )}
             >
               {goal?.title}
