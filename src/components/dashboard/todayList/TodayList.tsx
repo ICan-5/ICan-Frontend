@@ -6,11 +6,14 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
 import TodayListEmpty from './TodayListEmpty';
-import { useTodayTodos } from '@/hooks/useTodayTodos';
+import { useDailyTodos } from '@/hooks/useTodos';
 
 export default function TodayList() {
   const { data } = useSession();
-  const { data: todayList, isFetching } = useTodayTodos();
+  const { data: totalList, isFetching } = useDailyTodos(
+    new Date().toLocaleDateString('sv-SE'),
+  );
+  const todayList = totalList.filter((todo) => !todo.done);
   const formatter = new Intl.DateTimeFormat('ko-KR', { dateStyle: 'long' });
   const formattedDate = formatter.format(new Date());
 
