@@ -18,7 +18,7 @@ export default function Page() {
         </ErrorBoundary>
       </section>
       <section className="flex flex-col">
-        <p className="text-16SB 2xl:text-18SB">목표별 할일</p>
+        <p className="mb-3 text-16SB 2xl:text-18SB">목표별 할일</p>
         <GoalList />
       </section>
       <section className="flex gap-8" />
