@@ -63,8 +63,8 @@ importers:
         specifier: 14.2.23
         version: 14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-auth:
-        specifier: 5.0.0-beta.3
-        version: 5.0.0-beta.3(next@14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -163,8 +163,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@auth/core@0.0.0-manual.fdbc96ab':
-    resolution: {integrity: sha512-Y9me3CZzMBIoCvcDlZUZs2lZkyCmJ4U84H82J5SjBeXMf6gNb0qd0xPsQcuSa37U7Cr3909PrY4N2EK/OtbEfQ==}
+  '@auth/core@0.37.2':
+    resolution: {integrity: sha512-kUvzyvkcd6h1vpeMAojK2y7+PAV5H+0Cc9+ZlKYDFhDY31AlvsB+GW5vNO4qE3Y07KeQgvNO9U0QUx/fN62kBw==}
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
@@ -475,6 +475,9 @@ packages:
   '@tanstack/virtual-core@3.13.0':
     resolution: {integrity: sha512-NBKJP3OIdmZY3COJdWkSonr50FMVIi+aj5ZJ7hI/DTpEKg2RMfo/KvP8A3B/zOSpMgIe52B5E2yn7rryULzA6g==}
 
+  '@types/cookie@0.6.0':
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
+
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
@@ -743,6 +746,10 @@ packages:
 
   confusing-browser-globals@1.0.11:
     resolution: {integrity: sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==}
+
+  cookie@0.7.1:
+    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
+    engines: {node: '>= 0.6'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1526,13 +1533,19 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  next-auth@5.0.0-beta.3:
-    resolution: {integrity: sha512-WOKhATBFGeONV+29HzFmspNmL7NXxrsCWLfaDKmAd/4DD1nqXE0BzNFH8t3SJBx7PUDMnB6F7xB76LM/AaV1MQ==}
+  next-auth@5.0.0-beta.25:
+    resolution: {integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==}
     peerDependencies:
-      next: ^14
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      next: ^14.0.0-0 || ^15.0.0-0
       nodemailer: ^6.6.5
-      react: ^18.2.0
+      react: ^18.2.0 || ^19.0.0-0
     peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
       nodemailer:
         optional: true
 
@@ -1728,16 +1741,16 @@ packages:
     resolution: {integrity: sha512-6oz2beyjc5VMn/KV1pPw8fliQkhBXrVn1Z3TVyqZxU8kZpzEKhBdmCFqI6ZbmGtamQvQGuU1sgPTk8ZrXDD7jQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact-render-to-string@6.5.11:
-    resolution: {integrity: sha512-ubnauqoGczeGISiOh6RjX0/cdaF8v/oDXIjO85XALCQjwQP+SB4RDXXtvZ6yTYSjG+PC1QRP2AhPgCEsM2EvUw==}
+  preact-render-to-string@5.2.3:
+    resolution: {integrity: sha512-aPDxUn5o3GhWdtJtW0svRC2SS/l8D9MAgo2+AWml+BhDImb27ALf04Q2d+AHqUUOc6RdSXFIBVa2gxzgMKgtZA==}
     peerDependencies:
       preact: '>=10'
 
+  preact@10.11.3:
+    resolution: {integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==}
+
   preact@10.12.1:
     resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}
-
-  preact@10.24.3:
-    resolution: {integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -1806,6 +1819,9 @@ packages:
     resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
     engines: {node: '>=14'}
     hasBin: true
+
+  pretty-format@3.8.0:
+    resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}
 
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
@@ -2209,13 +2225,15 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@auth/core@0.0.0-manual.fdbc96ab':
+  '@auth/core@0.37.2':
     dependencies:
       '@panva/hkdf': 1.2.1
+      '@types/cookie': 0.6.0
+      cookie: 0.7.1
       jose: 5.10.0
       oauth4webapi: 3.3.0
-      preact: 10.24.3
-      preact-render-to-string: 6.5.11(preact@10.24.3)
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3(preact@10.11.3)
 
   '@eslint-community/eslint-utils@4.4.1(eslint@8.57.1)':
     dependencies:
@@ -2498,6 +2516,8 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@tanstack/virtual-core@3.13.0': {}
+
+  '@types/cookie@0.6.0': {}
 
   '@types/json5@0.0.29': {}
 
@@ -2808,6 +2828,8 @@ snapshots:
   concat-map@0.0.1: {}
 
   confusing-browser-globals@1.0.11: {}
+
+  cookie@0.7.1: {}
 
   cross-spawn@7.0.6:
     dependencies:
@@ -3740,14 +3762,11 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-auth@5.0.0-beta.3(next@14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
+  next-auth@5.0.0-beta.25(next@14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@auth/core': 0.0.0-manual.fdbc96ab
+      '@auth/core': 0.37.2
       next: 14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
-    transitivePeerDependencies:
-      - '@simplewebauthn/browser'
-      - '@simplewebauthn/server'
 
   next@14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -3936,13 +3955,14 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  preact-render-to-string@6.5.11(preact@10.24.3):
+  preact-render-to-string@5.2.3(preact@10.11.3):
     dependencies:
-      preact: 10.24.3
+      preact: 10.11.3
+      pretty-format: 3.8.0
+
+  preact@10.11.3: {}
 
   preact@10.12.1: {}
-
-  preact@10.24.3: {}
 
   prelude-ls@1.2.1: {}
 
@@ -3955,6 +3975,8 @@ snapshots:
       prettier: 3.4.2
 
   prettier@3.4.2: {}
+
+  pretty-format@3.8.0: {}
 
   prop-types@15.8.1:
     dependencies:

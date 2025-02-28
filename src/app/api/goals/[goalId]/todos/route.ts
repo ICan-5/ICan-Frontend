@@ -1,5 +1,25 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = req.nextUrl;
+  const goalId = searchParams.get('goalId');
+
+  if (!goalId) {
+    return NextResponse.json(
+      { message: 'year and month and day are required' },
+      { status: 400 },
+    );
+  }
+
+  const res = await fetchIntance({
+    base: 'BACKEND',
+    method: 'GET',
+    url: `goals/{goalId}`,
+  });
+
+  return res;
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
