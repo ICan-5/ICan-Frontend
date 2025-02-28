@@ -1,7 +1,6 @@
 'use client';
 
 import { faFileLines, faFilePen } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 
@@ -9,10 +8,9 @@ interface Props {
   title: string;
   done: boolean;
   noteId: number | null;
-  todoId: number | null;
 }
 
-export default function SimpleTodo({ title, done, noteId, todoId }: Props) {
+export default function SimpleTodo({ title, done, noteId }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
   /** 노트 클릭 함수 */
   const clickNote = () => {};
@@ -31,18 +29,15 @@ export default function SimpleTodo({ title, done, noteId, todoId }: Props) {
       >
         {title}
       </span>
-      <Link href={noteId ? `/note/${noteId}` : `${todoId}/note/create`}>
-        <IconButton
-          className={cn('rounded-2xl bg-gs50 text-slate500', {
-            'group-hover:bg-gs00': !done,
-            'pl-1 md:invisible md:group-hover:visible':
-              noteId === null && !done,
-            invisible: noteId === null && done,
-          })}
-          icon={noteIcon}
-          onClick={clickNote}
-        />
-      </Link>
+      <IconButton
+        className={cn('rounded-2xl bg-gs50 text-slate500', {
+          'group-hover:bg-gs00': !done,
+          'pl-1 md:invisible md:group-hover:visible': noteId === null && !done,
+          invisible: noteId === null && done,
+        })}
+        icon={noteIcon}
+        onClick={clickNote}
+      />
     </div>
   );
 }
