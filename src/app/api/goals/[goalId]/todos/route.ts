@@ -6,15 +6,10 @@ export async function GET(
   { params }: { params: { goalId: string } },
 ) {
   const goalId = Number(params.goalId);
-  console.log(`Fetching todos for goalId: ${goalId}`);
-
   const res = await fetchIntance({
-    base: 'BACKEND',
     method: 'GET',
     url: `/goals/${goalId}`,
   });
-
-  console.log('Backend response:', res);
 
   return res;
 }
@@ -22,8 +17,6 @@ export async function GET(
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { title, goalId, date } = body;
-
-  console.log('Received data:', { title, goalId, date });
 
   const res1 = await fetchIntance({
     base: 'CODEIT',
@@ -40,7 +33,6 @@ export async function POST(req: NextRequest) {
   const { id, createdAt } = data;
 
   const res2 = await fetchIntance({
-    base: 'BACKEND',
     url: '/todos',
     method: 'POST',
     body: {

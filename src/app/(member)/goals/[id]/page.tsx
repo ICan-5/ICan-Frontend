@@ -1,7 +1,7 @@
 'use client';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { faAnglesRight, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesRight, faFilePen, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -23,42 +23,56 @@ interface TodoItem {
   goal: Goal | null;
 }
 
+interface BasketItem {
+  id: number;
+  title: string;
+  goalId: string | null;
+  createdAt: string;
+}
+
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [baskets, setBaskets] = useState<{ id: number; title: string }[]>([
-    { id: 1, title: '스터디 준비하기' },
-    { id: 2, title: '집안일 하기' },
-  ]);
+  const [baskets, setBaskets] = useState<BasketItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchTodos = async (goalId: string) => {
-      const url = `/api/goals/${goalId}/todos`;
+    const fetchData = async (goalId: string) => {
+      setLoading(true);
 
-      const response = await fetch(url);
+      try {
+        const url = `/api/goals/${goalId}/todos`; 
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch todos: ${response.statusText}`);
-      }
+        const response = await fetch(url);
 
-      const data = await response.json();
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data`);
+        }
 
-      if (Array.isArray(data.todos)) {
-        setTodos(data.todos);
+        const data = await response.json();
+
+        if (Array.isArray(data.todos)) {
+          setTodos(data.todos);
+        }
+
+        if (Array.isArray(data.basketTodos)) {
+          setBaskets(data.basketTodos); 
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchTodos(params.id);
+    fetchData(params.id);
   }, [params.id]);
 
-  // done과 not done을 분리
-  const todoItems = todos.filter((item) => !item.done); // done이 false인 항목들
-  const doneItems = todos.filter((item) => item.done); // done이 true인 항목들
+  const todoItems = todos.filter((item) => !item.done);
+  const doneItems = todos.filter((item) => item.done);
 
-  // 특정 todoId의 done 상태를 변경하는 함수
   const toggleTodos = (todoId: number) => {
     setTodos((prev) =>
       prev.map((e) => {
-        // Check for the specific todoId instead of id
         if (e.todoId === todoId) {
           return { ...e, done: !e.done };
         }
@@ -122,28 +136,36 @@ export default function Page({ params }: { params: { id: string } }) {
           </h2>
         </div>
       </Link>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <GoalTodoList
-          list={todoItems}
-          onToggle={toggleTodos}
-          onAdd={addTodo}
-          goalId={params.id}
-        />
-        <div className="flex flex-col gap-8">
-          <GoalDoneList
-            list={doneItems.map((item) => ({
-              ...item,
-              noteId: item.noteId ?? null,
-            }))}
-            onToggle={toggleTodos}
-          />
-          <GoalBasket
-            basketItems={baskets}
-            onPickDate={pickDate}
-            onDelete={deleteBasket}
-          />
-        </div>
+
+      {loading ? (
+        <div className="flex justify-center items-center h-full">
+        <FontAwesomeIcon icon={faSpinner} spin className="text-slate500 text-4xl" />
+        <span className="ml-2 text-slate400 text-lg"></span>
       </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <GoalTodoList
+            list={todoItems}
+            onToggle={toggleTodos}
+            onAdd={addTodo}
+            goalId={params.id}
+          />
+          <div className="flex flex-col gap-8">
+            <GoalDoneList
+              list={doneItems.map((item) => ({
+                ...item,
+                noteId: item.noteId ?? null,
+              }))}
+              onToggle={toggleTodos}
+            />
+            <GoalBasket
+              basketItems={baskets}
+              onPickDate={pickDate}
+              onDelete={deleteBasket}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

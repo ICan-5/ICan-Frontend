@@ -10,7 +10,7 @@ import { Goal } from '@/types/goals';
 
 interface Todo {
   todoId: number;
-  title: string; // Corrected: Change 'task' to 'title'
+  title: string;
   date: string;
   done: boolean;
   noteId?: number | null;
@@ -49,19 +49,19 @@ export default function GoalTodoList({
       groupedTodos.past[date] = groupedTodos.past[date] || [];
       groupedTodos.past[date].push({
         todoId,
-        title, // Corrected: Use 'title' here
+        title,
         done,
         date,
         noteId,
         goal,
       });
     } else if (date === today) {
-      groupedTodos.today.push({ todoId, title, done, date, noteId, goal }); // Corrected: Use 'title' here
+      groupedTodos.today.push({ todoId, title, done, date, noteId, goal });
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
       groupedTodos.upcoming[date].push({
         todoId,
-        title, // Corrected: Use 'title' here
+        title,
         done,
         date,
         noteId,
@@ -101,7 +101,7 @@ export default function GoalTodoList({
                   <CheckTodo
                     key={todo.todoId}
                     id={todo.todoId}
-                    title={todo.title} // Corrected: Pass 'title' here
+                    title={todo.title}
                     done={todo.done}
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.todoId)}
@@ -141,7 +141,7 @@ export default function GoalTodoList({
                           <CheckTodo
                             key={todo.todoId}
                             id={todo.todoId}
-                            title={todo.title} // Corrected: Pass 'title' here
+                            title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
@@ -184,7 +184,7 @@ export default function GoalTodoList({
                           <CheckTodo
                             key={todo.todoId}
                             id={todo.todoId}
-                            title={todo.title} // Corrected: Pass 'title' here
+                            title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
