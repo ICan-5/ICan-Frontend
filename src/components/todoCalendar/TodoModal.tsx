@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import CreateTodo, { TodoFormValues } from './CreateTodo';
-import ConfirmModal from './ConfirmModal';
 import { Todo } from '@/types/todos';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   selectedDate: Date;
@@ -30,12 +30,9 @@ function TodoModal({ selectedDate, onCloseModal, todoToEdit }: Props) {
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
   return createPortal(
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-      {!showConfirmModal && (
-        <div className="flex w-[520px] flex-col gap-6 rounded-lg bg-gs00 p-6">
-          <h2 className="text-18SB">
-            {todoToEdit ? '할 일 수정' : '할 일 생성'}
-          </h2>
+    <div>
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+        {!showConfirmModal && (
           <CreateTodo
             selectedDate={selectedDate}
             onCloseModal={onCloseModal}
@@ -44,14 +41,17 @@ function TodoModal({ selectedDate, onCloseModal, todoToEdit }: Props) {
             isEdit={!!todoToEdit}
             todoId={todoId}
           />
-        </div>
-      )}
-      {showConfirmModal && (
-        <ConfirmModal
-          onClose={handleCloseConfirmModal}
-          onConfirm={onCloseModal}
-        />
-      )}
+        )}
+        {showConfirmModal && (
+          <ConfirmModal
+            title="정말 나가시겠어요?"
+            description="작성한 내용이 모두 사라집니다."
+            confirmText="나가기"
+            onCancel={handleCloseConfirmModal}
+            onConfirm={onCloseModal}
+          />
+        )}
+      </div>
     </div>,
     document.body,
   );

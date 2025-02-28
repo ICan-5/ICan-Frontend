@@ -40,3 +40,29 @@ export async function PATCH(
 
   return res2;
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { todoId: number } },
+) {
+  const { todoId } = params;
+
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'DELETE',
+    url: `/todos/${todoId}`,
+  });
+
+  if (!res1.ok) {
+    const message = getErrorMessage(res1.status);
+    return NextResponse.json({ message }, { status: res1.status });
+  }
+
+  const res2 = await fetchIntance({
+    base: 'BACKEND',
+    url: `/todos/${todoId}`,
+    method: 'DELETE',
+  });
+
+  return res2;
+}

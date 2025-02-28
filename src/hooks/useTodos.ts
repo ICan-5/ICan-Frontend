@@ -59,6 +59,21 @@ const updateTodo = async (todoId: number, updatedFields: Partial<Todo>) => {
   }
 };
 
+const deleteTodo = async (todoId: number) => {
+  try {
+    const response = await fetch(`/api/todos/${todoId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) throw new Error(getErrorMessage(response.status));
+
+    return { todoId };
+  } catch (error) {
+    console.error('할 일 삭제 중 오류 발생:', error);
+    throw error;
+  }
+};
+
 export const useMonthlyTodos = (year: number, month: number) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
@@ -154,6 +169,45 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.DAILY_TODOS, newDate],
       });
+    },
+  });
+};
+
+export const useDeleteTodo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (todoId: number) => deleteTodo(todoId),
+    onSuccess: ({ todoId }) => {
+      let previousDate: string | null = null;
+
+      queryClient
+        .getQueryCache()
+        .findAll({ queryKey: [QUERY_KEY.DAILY_TODOS] })
+        .forEach((query) => {
+          const todos = query.state.data as Todo[];
+          const foundTodo = todos.find((todo) => todo.todoId === todoId);
+          if (foundTodo) {
+            previousDate = foundTodo.date;
+          }
+        });
+
+      if (previousDate) {
+        const year = new Date(previousDate).getFullYear();
+        const month = new Date(previousDate).getMonth() + 1;
+
+        // 해당 날짜의 캐시에서 삭제된 할 일 제거
+        queryClient.setQueryData<Todo[]>(
+          [QUERY_KEY.DAILY_TODOS, previousDate],
+          (oldTodos) =>
+            oldTodos ? oldTodos.filter((todo) => todo.todoId !== todoId) : [],
+        );
+
+        // 한 달 단위의 데이터를 무효화하여 최신 데이터 유지
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
+        });
+      }
     },
   });
 };
