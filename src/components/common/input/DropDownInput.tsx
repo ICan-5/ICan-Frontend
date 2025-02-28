@@ -114,7 +114,7 @@ export default function DropDownInput<T extends FieldValues>({
                             {option.goalId !== 0 && (
                               <span
                                 className={cn(
-                                  'h-2 w-2 rounded-full',
+                                  'size-2 flex-none rounded-full',
                                   colorClasses[option.color] ?? '',
                                 )}
                               />
