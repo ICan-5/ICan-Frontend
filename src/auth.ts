@@ -2,7 +2,13 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
-export const { auth, handlers, signIn, signOut, update } = NextAuth({
+export const {
+  auth,
+  handlers,
+  signIn,
+  signOut,
+  unstable_update: update,
+} = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -62,8 +68,7 @@ export const { auth, handlers, signIn, signOut, update } = NextAuth({
     strategy: 'jwt',
     maxAge: 60 * 60, // 1시간 후 세션 만료
   },
-  // secret: process.env.AUTH_SECRET,
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     // 사용자 정보를 바탕으로 JWT 토큰을 생성
     async jwt({ token, user, session, trigger }) {
