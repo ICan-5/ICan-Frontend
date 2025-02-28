@@ -23,7 +23,7 @@ export default function GoalTab({ title, isSelected, onSelect }: Props) {
     <button
       type="button"
       className={cn(
-        'text-overflow relative h-9 flex-none rounded-t-lg bg-gs50 px-3 py-2 text-left text-14M text-gs400 transition-all duration-150',
+        'relative h-9 flex-none overflow-hidden text-ellipsis whitespace-nowrap break-words rounded-t-lg bg-gs50 px-3 py-2 text-left text-14M text-gs400 transition-all duration-150',
         { 'w-40 bg-gs00 text-gsBk md:w-56': isSelected },
         { 'w-20 border-x border-t border-gs200 md:w-32': !isSelected },
       )}
