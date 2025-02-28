@@ -9,7 +9,6 @@ export async function PATCH(
   const { todoId } = params;
   const body = await req.json();
   const { title, goalId, date, done } = body;
-  console.log(goalId);
 
   if (!title && goalId === undefined && done === undefined && !date) {
     return NextResponse.json(
@@ -35,7 +34,7 @@ export async function PATCH(
     url: `/todos/${todoId}`,
     method: 'PATCH',
     body: {
-      goalId,
+      goalId: goalId ?? 0,
       date,
       done,
       title,
