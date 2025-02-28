@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { Controller, useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,8 @@ import { NoteSchema } from '@/lib/note-validation';
 import ErrorMessage from '../auth/ErrorMessage';
 
 export default function NoteEditor() {
-  // const handleChange = (value) => setContent(value);
+  const [textLength, setTextLength] = useState(0);
+  const quillRef = useRef<ReactQuill>(null);
 
   const modules = useMemo(() => {
     // 툴바 옵션들
@@ -39,19 +40,27 @@ export default function NoteEditor() {
 
   const {
     control,
-    // register,
-    // getValues,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     resolver: zodResolver(NoteSchema),
+    defaultValues: { title: '', content: '' },
     mode: 'onChange',
   });
 
-  // HTML 태그를 제거하고 텍스트만 추출하는 함수
-  const TextFromHtml = (htmlText => {
-    const doc = new DOMParser().parseFromString(htmlText 'text/html');
-    return doc.body.textContent || '';
-  };
+  useEffect(() => {
+    const quillEditor = quillRef.current?.getEditor(); // Quill 에디터 인스턴스
+
+    if (quillEditor) {
+      // 초기 텍스트 길이 설정
+      setTextLength(quillEditor.getLength() - 1);
+
+      // 텍스트가 변경될 때마다 getLength() 호출
+      quillEditor.on('text-change', () => {
+        setTextLength(quillEditor.getLength() - 1); // 업데이트
+      });
+    }
+  }, []);
 
   return (
     <form className="mx-auto flex h-dvh w-full flex-col overflow-auto break-keep rounded-2xl bg-gs00 p-4 text-gs900 md:px-6 md:py-4">
@@ -62,19 +71,17 @@ export default function NoteEditor() {
             <Button
               size="medium"
               variant="outline"
-              // onClick={onClose}
               className="border-none px-1 py-3 xs:px-6"
             >
               임시저장
             </Button>
             <Button
               size="medium"
-              // onClick={onConfirm}
-              className="px-1 py-3 xs:px-6"
+              className="px-1 py-3 transition-colors xs:px-6"
               type="submit"
               disabled={!isValid}
             >
-              작성 완료 {/* 수정인 경우 수정 완료 */}
+              작성 완료
             </Button>
           </div>
         </div>
@@ -108,33 +115,44 @@ export default function NoteEditor() {
                   value={value}
                 />
                 <div className="flex px-1 py-[2px] text-xs font-medium">
-                  <span className="text-error">{value?.length}</span>
+                  <span className="text-error">
+                    {value ? value?.length : 0}
+                  </span>
                   <span className="text-blue-500">/30</span>
                 </div>
               </>
             )}
           />
         </div>
-        {errors.title && <ErrorMessage message={errors.title?.message || ''} />}
+        {errors.title && (
+          <ErrorMessage
+            className="ml-0"
+            message={errors.title?.message || ''}
+          />
+        )}
+        <span className="mb-2 mt-3 text-12M">
+          공백포함 : 총 {textLength > 0 ? textLength : 0}자 | 공백제외 : 총{' '}
+          {textLength > 0 ? textLength : 0}자
+        </span>
         <div className="relative size-full min-h-60 flex-1 basis-auto overflow-auto">
           <Controller
             control={control}
             name="content"
             render={({ field: { onChange, value } }) => {
-              const strippedValue = value ? TextFromHtml(value) : '';
               return (
-                <>
-                  <span className="mb-2 mt-3 text-12M">
-                    공백포함 : 총 {strippedValue.length}자 | 공백제외 : 총{' '}
-                    {strippedValue.replace(/\s/g, '').length}자
-                  </span>
-                  <ReactQuill
-                    modules={modules}
-                    value={value}
-                    onChange={onChange}
-                    placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
-                  />
-                </>
+                <ReactQuill
+                  ref={quillRef}
+                  modules={modules}
+                  value={value}
+                  onChange={(content) => {
+                    const trimmedContent = content.trim();
+                    setValue('content', trimmedContent, {
+                      shouldValidate: true,
+                    });
+                    onChange(trimmedContent);
+                  }}
+                  placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
+                />
               );
             }}
           />
