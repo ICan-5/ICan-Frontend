@@ -30,7 +30,6 @@ export async function PATCH(
   }
 
   const res2 = await fetchIntance({
-    base: 'BACKEND',
     url: `/todos/${todoId}`,
     method: 'PATCH',
     body: {
