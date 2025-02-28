@@ -7,10 +7,13 @@ import { Goal } from '@/types/goals';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
 import SimpleTodoSkeleton from '@/components/common/todo/SimpleTodoSkeleton';
 import GoalTabSkeleton from './GoalTabSkeleton';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 export default function GoalList() {
   const { data: goalTabs, isFetching: isGoalTabsFetching } = useGoals();
   const [selectedGoalIndex, setSelectedGoalIndex] = useState<number>(0);
+  const { scrollRef, handlePointerDown, handlePointerMove, handlePointerUp } =
+    useDragScroll<HTMLDivElement>();
 
   if (!isGoalTabsFetching && goalTabs.length === 0)
     return (
@@ -21,7 +24,14 @@ export default function GoalList() {
 
   return (
     <>
-      <div className="flex w-full overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+      <div
+        ref={scrollRef}
+        className="flex w-full overflow-x-scroll [&::-webkit-scrollbar]:hidden"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+      >
         {isGoalTabsFetching && <GoalTabSkeleton />}
         {!isGoalTabsFetching &&
           goalTabs.map((goal: Goal, index: number) => (
