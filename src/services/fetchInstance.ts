@@ -1,8 +1,10 @@
+'use server';
+
 import { NextResponse } from 'next/server';
 import { auth, update } from '@/auth';
 import { ERROR_MESSAGES, getErrorMessage } from '@/constants/errorMessages';
 
-const URL = {
+const BASEURL = {
   CODEIT: `${process.env.CODEIT_API_URL}/${process.env.TEAM_ID}`,
   BACKEND: process.env.BACKEND_API_URL,
   FRONTEND: process.env.FRONTEND_API_URL,
@@ -43,7 +45,7 @@ const handleTokenRefresh = async () => {
     return null;
   }
 
-  const res = await fetch(`${URL.BACKEND}/auth/refresh`, {
+  const res = await fetch(`${BASEURL.BACKEND}/auth/refresh`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${session?.refreshToken}` },
   });
@@ -64,35 +66,45 @@ const handleTokenRefresh = async () => {
  * @returns response
  */
 export const fetchIntance = async <T>(options: {
-  base: 'CODEIT' | 'BACKEND' | 'FRONTEND';
+  base?: 'CODEIT' | 'BACKEND' | 'FRONTEND';
   url: string;
   method: 'POST' | 'GET' | 'PATCH' | 'DELETE';
   body?: T;
+  params?: { [key: string]: string | number };
 }) => {
-  const { base, url, method, body } = options;
+  const { base = 'BACKEND', url, method, body, params } = options;
   try {
     // 요청 이전 코드
 
     // 요청
     const session = await auth();
+    if (!session?.accessToken)
+      return NextResponse.json(
+        { message: ERROR_MESSAGES[401] },
+        { status: 401 },
+      );
 
-    if (!session?.accessToken) return NextResponse.json({ status: 401 });
+    let baseUrl = `${BASEURL[base]}${url}`;
 
-    const baseUrl = `${URL[base]}${url}`;
+    if (params) {
+      const searchParams = new URLSearchParams(
+        Object.entries(params).map(([key, value]) => [key, String(value)]),
+      );
+      baseUrl = `${baseUrl}?${searchParams.toString()}`;
+    }
+
     let config = await getConfig(method, body);
     let res = await fetch(baseUrl, config);
 
     // 요청 이후 코드
     if (res.status === 401) {
       const newToken = await handleTokenRefresh();
-      if (!newToken)
-        return NextResponse.json(
-          { message: ERROR_MESSAGES[401] },
-          { status: 401 },
-        );
+      if (!newToken) return res;
+
       config = await getConfig(method, body);
       res = await fetch(baseUrl, config);
     }
+
     if (!res.ok) {
       const message = getErrorMessage(res.status);
       return NextResponse.json({ message }, { status: res.status });
@@ -100,51 +112,6 @@ export const fetchIntance = async <T>(options: {
 
     return res;
   } catch {
-    return NextResponse.json(
-      { message: ERROR_MESSAGES.default },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: ERROR_MESSAGES[500] }, { status: 500 });
   }
 };
-
-/**
- * @returns 기본적으로 사용하는 header
- */
-// export const headers = async () => {
-//   const session = await auth();
-//   if (!session?.accessToken)
-//     return { 'Content-Type': 'application/json' } as HeadersInit;
-//   return {
-//     'Content-Type': 'application/json',
-//     Authorization: `Bearer ${session?.accessToken}`,
-//   } as HeadersInit;
-// };
-
-/**
- * @returns Get 요청 config
- */
-// export const getConfig = async () => {
-//   return { method: 'GET', headers: await headers() } as RequestInit;
-// };
-
-/**
- * formdata의 경우 알아서 header에 multipart/form이 설정됨
- * @param data formdata 또는 객체
- * @returns POST 요청 config
- */
-// export const postConfig = async <T>(data: FormData | T) => {
-//   const isFormData = data instanceof FormData;
-//   if (isFormData) {
-//     const session = await auth();
-//     return {
-//       method: 'POST',
-//       headers: { Authorization: `Bearer ${session?.accessToken}` },
-//       body: data,
-//     } as RequestInit;
-//   }
-//   return {
-//     method: 'POST',
-//     headers: await headers(),
-//     body: JSON.stringify(data),
-//   } as RequestInit;
-// };

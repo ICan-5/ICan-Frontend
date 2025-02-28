@@ -7,7 +7,7 @@ import DateInput from '../common/input/DateInput';
 import cn from '@/utils/cn';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
-import { useAddTodo } from '@/hooks/useTodos';
+import { useAddTodo, useUpdateTodo } from '@/hooks/useTodos';
 
 const createTodoSchema = z.object({
   title: z
@@ -22,29 +22,46 @@ const createTodoSchema = z.object({
 
 export type TodoFormValues = z.infer<typeof createTodoSchema>;
 
-type Props = {
+interface Props {
   selectedDate: Date;
   onCloseModal: () => void;
   onShowConfirmModal: (value: TodoFormValues) => void;
   savedValues: TodoFormValues | null;
-};
+  isEdit: boolean;
+  todoId?: number | null;
+}
 
 export default function CreateTodo({
   selectedDate,
   onCloseModal,
   onShowConfirmModal,
   savedValues,
+  isEdit,
+  todoId,
 }: Props) {
   const { data: goalList, isLoading } = useGoals();
   const { mutate: addTodo } = useAddTodo();
+  const { mutate: updateTodo } = useUpdateTodo();
 
-  // TODO:: tanstack query 도입 후 mutation 사용으로 변경
   const onSubmit = async (formData: TodoFormValues) => {
-    addTodo(formData, {
-      onSuccess: () => {
-        onCloseModal();
-      },
-    });
+    if (isEdit && todoId) {
+      updateTodo(
+        {
+          todoId,
+          updatedFields: {
+            ...formData,
+            date: formData.date.toLocaleDateString('sv-SE'),
+          },
+        },
+        { onSuccess: onCloseModal },
+      );
+    } else {
+      addTodo(formData, {
+        onSuccess: () => {
+          onCloseModal();
+        },
+      });
+    }
   };
 
   const {

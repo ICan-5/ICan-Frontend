@@ -254,6 +254,7 @@ export default function CalendarBody({
         const newMonth = newDate.getMonth() + 1;
         onMonthChange(newYear, newMonth);
       }}
+      eventOrder="createdAt"
     />
   );
 }

@@ -12,7 +12,6 @@ const fetchGoals = async () => {
 const addGoal = async (title: string) => {
   const res = await fetch(`/api/goals?title=${title}`, { method: 'POST' });
   if (!res.ok) throw new Error(getErrorMessage(res.status));
-
   return res.json();
 };
 
