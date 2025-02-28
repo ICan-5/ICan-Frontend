@@ -1,78 +1,23 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import TodayProgress from '@/components/dashboard/todayProgress/TodayProgress';
 import TodayList from '@/components/dashboard/todayList/TodayList';
-import { auth } from '@/auth';
+import TodayProgressSkeleton from '@/components/dashboard/todayProgress/TodayProgressSkeleton';
+import TodayProgressError from '@/components/dashboard/todayProgress/TodayProgressError';
 
-export default async function Page() {
-  const session = await auth();
-
-  if (!session) {
-    return <div>Loading...</div>;
-  }
-  const todayList = [
-    {
-      id: 1,
-      title: '자바스크립트 공부하기1',
-      date: '2024-03-02',
-      done: true,
-      noteId: null,
-    },
-    {
-      id: 2,
-      title: '자바스크립트 공부하ewfwefwefwfwefwefwfefwefwefwef기',
-      date: '2024-03-02',
-      done: false,
-      noteId: 3,
-    },
-    {
-      id: 3,
-      title: '자바스크립트 공부하기2',
-      date: '2024-03-02',
-      done: true,
-      noteId: 1,
-    },
-    {
-      id: 4,
-      title: '자바스크립트 공부하기3',
-      date: '2024-03-02',
-      done: true,
-      noteId: null,
-    },
-    {
-      id: 5,
-      title: '자바스크립트 공부하기4',
-      date: '2024-03-02',
-      done: false,
-      noteId: 3,
-    },
-
-    {
-      id: 6,
-      title: '자바스크립트 공부하기5',
-      date: '2024-03-02',
-      done: false,
-      noteId: null,
-    },
-    {
-      id: 7,
-      title: '자바스크립트 공부하기6',
-      date: '2024-03-02',
-      done: false,
-      noteId: 2,
-    },
-  ];
-
-  const completedCount = todayList.filter((e) => e.done).length;
-  const totalCount = todayList.length;
-  const progress = Math.floor((completedCount / totalCount) * 100) / 100;
-
+export default function Page() {
   return (
-    <>
-      <section className="flex min-h-48 flex-col gap-4 overflow-hidden md:h-1/3 md:flex-row md:gap-8">
-        <TodayList todayList={todayList} />
-        <TodayProgress progress={progress} />
+    <div className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4 overflow-hidden md:flex-row md:gap-8">
+        <TodayList />
+        <ErrorBoundary errorComponent={TodayProgressError}>
+          <Suspense fallback={<TodayProgressSkeleton />}>
+            <TodayProgress />
+          </Suspense>
+        </ErrorBoundary>
       </section>
-      <section className="flex h-1/3 gap-8" />
-      <section className="flex h-1/3 gap-8" />
-    </>
+      <section className="flex flex-col" />
+      <section className="flex" />
+    </div>
   );
 }
