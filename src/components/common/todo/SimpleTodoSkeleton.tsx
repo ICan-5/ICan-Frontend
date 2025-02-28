@@ -6,6 +6,7 @@ export default function SimpleTodoSkeleton({ repeat = 4 }: Props) {
     <div
       key={e}
       className="my-2 block h-6 w-full flex-none animate-pulse rounded-md bg-gs100 2xl:h-7"
+      aria-busy
     />
   ));
 }

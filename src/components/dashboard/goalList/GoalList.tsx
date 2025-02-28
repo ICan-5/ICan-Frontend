@@ -6,21 +6,23 @@ import GoalTab from './GoalTab';
 import { Goal } from '@/types/goals';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
 import SimpleTodoSkeleton from '@/components/common/todo/SimpleTodoSkeleton';
-import GoalTabSkelton from './GoalTabSkelton';
+import GoalTabSkeleton from './GoalTabSkeleton';
 
 export default function GoalList() {
   const { data: goalTabs, isFetching: isGoalTabsFetching } = useGoals();
   const [selectedGoalIndex, setSelectedGoalIndex] = useState<number>(0);
 
   if (goalTabs.length === 0)
-    <div className="flex size-full min-h-60 items-center justify-center rounded-2xl border-2 border-dashed border-gs200 bg-gs50 text-14M text-gs400 2xl:rounded-[20px]">
-      왼쪽 사이드바에서 새로운 목표를 추가해주세요.
-    </div>;
+    return (
+      <div className="flex size-full min-h-60 items-center justify-center rounded-2xl border-2 border-dashed border-gs200 bg-gs50 text-14M text-gs400 2xl:rounded-[20px]">
+        왼쪽 사이드바에서 새로운 목표를 추가해주세요.
+      </div>
+    );
 
   return (
     <>
       <div className="flex w-full overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-        {isGoalTabsFetching && <GoalTabSkelton />}
+        {isGoalTabsFetching && <GoalTabSkeleton />}
         {!isGoalTabsFetching &&
           goalTabs.map((goal: Goal, index: number) => (
             <GoalTab
