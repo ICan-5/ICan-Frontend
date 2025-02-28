@@ -9,9 +9,10 @@ interface Props {
   title: string;
   done: boolean;
   noteId: number | null;
+  todoId: number | null;
 }
 
-export default function SimpleTodo({ title, done, noteId }: Props) {
+export default function SimpleTodo({ title, done, noteId, todoId }: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
   /** 노트 클릭 함수 */
   const clickNote = () => {};
@@ -30,7 +31,7 @@ export default function SimpleTodo({ title, done, noteId }: Props) {
       >
         {title}
       </span>
-      <Link href={noteId ? `/note/${noteId}` : `/note/create`}>
+      <Link href={noteId ? `/note/${noteId}` : `${todoId}/note/create`}>
         <IconButton
           className={cn('rounded-2xl bg-gs50 text-slate500', {
             'group-hover:bg-gs00': !done,
