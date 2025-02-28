@@ -4,8 +4,7 @@ import { getTodayProgress } from '@/services/dashboard';
 
 export default async function TodayProgress() {
   const { total, completed } = await getTodayProgress();
-  const progress =
-    total === 0 ? 0 : Math.floor((completed / total) * 100) / 100;
+  const progress = Math.floor((completed / total) * 100) / 100 || 0;
   /**
    * @returns 진행도에 따른 문구
    * prgress에 맞는 문구를 리턴해주는 함수
