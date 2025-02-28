@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
-  basketItems: { id: number; task: string }[];
+  basketItems: { id: number; title: string }[];
   onPickDate: (index: number, date: Date | null) => void;
   onDelete: (index: number) => void;
 }
@@ -31,7 +31,7 @@ export default function GoalBasket({
               key={item.id}
               className="flex items-center justify-between text-gs700"
             >
-              <span>{item.task}</span>
+              <span>{item.title}</span>
               <div className="flex items-center space-x-3">
                 <div className="relative flex items-center">
                   <DatePicker

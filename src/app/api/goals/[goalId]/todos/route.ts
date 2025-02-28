@@ -1,22 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = req.nextUrl;
-  const goalId = searchParams.get('goalId');
-
-  if (!goalId) {
-    return NextResponse.json(
-      { message: 'year and month and day are required' },
-      { status: 400 },
-    );
-  }
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { goalId: string } },
+) {
+  const goalId = Number(params.goalId);
+  console.log(`Fetching todos for goalId: ${goalId}`);
 
   const res = await fetchIntance({
     base: 'BACKEND',
     method: 'GET',
-    url: `goals/{goalId}`,
+    url: `/goals/${goalId}`,
   });
+
+  console.log('Backend response:', res);
 
   return res;
 }

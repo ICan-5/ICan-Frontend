@@ -9,8 +9,8 @@ import GoalTodoModal from './GoalTodoModal';
 import { Goal } from '@/types/goals';
 
 interface Todo {
-  id: number;
-  task: string;
+  todoId: number;
+  title: string; // Corrected: Change 'task' to 'title'
   date: string;
   done: boolean;
   noteId?: number | null;
@@ -44,20 +44,32 @@ export default function GoalTodoList({
   const [isPastFold, setIsPastFold] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 할 일 분류
-  list.forEach(({ id, task, date, done, noteId, goal }) => {
+  list.forEach(({ todoId, title, date, done, noteId, goal }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({ id, task, done, date, noteId, goal });
+      groupedTodos.past[date].push({
+        todoId,
+        title, // Corrected: Use 'title' here
+        done,
+        date,
+        noteId,
+        goal,
+      });
     } else if (date === today) {
-      groupedTodos.today.push({ id, task, done, date, noteId, goal });
+      groupedTodos.today.push({ todoId, title, done, date, noteId, goal }); // Corrected: Use 'title' here
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
-      groupedTodos.upcoming[date].push({ id, task, done, date, noteId, goal });
+      groupedTodos.upcoming[date].push({
+        todoId,
+        title, // Corrected: Use 'title' here
+        done,
+        date,
+        noteId,
+        goal,
+      });
     }
   });
 
-  // 모든 할 일이 없을 때
   const isEmpty =
     groupedTodos.today.length === 0 &&
     Object.keys(groupedTodos.upcoming).length === 0 &&
@@ -66,7 +78,6 @@ export default function GoalTodoList({
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
       <div className="w-full rounded-2xl bg-gs00 px-6 py-4 shadow">
-        {/* 헤더 */}
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-18R font-bold">To do</h3>
           <div
@@ -77,33 +88,32 @@ export default function GoalTodoList({
           </div>
         </div>
 
-        {/* 할 일이 없는 경우 */}
         {isEmpty ? (
           <div className="flex h-32 items-center justify-center text-gs500">
             해야할 일이 아직 없어요
           </div>
         ) : (
           <>
-            {/* 오늘 할 일 */}
             {groupedTodos.today.length > 0 && (
               <div>
                 <h3 className="mb-3 text-18R font-bold">오늘 할 일</h3>
                 {groupedTodos.today.map((todo) => (
                   <CheckTodo
-                    key={todo.id}
-                    id={todo.id}
-                    title={todo.task}
+                    key={todo.todoId}
+                    id={todo.todoId}
+                    title={todo.title} // Corrected: Pass 'title' here
                     done={todo.done}
                     noteId={todo.noteId ?? null}
-                    onCheck={() => onToggle(todo.id)}
-                    onDelete={onDelete ? () => onDelete(todo.id) : undefined}
-                    goal={todo.goal} // goal을 CheckTodo에 전달
+                    onCheck={() => onToggle(todo.todoId)}
+                    onDelete={
+                      onDelete ? () => onDelete(todo.todoId) : undefined
+                    }
+                    goal={todo.goal}
                   />
                 ))}
               </div>
             )}
 
-            {/* 예정된 할 일 */}
             {Object.keys(groupedTodos.upcoming).length > 0 && (
               <div className="mt-2">
                 <div className="flex items-center justify-between">
@@ -129,14 +139,14 @@ export default function GoalTodoList({
                         <div className="text-16M text-gs700">{date}</div>
                         {todos.map((todo) => (
                           <CheckTodo
-                            key={todo.id}
-                            id={todo.id}
-                            title={todo.task}
+                            key={todo.todoId}
+                            id={todo.todoId}
+                            title={todo.title} // Corrected: Pass 'title' here
                             done={todo.done}
                             noteId={todo.noteId ?? null}
-                            onCheck={() => onToggle(todo.id)}
+                            onCheck={() => onToggle(todo.todoId)}
                             onDelete={
-                              onDelete ? () => onDelete(todo.id) : undefined
+                              onDelete ? () => onDelete(todo.todoId) : undefined
                             }
                             goal={todo.goal}
                           />
@@ -147,7 +157,6 @@ export default function GoalTodoList({
               </div>
             )}
 
-            {/* 지난 할 일 */}
             {Object.keys(groupedTodos.past).length > 0 && (
               <div className="mt-2">
                 <div className="flex items-center justify-between">
@@ -173,14 +182,14 @@ export default function GoalTodoList({
                         <div className="text-16M text-gs700">{date}</div>
                         {todos.map((todo) => (
                           <CheckTodo
-                            key={todo.id}
-                            id={todo.id}
-                            title={todo.task}
+                            key={todo.todoId}
+                            id={todo.todoId}
+                            title={todo.title} // Corrected: Pass 'title' here
                             done={todo.done}
                             noteId={todo.noteId ?? null}
-                            onCheck={() => onToggle(todo.id)}
+                            onCheck={() => onToggle(todo.todoId)}
                             onDelete={
-                              onDelete ? () => onDelete(todo.id) : undefined
+                              onDelete ? () => onDelete(todo.todoId) : undefined
                             }
                             goal={todo.goal}
                           />

@@ -3,7 +3,7 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { faAnglesRight, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
@@ -15,8 +15,8 @@ import { Goal } from '@/types/goals';
 config.autoAddCss = false;
 
 interface TodoItem {
-  id: number;
-  task: string;
+  todoId: number;
+  title: string;
   date: string;
   done: boolean;
   noteId?: number | null;
@@ -24,29 +24,53 @@ interface TodoItem {
 }
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [todos, setTodos] = useState<TodoItem[]>([
-    { id: 1, task: '운동하기', date: '2025-02-18', done: false, goal: null },
-    { id: 2, task: '책 읽기', date: '2025-02-27', done: false, goal: null },
-  ]);
-  const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
-    { id: 1, task: '스터디 준비하기' },
-    { id: 2, task: '집안일 하기' },
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [baskets, setBaskets] = useState<{ id: number; title: string }[]>([
+    { id: 1, title: '스터디 준비하기' },
+    { id: 2, title: '집안일 하기' },
   ]);
 
-  const todoItems = todos.filter((item) => !item.done);
-  const doneItems = todos.filter((item) => item.done);
+  useEffect(() => {
+    const fetchTodos = async (goalId: string) => {
+      const url = `/api/goals/${goalId}/todos`;
 
-  const toggleTodos = (id: number) => {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch todos: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (Array.isArray(data.todos)) {
+        setTodos(data.todos);
+      }
+    };
+
+    fetchTodos(params.id);
+  }, [params.id]);
+
+  // done과 not done을 분리
+  const todoItems = todos.filter((item) => !item.done); // done이 false인 항목들
+  const doneItems = todos.filter((item) => item.done); // done이 true인 항목들
+
+  // 특정 todoId의 done 상태를 변경하는 함수
+  const toggleTodos = (todoId: number) => {
     setTodos((prev) =>
       prev.map((e) => {
-        if (e.id === id) return { ...e, done: !e.done };
+        // Check for the specific todoId instead of id
+        if (e.todoId === todoId) {
+          return { ...e, done: !e.done };
+        }
         return e;
       }),
     );
   };
+
   const deleteBasket = (id: number) => {
     setBaskets((prev) => prev.filter((e) => e.id !== id));
   };
+
   const pickDate = (id: number, date: Date | null) => {
     if (!date) return;
     const year = date.getFullYear();
@@ -54,10 +78,10 @@ export default function Page({ params }: { params: { id: string } }) {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const { task } = baskets.filter((e) => e.id === id)[0];
+    const { title } = baskets.filter((e) => e.id === id)[0];
     const newTodos = {
-      id: Math.floor(Math.random() * 10000),
-      task,
+      todoId: Date.now() + Math.floor(Math.random() * 1000),
+      title,
       date: formattedDate,
       done: false,
       goal: null,
@@ -66,10 +90,10 @@ export default function Page({ params }: { params: { id: string } }) {
     deleteBasket(id);
   };
 
-  const addTodo = (task: string, date: string) => {
+  const addTodo = (title: string, date: string) => {
     const newTodo: TodoItem = {
-      id: Date.now() + Math.floor(Math.random() * 1000),
-      task,
+      todoId: Date.now() + Math.floor(Math.random() * 1000),
+      title,
       date,
       done: false,
       goal: null,
