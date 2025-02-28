@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Todo } from '@/types/todos';
 import CheckTodo from '../common/todo/CheckTodo';
+import { useUpdateTodo } from '@/hooks/useTodos';
+import TodoModal from './TodoModal';
 
 interface Props {
   todoList: Todo[];
-  onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
 }
 
@@ -14,26 +16,47 @@ interface Props {
  * @param isCompleted 완료 여부
 
  */
-export default function TodoListItem({
-  todoList,
-  onToggleTodo,
-  onDeleteTodo,
-}: Props) {
+export default function TodoListItem({ todoList, onDeleteTodo }: Props) {
+  const { mutate: updateTodo } = useUpdateTodo();
+
+  const handleToggleTodo = (todo: Todo) => {
+    updateTodo({ todoId: todo.todoId, updatedFields: { done: !todo.done } });
+  };
+
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  const handleEditTodo = (todo: Todo) => {
+    setSelectedTodo(todo); // 수정할 할 일을 선택
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTodo(null); // 모달 닫을 때 선택된 할 일 초기화
+  };
   return (
-    <ul>
-      {todoList.map((todo) => (
-        <li key={todo.todoId} className="last:border-0">
-          <CheckTodo
-            id={todo.todoId}
-            title={todo.title}
-            goal={todo.goal}
-            done={todo.done}
-            noteId={null}
-            onCheck={() => onToggleTodo(todo.todoId)}
-            onDelete={() => onDeleteTodo(todo.todoId)}
-          />
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {todoList.map((todo) => (
+          <li key={todo.todoId} className="last:border-0">
+            <CheckTodo
+              id={todo.todoId}
+              title={todo.title}
+              goal={todo.goal}
+              done={todo.done}
+              noteId={null}
+              onCheck={() => handleToggleTodo(todo)}
+              onDelete={() => onDeleteTodo(todo.todoId)}
+              onEdit={() => handleEditTodo(todo)}
+            />
+          </li>
+        ))}
+      </ul>
+      {selectedTodo && (
+        <TodoModal
+          selectedDate={new Date(selectedTodo.date)}
+          onCloseModal={handleCloseModal}
+          todoToEdit={selectedTodo} // 수정할 할 일 전달
+        />
+      )}
+    </div>
   );
 }

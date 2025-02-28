@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky"
+    "prepare": "if [ ! -d .husky ]; then husky install; fi"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -38,7 +38,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^12.4.2",
     "next": "14.2.23",
-    "next-auth": "5.0.0-beta.3",
+    "next-auth": "5.0.0-beta.25",
     "react": "^18",
     "react-datepicker": "^8.1.0",
     "react-dom": "^18",

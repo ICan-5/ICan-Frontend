@@ -17,7 +17,7 @@ export default function SimpleTodo({ title, done, noteId }: Props) {
   return (
     <div
       className={cn(
-        'group flex h-10 w-full cursor-pointer items-center gap-2 border-b border-dashed border-gs200 p-2 text-gsBk 2xl:gap-3 2xl:px-3 2xl:py-4',
+        'group flex h-10 w-full cursor-pointer items-center gap-2 border-b border-dashed border-gs200 p-2 text-gsBk 2xl:h-11 2xl:gap-3',
         { 'hover:bg-slate50 hover:text-slate700': !done },
       )}
     >

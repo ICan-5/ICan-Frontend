@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
   }
 
   const res = await fetchIntance({
-    base: 'BACKEND',
     method: 'GET',
-    url: `/calendar/daily-todos?date=${date}`,
+    params: { date },
+    url: `/calendar/daily-todos`,
   });
 
   return res;
