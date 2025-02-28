@@ -54,12 +54,10 @@ export async function DELETE(
   });
 
   if (!res1.ok) {
-    const message = getErrorMessage(res1.status);
-    return NextResponse.json({ message }, { status: res1.status });
+    return res1;
   }
 
   const res2 = await fetchIntance({
-    base: 'BACKEND',
     url: `/todos/${todoId}`,
     method: 'DELETE',
   });
