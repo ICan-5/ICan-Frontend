@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
   const { id, createdAt } = data;
 
   const res2 = await fetchIntance({
-    base: 'BACKEND',
     url: '/todos',
     method: 'POST',
     body: {
