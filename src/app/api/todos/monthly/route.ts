@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     );
   }
   const res = await fetchIntance({
-    base: 'BACKEND',
     method: 'GET',
-    url: `/calendar/monthly-todos?year=${year}&month=${month}`,
+    params: { year, month },
+    url: `/calendar/monthly-todos`,
   });
   return res;
 }

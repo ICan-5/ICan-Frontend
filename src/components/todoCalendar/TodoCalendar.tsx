@@ -79,18 +79,6 @@ export default function TodoCalendar() {
   };
 
   /**
-   * 할 일의 체크박스 상태 변경
-   */
-  const handleToggleTodo = (id: number) => {
-    console.log('toggle', id);
-    // setTodos((prev) =>
-    //   prev.map((todo) =>
-    //     todo.id === id ? { ...todo, done: !todo.done } : todo,
-    //   ),
-    // );
-  };
-
-  /**
    * 할 일 삭제
    */
   const handleDeleteTodo = (id: number) => {
@@ -179,7 +167,6 @@ export default function TodoCalendar() {
         >
           <TodoList
             selectedDate={selectedDate}
-            onToggleTodo={handleToggleTodo}
             todos={dailyTodos}
             onDeleteTodo={handleDeleteTodo}
             onOpenModal={handleOpenModal}

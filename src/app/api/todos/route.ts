@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getErrorMessage } from '@/constants/errorMessages';
+import { NextRequest } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
 
 export async function POST(req: NextRequest) {
@@ -14,8 +13,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!res1.ok) {
-    const message = getErrorMessage(res1.status);
-    return NextResponse.json({ message }, { status: res1.status });
+    return res1;
   }
 
   const data = await res1.json();

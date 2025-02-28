@@ -10,7 +10,6 @@ import cn from '@/utils/cn';
 interface Props {
   selectedDate: Date;
   todos: Todo[];
-  onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
   onOpenModal: () => void;
 }
@@ -24,7 +23,6 @@ interface Props {
 export default function TodoList({
   selectedDate,
   todos,
-  onToggleTodo,
   onDeleteTodo,
   onOpenModal,
 }: Props) {
@@ -58,7 +56,6 @@ export default function TodoList({
             {incompleteTodos.length > 0 ? (
               <TodoListItem
                 todoList={incompleteTodos}
-                onToggleTodo={onToggleTodo}
                 onDeleteTodo={onDeleteTodo}
               />
             ) : (
@@ -96,7 +93,6 @@ export default function TodoList({
               {completeTodos.length > 0 ? (
                 <TodoListItem
                   todoList={completeTodos}
-                  onToggleTodo={onToggleTodo}
                   onDeleteTodo={onDeleteTodo}
                 />
               ) : (
