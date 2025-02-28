@@ -10,7 +10,11 @@ interface Props {
   todoToEdit?: Todo | null;
 }
 
-function TodoModal({ selectedDate, onCloseModal, todoToEdit }: Props) {
+export default function TodoModal({
+  selectedDate,
+  onCloseModal,
+  todoToEdit,
+}: Props) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [savedValues, setSavedValues] = useState<TodoFormValues | null>(
     todoToEdit
@@ -56,5 +60,3 @@ function TodoModal({ selectedDate, onCloseModal, todoToEdit }: Props) {
     document.body,
   );
 }
-
-export default TodoModal;
