@@ -2,7 +2,6 @@
   @apply h-full;
   @apply flex;
   @apply flex-col-reverse;
-  /* overflow: hidden; */
 }
 .ql-container {
   flex: 1;

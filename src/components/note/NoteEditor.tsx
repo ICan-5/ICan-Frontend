@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,30 +13,23 @@ import { NoteSchema } from '@/lib/note-validation';
 import ErrorMessage from '../auth/ErrorMessage';
 
 export default function NoteEditor() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const reactQuillRef = React.useRef();
-  const toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ align: '' }, { align: 'center' }, { align: 'right' }],
+  // const handleChange = (value) => setContent(value);
 
-    [
-      { list: 'bullet' },
-      { list: 'ordered' },
-      { color: [] },
-      { background: [] },
-    ],
-    ['link'],
-  ];
-  // const handleContent = (value) => {
-  //   // console.log('text', value.state.text);
-  //   // setContent(value.state.text);
-  //   // console.log('cleanedContent', );
-  //   console.log('content', value);
-  // };
-
-  const handleChange = (value) => setValue(value);
   const modules = useMemo(() => {
+    // 툴바 옵션들
+    const toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ align: '' }, { align: 'center' }, { align: 'right' }],
+
+      [
+        { list: 'bullet' },
+        { list: 'ordered' },
+        { color: [] },
+        { background: [] },
+      ],
+      ['link'],
+    ];
+
     return {
       toolbar: {
         container: toolbarOptions,
@@ -46,12 +39,20 @@ export default function NoteEditor() {
 
   const {
     control,
-    register,
-    formState: { errors },
+    // register,
+    // getValues,
+    formState: { errors, isValid },
   } = useForm({
     resolver: zodResolver(NoteSchema),
     mode: 'onChange',
   });
+
+  // HTML 태그를 제거하고 텍스트만 추출하는 함수
+  const TextFromHtml = (htmlText => {
+    const doc = new DOMParser().parseFromString(htmlText 'text/html');
+    return doc.body.textContent || '';
+  };
+
   return (
     <form className="mx-auto flex h-dvh w-full flex-col overflow-auto break-keep rounded-2xl bg-gs00 p-4 text-gs900 md:px-6 md:py-4">
       <div>
@@ -71,6 +72,7 @@ export default function NoteEditor() {
               // onClick={onConfirm}
               className="px-1 py-3 xs:px-6"
               type="submit"
+              disabled={!isValid}
             >
               작성 완료 {/* 수정인 경우 수정 완료 */}
             </Button>
@@ -97,46 +99,48 @@ export default function NoteEditor() {
           <Controller
             control={control}
             name="title"
-            render={({ field }) => (
-              <input
-                {...field}
-                placeholder="노트의 제목을 입력해주세요"
-                className="border-top border-bottom w-full rounded-none bg-gs00 pl-0 outline-none focus:border-gs200"
-              />
+            render={({ field: { value, onChange } }) => (
+              <>
+                <input
+                  placeholder="노트의 제목을 입력해주세요"
+                  className="border-top border-bottom w-full rounded-none bg-gs00 pl-0 outline-none focus:border-gs200"
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value}
+                />
+                <div className="flex px-1 py-[2px] text-xs font-medium">
+                  <span className="text-error">{value?.length}</span>
+                  <span className="text-blue-500">/30</span>
+                </div>
+              </>
             )}
           />
-          <div className="flex px-1 py-[2px] text-xs font-medium">
-            <span className="text-error">{title?.length}</span>
-            <span className="text-blue-500">/30</span>
-          </div>
         </div>
-        <div>
-          {errors.title && (
-            <ErrorMessage message={String(errors.title?.message || '')} />
-          )}
-        </div>
-        <span className="mb-2 mt-3 text-12M">
-          공백포함 : 총 {content?.length}자 | 공백제외 : 총{' '}
-          {content?.replace(/\s/g, '').length}자
-        </span>
-        <div className="min-height: -webkit-fill-available; relative size-full flex-1 basis-auto overflow-auto">
+        {errors.title && <ErrorMessage message={errors.title?.message || ''} />}
+        <div className="relative size-full min-h-60 flex-1 basis-auto overflow-auto">
           <Controller
             control={control}
             name="content"
-            render={({ field }) => (
-              <ReactQuill
-                {...field}
-                modules={modules}
-                theme="snow"
-                value={content}
-                onChange={(value) => {
-                  setContent(value);
-                  field.onChange(value);
-                }}
-                placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
-              />
-            )}
+            render={({ field: { onChange, value } }) => {
+              const strippedValue = value ? TextFromHtml(value) : '';
+              return (
+                <>
+                  <span className="mb-2 mt-3 text-12M">
+                    공백포함 : 총 {strippedValue.length}자 | 공백제외 : 총{' '}
+                    {strippedValue.replace(/\s/g, '').length}자
+                  </span>
+                  <ReactQuill
+                    modules={modules}
+                    value={value}
+                    onChange={onChange}
+                    placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
+                  />
+                </>
+              );
+            }}
           />
+          {errors.content && (
+            <ErrorMessage message={errors.content?.message || ''} />
+          )}
         </div>
       </div>
     </form>
