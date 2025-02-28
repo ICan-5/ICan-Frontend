@@ -40,3 +40,27 @@ export async function PATCH(
 
   return res2;
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { todoId: number } },
+) {
+  const { todoId } = params;
+
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'DELETE',
+    url: `/todos/${todoId}`,
+  });
+
+  if (!res1.ok) {
+    return res1;
+  }
+
+  const res2 = await fetchIntance({
+    url: `/todos/${todoId}`,
+    method: 'DELETE',
+  });
+
+  return res2;
+}

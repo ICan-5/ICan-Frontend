@@ -10,7 +10,6 @@ import cn from '@/utils/cn';
 interface Props {
   selectedDate: Date;
   todos: Todo[];
-  onDeleteTodo: (id: number) => void;
   onOpenModal: () => void;
 }
 
@@ -20,12 +19,7 @@ interface Props {
  * @param todos 해당 날짜에 해당하는 할 일
  * @param onToggleTodo 할 일 토글 버튼(완료/미완료)
  */
-export default function TodoList({
-  selectedDate,
-  todos,
-  onDeleteTodo,
-  onOpenModal,
-}: Props) {
+export default function TodoList({ selectedDate, todos, onOpenModal }: Props) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
 
   const incompleteTodos = todos.filter((todo) => !todo.done);
@@ -54,13 +48,10 @@ export default function TodoList({
           </h3>
           <div className="h-full overflow-y-auto">
             {incompleteTodos.length > 0 ? (
-              <TodoListItem
-                todoList={incompleteTodos}
-                onDeleteTodo={onDeleteTodo}
-              />
+              <TodoListItem todoList={incompleteTodos} />
             ) : (
               <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
-                등록된 할 일이 없습니다.
+                등록된 할일이 없습니다.
               </div>
             )}
           </div>
@@ -91,13 +82,10 @@ export default function TodoList({
           {isCompletedOpen && (
             <div className="h-full overflow-y-auto">
               {completeTodos.length > 0 ? (
-                <TodoListItem
-                  todoList={completeTodos}
-                  onDeleteTodo={onDeleteTodo}
-                />
+                <TodoListItem todoList={completeTodos} />
               ) : (
                 <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
-                  완료된 할 일이 없습니다.
+                  완료된 할일이 없습니다.
                 </div>
               )}
             </div>
