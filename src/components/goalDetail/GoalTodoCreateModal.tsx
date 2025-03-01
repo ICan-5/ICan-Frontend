@@ -52,7 +52,6 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
   const onSubmit = useCallback(
     (data: TodoFormValues) => {
       const formattedDate = data.date ?? new Date();
-
       addTodoMutation(
         {
           title: data.title,
@@ -61,7 +60,7 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
         },
         {
           onSuccess: () => {
-            onClose(); // ✅ "할 일이 추가된 경우"에는 ConfirmModal을 띄우지 않음
+            onClose();
           },
         },
       );
@@ -103,7 +102,7 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
             <Button
               type="button"
               size="full"
-              onClick={onClose} // 🚀 "취소" 버튼을 누르면 ConfirmModal이 뜨도록 함
+              onClick={onClose}
               className="bg-gs100 py-4 text-gs600 hover:bg-gs100"
             >
               취소

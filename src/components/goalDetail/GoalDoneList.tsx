@@ -1,18 +1,9 @@
 import React from 'react';
 import CheckTodo from '../common/todo/CheckTodo';
-import { Goal } from '@/types/goals';
-// Done 타입 정의
-interface DoneProps {
-  todoId: number;
-  title: string;
-  date: string;
-  done: boolean;
-  noteId: number | null;
-  goal: Goal | null;
-}
+import { Todo } from '@/types/todos';
 
 interface Props {
-  list: DoneProps[];
+  list: Todo[];
   onToggle: (id: number) => void;
   onDelete?: (id: number) => void;
 }

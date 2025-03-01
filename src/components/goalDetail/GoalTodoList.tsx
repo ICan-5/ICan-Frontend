@@ -6,16 +6,7 @@ import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
-import { Goal } from '@/types/goals';
-
-interface Todo {
-  todoId: number;
-  title: string;
-  date: string;
-  done: boolean;
-  noteId?: number | null;
-  goal: Goal | null;
-}
+import { Todo } from '@/types/todos';
 
 interface Props {
   list: Todo[];
@@ -37,12 +28,28 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const [isPastFold, setIsPastFold] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  list.forEach(({ todoId, title, date, done, noteId, goal }) => {
+  list.forEach(({ todoId, title, date, done, noteId, goal, createdAt }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({ todoId, title, done, date, noteId, goal });
+      groupedTodos.past[date].push({
+        todoId,
+        title,
+        done,
+        date,
+        noteId,
+        goal,
+        createdAt,
+      });
     } else if (date === today) {
-      groupedTodos.today.push({ todoId, title, done, date, noteId, goal });
+      groupedTodos.today.push({
+        todoId,
+        title,
+        done,
+        date,
+        noteId,
+        goal,
+        createdAt,
+      });
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
       groupedTodos.upcoming[date].push({
@@ -52,6 +59,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
         date,
         noteId,
         goal,
+        createdAt,
       });
     }
   });

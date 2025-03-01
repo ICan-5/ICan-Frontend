@@ -6,9 +6,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Basket } from '@/types/todos';
 
 interface Props {
-  basketItems: { id: number; title: string }[];
+  basketItems: Basket[];
 }
 
 export default function GoalBasket({ basketItems }: Props) {
