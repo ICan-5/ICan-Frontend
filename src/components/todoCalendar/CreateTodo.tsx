@@ -82,48 +82,53 @@ export default function CreateTodo({
   const watchedValues = watch();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-10">
-        <div className="flex flex-col gap-6">
-          <TextInput<TodoFormValues>
-            name="title"
-            label="할 일 제목"
-            placeholder="할 일의 제목을 작성하세요"
-            control={control}
-            errors={errors}
-          />
-          <DropDownInput<TodoFormValues>
-            name="goal"
-            label="목표"
-            placeholder="목표를 선택해주세요"
-            options={goalList}
-            control={control}
-            isLoading={isLoading}
-          />
-          <DateInput<TodoFormValues>
-            name="date"
-            label="날짜"
-            control={control}
-          />
-        </div>
-        <div className="flex w-full flex-row gap-2">
-          <Button
-            size="full"
-            onClick={() => onShowConfirmModal(watchedValues)}
-            className="bg-gs100 py-4 text-gs600 hover:bg-gs100 focus:bg-gs100 active:bg-gs100"
-          >
-            취소
-          </Button>
-          <Button
-            size="full"
-            type="submit"
-            disabled={!isValid}
-            className={cn('py-4')}
-          >
-            확인
-          </Button>
-        </div>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+      <div className="flex w-[520px] flex-col gap-6 rounded-lg bg-gs00 p-6">
+        <h2 className="text-18SB">{isEdit ? '할일 수정' : '할일 생성'}</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-6">
+              <TextInput<TodoFormValues>
+                name="title"
+                label="할일 제목"
+                placeholder="할일의 제목을 작성하세요"
+                control={control}
+                errors={errors}
+              />
+              <DropDownInput<TodoFormValues>
+                name="goal"
+                label="목표"
+                placeholder="목표를 선택해주세요"
+                options={goalList}
+                control={control}
+                isLoading={isLoading}
+              />
+              <DateInput<TodoFormValues>
+                name="date"
+                label="날짜"
+                control={control}
+              />
+            </div>
+            <div className="flex w-full flex-row gap-2">
+              <Button
+                size="full"
+                onClick={() => onShowConfirmModal(watchedValues)}
+                className="bg-gs100 py-4 text-gs600 hover:bg-gs100 focus:bg-gs100 active:bg-gs100"
+              >
+                취소
+              </Button>
+              <Button
+                size="full"
+                type="submit"
+                disabled={!isValid}
+                className={cn('py-4')}
+              >
+                확인
+              </Button>
+            </div>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
