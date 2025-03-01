@@ -79,14 +79,6 @@ export default function TodoCalendar() {
   };
 
   /**
-   * 할 일 삭제
-   */
-  const handleDeleteTodo = (id: number) => {
-    console.log('delete', id);
-    // setTodos((prev) => prev.filter((todo) => todo.id !== id));
-  };
-
-  /**
    * 장바구니에서 할 일 삭제
    * @param id 삭제할 할 일의 id
    */
@@ -168,7 +160,6 @@ export default function TodoCalendar() {
           <TodoList
             selectedDate={selectedDate}
             todos={dailyTodos}
-            onDeleteTodo={handleDeleteTodo}
             onOpenModal={handleOpenModal}
           />
         </div>
