@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
+import { createPortal } from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
@@ -24,7 +25,7 @@ export default function NoteModal({
   todoTitle,
   title,
   content,
-  linkUrl = 'https://www.codeit.kr/topics/getting-started-with-javascript/lessons/3480',
+  linkUrl,
   updatedAt,
 }: NoteModalProps) {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function NoteModal({
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {!isClosing && (
         <>
@@ -92,19 +93,20 @@ export default function NoteModal({
                 <div className="flex items-center justify-between border-y py-3">
                   <h1 className="flex items-center text-18M">{title}</h1>
                 </div>
-
-                <Link
-                  href={linkUrl}
-                  className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
-                >
-                  <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
-                    <FontAwesomeIcon
-                      icon={faLink}
-                      className="size-3 text-gs00"
-                    />
-                  </div>
-                  <p className="truncate text-16M">{linkUrl}</p>
-                </Link>
+                {linkUrl && (
+                  <Link
+                    href={linkUrl}
+                    className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
+                  >
+                    <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
+                      <FontAwesomeIcon
+                        icon={faLink}
+                        className="size-3 text-gs00"
+                      />
+                    </div>
+                    <p className="truncate text-16M">{linkUrl}</p>
+                  </Link>
+                )}
 
                 {/* 내용 */}
                 <p className="whitespace-pre-line text-16R text-gs700">
@@ -115,6 +117,7 @@ export default function NoteModal({
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
