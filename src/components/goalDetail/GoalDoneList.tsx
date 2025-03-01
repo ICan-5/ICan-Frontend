@@ -1,7 +1,6 @@
 import React from 'react';
 import CheckTodo from '../common/todo/CheckTodo';
 import { Goal } from '@/types/goals';
-
 // Done 타입 정의
 interface DoneProps {
   todoId: number;
@@ -42,7 +41,7 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
             noteId={done.noteId}
             onCheck={() => onToggle(done.todoId)}
             onDelete={onDelete ? () => onDelete(done.todoId) : undefined}
-            goal={done.goal} // goal을 전달
+            goal={done.goal}
           />
         ))
       )}

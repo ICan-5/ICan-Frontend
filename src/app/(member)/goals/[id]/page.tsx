@@ -1,7 +1,11 @@
 'use client';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { faAnglesRight, faFilePen, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesRight,
+  faFilePen,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -10,29 +14,13 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Goal } from '@/types/goals';
+import { Todo, Basket } from '@/types/todos';
 
 config.autoAddCss = false;
 
-interface TodoItem {
-  todoId: number;
-  title: string;
-  date: string;
-  done: boolean;
-  noteId?: number | null;
-  goal: Goal | null;
-}
-
-interface BasketItem {
-  id: number;
-  title: string;
-  goalId: string | null;
-  createdAt: string;
-}
-
 export default function Page({ params }: { params: { id: string } }) {
-  const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [baskets, setBaskets] = useState<BasketItem[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [baskets, setBaskets] = useState<Basket[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -40,7 +28,7 @@ export default function Page({ params }: { params: { id: string } }) {
       setLoading(true);
 
       try {
-        const url = `/api/goals/${goalId}/todos`; 
+        const url = `/api/goals/${goalId}/todos`;
 
         const response = await fetch(url);
 
@@ -55,7 +43,7 @@ export default function Page({ params }: { params: { id: string } }) {
         }
 
         if (Array.isArray(data.basketTodos)) {
-          setBaskets(data.basketTodos); 
+          setBaskets(data.basketTodos);
         }
       } catch (error) {
         console.error(error);
@@ -70,49 +58,27 @@ export default function Page({ params }: { params: { id: string } }) {
   const todoItems = todos.filter((item) => !item.done);
   const doneItems = todos.filter((item) => item.done);
 
-  const toggleTodos = (todoId: number) => {
+  const toggleTodos = async (todoId: number) => {
+    const todo = todos.find((t) => t.todoId === todoId);
+    if (!todo) return;
+    const updatedFields = {
+      done: !todo.done,
+      goalId: todo.goal ? todo.goal.goalId : undefined,
+      title: todo.title,
+      date: todo.date,
+    };
+    const response = await fetch(`/api/goals/${params.id}/todos/${todoId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updatedFields),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update todo');
+    }
+
     setTodos((prev) =>
-      prev.map((e) => {
-        if (e.todoId === todoId) {
-          return { ...e, done: !e.done };
-        }
-        return e;
-      }),
+      prev.map((t) => (t.todoId === todoId ? { ...t, done: !t.done } : t)),
     );
-  };
-
-  const deleteBasket = (id: number) => {
-    setBaskets((prev) => prev.filter((e) => e.id !== id));
-  };
-
-  const pickDate = (id: number, date: Date | null) => {
-    if (!date) return;
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
-    const { title } = baskets.filter((e) => e.id === id)[0];
-    const newTodos = {
-      todoId: Date.now() + Math.floor(Math.random() * 1000),
-      title,
-      date: formattedDate,
-      done: false,
-      goal: null,
-    };
-    setTodos((prev) => [...prev, newTodos]);
-    deleteBasket(id);
-  };
-
-  const addTodo = (title: string, date: string) => {
-    const newTodo: TodoItem = {
-      todoId: Date.now() + Math.floor(Math.random() * 1000),
-      title,
-      date,
-      done: false,
-      goal: null,
-    };
-    setTodos((prev) => [...prev, newTodo]);
   };
 
   return (
@@ -138,16 +104,19 @@ export default function Page({ params }: { params: { id: string } }) {
       </Link>
 
       {loading ? (
-        <div className="flex justify-center items-center h-full">
-        <FontAwesomeIcon icon={faSpinner} spin className="text-slate500 text-4xl" />
-        <span className="ml-2 text-slate400 text-lg"></span>
-      </div>
+        <div className="flex h-full items-center justify-center">
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className="text-4xl text-slate500"
+          />
+          <span className="ml-2 text-lg text-slate400" />
+        </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <GoalTodoList
             list={todoItems}
             onToggle={toggleTodos}
-            onAdd={addTodo}
             goalId={params.id}
           />
           <div className="flex flex-col gap-8">
@@ -158,11 +127,7 @@ export default function Page({ params }: { params: { id: string } }) {
               }))}
               onToggle={toggleTodos}
             />
-            <GoalBasket
-              basketItems={baskets}
-              onPickDate={pickDate}
-              onDelete={deleteBasket}
-            />
+            <GoalBasket basketItems={baskets} />
           </div>
         </div>
       )}

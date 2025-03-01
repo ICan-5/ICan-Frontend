@@ -9,15 +9,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
   basketItems: { id: number; title: string }[];
-  onPickDate: (index: number, date: Date | null) => void;
-  onDelete: (index: number) => void;
 }
 
-export default function GoalBasket({
-  basketItems,
-  onPickDate,
-  onDelete,
-}: Props) {
+export default function GoalBasket({ basketItems }: Props) {
   return (
     <div className="rounded-2xl bg-gs00 p-6 shadow">
       <h3 className="mb-4 flex items-center text-18R font-bold">
@@ -35,7 +29,6 @@ export default function GoalBasket({
               <div className="flex items-center space-x-3">
                 <div className="relative flex items-center">
                   <DatePicker
-                    onChange={(date: Date | null) => onPickDate(item.id, date)}
                     dateFormat="yyyy-MM-dd"
                     customInput={
                       <button
@@ -53,7 +46,6 @@ export default function GoalBasket({
                 <button
                   type="button"
                   className="flex items-center justify-center p-1"
-                  onClick={() => onDelete(item.id)}
                 >
                   <FontAwesomeIcon icon={faTrashCan} className="text-goal02" />
                 </button>

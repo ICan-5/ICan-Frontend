@@ -20,8 +20,6 @@ interface Todo {
 interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
-  onAdd: (task: string, date: string) => void;
-  onDelete?: (id: number) => void;
   goalId: string;
 }
 
@@ -31,15 +29,10 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({
-  list,
-  onToggle,
-  onAdd,
-  onDelete,
-  goalId,
-}: Props) {
+export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toLocaleDateString('sv-SE');
+
   const [isFutureFold, setIsFutureFold] = useState(true);
   const [isPastFold, setIsPastFold] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,14 +40,7 @@ export default function GoalTodoList({
   list.forEach(({ todoId, title, date, done, noteId, goal }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({
-        todoId,
-        title,
-        done,
-        date,
-        noteId,
-        goal,
-      });
+      groupedTodos.past[date].push({ todoId, title, done, date, noteId, goal });
     } else if (date === today) {
       groupedTodos.today.push({ todoId, title, done, date, noteId, goal });
     } else {
@@ -94,6 +80,7 @@ export default function GoalTodoList({
           </div>
         ) : (
           <>
+            {/* 오늘 할 일 */}
             {groupedTodos.today.length > 0 && (
               <div>
                 <h3 className="mb-3 text-18R font-bold">오늘 할 일</h3>
@@ -105,15 +92,13 @@ export default function GoalTodoList({
                     done={todo.done}
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.todoId)}
-                    onDelete={
-                      onDelete ? () => onDelete(todo.todoId) : undefined
-                    }
                     goal={todo.goal}
                   />
                 ))}
               </div>
             )}
 
+            {/* 예정된 할 일 */}
             {Object.keys(groupedTodos.upcoming).length > 0 && (
               <div className="mt-2">
                 <div className="flex items-center justify-between">
@@ -145,9 +130,6 @@ export default function GoalTodoList({
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
-                            onDelete={
-                              onDelete ? () => onDelete(todo.todoId) : undefined
-                            }
                             goal={todo.goal}
                           />
                         ))}
@@ -157,6 +139,7 @@ export default function GoalTodoList({
               </div>
             )}
 
+            {/* 지난 할 일 */}
             {Object.keys(groupedTodos.past).length > 0 && (
               <div className="mt-2">
                 <div className="flex items-center justify-between">
@@ -188,9 +171,6 @@ export default function GoalTodoList({
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
-                            onDelete={
-                              onDelete ? () => onDelete(todo.todoId) : undefined
-                            }
                             goal={todo.goal}
                           />
                         ))}
@@ -204,11 +184,7 @@ export default function GoalTodoList({
       </div>
 
       {isModalOpen && (
-        <GoalTodoModal
-          onClose={() => setIsModalOpen(false)}
-          onAdd={onAdd}
-          goalId={goalId}
-        />
+        <GoalTodoModal onClose={() => setIsModalOpen(false)} goalId={goalId} />
       )}
     </div>
   );
