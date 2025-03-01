@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { notFound } from 'next/navigation';
+=======
+>>>>>>> 02e413b ([CAN-56] feat: 노트 단일 조회 API 연동)
 import { fetchIntance } from './fetchInstance';
 import { getErrorMessage } from '@/constants/errorMessages';
 
@@ -46,9 +49,15 @@ export const getNoteDetail = async (noteId: number) => {
       linkUrl: data.linkUrl,
       updatedAt: formatDate(data.updatedAt),
     };
+<<<<<<< HEAD
   } catch {
     notFound();
     return null;
+=======
+  } catch (error) {
+    console.error('Failed to fetch note:', error);
+    throw new Error('노트 정보를 불러오는데 실패했습니다.');
+>>>>>>> 02e413b ([CAN-56] feat: 노트 단일 조회 API 연동)
   }
 };
 

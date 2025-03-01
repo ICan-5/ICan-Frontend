@@ -1,19 +1,13 @@
 import NoteModal from '@/components/note/NoteModal';
+import { getNoteDetail } from '@/services/note';
 
 export default async function PhotoModal({
   params,
 }: {
   params: { noteId: string };
 }) {
-  const { noteId } = params;
-  console.log(noteId);
-  const note = {
-    goalTitle: '임시 목표',
-    todoTitle: '임시 할 일',
-    title: '임시 제목',
-    content: '임시 내용',
-    updatedAt: '2025-02-28T08:31:12.542Z',
-  };
+  const noteId = Number(params.noteId);
+  const note = await getNoteDetail(noteId);
 
   <NoteModal
     goalTitle={note.goalTitle}
