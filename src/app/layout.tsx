@@ -17,15 +17,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
         <SessionProvider>
           <ClientProvider>
-            <div>{children}</div>
+            <div>
+              {children}
+              {modal}
+            </div>
           </ClientProvider>
         </SessionProvider>
       </body>
