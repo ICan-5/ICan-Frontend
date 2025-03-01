@@ -6,6 +6,7 @@ import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
+import { useAddTodo } from '@/hooks/useTodos';
 
 const createTodoSchema = z.object({
   title: z
@@ -16,7 +17,7 @@ const createTodoSchema = z.object({
   date: z.union([z.date(), z.string()]).optional(),
 });
 
-type CreateTodoFormData = z.infer<typeof createTodoSchema>;
+type TodoFormValues = z.infer<typeof createTodoSchema>;
 
 type Props = {
   goalId: string;
@@ -26,12 +27,13 @@ type Props = {
 
 export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
   const { data: goals } = useGoals();
+  const { mutateAsync: addTodo } = useAddTodo();
 
   const goalTitle = goals?.find(
     (goal: Goal) => goal.goalId === Number(goalId),
   )?.title;
 
-  const onSubmit = async (data: CreateTodoFormData) => {
+  const onSubmit = async (data: TodoFormValues) => {
     const formattedDate = (() => {
       if (typeof data.date === 'string') return data.date;
       if (data.date instanceof Date) {
@@ -40,19 +42,16 @@ export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
       return new Date().toISOString().split('T')[0];
     })();
 
-    const payload = {
-      title: data.title,
-      goalId: Number(goalId),
-      date: formattedDate,
-    };
+    const date = new Date(formattedDate);
 
-    const response = await fetch(`/api/goals/${goalId}/todos`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
+    const newTodo = await addTodo({
+      title: data.title,
+      goal: { goalId: Number(goalId) },
+      date,
     });
 
-    const newTodo = await response.json();
     onAdd(newTodo.title, formattedDate);
+    onClose();
   };
 
   const {
@@ -60,7 +59,7 @@ export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<CreateTodoFormData>({
+  } = useForm<TodoFormValues>({
     mode: 'onChange',
     resolver: zodResolver(createTodoSchema),
     defaultValues: {

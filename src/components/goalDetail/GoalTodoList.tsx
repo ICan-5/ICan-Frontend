@@ -10,7 +10,7 @@ import { Goal } from '@/types/goals';
 
 interface Todo {
   id: number;
-  task: string;
+  title: string;
   date: string;
   done: boolean;
   noteId?: number | null;
@@ -20,7 +20,7 @@ interface Todo {
 interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
-  onAdd: (task: string, date: string) => void;
+  onAdd: (title: string, date: string) => void;
   onDelete?: (id: number) => void;
   goalId: string;
 }
@@ -45,15 +45,15 @@ export default function GoalTodoList({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 할 일 분류
-  list.forEach(({ id, task, date, done, noteId, goal }) => {
+  list.forEach(({ id, title, date, done, noteId, goal }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({ id, task, done, date, noteId, goal });
+      groupedTodos.past[date].push({ id, title, done, date, noteId, goal });
     } else if (date === today) {
-      groupedTodos.today.push({ id, task, done, date, noteId, goal });
+      groupedTodos.today.push({ id, title, done, date, noteId, goal });
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
-      groupedTodos.upcoming[date].push({ id, task, done, date, noteId, goal });
+      groupedTodos.upcoming[date].push({ id, title, done, date, noteId, goal });
     }
   });
 
@@ -92,7 +92,7 @@ export default function GoalTodoList({
                   <CheckTodo
                     key={todo.id}
                     id={todo.id}
-                    title={todo.task}
+                    title={todo.title}
                     done={todo.done}
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.id)}
@@ -131,7 +131,7 @@ export default function GoalTodoList({
                           <CheckTodo
                             key={todo.id}
                             id={todo.id}
-                            title={todo.task}
+                            title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.id)}
@@ -175,7 +175,7 @@ export default function GoalTodoList({
                           <CheckTodo
                             key={todo.id}
                             id={todo.id}
-                            title={todo.task}
+                            title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.id)}

@@ -5,7 +5,7 @@ import { Goal } from '@/types/goals';
 // Done 타입 정의
 interface DoneProps {
   id: number;
-  task: string;
+  title: string;
   date: string;
   done: boolean;
   noteId: number | null;
@@ -37,7 +37,7 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
           <CheckTodo
             key={done.id}
             id={done.id}
-            title={done.task}
+            title={done.title}
             done={done.done}
             noteId={done.noteId}
             onCheck={() => onToggle(done.id)}
