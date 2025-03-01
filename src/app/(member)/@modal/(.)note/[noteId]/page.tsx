@@ -15,11 +15,13 @@ export default async function PhotoModal({
     updatedAt: '2025-02-28T08:31:12.542Z',
   };
 
-  <NoteModal
-    goalTitle={note.goalTitle}
-    todoTitle={note.todoTitle}
-    title={note.title}
-    content={note.content}
-    updatedAt={note.updatedAt}
-  />;
+  return (
+    <NoteModal
+      goalTitle={note.goalTitle}
+      todoTitle={note.todoTitle}
+      title={note.title}
+      content={note.content}
+      updatedAt={note.updatedAt}
+    />
+  );
 }
