@@ -50,7 +50,7 @@ export default function NoteModal({
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-40 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
+            className="fixed inset-y-0 right-0 z-40 flex max-h-full flex-col bg-gs00 pb-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -59,13 +59,13 @@ export default function NoteModal({
             {/* 닫기 버튼 */}
             <button
               type="button"
-              className="mb-4 flex size-6 items-center justify-center text-18R text-gs500 hover:text-gsBk"
+              className="my-6 size-6 items-center justify-center px-6 text-18R text-gs500 hover:text-gsBk"
               onClick={closeModal}
             >
               <FontAwesomeIcon icon={faXmark} className="size-3" size="sm" />
             </button>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex grow flex-col gap-6 overflow-y-auto px-6">
               <div className="flex flex-col gap-3">
                 {/* 목표 제목 */}
                 {goalTitle && (
@@ -107,7 +107,9 @@ export default function NoteModal({
                 </Link>
 
                 {/* 내용 */}
-                <p className="text-16R text-gs700">{content}</p>
+                <p className="whitespace-pre-line text-16R text-gs700">
+                  {content}
+                </p>
               </div>
             </div>
           </motion.div>
