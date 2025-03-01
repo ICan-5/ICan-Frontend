@@ -1,8 +1,21 @@
-export default async function PhotoPage({
+import NoteModal from '@/components/note/NoteModal';
+import { getNoteDetail } from '@/services/note';
+
+export default async function PhotoModal({
   params,
 }: {
-  params: Promise<{ noteId: string }>;
+  params: { noteId: string };
 }) {
-  const id = (await params).noteId;
-  return <div className="card">{id}</div>;
+  const noteId = Number(params.noteId);
+  const note = await getNoteDetail(noteId);
+
+  return (
+    <NoteModal
+      goalTitle={note.goalTitle}
+      todoTitle={note.todoTitle}
+      title={note.title}
+      content={note.content}
+      updatedAt={note.updatedAt}
+    />
+  );
 }

@@ -17,10 +17,10 @@ export default function IconButton({
   return (
     <button
       type="button"
-      className={cn('flex h-7 w-7 items-center justify-center', className)}
+      className={cn('flex size-7 items-center justify-center', className)}
       {...props}
     >
-      <FontAwesomeIcon className="h-4 w-4" icon={icon} size="sm" />
+      <FontAwesomeIcon className="size-4" icon={icon} size="sm" />
     </button>
   );
 }
