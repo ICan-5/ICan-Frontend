@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { fetchIntance } from './fetchInstance';
 
 const formatDate = (isoString: string) => {
@@ -44,8 +45,8 @@ export const getNoteDetail = async (noteId: number) => {
       linkUrl: data.linkUrl,
       updatedAt: formatDate(data.updatedAt),
     };
-  } catch (error) {
-    console.error('Failed to fetch note:', error);
-    throw new Error('노트 정보를 불러오는데 실패했습니다.');
+  } catch {
+    notFound();
+    return null;
   }
 };
