@@ -35,22 +35,21 @@ export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
 
   const onSubmit = async (data: TodoFormValues) => {
     const formattedDate = (() => {
-      if (typeof data.date === 'string') return data.date;
-      if (data.date instanceof Date) {
-        return data.date.toISOString().split('T')[0];
+      if (typeof data.date === 'string') {
+        return new Date(data.date);
       }
-      return new Date().toISOString().split('T')[0];
+      if (data.date instanceof Date) {
+        return data.date;
+      }
+      return new Date();
     })();
-
-    const date = new Date(formattedDate);
 
     const newTodo = await addTodo({
       title: data.title,
       goal: { goalId: Number(goalId) },
-      date,
+      date: formattedDate,
     });
-
-    onAdd(newTodo.title, formattedDate);
+    onAdd(newTodo.title, formattedDate.toISOString().split('T')[0]);
     onClose();
   };
 
