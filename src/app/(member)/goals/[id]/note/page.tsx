@@ -52,7 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <NoteHeader id={params.id} />
       </div>
       <div>
-        <NoteList notes={notes} goalId={params.id} />
+        <NoteList notes={notes} />
       </div>
     </div>
   );
