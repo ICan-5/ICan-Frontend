@@ -80,7 +80,7 @@ export default function GoalTodoList({
         {/* 할 일이 없는 경우 */}
         {isEmpty ? (
           <div className="flex h-32 items-center justify-center text-gs500">
-            해야할 일이 아직 없어요
+            등록된 할 일이 없습니다.
           </div>
         ) : (
           <>

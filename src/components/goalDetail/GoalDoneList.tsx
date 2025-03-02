@@ -30,7 +30,7 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
 
       {sortedList.length === 0 ? (
         <div className="flex items-center justify-center py-6 text-gs500">
-          다 한 일이 아직 없어요
+          못끝낸 할일이 없습니다.
         </div>
       ) : (
         sortedList.map((done) => (
@@ -42,7 +42,7 @@ export default function GoalDoneList({ list, onToggle, onDelete }: Props) {
             noteId={done.noteId}
             onCheck={() => onToggle(done.id)}
             onDelete={onDelete ? () => onDelete(done.id) : undefined}
-            goal={done.goal} // goal을 전달
+            goal={done.goal}
           />
         ))
       )}
