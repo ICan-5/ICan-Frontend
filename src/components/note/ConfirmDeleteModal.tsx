@@ -1,6 +1,7 @@
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactDOM from 'react-dom';
+import Button from '../common/button/Button';
 
 interface Props {
   isOpen: boolean;
@@ -16,35 +17,37 @@ export default function ConfirmDeleteModal({
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-gsBk bg-opacity-30">
-      <div className="w-80 rounded-lg bg-gs00 p-6 shadow-lg">
-        <div className="mb-4 flex justify-center">
-          <FontAwesomeIcon
-            icon={faCircleExclamation}
-            className="text-50L text-gs500"
-          />
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+      <div className="flex w-[450px] flex-col gap-6 rounded-lg bg-gs00 p-6">
+        <div className="flex w-full flex-col items-center justify-center gap-1">
+          <div className="px-4 py-2">
+            <div className="flex size-16 items-center justify-center rounded-full bg-gray-400">
+              <FontAwesomeIcon
+                icon={faExclamation}
+                className="text-3xl text-gs00"
+              />
+            </div>
+          </div>
+          <span className="text-18M">노트를 정말 삭제하시겠어요?</span>
+          <span className="text-14M text-gs400">
+            삭제된 노트는 복구할 수 없어요.
+          </span>
         </div>
-        <p className="text-center text-18SB text-gs800">
-          노트를 정말 삭제하시겠어요?
-        </p>
-        <p className="text-center text-16R text-gs800">
-          삭제된 노트는 복구할 수 없어요.
-        </p>
-        <div className="mt-4 flex justify-between">
-          <button
-            type="button"
+        <div className="flex w-full flex-row gap-2">
+          <Button
+            size="full"
             onClick={onClose}
-            className="w-1/2 rounded-lg bg-gs300 py-2 text-gs700 hover:bg-gray-400"
+            className="bg-gs100 py-4 text-gs600 hover:bg-gs100 focus:bg-gs100 active:bg-gs100"
           >
             취소
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            size="full"
             onClick={onDelete}
-            className="ml-2 w-1/2 rounded-lg bg-warn500 py-2 text-gs00"
+            className="bg-warn500 py-4 text-gs00 hover:bg-warn500 focus:bg-warn500 active:bg-warn500"
           >
             삭제
-          </button>
+          </Button>
         </div>
       </div>
     </div>

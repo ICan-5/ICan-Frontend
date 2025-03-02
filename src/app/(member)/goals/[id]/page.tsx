@@ -1,95 +1,25 @@
 'use client';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { faAnglesRight, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAnglesRight,
+  faFilePen,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import Link from 'next/link';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Goal } from '@/types/todos';
+import { useGoalTodo } from '@/hooks/useGoalsTodo';
 
 config.autoAddCss = false;
 
-interface TodoItem {
-  id: number;
-  task: string;
-  date: string;
-  done: boolean;
-  noteId?: number | null;
-  goal: Goal | null;
-}
-
 export default function Page({ params }: { params: { id: string } }) {
-  const [todos, setTodos] = useState<TodoItem[]>([
-    { id: 1, task: '운동하기', date: '2025-02-18', done: false, goal: null },
-    { id: 2, task: '책 읽기', date: '2025-02-21', done: false, goal: null },
-    {
-      id: 3,
-      task: '자바스크립트 1챕터',
-      date: '2025-02-17',
-      done: false,
-      goal: null,
-    },
-    {
-      id: 4,
-      task: '친구들 만나기',
-      date: '2025-02-28',
-      done: false,
-      goal: null,
-    },
-  ]);
-  const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
-    { id: 1, task: '스터디 준비하기' },
-    { id: 2, task: '집안일 하기' },
-  ]);
-
-  const todoItems = todos.filter((item) => !item.done);
-  const doneItems = todos.filter((item) => item.done);
-
-  const toggleTodos = (id: number) => {
-    setTodos((prev) =>
-      prev.map((e) => {
-        if (e.id === id) return { ...e, done: !e.done };
-        return e;
-      }),
-    );
-  };
-  const deleteBasket = (id: number) => {
-    setBaskets((prev) => prev.filter((e) => e.id !== id));
-  };
-  const pickDate = (id: number, date: Date | null) => {
-    if (!date) return;
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
-    const { task } = baskets.filter((e) => e.id === id)[0];
-    const newTodos = {
-      id: Math.floor(Math.random() * 10000),
-      task,
-      date: formattedDate,
-      done: false,
-      goal: null,
-    };
-    setTodos((prev) => [...prev, newTodos]);
-    deleteBasket(id);
-  };
-
-  const addTodo = (task: string, date: string) => {
-    const newTodo: TodoItem = {
-      id: Date.now() + Math.floor(Math.random() * 1000),
-      task,
-      date,
-      done: false,
-      goal: null,
-    };
-    setTodos((prev) => [...prev, newTodo]);
-  };
+  const { todoItems, doneItems, basketTodos, isLoading, toggleTodo } =
+    useGoalTodo(Number(params.id));
 
   return (
     <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
@@ -112,28 +42,35 @@ export default function Page({ params }: { params: { id: string } }) {
           </h2>
         </div>
       </Link>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <GoalTodoList
-          list={todoItems}
-          onToggle={toggleTodos}
-          onAdd={addTodo}
-          goalId={params.id}
-        />
-        <div className="flex flex-col gap-8">
-          <GoalDoneList
-            list={doneItems.map((item) => ({
-              ...item,
-              noteId: item.noteId ?? null,
-            }))}
-            onToggle={toggleTodos}
+
+      {isLoading ? (
+        <div className="flex h-full items-center justify-center">
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className="text-4xl text-slate500"
           />
-          <GoalBasket
-            basketItems={baskets}
-            onPickDate={pickDate}
-            onDelete={deleteBasket}
-          />
+          <span className="ml-2 text-lg text-slate400" />
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <GoalTodoList
+            list={todoItems}
+            onToggle={toggleTodo}
+            goalId={params.id}
+          />
+          <div className="flex flex-col gap-8">
+            <GoalDoneList
+              list={doneItems.map((item) => ({
+                ...item,
+                noteId: item.noteId ?? null,
+              }))}
+              onToggle={toggleTodo}
+            />
+            <GoalBasket basketItems={basketTodos} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
