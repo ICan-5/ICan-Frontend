@@ -1,5 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo, Basket } from '@/types/todos';
+import { TodoFormValues } from '@/components/todoCalendar/CreateTodo';
+import { addTodo } from '@/services/todo';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 interface GoalTodoData {
   todos: Todo[];
@@ -16,11 +19,15 @@ interface GoalTodoResponse {
   toggleTodo: (todoId: number) => Promise<void>;
 }
 
-export const useGoalTodo = (goalId: string): GoalTodoResponse => {
+export const useGoalTodo = (goalId: number): GoalTodoResponse => {
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error } = useQuery<GoalTodoData, Error>({
-    queryKey: ['goalTodos', goalId],
+  const {
+    data: queryData,
+    isLoading,
+    error,
+  } = useQuery<GoalTodoData, Error>({
+    queryKey: [QUERY_KEY.GOAL_TODOS, goalId], // queryKey 수정
     queryFn: async () => {
       const url = `/api/goals/${goalId}/todos`;
       const response = await fetch(url);
@@ -29,7 +36,6 @@ export const useGoalTodo = (goalId: string): GoalTodoResponse => {
         throw new Error(`Failed to fetch todos for goal ${goalId}`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       const data = await response.json();
       return {
         todos: Array.isArray(data.todos) ? data.todos : [],
@@ -60,10 +66,10 @@ export const useGoalTodo = (goalId: string): GoalTodoResponse => {
     },
     onMutate: async ({ todoId }) => {
       await queryClient.cancelQueries({
-        queryKey: ['goalTodos', goalId],
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
       const previousData = queryClient.getQueryData<GoalTodoData>([
-        'goalTodos',
+        QUERY_KEY.GOAL_TODOS,
         goalId,
       ]);
       if (previousData && previousData.todos) {
@@ -71,7 +77,7 @@ export const useGoalTodo = (goalId: string): GoalTodoResponse => {
           todo.todoId === todoId ? { ...todo, done: !todo.done } : todo,
         );
 
-        queryClient.setQueryData<GoalTodoData>(['goalTodos', goalId], {
+        queryClient.setQueryData<GoalTodoData>([QUERY_KEY.GOAL_TODOS, goalId], {
           ...previousData,
           todos: updatedTodos,
         });
@@ -81,33 +87,55 @@ export const useGoalTodo = (goalId: string): GoalTodoResponse => {
     },
     onError: (err, variables, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData(['goalTodos', goalId], context.previousData);
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, goalId],
+          context.previousData,
+        );
       }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['goalTodos', goalId],
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
     },
   });
 
   const toggleTodo = async (todoId: number) => {
-    const todo = data?.todos.find((t) => t.todoId === todoId);
+    const todo = queryData?.todos.find((t) => t.todoId === todoId);
     if (!todo) return;
 
     await toggleTodoMutation.mutateAsync({ todoId, todo });
   };
 
-  const todoItems = data?.todos.filter((item) => !item.done) || [];
-  const doneItems = data?.todos.filter((item) => item.done) || [];
+  const todoItems = queryData?.todos.filter((item) => !item.done) || [];
+  const doneItems = queryData?.todos.filter((item) => item.done) || [];
 
   return {
-    todos: data?.todos || [],
-    basketTodos: data?.basketTodos || [],
+    todos: queryData?.todos || [],
+    basketTodos: queryData?.basketTodos || [],
     todoItems,
     doneItems,
     isLoading,
     error: error || null,
     toggleTodo,
   };
+};
+export const useGoalAddTodo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (formData: TodoFormValues) => {
+      const date = formData.date ?? new Date();
+      return addTodo({
+        ...formData,
+        date,
+      });
+    },
+    onSuccess: (newTodo) => {
+      const { goalId } = newTodo;
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+    },
+  });
 };

@@ -7,7 +7,7 @@ import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
-import { useAddTodo } from '@/hooks/useTodos';
+import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
 
 const createTodoSchema = z.object({
   title: z
@@ -34,7 +34,7 @@ export default function GoalTodoCreateModal({
   isVisible = true,
 }: Props) {
   const { data: goals } = useGoals();
-  const { mutate: addTodoMutation } = useAddTodo();
+  const { mutate: addTodoMutation } = useGoalAddTodo();
 
   const goalTitle = goals?.find(
     (goal: Goal) => goal.goalId === Number(goalId),

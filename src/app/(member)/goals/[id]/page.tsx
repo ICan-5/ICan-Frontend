@@ -19,7 +19,7 @@ config.autoAddCss = false;
 
 export default function Page({ params }: { params: { id: string } }) {
   const { todoItems, doneItems, basketTodos, isLoading, toggleTodo } =
-    useGoalTodo(params.id);
+    useGoalTodo(Number(params.id));
 
   return (
     <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
