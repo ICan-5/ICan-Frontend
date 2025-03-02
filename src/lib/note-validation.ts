@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 const ERROR_MESSAGE = {
   title: {
-    empty: '제목을 입력해주세요',
-    max: '제목은 최대 30자 입력 가능합니다',
+    empty: '노트 제목을 입력해주세요',
+    max: '노트 제목은 최대 30자 입력 가능합니다',
   },
   content: {
-    empty: '내용을 입력해주세요',
+    empty: '노트 내용을 입력해주세요',
   },
 } as const;
 // 노트 스키마
