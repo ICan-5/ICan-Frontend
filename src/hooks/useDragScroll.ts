@@ -7,18 +7,15 @@ export function useDragScroll<T extends HTMLElement>() {
   const [scrollLeft, setScrollLeft] = useState(0);
 
   /** 드래그 시작 */
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
-
     setIsDragging(true);
     setStartX(e.clientX - scrollRef.current.offsetLeft);
     setScrollLeft(scrollRef.current.scrollLeft);
-
-    scrollRef.current.setPointerCapture(e.pointerId);
   };
 
   /** 드래그 중 */
-  const handlePointerMove = (e: React.PointerEvent) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return;
 
     const x = e.clientX - scrollRef.current.offsetLeft;
@@ -27,15 +24,25 @@ export function useDragScroll<T extends HTMLElement>() {
   };
 
   /** 드래그 종료 */
-  const handlePointerUp = (e: React.PointerEvent) => {
-    setIsDragging(false);
-    scrollRef.current?.releasePointerCapture(e.pointerId);
+  const handleMouseUp = () => {
+    if (isDragging) {
+      setIsDragging(false);
+    }
+  };
+
+  /** 마우스가 화면을 떠날 때 드래그 종료 */
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+    }
   };
 
   return {
+    isDragging,
     scrollRef,
-    handlePointerDown,
-    handlePointerMove,
-    handlePointerUp,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleMouseLeave,
   };
 }
