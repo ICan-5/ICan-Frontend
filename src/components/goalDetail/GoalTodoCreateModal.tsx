@@ -23,9 +23,16 @@ type TodoFormValues = z.infer<typeof createTodoSchema>;
 type Props = {
   goalId: string;
   onClose: () => void;
+  onCancel: () => void;
+  isVisible?: boolean;
 };
 
-export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
+export default function GoalTodoCreateModal({
+  goalId,
+  onClose,
+  onCancel,
+  isVisible = true,
+}: Props) {
   const { data: goals } = useGoals();
   const { mutate: addTodoMutation } = useAddTodo();
 
@@ -61,7 +68,7 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
         },
         {
           onSuccess: () => {
-            onClose(); // ✅ "할 일이 추가된 경우"에는 ConfirmModal을 띄우지 않음
+            onClose();
           },
         },
       );
@@ -69,56 +76,56 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
     [addTodoMutation, goalId, onClose],
   );
 
+  if (!isVisible) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            name="title"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                value={field.value}
-                onChange={field.onChange}
-                name={field.name}
-                label="할 일 제목"
-                control={control}
-                errors={errors}
-                placeholder="할 일을 입력하세요."
-              />
-            )}
-          />
-          <p className="mt-4 text-16SB text-gsBk">목표</p>
-          <input
-            type="text"
-            value={goalTitle}
-            readOnly
-            className="mb-3 w-full cursor-not-allowed rounded-lg bg-gs100 p-2 px-4 py-3 text-16R text-gs600"
-          />
-          <div className="relative mt-3">
-            <DateInput name="date" control={control} label="날짜" />
-          </div>
-          <div className="mt-4 flex w-full flex-row gap-2">
-            <Button
-              type="button"
-              size="full"
-              onClick={onClose} // 🚀 "취소" 버튼을 누르면 ConfirmModal이 뜨도록 함
-              className="bg-gs100 py-4 text-gs600 hover:bg-gs100"
-            >
-              취소
-            </Button>
-            <Button
-              type="submit"
-              size="full"
-              className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
-              disabled={!titleValue}
-            >
-              추가
-            </Button>
-          </div>
-        </form>
-      </div>
+    <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
+      <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <TextInput
+              value={field.value}
+              onChange={field.onChange}
+              name={field.name}
+              label="할 일 제목"
+              control={control}
+              errors={errors}
+              placeholder="할 일을 입력하세요."
+            />
+          )}
+        />
+        <p className="mt-4 text-16SB text-gsBk">목표</p>
+        <input
+          type="text"
+          value={goalTitle}
+          readOnly
+          className="mb-3 w-full cursor-not-allowed rounded-lg bg-gs100 p-2 px-4 py-3 text-16R text-gs600"
+        />
+        <div className="relative mt-3">
+          <DateInput name="date" control={control} label="날짜" />
+        </div>
+        <div className="mt-4 flex w-full flex-row gap-2">
+          <Button
+            type="button"
+            size="full"
+            onClick={onCancel}
+            className="bg-gs100 py-4 text-gs600 hover:bg-gs100"
+          >
+            취소
+          </Button>
+          <Button
+            type="submit"
+            size="full"
+            className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
+            disabled={!titleValue}
+          >
+            추가
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

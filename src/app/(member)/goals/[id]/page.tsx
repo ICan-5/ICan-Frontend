@@ -7,79 +7,19 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Todo, Basket } from '@/types/todos';
+import { useGoalTodo } from '@/hooks/useGoalsTodo';
 
 config.autoAddCss = false;
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [baskets, setBaskets] = useState<Basket[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchData = async (goalId: string) => {
-      setLoading(true);
-
-      try {
-        const url = `/api/goals/${goalId}/todos`;
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data`);
-        }
-
-        const data = await response.json();
-
-        if (Array.isArray(data.todos)) {
-          setTodos(data.todos);
-        }
-
-        if (Array.isArray(data.basketTodos)) {
-          setBaskets(data.basketTodos);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData(params.id);
-  }, [params.id]);
-
-  const todoItems = todos.filter((item) => !item.done);
-  const doneItems = todos.filter((item) => item.done);
-
-  const toggleTodos = async (todoId: number) => {
-    const todo = todos.find((t) => t.todoId === todoId);
-    if (!todo) return;
-    const updatedFields = {
-      done: !todo.done,
-      goalId: todo.goal ? todo.goal.goalId : undefined,
-      title: todo.title,
-      date: todo.date,
-    };
-    const response = await fetch(`/api/goals/${params.id}/todos/${todoId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(updatedFields),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update todo');
-    }
-
-    setTodos((prev) =>
-      prev.map((t) => (t.todoId === todoId ? { ...t, done: !t.done } : t)),
-    );
-  };
+  const { todoItems, doneItems, basketTodos, isLoading, toggleTodo } =
+    useGoalTodo(params.id);
 
   return (
     <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
@@ -103,7 +43,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
       </Link>
 
-      {loading ? (
+      {isLoading ? (
         <div className="flex h-full items-center justify-center">
           <FontAwesomeIcon
             icon={faSpinner}
@@ -116,7 +56,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <GoalTodoList
             list={todoItems}
-            onToggle={toggleTodos}
+            onToggle={toggleTodo}
             goalId={params.id}
           />
           <div className="flex flex-col gap-8">
@@ -125,9 +65,9 @@ export default function Page({ params }: { params: { id: string } }) {
                 ...item,
                 noteId: item.noteId ?? null,
               }))}
-              onToggle={toggleTodos}
+              onToggle={toggleTodo}
             />
-            <GoalBasket basketItems={baskets} />
+            <GoalBasket basketItems={basketTodos} />
           </div>
         </div>
       )}

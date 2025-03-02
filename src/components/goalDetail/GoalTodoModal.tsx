@@ -10,20 +10,28 @@ type Props = {
   onClose: () => void;
 };
 
-export default function TodoModal({ goalId, onClose }: Props) {
+export default function GoalTodoModal({ goalId, onClose }: Props) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(true);
+
+  const handleCancelCreate = () => {
+    setIsConfirmOpen(true);
+  };
+
+  const handleFinalClose = () => {
+    setIsCreateOpen(false);
+    onClose();
+  };
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
       {/* 할 일 생성 모달 */}
-      {isCreateOpen && !isConfirmOpen && (
+      {isCreateOpen && (
         <GoalTodoCreateModal
           goalId={goalId}
-          onClose={() => {
-            setIsCreateOpen(false);
-            onClose();
-          }}
+          onClose={handleFinalClose}
+          onCancel={handleCancelCreate}
+          isVisible={!isConfirmOpen}
         />
       )}
 
@@ -34,10 +42,9 @@ export default function TodoModal({ goalId, onClose }: Props) {
           description="취소하면 모든 변경 사항이 사라집니다."
           confirmText="확인"
           onCancel={() => {
-            setIsCreateOpen(true);
             setIsConfirmOpen(false);
           }}
-          onConfirm={onClose}
+          onConfirm={handleFinalClose}
         />
       )}
     </div>,
