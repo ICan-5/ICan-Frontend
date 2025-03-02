@@ -22,7 +22,7 @@ export default function NavGoalItem({ id, title, color, isSelected }: Props) {
         },
       )}
     >
-      <span className={`ml-2 h-2 w-2 rounded-md ${c}`} />
+      <span className={`ml-2 size-2 flex-none rounded-md ${c}`} />
       <span className="text-overflow h-4 text-12R 2xl:h-5 2xl:text-14R">
         {title}
       </span>

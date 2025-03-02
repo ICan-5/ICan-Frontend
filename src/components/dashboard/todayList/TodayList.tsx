@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import SimpleTodo from '@/components/common/todo/SimpleTodo';
 import TodayListEmpty from './TodayListEmpty';
 import { useDailyTodos } from '@/hooks/useTodos';
+import SimpleTodoSkeleton from '@/components/common/todo/SimpleTodoSkeleton';
 
 export default function TodayList() {
   const { data } = useSession();
@@ -44,21 +45,16 @@ export default function TodayList() {
         {formattedDate}
       </span>
       <div className="flex h-40 w-full flex-col overflow-y-auto 2xl:h-44">
-        {isFetching &&
-          Array.from({ length: 4 }, (_, i) => i + 1).map((e) => (
-            <div
-              key={e}
-              className="my-2 block h-6 w-full flex-none animate-pulse rounded-md bg-gs100 2xl:h-7"
+        {isFetching && <SimpleTodoSkeleton />}
+        {!isFetching &&
+          todayList.map((todo) => (
+            <SimpleTodo
+              key={todo.todoId}
+              title={todo.title}
+              done={false}
+              noteId={todo.noteId}
             />
           ))}
-        {todayList.map((todo) => (
-          <SimpleTodo
-            key={todo.todoId}
-            title={todo.title}
-            done={false}
-            noteId={todo.noteId}
-          />
-        ))}
         {!isFetching && !todayList.length && <TodayListEmpty />}
       </div>
     </div>
