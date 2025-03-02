@@ -20,7 +20,7 @@ export default function TodoGrassCell({ date, progress }: Props) {
 
   return (
     <li
-      className={cn(`size-4 flex-none rounded-sm ${getCellColor()}`, {
+      className={cn(`size-4 flex-none rounded-[4px] ${getCellColor()}`, {
         invisible: currentYear !== date.slice(0, 4),
       })}
     />

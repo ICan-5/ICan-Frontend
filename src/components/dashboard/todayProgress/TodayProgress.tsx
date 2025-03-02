@@ -18,7 +18,7 @@ export default async function TodayProgress() {
   };
 
   return (
-    <div className="relative flex size-full min-h-48 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
+    <div className="relative flex size-full min-h-56 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
       <p className="text-16SB 2xl:text-18SB">금일 진행도</p>
       <TodayGraph progress={progress} />
       <p
