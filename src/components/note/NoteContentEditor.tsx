@@ -46,10 +46,24 @@ export default function NoteContentEditor({ control, errors }: Props) {
 
   const isEmptyContent = useMemo(
     () => (html: string) => {
-      return html.replace(/<[^>]*>/g, '').replace(/\s+/g, '').length === 0;
+      return html.replace(/<[^>]*>/g, '').replace(/\s/g, '').length === 0;
     },
     [],
   );
+
+  // 텍스트 길이 업데이트 함수
+  const updateTextLength = () => {
+    if (quillInstance.current) {
+      const quillEditor = quillInstance.current.getEditor();
+      const text = quillEditor.getText();
+      // 전체 문자열에서 모든 공백을 찾아서 제거하는 정규식 활용
+      const nonSpaceLength = text.replace(/\s/g, '').length;
+      const length = quillEditor.getLength();
+
+      setTextLength(length > 1 ? length - 1 : 0);
+      setTrimmedTextLength(nonSpaceLength);
+    }
+  };
 
   return (
     <>
@@ -78,16 +92,7 @@ export default function NoteContentEditor({ control, errors }: Props) {
                   }
 
                   // 텍스트 길이 계산
-                  if (quillInstance.current) {
-                    const quillEditor = quillInstance.current.getEditor();
-                    const text = quillEditor.getText();
-                    // 전체 문자열에서 모든 공백을 찾아서 제거하는 정규식 활용
-                    const nonSpaceLength = text.replace(/\s/g, '').length;
-                    const length = quillEditor.getLength();
-
-                    setTextLength(length > 1 ? length - 1 : 0);
-                    setTrimmedTextLength(nonSpaceLength);
-                  }
+                  updateTextLength();
                 }}
                 placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
               />
