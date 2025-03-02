@@ -26,15 +26,10 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchData = async (goalId: string) => {
       setLoading(true);
-
       try {
         const url = `/api/goals/${goalId}/todos`;
 
         const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data`);
-        }
 
         const data = await response.json();
 

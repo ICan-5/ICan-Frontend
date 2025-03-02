@@ -69,7 +69,7 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gsBk/50">
       <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
         <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -110,7 +110,7 @@ export default function GoalTodoCreateModal({ goalId, onClose }: Props) {
             <Button
               type="submit"
               size="full"
-              className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
+              className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gs600'}`}
               disabled={!titleValue}
             >
               추가
