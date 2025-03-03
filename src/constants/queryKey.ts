@@ -5,4 +5,5 @@ export const QUERY_KEY = {
   GRASS: 'GRASS',
   TODO: 'TODO',
   GOAL: 'GOAL',
+  NOTE: 'NOTE',
 } as const;

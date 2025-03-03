@@ -8,25 +8,25 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
+import { useQuery } from '@tanstack/react-query';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { QUERY_KEY } from '@/constants/queryKey';
+import { getNoteDetail } from '@/services/note';
+import IconButton from '../common/button/IconButton';
 
 interface NoteModalProps {
-  goalTitle?: string | null;
-  todoTitle: string;
-  title: string;
-  content: string;
-  linkUrl?: string;
-  updatedAt: string;
+  noteId: number;
+  initialNote: {
+    goalTitle?: string | null;
+    todoTitle: string;
+    title: string;
+    content: string;
+    linkUrl?: string | null;
+    updatedAt: string;
+  };
 }
 
-export default function NoteModal({
-  goalTitle,
-  todoTitle,
-  title,
-  content,
-  linkUrl,
-  updatedAt,
-}: NoteModalProps) {
+export default function NoteModal({ noteId, initialNote }: NoteModalProps) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
 
@@ -38,7 +38,20 @@ export default function NoteModal({
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
 
-  const sanitizedContent = DOMPurify.sanitize(content);
+  const { data: note, isLoading } = useQuery({
+    queryKey: [QUERY_KEY.NOTE, noteId],
+    queryFn: () => getNoteDetail(noteId),
+    initialData: initialNote,
+  });
+
+  if (isLoading) {
+    return <p>노트 정보를 찾는중 ....</p>;
+  }
+
+  if (!note) {
+    return <p>노트를 찾을 수 없습니다.</p>;
+  }
+  const sanitizedContent = DOMPurify.sanitize(note.content);
 
   return createPortal(
     <AnimatePresence>
@@ -59,24 +72,22 @@ export default function NoteModal({
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* 닫기 버튼 */}
-            <button
-              type="button"
+            <IconButton
               className="my-6 size-6 items-center justify-center px-6 text-18R text-gs500 hover:text-gsBk"
               onClick={closeModal}
-            >
-              <FontAwesomeIcon icon={faXmark} className="size-3" size="sm" />
-            </button>
+              icon={faXmark}
+            />
 
             <div className="flex grow flex-col gap-6 overflow-y-auto px-6">
               <div className="flex flex-col gap-3">
                 {/* 목표 제목 */}
-                {goalTitle && (
+                {note.goalTitle && (
                   <div className="flex items-center justify-between">
                     <h1 className="flex items-center gap-3 text-16M">
                       <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
                         <FontAwesomeIcon icon={faFlag} />
                       </div>
-                      {goalTitle}
+                      {note.goalTitle}
                     </h1>
                   </div>
                 )}
@@ -84,19 +95,19 @@ export default function NoteModal({
                 {/* To do */}
                 <div className="flex items-center gap-2 text-gs700">
                   <span className="rounded bg-gs200 p-1 text-12M">To do</span>
-                  <span className="text-14R">{todoTitle}</span>
-                  <span className="ml-auto text-12R">{updatedAt}</span>
+                  <span className="text-14R">{note.todoTitle}</span>
+                  <span className="ml-auto text-12R">{note.updatedAt}</span>
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 {/* 노트 제목 */}
                 <div className="flex items-center justify-between border-y py-3">
-                  <h1 className="flex items-center text-18M">{title}</h1>
+                  <h1 className="flex items-center text-18M">{note.title}</h1>
                 </div>
-                {linkUrl && (
+                {note.linkUrl && (
                   <Link
-                    href={linkUrl}
+                    href={note.linkUrl}
                     className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
                   >
                     <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
@@ -105,7 +116,7 @@ export default function NoteModal({
                         className="size-3 text-gs00"
                       />
                     </div>
-                    <p className="truncate text-16M">{linkUrl}</p>
+                    <p className="truncate text-16M">{note.linkUrl}</p>
                   </Link>
                 )}
 

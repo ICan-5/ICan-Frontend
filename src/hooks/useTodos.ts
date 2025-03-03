@@ -8,14 +8,14 @@ import { addTodo, deleteTodo, updateTodo } from '@/services/todo';
 const fetchMonthlyTodos = async (year: number, month: number) => {
   const formattedMonth = String(month).padStart(2, '0');
   const res = await fetch(
-    `api/todos/monthly?year=${year}&month=${formattedMonth}`,
+    `/api/todos/monthly?year=${year}&month=${formattedMonth}`,
   );
   if (!res.ok) throw new Error(getErrorMessage(res.status));
   return res.json();
 };
 
 const fetchDailyTodos = async (date: string) => {
-  const res = await fetch(`api/todos/daily?date=${date}`);
+  const res = await fetch(`/api/todos/daily?date=${date}`);
   if (!res.ok) throw new Error(getErrorMessage(res.status));
   return res.json();
 };
@@ -65,6 +65,13 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
+      queryClient.setQueryData(
+        [QUERY_KEY.MONTHLY_TODOS, { year, month }],
+        (oldData: Todo[]) => {
+          if (!oldData) return [newTodo];
+          return [...oldData, newTodo];
+        },
+      );
     },
   });
 };
@@ -74,9 +81,8 @@ export const useUpdateTodo = () => {
   return useMutation({
     mutationFn: (data: { todoId: number; updatedFields: Partial<Todo> }) =>
       updateTodo(data.todoId, data.updatedFields),
-    onSuccess: (updatedTodo) => {
-      // const { todoId } = variables;
-      const { date: newDate, todoId } = updatedTodo;
+    onSuccess: (updatedTodo: Todo) => {
+      const { date: newDate, todoId, noteId, title, goal } = updatedTodo;
       const year = new Date(newDate).getFullYear();
       const month = new Date(newDate).getMonth() + 1;
 
@@ -120,6 +126,17 @@ export const useUpdateTodo = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
+      });
+
+      // 노트에 변경 사항 반영
+      queryClient.setQueryData([QUERY_KEY.NOTE, noteId], (oldNote) => {
+        if (!oldNote) return oldNote;
+
+        return {
+          ...oldNote,
+          todoTitle: title,
+          goalTitle: goal?.title,
+        };
       });
     },
   });
