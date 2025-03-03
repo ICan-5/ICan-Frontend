@@ -47,13 +47,6 @@ export default function NoteContentEditor({
   const [trimmedTextLength, setTrimmedTextLength] = useState(0);
   const quillInstance = useRef<ReactQuillType | null>(null);
 
-  const isEmptyContent = useMemo(
-    () => (html: string) => {
-      return html.replace(/<[^>]*>/g, '').replace(/\s/g, '').length === 0;
-    },
-    [],
-  );
-
   // 텍스트 길이 업데이트 함수
   const updateTextLength = () => {
     if (quillInstance.current) {
@@ -88,7 +81,9 @@ export default function NoteContentEditor({
                 modules={modules}
                 value={value}
                 onChange={(content: string) => {
-                  if (!content || isEmptyContent(content)) {
+                  if (!content) {
+                    onChange('');
+                  } else if (content === '<p><br></p>') {
                     onChange('');
                   } else {
                     onChange(content);
