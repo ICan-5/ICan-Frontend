@@ -7,7 +7,7 @@ import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
-import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
+import { useGoalAddTodo, useUpdateGoalTodo } from '@/hooks/useGoalsTodo';
 
 const createTodoSchema = z.object({
   title: z
@@ -22,6 +22,7 @@ type TodoFormValues = z.infer<typeof createTodoSchema>;
 
 type Props = {
   goalId: string;
+  todoId?: number;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
@@ -29,12 +30,14 @@ type Props = {
 
 export default function GoalTodoCreateModal({
   goalId,
+  todoId,
   onClose,
   onCancel,
   isVisible = true,
 }: Props) {
   const { data: goals } = useGoals();
   const { mutate: addTodoMutation } = useGoalAddTodo();
+  const { mutate: updateTodoMutation } = useUpdateGoalTodo();
 
   const goalTitle = goals?.find(
     (goal: Goal) => goal.goalId === Number(goalId),
@@ -60,27 +63,45 @@ export default function GoalTodoCreateModal({
     (data: TodoFormValues) => {
       const formattedDate = data.date ?? new Date();
 
-      addTodoMutation(
-        {
-          title: data.title,
-          goal: { goalId: Number(goalId) },
-          date: formattedDate,
-        },
-        {
-          onSuccess: () => {
-            onClose();
+      if (todoId) {
+        updateTodoMutation(
+          {
+            todoId,
+            goalId: Number(goalId),
+            title: data.title,
+            date: formattedDate.toISOString(),
           },
-        },
-      );
+          {
+            onSuccess: () => {
+              onClose();
+            },
+          },
+        );
+      } else {
+        addTodoMutation(
+          {
+            title: data.title,
+            goal: { goalId: Number(goalId) },
+            date: formattedDate,
+          },
+          {
+            onSuccess: () => {
+              onClose();
+            },
+          },
+        );
+      }
     },
-    [addTodoMutation, goalId, onClose],
+    [addTodoMutation, updateTodoMutation, goalId, todoId, onClose],
   );
 
   if (!isVisible) return null;
 
   return (
     <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
-      <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
+      <h2 className="mb-4 text-lg font-bold">
+        {todoId ? '할 일 수정' : '할 일 생성'}
+      </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="title"
@@ -122,7 +143,7 @@ export default function GoalTodoCreateModal({
             className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
             disabled={!titleValue}
           >
-            추가
+            {todoId ? '수정' : '추가'}
           </Button>
         </div>
       </form>

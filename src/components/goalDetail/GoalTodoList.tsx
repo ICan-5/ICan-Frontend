@@ -24,9 +24,10 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
   const today = new Date().toLocaleDateString('sv-SE');
 
-  const [isFutureFold, setIsFutureFold] = useState(true);
-  const [isPastFold, setIsPastFold] = useState(true);
+  const [isFutureFold, setIsFutureFold] = useState(false);
+  const [isPastFold, setIsPastFold] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
   list.forEach(({ todoId, title, date, done, noteId, goal, createdAt }) => {
     if (date < today) {
@@ -63,6 +64,11 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
       });
     }
   });
+
+  const handleEditTodo = (todo: Todo) => {
+    setEditingTodo(todo);
+    setIsModalOpen(true);
+  };
 
   const isEmpty =
     groupedTodos.today.length === 0 &&
@@ -101,6 +107,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.todoId)}
                     goal={todo.goal}
+                    onEdit={() => handleEditTodo(todo)}
                   />
                 ))}
               </div>
@@ -139,6 +146,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onEdit={() => handleEditTodo(todo)}
                           />
                         ))}
                       </div>
@@ -192,7 +200,11 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
       </div>
 
       {isModalOpen && (
-        <GoalTodoModal onClose={() => setIsModalOpen(false)} goalId={goalId} />
+        <GoalTodoModal
+          onClose={() => setIsModalOpen(false)}
+          goalId={goalId}
+          todoId={editingTodo ? editingTodo.todoId : undefined}
+        />
       )}
     </div>
   );
