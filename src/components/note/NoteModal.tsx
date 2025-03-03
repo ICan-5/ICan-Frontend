@@ -8,25 +8,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
-import { useQuery } from '@tanstack/react-query';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { QUERY_KEY } from '@/constants/queryKey';
-import { getNoteDetail } from '@/services/note';
 import IconButton from '../common/button/IconButton';
+import { NoteDetail } from '@/types/note';
+import { useNoteDetail } from '@/hooks/useNotes';
 
-interface NoteModalProps {
+interface Props {
   noteId: number;
-  initialNote: {
-    goalTitle?: string | null;
-    todoTitle: string;
-    title: string;
-    content: string;
-    linkUrl?: string | null;
-    updatedAt: string;
-  };
+  initialNote: NoteDetail;
 }
 
-export default function NoteModal({ noteId, initialNote }: NoteModalProps) {
+export default function NoteModal({ noteId, initialNote }: Props) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
 
@@ -38,11 +30,7 @@ export default function NoteModal({ noteId, initialNote }: NoteModalProps) {
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
 
-  const { data: note, isLoading } = useQuery({
-    queryKey: [QUERY_KEY.NOTE, noteId],
-    queryFn: () => getNoteDetail(noteId),
-    initialData: initialNote,
-  });
+  const { data: note, isLoading } = useNoteDetail(noteId, initialNote);
 
   if (isLoading) {
     return <p>노트 정보를 찾는중 ....</p>;
