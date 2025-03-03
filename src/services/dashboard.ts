@@ -33,11 +33,12 @@ export const getTodoGrass = async () => {
       url: '/dashboard/jandi',
       params: { year },
     });
+
     if (!res.ok) throw new Error(getErrorMessage(res.status));
 
     const data: Grass[] = await res.json();
     return data;
   } catch {
-    throw new Error('올해 달성률을 받아오는데 실패했습니다.');
+    return [];
   }
 };
