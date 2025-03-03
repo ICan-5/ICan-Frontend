@@ -21,7 +21,10 @@ export default function TodoListItem({ todoList }: Props) {
   const { mutate: deleteTodo } = useDeleteTodo();
 
   const handleToggleTodo = (todo: Todo) => {
-    updateTodo({ todoId: todo.todoId, updatedFields: { done: !todo.done } });
+    updateTodo({
+      todoId: todo.todoId,
+      updatedFields: { done: !todo.done, goal: todo.goal },
+    });
   };
 
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);

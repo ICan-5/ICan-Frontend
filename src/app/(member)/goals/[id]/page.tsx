@@ -10,13 +10,13 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Goal } from '@/types/todos';
+import { Goal } from '@/types/goals';
 
 config.autoAddCss = false;
 
 interface TodoItem {
   id: number;
-  task: string;
+  title: string;
   date: string;
   done: boolean;
   noteId?: number | null;
@@ -25,26 +25,12 @@ interface TodoItem {
 
 export default function Page({ params }: { params: { id: string } }) {
   const [todos, setTodos] = useState<TodoItem[]>([
-    { id: 1, task: '운동하기', date: '2025-02-18', done: false, goal: null },
-    { id: 2, task: '책 읽기', date: '2025-02-21', done: false, goal: null },
-    {
-      id: 3,
-      task: '자바스크립트 1챕터',
-      date: '2025-02-17',
-      done: false,
-      goal: null,
-    },
-    {
-      id: 4,
-      task: '친구들 만나기',
-      date: '2025-02-28',
-      done: false,
-      goal: null,
-    },
+    { id: 1, title: '운동하기', date: '2025-02-18', done: false, goal: null },
+    { id: 2, title: '책 읽기', date: '2025-02-27', done: false, goal: null },
   ]);
-  const [baskets, setBaskets] = useState<{ id: number; task: string }[]>([
-    { id: 1, task: '스터디 준비하기' },
-    { id: 2, task: '집안일 하기' },
+  const [baskets, setBaskets] = useState<{ id: number; title: string }[]>([
+    { id: 1, title: '스터디 준비하기' },
+    { id: 2, title: '집안일 하기' },
   ]);
 
   const todoItems = todos.filter((item) => !item.done);
@@ -68,10 +54,10 @@ export default function Page({ params }: { params: { id: string } }) {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const { task } = baskets.filter((e) => e.id === id)[0];
+    const { title } = baskets.filter((e) => e.id === id)[0];
     const newTodos = {
       id: Math.floor(Math.random() * 10000),
-      task,
+      title,
       date: formattedDate,
       done: false,
       goal: null,
@@ -80,10 +66,10 @@ export default function Page({ params }: { params: { id: string } }) {
     deleteBasket(id);
   };
 
-  const addTodo = (task: string, date: string) => {
+  const addTodo = (title: string, date: string) => {
     const newTodo: TodoItem = {
       id: Date.now() + Math.floor(Math.random() * 1000),
-      task,
+      title,
       date,
       done: false,
       goal: null,
