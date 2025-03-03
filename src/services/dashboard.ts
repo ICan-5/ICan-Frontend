@@ -2,6 +2,7 @@
 
 import { getErrorMessage } from '@/constants/errorMessages';
 import { fetchIntance } from './fetchInstance';
+import { Grass } from '@/types/dashboard';
 
 export const getTodayProgress = async () => {
   try {
@@ -23,7 +24,7 @@ export const getTodayProgress = async () => {
   }
 };
 
-export const getGrass = async () => {
+export const getTodoGrass = async () => {
   try {
     const year = new Date().getFullYear();
     const res = await fetchIntance({
@@ -34,7 +35,7 @@ export const getGrass = async () => {
     });
     if (!res.ok) throw new Error(getErrorMessage(res.status));
 
-    const data: { date: string; donePercent: number }[] = await res.json();
+    const data: Grass[] = await res.json();
     return data;
   } catch {
     throw new Error('올해 달성률을 받아오는데 실패했습니다.');

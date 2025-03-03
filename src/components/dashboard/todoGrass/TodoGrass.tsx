@@ -1,12 +1,19 @@
+'use client';
+
 import { getCachedDates, grassMonth, grassWeekDay } from '@/utils/date';
 import TodoGrassCell from './TodoGrassCell';
 import cn from '@/utils/cn';
-import { getGrass } from '@/services/dashboard';
+import { Grass } from '@/types/dashboard';
+import { useGrass } from '@/hooks/useDashboard';
 
-export default async function TodoGrass() {
+interface Props {
+  grassData: Grass[];
+}
+
+export default function TodoGrass({ grassData }: Props) {
   // 날짜 배열 생성 (올해 날짜만 포함)
   const dates = getCachedDates();
-  const data = await getGrass();
+  const { data } = useGrass(grassData);
   data.forEach((date) => {
     dates[date.date] = date.donePercent;
   });
@@ -15,7 +22,7 @@ export default async function TodoGrass() {
   // 3월 ~ 6개월 : 12개 * 19 = 228
 
   return (
-    <div className="flex w-full gap-2 overflow-x-auto">
+    <div className="mx-auto flex max-w-full gap-2 overflow-x-auto">
       <p className="mt-11 flex flex-col gap-[19px] text-14M text-gs600 2xl:gap-5">
         {grassWeekDay.map((weekDay) => (
           <span key={weekDay}>{weekDay}</span>
