@@ -32,7 +32,7 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
     isLoading,
     error,
   } = useQuery<GoalTodoData, Error>({
-    queryKey: [QUERY_KEY.GOAL_TODOS, goalId], // queryKey 수정
+    queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
     queryFn: async () => {
       const url = `/api/goals/${goalId}/todos`;
       const response = await fetch(url);
@@ -89,14 +89,6 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
       }
 
       return { previousData };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousData) {
-        queryClient.setQueryData(
-          [QUERY_KEY.GOAL_TODOS, goalId],
-          context.previousData,
-        );
-      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -175,14 +167,6 @@ export const useUpdateGoalTodo = () => {
       }
 
       return { previousData };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousData) {
-        queryClient.setQueryData(
-          [QUERY_KEY.GOAL_TODOS, variables.goalId],
-          context.previousData,
-        );
-      }
     },
     onSettled: (_, __, { goalId }) => {
       queryClient.invalidateQueries({
