@@ -6,9 +6,11 @@ import TodayProgressSkeleton from '@/components/dashboard/todayProgress/TodayPro
 import TodayProgressError from '@/components/dashboard/todayProgress/TodayProgressError';
 import GoalList from '@/components/dashboard/goalList/GoalList';
 import TodoGrass from '@/components/dashboard/todoGrass/TodoGrass';
-import { getTodoGrass } from '@/services/dashboard';
+import { getTodayProgress, getTodoGrass } from '@/services/dashboard';
 
 export default async function Page() {
+  const { total, completed } = await getTodayProgress();
+  const progress = Math.floor((completed / total) * 100) / 100 || 0;
   const grassData = await getTodoGrass();
 
   return (
@@ -17,7 +19,7 @@ export default async function Page() {
         <TodayList />
         <ErrorBoundary errorComponent={TodayProgressError}>
           <Suspense fallback={<TodayProgressSkeleton />}>
-            <TodayProgress />
+            <TodayProgress progressData={progress} />
           </Suspense>
         </ErrorBoundary>
       </section>
