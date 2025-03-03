@@ -1,6 +1,3 @@
-let cachedYear: number | null = null;
-let cachedDates: { [key: string]: number } | null = null; // 객체 형태로 캐시된 날짜를 저장
-
 const isLeapYear = (year: number) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
@@ -53,15 +50,20 @@ const generateDates = (year: number) => {
   );
 };
 
-export const getCachedDates = () => {
-  const currentYear = new Date().getFullYear();
+export const getCachedDates = (() => {
+  let cachedYear: number | null = null;
+  let cachedDates: { [key: string]: number } | null = null;
 
-  if (cachedYear !== currentYear || !cachedDates) {
-    cachedYear = currentYear;
-    cachedDates = generateDates(currentYear);
-  }
-  return cachedDates;
-};
+  return () => {
+    const currentYear = new Date().getFullYear();
+
+    if (cachedYear !== currentYear || !cachedDates) {
+      cachedYear = currentYear;
+      cachedDates = generateDates(currentYear);
+    }
+    return { ...cachedDates };
+  };
+})();
 
 export const grassMonth = ['1월', '3월', '6월', '9월', '12월'];
 export const grassWeekDay = ['월', '수', '금'];
