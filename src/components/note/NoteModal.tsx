@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
+import DOMPurify from 'dompurify';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface NoteModalProps {
@@ -36,6 +37,8 @@ export default function NoteModal({
     }, 200);
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
+
+  const sanitizedContent = DOMPurify.sanitize(content);
 
   return createPortal(
     <AnimatePresence>
@@ -107,9 +110,10 @@ export default function NoteModal({
                 )}
 
                 {/* 내용 */}
-                <p className="whitespace-pre-line text-16R text-gs700">
-                  {content}
-                </p>
+                <div
+                  className="whitespace-pre-line text-16R text-gs700"
+                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+                />
               </div>
             </div>
           </motion.div>

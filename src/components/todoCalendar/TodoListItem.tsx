@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Todo } from '@/types/todos';
 import CheckTodo from '../common/todo/CheckTodo';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/useTodos';
@@ -17,6 +18,7 @@ interface Props {
 
  */
 export default function TodoListItem({ todoList }: Props) {
+  const router = useRouter();
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: deleteTodo } = useDeleteTodo();
 
@@ -51,6 +53,14 @@ export default function TodoListItem({ todoList }: Props) {
     }
   };
 
+  const handleClickNote = (todo: Todo) => {
+    if (todo.noteId) {
+      router.push(`/note/${todo.noteId}`);
+    } else {
+      router.push(`${todo.todoId}/note/create`);
+    }
+  };
+
   return (
     <div>
       <ul>
@@ -61,8 +71,9 @@ export default function TodoListItem({ todoList }: Props) {
               title={todo.title}
               goal={todo.goal}
               done={todo.done}
-              noteId={null}
+              noteId={todo.noteId}
               onCheck={() => handleToggleTodo(todo)}
+              onClickNote={() => handleClickNote(todo)}
               onDelete={() => handleDeleteTodo(todo)}
               onEdit={() => handleEditTodo(todo)}
             />
@@ -73,7 +84,7 @@ export default function TodoListItem({ todoList }: Props) {
         <TodoModal
           selectedDate={new Date(selectedTodo.date)}
           onCloseModal={handleCloseModal}
-          todoToEdit={selectedTodo} // 수정할 할 일 전달
+          todoToEdit={selectedTodo}
         />
       )}
 
