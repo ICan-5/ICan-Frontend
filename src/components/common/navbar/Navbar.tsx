@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import cn from '@/utils/cn';
 import NavUserProfile from './NavUserProfile';
 import NavTab from './NavTab';
@@ -41,13 +42,14 @@ export default function Navbar() {
             size="2xs"
           />
         </button>
-        <div
+        <Link
+          href="/"
           className={cn(
-            'flex h-9 w-full max-w-24 items-center justify-center rounded-lg bg-gs200 transition-transform duration-300 2xl:h-10',
+            'flex h-9 rounded-lg p-[3px] text-18SB transition-transform duration-300 2xl:h-10',
           )}
         >
-          I:)an
-        </div>
+          I:Can
+        </Link>
         <NavUserProfile isFolded={isFolded} />
         <NavTab isFolded={isFolded} />
       </nav>
