@@ -1,4 +1,4 @@
-export interface Props {
+export interface NoteFormControlProps {
   control?: Control<{
     title: string;
     content: string;

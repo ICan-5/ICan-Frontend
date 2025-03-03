@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import type ReactQuillType from 'react-quill-new';
 import { Controller } from 'react-hook-form';
 import ErrorMessage from '../auth/ErrorMessage';
-import { Props } from '@/types/note';
+import { NoteFormControlProps } from '@/types/note';
 
 interface ForwardedQuillProps
   extends React.ComponentProps<typeof ReactQuillType> {
@@ -31,7 +31,10 @@ const toolbarOptions = [
   [{ list: 'bullet' }, { list: 'ordered' }, { color: [] }, { background: [] }],
   ['link'],
 ];
-export default function NoteContentEditor({ control, errors }: Props) {
+export default function NoteContentEditor({
+  control,
+  errors,
+}: NoteFormControlProps) {
   const modules = useMemo(() => {
     return {
       toolbar: {
