@@ -62,6 +62,9 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GRASS],
+      });
     },
   });
 };
@@ -115,6 +118,9 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.DAILY_TODOS, newDate],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GRASS],
+      });
     },
   });
 };
@@ -152,6 +158,9 @@ export const useDeleteTodo = () => {
         // 한 달 단위의 데이터를 무효화하여 최신 데이터 유지
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.GRASS],
         });
       }
     },
