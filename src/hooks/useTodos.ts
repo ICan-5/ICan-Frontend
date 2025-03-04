@@ -57,7 +57,6 @@ export const useAddTodo = () => {
           return [...oldData, newTodo];
         },
       );
-
       // 한 달 단위의 캐시는 무효화 -> 최신 데이터 유지
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],

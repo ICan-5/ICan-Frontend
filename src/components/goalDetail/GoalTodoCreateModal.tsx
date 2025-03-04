@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback } from 'react';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
-import { useAddTodo } from '@/hooks/useTodos';
+import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
 
 const createTodoSchema = z.object({
   title: z
@@ -14,7 +15,7 @@ const createTodoSchema = z.object({
     .nonempty('제목을 입력해주세요')
     .max(30, '제목은 30자 이하여야 합니다'),
   goal: z.any().nullable().optional(),
-  date: z.union([z.date(), z.string()]).optional(),
+  date: z.date().optional(),
 });
 
 type TodoFormValues = z.infer<typeof createTodoSchema>;
@@ -22,36 +23,22 @@ type TodoFormValues = z.infer<typeof createTodoSchema>;
 type Props = {
   goalId: string;
   onClose: () => void;
-  onAdd: (task: string, date: string) => void;
+  onCancel: () => void;
+  isVisible?: boolean;
 };
 
-export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
+export default function GoalTodoCreateModal({
+  goalId,
+  onClose,
+  onCancel,
+  isVisible = true,
+}: Props) {
   const { data: goals } = useGoals();
-  const { mutateAsync: addTodo } = useAddTodo();
+  const { mutate: addTodoMutation } = useGoalAddTodo();
 
   const goalTitle = goals?.find(
     (goal: Goal) => goal.goalId === Number(goalId),
   )?.title;
-
-  const onSubmit = async (data: TodoFormValues) => {
-    const formattedDate = (() => {
-      if (typeof data.date === 'string') {
-        return new Date(data.date);
-      }
-      if (data.date instanceof Date) {
-        return data.date;
-      }
-      return new Date();
-    })();
-
-    const newTodo = await addTodo({
-      title: data.title,
-      goal: { goalId: Number(goalId) },
-      date: formattedDate,
-    });
-    onAdd(newTodo.title, formattedDate.toISOString().split('T')[0]);
-    onClose();
-  };
 
   const {
     control,
@@ -69,10 +56,32 @@ export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
 
   const titleValue = watch('title');
 
+  const onSubmit = useCallback(
+    (data: TodoFormValues) => {
+      const formattedDate = data.date ?? new Date();
+
+      addTodoMutation(
+        {
+          title: data.title,
+          goal: { goalId: Number(goalId) },
+          date: formattedDate,
+        },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
+    },
+    [addTodoMutation, goalId, onClose],
+  );
+
+  if (!isVisible) return null;
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
+    <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
+      <h2 className="mb-4 text-lg font-bold">할 일 생성</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="title"
           control={control}
@@ -102,22 +111,21 @@ export default function GoalTodoCreateModal({ goalId, onClose, onAdd }: Props) {
           <Button
             type="button"
             size="full"
-            onClick={onClose}
+            onClick={onCancel}
             className="bg-gs100 py-4 text-gs600 hover:bg-gs100"
           >
             취소
           </Button>
           <Button
-            type="button"
+            type="submit"
             size="full"
-            onClick={handleSubmit(onSubmit)}
             className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
             disabled={!titleValue}
           >
             추가
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -6,22 +6,11 @@ import React, { useState } from 'react';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
-import { Goal } from '@/types/goals';
-
-interface Todo {
-  id: number;
-  title: string;
-  date: string;
-  done: boolean;
-  noteId?: number | null;
-  goal: Goal | null;
-}
+import { Todo } from '@/types/todos';
 
 interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
-  onAdd: (title: string, date: string) => void;
-  onDelete?: (id: number) => void;
   goalId: string;
 }
 
@@ -31,33 +20,50 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({
-  list,
-  onToggle,
-  onAdd,
-  onDelete,
-  goalId,
-}: Props) {
+export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toLocaleDateString('sv-SE');
+
   const [isFutureFold, setIsFutureFold] = useState(true);
   const [isPastFold, setIsPastFold] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 할 일 분류
-  list.forEach(({ id, title, date, done, noteId, goal }) => {
+  list.forEach(({ todoId, title, date, done, noteId, goal, createdAt }) => {
     if (date < today) {
       groupedTodos.past[date] = groupedTodos.past[date] || [];
-      groupedTodos.past[date].push({ id, title, done, date, noteId, goal });
+      groupedTodos.past[date].push({
+        todoId,
+        title,
+        done,
+        date,
+        noteId,
+        goal,
+        createdAt,
+      });
     } else if (date === today) {
-      groupedTodos.today.push({ id, title, done, date, noteId, goal });
+      groupedTodos.today.push({
+        todoId,
+        title,
+        done,
+        date,
+        noteId,
+        goal,
+        createdAt,
+      });
     } else {
       groupedTodos.upcoming[date] = groupedTodos.upcoming[date] || [];
-      groupedTodos.upcoming[date].push({ id, title, done, date, noteId, goal });
+      groupedTodos.upcoming[date].push({
+        todoId,
+        title,
+        done,
+        date,
+        noteId,
+        goal,
+        createdAt,
+      });
     }
   });
 
-  // 모든 할 일이 없을 때
   const isEmpty =
     groupedTodos.today.length === 0 &&
     Object.keys(groupedTodos.upcoming).length === 0 &&
@@ -66,7 +72,6 @@ export default function GoalTodoList({
   return (
     <div className="flex flex-1 flex-col gap-6 md:flex-row md:items-start">
       <div className="w-full rounded-2xl bg-gs00 px-6 py-4 shadow">
-        {/* 헤더 */}
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-18R font-bold">To do</h3>
           <div
@@ -77,7 +82,6 @@ export default function GoalTodoList({
           </div>
         </div>
 
-        {/* 할 일이 없는 경우 */}
         {isEmpty ? (
           <div className="flex h-32 items-center justify-center text-gs500">
             등록된 할 일이 없습니다.
@@ -90,14 +94,13 @@ export default function GoalTodoList({
                 <h3 className="mb-3 text-18R font-bold">오늘 할 일</h3>
                 {groupedTodos.today.map((todo) => (
                   <CheckTodo
-                    key={todo.id}
-                    id={todo.id}
+                    key={todo.todoId}
+                    id={todo.todoId}
                     title={todo.title}
                     done={todo.done}
                     noteId={todo.noteId ?? null}
-                    onCheck={() => onToggle(todo.id)}
-                    onDelete={onDelete ? () => onDelete(todo.id) : undefined}
-                    goal={todo.goal} // goal을 CheckTodo에 전달
+                    onCheck={() => onToggle(todo.todoId)}
+                    goal={todo.goal}
                   />
                 ))}
               </div>
@@ -129,15 +132,12 @@ export default function GoalTodoList({
                         <div className="text-16M text-gs700">{date}</div>
                         {todos.map((todo) => (
                           <CheckTodo
-                            key={todo.id}
-                            id={todo.id}
+                            key={todo.todoId}
+                            id={todo.todoId}
                             title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
-                            onCheck={() => onToggle(todo.id)}
-                            onDelete={
-                              onDelete ? () => onDelete(todo.id) : undefined
-                            }
+                            onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
                           />
                         ))}
@@ -173,15 +173,12 @@ export default function GoalTodoList({
                         <div className="text-16M text-gs700">{date}</div>
                         {todos.map((todo) => (
                           <CheckTodo
-                            key={todo.id}
-                            id={todo.id}
+                            key={todo.todoId}
+                            id={todo.todoId}
                             title={todo.title}
                             done={todo.done}
                             noteId={todo.noteId ?? null}
-                            onCheck={() => onToggle(todo.id)}
-                            onDelete={
-                              onDelete ? () => onDelete(todo.id) : undefined
-                            }
+                            onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
                           />
                         ))}
@@ -195,11 +192,7 @@ export default function GoalTodoList({
       </div>
 
       {isModalOpen && (
-        <GoalTodoModal
-          onClose={() => setIsModalOpen(false)}
-          onAdd={onAdd}
-          goalId={goalId}
-        />
+        <GoalTodoModal onClose={() => setIsModalOpen(false)} goalId={goalId} />
       )}
     </div>
   );

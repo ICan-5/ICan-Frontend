@@ -28,7 +28,6 @@ export default function TodoListItem({ todoList }: Props) {
       updatedFields: { done: !todo.done, goal: todo.goal },
     });
   };
-
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<Todo | null>(
     null,

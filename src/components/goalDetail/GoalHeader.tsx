@@ -25,7 +25,7 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
       <div className="mb-2 flex items-center justify-between">
         <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          {isLoading ? '목표 로딩 중...' : goalTitle}
+          {isLoading ? '로딩 중...' : goalTitle}
         </h1>
         <div className="relative">
           <button
