@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo, Basket } from '@/types/todos';
 import { TodoFormValues } from '@/components/todoCalendar/CreateTodo';
-import { addTodo } from '@/services/todo';
+import { addTodo, updateGoalTodo } from '@/services/todo';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 interface GoalTodoData {
@@ -16,6 +16,13 @@ interface GoalTodoResponse {
   doneItems: Todo[];
   isLoading: boolean;
   error: Error | null;
+}
+
+interface UpdateTodoParams {
+  todoId: number;
+  goalId: number;
+  title?: string;
+  date?: string;
 }
 
 export const useGoalTodo = (goalId: number): GoalTodoResponse => {
@@ -127,6 +134,54 @@ export const useGoalAddTodo = () => {
     },
     onSuccess: (newTodo) => {
       const { goalId } = newTodo;
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+    },
+  });
+};
+
+export const useUpdateGoalTodo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ todoId, goalId, title, date }: UpdateTodoParams) => {
+      return updateGoalTodo(todoId, goalId, { title, date });
+    },
+    onMutate: async ({ todoId, goalId, title, date }) => {
+      await queryClient.cancelQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+
+      const previousData = queryClient.getQueryData<{ todos: Todo[] }>([
+        QUERY_KEY.GOAL_TODOS,
+        goalId,
+      ]);
+
+      if (previousData) {
+        const updatedTodos = previousData.todos.map((todo) =>
+          todo.todoId === todoId
+            ? { ...todo, title: title ?? todo.title, date: date ?? todo.date }
+            : todo,
+        );
+
+        queryClient.setQueryData([QUERY_KEY.GOAL_TODOS, goalId], {
+          ...previousData,
+          todos: updatedTodos,
+        });
+      }
+
+      return { previousData };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, variables.goalId],
+          context.previousData,
+        );
+      }
+    },
+    onSettled: (_, __, { goalId }) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });

@@ -1,10 +1,17 @@
+'use client';
+
 import cn from '@/utils/cn';
 import TodayGraph from './TodayGraph';
-import { getTodayProgress } from '@/services/dashboard';
+import { useProgress } from '@/hooks/useDashboard';
 
-export default async function TodayProgress() {
-  const { total, completed } = await getTodayProgress();
-  const progress = Math.floor((completed / total) * 100) / 100 || 0;
+interface Props {
+  progressData: number;
+}
+
+export default function TodayProgress({ progressData }: Props) {
+  const date = new Date().toLocaleDateString('sv-SE');
+  const { data } = useProgress(date, progressData);
+  const progress = data || progressData;
   /**
    * @returns 진행도에 따른 문구
    * prgress에 맞는 문구를 리턴해주는 함수
@@ -18,7 +25,7 @@ export default async function TodayProgress() {
   };
 
   return (
-    <div className="relative flex size-full min-h-48 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
+    <div className="relative flex size-full min-h-56 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
       <p className="text-16SB 2xl:text-18SB">금일 진행도</p>
       <TodayGraph progress={progress} />
       <p

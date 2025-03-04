@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import NoteModal from '@/components/note/NoteModal';
+import Link from 'next/link';
 import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
@@ -20,11 +20,9 @@ interface Note {
 
 interface NoteItemProps {
   note: Note;
-  goalId: string;
 }
 
-export default function NoteItem({ note, goalId }: NoteItemProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function NoteItem({ note }: NoteItemProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside<HTMLDivElement>(
     () => setIsMenuOpen(false),
@@ -81,13 +79,12 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
           </div>
 
           {/* 제목 */}
-          <button
-            type="button"
-            className="mt-2 w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"
-            onClick={() => setIsModalOpen((prev) => !prev)}
+          <Link
+            href={`/note/${note.id}`}
+            className="mt-2 block w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"
           >
             {note.title}
-          </button>
+          </Link>
 
           {/* todo */}
           <div className="mb-6 mt-3 flex items-center gap-2 text-12M text-gs700">
@@ -96,14 +93,7 @@ export default function NoteItem({ note, goalId }: NoteItemProps) {
           </div>
         </div>
       </div>
-
       {/* 모달 */}
-      <NoteModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        note={note}
-        goalId={goalId}
-      />
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

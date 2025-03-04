@@ -76,6 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 noteId: item.noteId ?? null,
               }))}
               onToggle={handleToggleTodo}
+              goalId={params.id}
             />
             <GoalBasket basketItems={basketTodos} />
           </div>
