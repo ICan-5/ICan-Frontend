@@ -42,7 +42,7 @@ export const useGoalTodo = (
         basketTodos: Array.isArray(data.basketTodos) ? data.basketTodos : [],
       };
     },
-    enabled: enabled || true,
+    enabled: enabled === undefined ? true : enabled,
   });
 
   const todoItems = queryData?.todos.filter((item) => !item.done) || [];
