@@ -27,6 +27,8 @@ export async function PATCH(
     return res1;
   }
 
+  const { goal } = await res1.json();
+
   const res2 = await fetchIntance({
     url: `/todos/${todoId}`,
     method: 'PATCH',
@@ -38,7 +40,9 @@ export async function PATCH(
     },
   });
 
-  return res2;
+  const res2Data = await res2.json();
+
+  return NextResponse.json({ ...res2Data, goal });
 }
 
 export async function DELETE(
