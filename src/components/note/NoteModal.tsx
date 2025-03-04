@@ -8,8 +8,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { useGoals } from '@/hooks/useGoals';
-import { Goal } from '@/types/goals';
 
 interface NoteModalProps {
   goalTitle?: string | null;
