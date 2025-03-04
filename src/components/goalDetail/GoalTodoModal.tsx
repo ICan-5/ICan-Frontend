@@ -5,13 +5,11 @@ import ReactDOM from 'react-dom';
 import GoalTodoCreateModal from './GoalTodoCreateModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
 
-type Props = {
+interface Props {
   goalId: string;
-  todoId?: number;
-  existingTitle?: string; // 기존 제목 추가
-  existingDate?: string; // 기존 날짜 추가
+  todoId?: number | null;
   onClose: () => void;
-};
+}
 
 export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

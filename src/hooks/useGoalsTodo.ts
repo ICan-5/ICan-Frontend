@@ -173,6 +173,7 @@ export const useUpdateGoalTodo = () => {
 
       return { previousData };
     },
+
     onError: (err, variables, context) => {
       if (context?.previousData) {
         queryClient.setQueryData(

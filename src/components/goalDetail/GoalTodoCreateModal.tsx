@@ -22,7 +22,7 @@ type TodoFormValues = z.infer<typeof createTodoSchema>;
 
 type Props = {
   goalId: string;
-  todoId?: number;
+  todoId?: number | null;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;

@@ -70,6 +70,10 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
       });
     }
   });
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingTodo(null);
+  };
 
   const handleEditTodo = (todo: Todo) => {
     setEditingTodo(todo);
@@ -233,9 +237,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
       )}
       {isModalOpen && (
         <GoalTodoModal
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleCloseModal}
           goalId={goalId}
-          todoId={editingTodo ? editingTodo.todoId : undefined}
+          todoId={editingTodo ? editingTodo.todoId : null}
         />
       )}
     </div>
