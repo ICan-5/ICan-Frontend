@@ -5,6 +5,7 @@ import type ReactQuillType from 'react-quill-new';
 import { Controller } from 'react-hook-form';
 import ErrorMessage from '../auth/ErrorMessage';
 import { NoteFormControlProps } from '@/types/note';
+import NoteSkeleton from './NoteSkeleton';
 
 interface ForwardedQuillProps
   extends React.ComponentProps<typeof ReactQuillType> {
@@ -20,7 +21,7 @@ const QuillNoSSRWrapper = dynamic(
     }
     return Quill;
   },
-  { loading: () => <div>...loading</div>, ssr: false },
+  { loading: () => <NoteSkeleton />, ssr: false },
 );
 
 // 툴바 옵션들

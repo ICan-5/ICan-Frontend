@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { fetchIntance } from './fetchInstance';
+import { getErrorMessage } from '@/constants/errorMessages';
 
 const formatDate = (isoString: string) => {
   const date = new Date(isoString);
@@ -48,5 +49,40 @@ export const getNoteDetail = async (noteId: number) => {
   } catch {
     notFound();
     return null;
+  }
+};
+
+/**
+ * 노트 생성
+ * @param
+ */
+export const createNote = async ({
+  formData,
+  todoId,
+}: {
+  formData: {
+    title: string;
+    content: string;
+    linkUrl: string;
+  };
+  todoId: number;
+}) => {
+  try {
+    const response = await fetch(`/api/note/${todoId}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        todoId,
+        title: formData.title,
+        content: formData.content,
+        linkUrl: formData.linkUrl || 'https://www.codeit.kr',
+      }),
+    });
+
+    if (!response.ok) throw new Error(getErrorMessage(response.status));
+    const data = response.json();
+    return { data };
+  } catch (error) {
+    console.error('노트 생성 중 오류 발생:', error);
+    throw error;
   }
 };
