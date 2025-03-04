@@ -1,21 +1,10 @@
-import NoteModal from '@/components/note/NoteModal';
-import { getNoteDetail } from '@/services/note';
+import { renderNoteDetail } from '@/utils/renderNotePage';
 
-export default async function PhotoModal({
+export default async function NoteDetailPage({
   params,
 }: {
-  params: { noteId: string };
+  params: { noteId: number };
 }) {
   const noteId = Number(params.noteId);
-  const note = await getNoteDetail(noteId);
-
-  return (
-    <NoteModal
-      goalTitle={note.goalTitle}
-      todoTitle={note.todoTitle}
-      title={note.title}
-      content={note.content}
-      updatedAt={note.updatedAt}
-    />
-  );
+  return renderNoteDetail(noteId);
 }

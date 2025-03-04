@@ -13,9 +13,5 @@ export async function GET(
     url: `/notes/${noteId}`,
   });
 
-  if (!res.ok) {
-    return res;
-  }
-
   return res;
 }
