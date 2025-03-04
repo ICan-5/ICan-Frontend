@@ -84,7 +84,8 @@ export default function NavGoal({ headerFolded }: Props) {
         {showNewGoal && (
           <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
-        {isFetching &&
+        {goalList.length === 0 &&
+          isFetching &&
           Array.from({ length: 6 }, (_, i) => i + 1).map((e) => (
             <div
               key={e}
