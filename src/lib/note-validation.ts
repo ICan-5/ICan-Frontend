@@ -17,6 +17,7 @@ export const NoteSchema = z.object({
     .min(1, { message: ERROR_MESSAGE.title.empty })
     .max(30, { message: ERROR_MESSAGE.title.max }),
   content: z.string().trim().min(1, { message: ERROR_MESSAGE.content.empty }),
+  linkUrl: z.string().default(''), // 기본값 - 빈 문자열
 });
 
 // 스키마의 z.infer를 사용하여 스키마 유형도 내보내기

@@ -29,3 +29,12 @@ export interface NoteFormControlProps {
     content: string;
   }>;
 }
+
+export interface NoteDetail {
+  goalTitle?: string | null;
+  todoTitle: string;
+  title: string;
+  content: string;
+  linkUrl?: string | null;
+  updatedAt: string;
+}
