@@ -24,7 +24,9 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
         <SessionProvider>
-          <ClientProvider>{children}</ClientProvider>
+          <ClientProvider>
+            <div>{children}</div>
+          </ClientProvider>
         </SessionProvider>
       </body>
     </html>

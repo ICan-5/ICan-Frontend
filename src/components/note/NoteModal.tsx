@@ -1,53 +1,55 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlag, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faFlag, faLink, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import ReactDOM from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Link from 'next/link';
+import { createPortal } from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { useGoals } from '@/hooks/useGoals';
-import { Goal } from '@/types/goals';
 
 interface NoteModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  note: {
-    id: number;
-    title: string;
-    todo: string;
-    content: string;
-    date: string;
-  };
-  goalId: string;
+  goalTitle?: string | null;
+  todoTitle: string;
+  title: string;
+  content: string;
+  linkUrl?: string;
+  updatedAt: string;
 }
 
 export default function NoteModal({
-  isOpen,
-  onClose,
-  note,
-  goalId,
+  goalTitle,
+  todoTitle,
+  title,
+  content,
+  linkUrl,
+  updatedAt,
 }: NoteModalProps) {
-  const [modalRef] = useClickOutside<HTMLDivElement>(onClose);
-  const { data: goals, isLoading } = useGoals();
+  const router = useRouter();
+  const [isClosing, setIsClosing] = useState(false);
 
-  const goalTitle = goals?.find(
-    (goal: Goal) => goal.goalId === Number(goalId),
-  )?.title;
+  const closeModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      router.back();
+    }, 200);
+  };
+  const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
 
-  const modalContent = (
+  return createPortal(
     <AnimatePresence>
-      {isOpen && (
+      {!isClosing && (
         <>
           <motion.div
             className="fixed inset-0 z-40 bg-gsBk/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-40 bg-gs00 p-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
+            className="fixed inset-y-0 right-0 z-40 flex max-h-full flex-col bg-gs00 pb-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -56,45 +58,64 @@ export default function NoteModal({
             {/* 닫기 버튼 */}
             <button
               type="button"
-              className="mb-4 text-18R text-gs500 hover:text-gsBk"
-              onClick={onClose}
+              className="my-6 size-6 items-center justify-center px-6 text-18R text-gs500 hover:text-gsBk"
+              onClick={closeModal}
             >
-              <FontAwesomeIcon icon={faXmark} />
+              <FontAwesomeIcon icon={faXmark} className="size-3" size="sm" />
             </button>
 
-            {/* 목표 제목 */}
-            <div className="flex items-center justify-between">
-              <h1 className="flex items-center gap-3 text-18SB">
-                <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
-                  <FontAwesomeIcon icon={faFlag} />
+            <div className="flex grow flex-col gap-6 overflow-y-auto px-6">
+              <div className="flex flex-col gap-3">
+                {/* 목표 제목 */}
+                {goalTitle && (
+                  <div className="flex items-center justify-between">
+                    <h1 className="flex items-center gap-3 text-16M">
+                      <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
+                        <FontAwesomeIcon icon={faFlag} />
+                      </div>
+                      {goalTitle}
+                    </h1>
+                  </div>
+                )}
+
+                {/* To do */}
+                <div className="flex items-center gap-2 text-gs700">
+                  <span className="rounded bg-gs200 p-1 text-12M">To do</span>
+                  <span className="text-14R">{todoTitle}</span>
+                  <span className="ml-auto text-12R">{updatedAt}</span>
                 </div>
-                {isLoading
-                  ? '목표 로딩 중...'
-                  : goalTitle || '목표를 찾을 수 없습니다.'}
-              </h1>
-            </div>
+              </div>
 
-            {/* To do */}
-            <div className="my-2 flex items-center gap-2 text-gs600">
-              <span className="rounded bg-gs200 px-1 text-16M">To do</span>
-              <span className="text-16M">{note.todo}</span>
-              <span className="ml-auto text-14R">{note.date}</span>
-            </div>
+              <div className="flex flex-col gap-4">
+                {/* 노트 제목 */}
+                <div className="flex items-center justify-between border-y py-3">
+                  <h1 className="flex items-center text-18M">{title}</h1>
+                </div>
+                {linkUrl && (
+                  <Link
+                    href={linkUrl}
+                    className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
+                  >
+                    <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
+                      <FontAwesomeIcon
+                        icon={faLink}
+                        className="size-3 text-gs00"
+                      />
+                    </div>
+                    <p className="truncate text-16M">{linkUrl}</p>
+                  </Link>
+                )}
 
-            {/* 노트 제목 */}
-            <div className="flex items-center justify-between border-t pt-2">
-              <h1 className="flex items-center text-16SB">{note.title}</h1>
-            </div>
-
-            {/* 내용 */}
-            <div className="mt-3 border-t pt-2">
-              <p className="text-gs600">{note.content}</p>
+                {/* 내용 */}
+                <p className="whitespace-pre-line text-16R text-gs700">
+                  {content}
+                </p>
+              </div>
             </div>
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
-
-  return ReactDOM.createPortal(modalContent, document.body);
 }

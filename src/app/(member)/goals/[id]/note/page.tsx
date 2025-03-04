@@ -10,7 +10,7 @@ config.autoAddCss = false;
 
 const notes = [
   {
-    id: 1,
+    id: 494,
     title: '자바스크립트를 배우기 전 알아두어야 할 것',
     todo: '자바스크립트 기초 1',
     content: '내용이 어쩌구 저쩌구 내용이 어쩌구 저쩌구',
@@ -52,7 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <NoteHeader id={params.id} />
       </div>
       <div>
-        <NoteList notes={notes} goalId={params.id} />
+        <NoteList notes={notes} />
       </div>
     </div>
   );
