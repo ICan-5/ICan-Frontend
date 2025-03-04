@@ -1,6 +1,5 @@
 import { getErrorMessage } from '@/constants/errorMessages';
 import { fetchIntance } from './fetchInstance';
-import { getErrorMessage } from '@/constants/errorMessages';
 
 const formatDate = (isoString: string) => {
   const date = new Date(isoString);
