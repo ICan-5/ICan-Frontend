@@ -16,18 +16,15 @@ interface GoalTodoResponse {
   doneItems: Todo[];
   isLoading: boolean;
   error: Error | null;
-  toggleTodo: (todoId: number) => Promise<void>;
 }
 
 export const useGoalTodo = (goalId: number): GoalTodoResponse => {
-  const queryClient = useQueryClient();
-
   const {
     data: queryData,
     isLoading,
     error,
   } = useQuery<GoalTodoData, Error>({
-    queryKey: [QUERY_KEY.GOAL_TODOS, goalId], // queryKey 수정
+    queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
     queryFn: async () => {
       const url = `/api/goals/${goalId}/todos`;
       const response = await fetch(url);
@@ -44,7 +41,23 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
     },
   });
 
-  const toggleTodoMutation = useMutation({
+  const todoItems = queryData?.todos.filter((item) => !item.done) || [];
+  const doneItems = queryData?.todos.filter((item) => item.done) || [];
+
+  return {
+    todos: queryData?.todos || [],
+    basketTodos: queryData?.basketTodos || [],
+    todoItems,
+    doneItems,
+    isLoading,
+    error: error || null,
+  };
+};
+
+export const useToggleTodo = (goalId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: async ({ todoId, todo }: { todoId: number; todo: Todo }) => {
       const updatedFields = {
         done: !todo.done,
@@ -99,27 +112,8 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
       });
     },
   });
-
-  const toggleTodo = async (todoId: number) => {
-    const todo = queryData?.todos.find((t) => t.todoId === todoId);
-    if (!todo) return;
-
-    await toggleTodoMutation.mutateAsync({ todoId, todo });
-  };
-
-  const todoItems = queryData?.todos.filter((item) => !item.done) || [];
-  const doneItems = queryData?.todos.filter((item) => item.done) || [];
-
-  return {
-    todos: queryData?.todos || [],
-    basketTodos: queryData?.basketTodos || [],
-    todoItems,
-    doneItems,
-    isLoading,
-    error: error || null,
-    toggleTodo,
-  };
 };
+
 export const useGoalAddTodo = () => {
   const queryClient = useQueryClient();
 

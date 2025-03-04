@@ -13,13 +13,23 @@ import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { useGoalTodo } from '@/hooks/useGoalsTodo';
+import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
 
 config.autoAddCss = false;
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { todoItems, doneItems, basketTodos, isLoading, toggleTodo } =
-    useGoalTodo(Number(params.id));
+  const { todoItems, doneItems, basketTodos, isLoading } = useGoalTodo(
+    Number(params.id),
+  );
+  const toggleTodoMutation = useToggleTodo(Number(params.id));
+
+  const handleToggleTodo = async (todoId: number) => {
+    const todo =
+      todoItems.find((t) => t.todoId === todoId) ||
+      doneItems.find((t) => t.todoId === todoId);
+    if (!todo) return;
+    await toggleTodoMutation.mutateAsync({ todoId, todo });
+  };
 
   return (
     <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
@@ -56,7 +66,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <GoalTodoList
             list={todoItems}
-            onToggle={toggleTodo}
+            onToggle={handleToggleTodo}
             goalId={params.id}
           />
           <div className="flex flex-col gap-8">
@@ -65,7 +75,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 ...item,
                 noteId: item.noteId ?? null,
               }))}
-              onToggle={toggleTodo}
+              onToggle={handleToggleTodo}
             />
             <GoalBasket basketItems={basketTodos} />
           </div>
