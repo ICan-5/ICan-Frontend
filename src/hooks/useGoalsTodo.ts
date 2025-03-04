@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo, Basket } from '@/types/todos';
 import { TodoFormValues } from '@/components/todoCalendar/CreateTodo';
-import { addTodo, updateGoalTodo } from '@/services/todo';
+import { addTodo } from '@/services/todo';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 interface GoalTodoData {
@@ -16,17 +16,9 @@ interface GoalTodoResponse {
   doneItems: Todo[];
   isLoading: boolean;
   error: Error | null;
-  toggleTodo: (todoId: number) => Promise<void>;
 }
-interface UpdateTodoParams {
-  todoId: number;
-  goalId: number;
-  title?: string;
-  date?: string;
-}
-export const useGoalTodo = (goalId: number): GoalTodoResponse => {
-  const queryClient = useQueryClient();
 
+export const useGoalTodo = (goalId: number): GoalTodoResponse => {
   const {
     data: queryData,
     isLoading,
@@ -49,7 +41,23 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
     },
   });
 
-  const toggleTodoMutation = useMutation({
+  const todoItems = queryData?.todos.filter((item) => !item.done) || [];
+  const doneItems = queryData?.todos.filter((item) => item.done) || [];
+
+  return {
+    todos: queryData?.todos || [],
+    basketTodos: queryData?.basketTodos || [],
+    todoItems,
+    doneItems,
+    isLoading,
+    error: error || null,
+  };
+};
+
+export const useToggleTodo = (goalId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: async ({ todoId, todo }: { todoId: number; todo: Todo }) => {
       const updatedFields = {
         done: !todo.done,
@@ -90,33 +98,22 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
 
       return { previousData };
     },
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, goalId],
+          context.previousData,
+        );
+      }
+    },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
     },
   });
-
-  const toggleTodo = async (todoId: number) => {
-    const todo = queryData?.todos.find((t) => t.todoId === todoId);
-    if (!todo) return;
-
-    await toggleTodoMutation.mutateAsync({ todoId, todo });
-  };
-
-  const todoItems = queryData?.todos.filter((item) => !item.done) || [];
-  const doneItems = queryData?.todos.filter((item) => item.done) || [];
-
-  return {
-    todos: queryData?.todos || [],
-    basketTodos: queryData?.basketTodos || [],
-    todoItems,
-    doneItems,
-    isLoading,
-    error: error || null,
-    toggleTodo,
-  };
 };
+
 export const useGoalAddTodo = () => {
   const queryClient = useQueryClient();
 
@@ -130,45 +127,6 @@ export const useGoalAddTodo = () => {
     },
     onSuccess: (newTodo) => {
       const { goalId } = newTodo;
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
-      });
-    },
-  });
-};
-export const useUpdateGoalTodo = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ todoId, goalId, title, date }: UpdateTodoParams) => {
-      return updateGoalTodo(todoId, goalId, { title, date });
-    },
-    onMutate: async ({ todoId, goalId, title, date }) => {
-      await queryClient.cancelQueries({
-        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
-      });
-
-      const previousData = queryClient.getQueryData<{ todos: Todo[] }>([
-        QUERY_KEY.GOAL_TODOS,
-        goalId,
-      ]);
-
-      if (previousData) {
-        const updatedTodos = previousData.todos.map((todo) =>
-          todo.todoId === todoId
-            ? { ...todo, title: title ?? todo.title, date: date ?? todo.date }
-            : todo,
-        );
-
-        queryClient.setQueryData([QUERY_KEY.GOAL_TODOS, goalId], {
-          ...previousData,
-          todos: updatedTodos,
-        });
-      }
-
-      return { previousData };
-    },
-    onSettled: (_, __, { goalId }) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
