@@ -74,13 +74,13 @@ export const createNote = async ({
         todoId,
         title: formData.title,
         content: formData.content,
-        linkUrl: formData.linkUrl || '',
+        linkUrl: formData.linkUrl || 'https://www.codeit.kr',
       }),
     });
 
     if (!response.ok) throw new Error(getErrorMessage(response.status));
-
-    return { todoId };
+    const data = response.json();
+    return { data };
   } catch (error) {
     console.error('노트 생성 중 오류 발생:', error);
     throw error;
