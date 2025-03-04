@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import fontSize from './src/presets/fontSize';
 import colors from './src/presets/colors';
+import { screen } from './src/presets/screen';
 
 const config: Config = {
   content: [
@@ -16,6 +17,9 @@ const config: Config = {
         ...colors,
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+      },
+      screens: {
+        ...screen,
       },
     },
   },

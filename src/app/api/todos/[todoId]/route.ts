@@ -27,6 +27,8 @@ export async function PATCH(
     return res1;
   }
 
+  const { goal } = await res1.json();
+
   const res2 = await fetchIntance({
     url: `/todos/${todoId}`,
     method: 'PATCH',
@@ -38,7 +40,9 @@ export async function PATCH(
     },
   });
 
-  return res2;
+  const res2Data = await res2.json();
+
+  return NextResponse.json({ ...res2Data, goal });
 }
 
 export async function DELETE(
@@ -63,4 +67,22 @@ export async function DELETE(
   });
 
   return res2;
+}
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { todoId: number } },
+) {
+  const { todoId } = params;
+
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'GET',
+    url: `/todos/${todoId}`,
+  });
+
+  if (!res1.ok) {
+    return res1;
+  }
+  return res1;
 }
