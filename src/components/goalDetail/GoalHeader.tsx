@@ -10,9 +10,15 @@ type Props = {
   doneItems: number;
   todoItems: number;
   id: string;
+  setGoalAvailable: (value: boolean) => void;
 };
 
-export default function GoalHeader({ doneItems, todoItems, id }: Props) {
+export default function GoalHeader({
+  doneItems,
+  todoItems,
+  id,
+  setGoalAvailable,
+}: Props) {
   const [menuRef, isMenuOpen, setIsMenuOpen] =
     useClickOutside<HTMLDivElement>();
   const { data: goals, isLoading } = useGoals();
@@ -23,11 +29,15 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
-  const goalTitle = goalItem?.title;
+  const goalTitle = goalItem?.title || '목표를 선택 또는 생성해주세요';
+
+  useEffect(() => {
+    setGoalAvailable(goalItem !== undefined);
+  }, [goalItem, setGoalAvailable]);
 
   const handleEditClick = () => {
     setIsEditing(true);
-    setNewTitle(goalTitle || '');
+    setNewTitle(goalTitle === '목표를 선택 또는 생성해주세요' ? '' : goalTitle);
   };
 
   const handleSave = () => {
@@ -39,7 +49,11 @@ export default function GoalHeader({ doneItems, todoItems, id }: Props) {
 
   const handleDelete = () => {
     if (goalItem?.goalId) {
-      deleteGoal(goalItem.goalId);
+      deleteGoal(goalItem.goalId, {
+        onSuccess: () => {
+          setIsMenuOpen(false);
+        },
+      });
     }
   };
 

@@ -34,6 +34,7 @@ export async function PATCH(
 
   return res2;
 }
+
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { goalId: number } },
@@ -63,7 +64,6 @@ export async function GET(
   { params }: { params: { goalId: string } },
 ) {
   const { goalId } = params;
-  console.log('GETGETGET goalID', goalId);
   if (!goalId) {
     return NextResponse.json(
       { error: 'goalId를 확인해주세요.' },

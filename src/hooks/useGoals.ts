@@ -86,14 +86,27 @@ export const useDeleteGoal = () => {
 
   return useMutation({
     mutationFn: (goalId: number) => deleteGoal(goalId),
-    onSuccess: (goalId: number) => {
-      queryClient.setQueryData(
-        [QUERY_KEY.GOALS],
-        (oldData: Goal[] | undefined) => {
-          if (!oldData) return [];
-          return oldData.filter((goal) => goal.goalId !== goalId);
-        },
-      );
+    onMutate: async (goalId: number) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY.GOALS] });
+
+      const previousGoals = queryClient.getQueryData<Goal[]>([QUERY_KEY.GOALS]);
+
+      if (previousGoals) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOALS],
+          previousGoals.filter((goal) => goal.goalId !== goalId),
+        );
+      }
+
+      return { previousGoals };
+    },
+    onError: (_error, _goalId, context) => {
+      if (context?.previousGoals) {
+        queryClient.setQueryData([QUERY_KEY.GOALS], context.previousGoals);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.GOALS] });
     },
   });
 };
