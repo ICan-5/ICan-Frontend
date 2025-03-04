@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo, Basket } from '@/types/todos';
 import { TodoFormValues } from '@/components/todoCalendar/CreateTodo';
-import { addTodo, updateGoalTodo } from '@/services/todo';
+import { addTodo, updateGoalTodo, deleteTodo } from '@/services/todo';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 interface GoalTodoData {
@@ -182,6 +182,53 @@ export const useUpdateGoalTodo = () => {
       }
     },
     onSettled: (_, __, { goalId }) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+    },
+  });
+};
+
+// 목표별 할일 삭제
+export const useDeleteGoalTodo = (goalId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (todoId: number) => {
+      return deleteTodo(todoId);
+    },
+    onMutate: async (todoId) => {
+      await queryClient.cancelQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+
+      const previousData = queryClient.getQueryData<GoalTodoData>([
+        QUERY_KEY.GOAL_TODOS,
+        goalId,
+      ]);
+
+      if (previousData) {
+        const updatedTodos = previousData.todos.filter(
+          (todo) => todo.todoId !== todoId,
+        );
+
+        queryClient.setQueryData([QUERY_KEY.GOAL_TODOS, goalId], {
+          ...previousData,
+          todos: updatedTodos,
+        });
+      }
+
+      return { previousData };
+    },
+    onError: (err, todoId, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, goalId],
+          context.previousData,
+        );
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });

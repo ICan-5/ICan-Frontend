@@ -7,6 +7,8 @@ import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
+import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   list: Todo[];
@@ -28,6 +30,10 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const [isPastFold, setIsPastFold] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const { mutate: deleteGoalTodo } = useDeleteGoalTodo(Number(goalId));
+  const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<Todo | null>(
+    null,
+  );
 
   list.forEach(({ todoId, title, date, done, noteId, goal, createdAt }) => {
     if (date < today) {
@@ -70,6 +76,20 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
     setIsModalOpen(true);
   };
 
+  const handleDeleteTodo = (todo: Todo) => {
+    setSelectedDeleteTodo(todo);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedDeleteTodo) {
+      deleteGoalTodo(selectedDeleteTodo.todoId, {
+        onSuccess: () => {
+          setSelectedDeleteTodo(null);
+        },
+      });
+    }
+  };
+
   const isEmpty =
     groupedTodos.today.length === 0 &&
     Object.keys(groupedTodos.upcoming).length === 0 &&
@@ -108,6 +128,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                     onCheck={() => onToggle(todo.todoId)}
                     goal={todo.goal}
                     onEdit={() => handleEditTodo(todo)}
+                    onDelete={() => handleDeleteTodo(todo)}
                   />
                 ))}
               </div>
@@ -147,6 +168,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
                             onEdit={() => handleEditTodo(todo)}
+                            onDelete={() => handleDeleteTodo(todo)}
                           />
                         ))}
                       </div>
@@ -188,6 +210,8 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onEdit={() => handleEditTodo(todo)}
+                            onDelete={() => handleDeleteTodo(todo)}
                           />
                         ))}
                       </div>
@@ -198,7 +222,15 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
           </>
         )}
       </div>
-
+      {selectedDeleteTodo && (
+        <ConfirmModal
+          title="할일을 삭제 하시겠어요?"
+          description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={() => setSelectedDeleteTodo(null)}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
       {isModalOpen && (
         <GoalTodoModal
           onClose={() => setIsModalOpen(false)}
