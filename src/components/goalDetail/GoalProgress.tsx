@@ -10,10 +10,7 @@ export default function GoalProgress({
   doneItems,
   todoItems,
 }: GoalProgressProps) {
-  const progress =
-    todoItems + doneItems === 0
-      ? 0
-      : (doneItems / (todoItems + doneItems)) * 100;
+  const progress = (doneItems / (todoItems + doneItems)) * 100 || 0;
 
   return (
     <div className="mt-6">
