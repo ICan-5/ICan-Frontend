@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
 
@@ -58,9 +57,6 @@ export async function DELETE(
 
   return res2;
 }
-=======
-import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
 
 export async function GET(
   req: NextRequest,
@@ -89,4 +85,3 @@ export async function GET(
   const data = await res.json();
   return NextResponse.json({ todo: data });
 }
->>>>>>> 0f78e41815c50280c46e08d10de0798150564ad1

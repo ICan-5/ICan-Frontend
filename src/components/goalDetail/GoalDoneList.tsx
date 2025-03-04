@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import CheckTodo from '../common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function GoalDoneList({ list, onToggle, goalId }: Props) {
+  const router = useRouter();
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate: deleteGoalTodo } = useDeleteGoalTodo(Number(goalId));
@@ -40,6 +42,13 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
       });
     }
   };
+  const handleClickNote = (todo: Todo) => {
+    if (todo.noteId) {
+      router.push(`/note/${todo.noteId}`);
+    } else {
+      router.push(`/${todo.todoId}/note/create`);
+    }
+  };
 
   return (
     <div className="rounded-2xl bg-gs200 p-6 shadow">
@@ -60,6 +69,7 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
             onCheck={() => onToggle(done.todoId)}
             onEdit={() => handleEditTodo(done)}
             onDelete={() => handleDeleteTodo(done)}
+            onClickNote={() => handleClickNote(done)}
             goal={done.goal}
           />
         ))

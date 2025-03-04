@@ -25,7 +25,10 @@ interface UpdateTodoParams {
   date?: string;
 }
 
-export const useGoalTodo = (goalId: number): GoalTodoResponse => {
+export const useGoalTodo = (
+  goalId: number,
+  enabled?: boolean,
+): GoalTodoResponse => {
   const {
     data: queryData,
     isLoading,
@@ -46,6 +49,7 @@ export const useGoalTodo = (goalId: number): GoalTodoResponse => {
         basketTodos: Array.isArray(data.basketTodos) ? data.basketTodos : [],
       };
     },
+    enabled: enabled === undefined ? true : enabled,
   });
 
   const todoItems = queryData?.todos.filter((item) => !item.done) || [];
