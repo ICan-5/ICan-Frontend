@@ -57,7 +57,7 @@ export default function TodoListItem({ todoList }: Props) {
     if (todo.noteId) {
       router.push(`/note/${todo.noteId}`);
     } else {
-      router.push(`${todo.todoId}/note/create`);
+      router.push(`/${todo.todoId}/note/create`);
     }
   };
 
