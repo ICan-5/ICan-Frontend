@@ -64,3 +64,21 @@ export async function DELETE(
 
   return res2;
 }
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { todoId: number } },
+) {
+  const { todoId } = params;
+
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'GET',
+    url: `/todos/${todoId}`,
+  });
+
+  if (!res1.ok) {
+    return res1;
+  }
+  return res1;
+}

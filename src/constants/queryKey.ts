@@ -3,4 +3,6 @@ export const QUERY_KEY = {
   MONTHLY_TODOS: 'MONTHLY_TODOS',
   DAILY_TODOS: 'DAILY_TODOS',
   GRASS: 'GRASS',
+  TODO: 'TODO',
+  GOAL: 'GOAL',
 } as const;
