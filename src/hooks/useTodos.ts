@@ -129,15 +129,17 @@ export const useUpdateTodo = () => {
       });
 
       // 노트에 변경 사항 반영
-      queryClient.setQueryData([QUERY_KEY.NOTE, noteId], (oldNote) => {
-        if (!oldNote) return oldNote;
+      if (noteId) {
+        queryClient.setQueryData([QUERY_KEY.NOTE, noteId], (oldNote) => {
+          if (!oldNote) return oldNote;
 
-        return {
-          ...oldNote,
-          todoTitle: title,
-          goalTitle: goal?.title,
-        };
-      });
+          return {
+            ...oldNote,
+            todoTitle: title,
+            goalTitle: goal?.title,
+          };
+        });
+      }
     },
   });
 };
