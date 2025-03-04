@@ -11,10 +11,9 @@ interface Note {
 
 interface NoteListProps {
   notes: Note[];
-  goalId: string;
 }
 
-export default function NoteList({ notes, goalId }: NoteListProps) {
+export default function NoteList({ notes }: NoteListProps) {
   return (
     <div>
       {notes.length === 0 && (
@@ -23,7 +22,7 @@ export default function NoteList({ notes, goalId }: NoteListProps) {
         </div>
       )}
       {notes.map((note) => (
-        <NoteItem key={note.id} note={note} goalId={goalId} />
+        <NoteItem key={note.id} note={note} />
       ))}
     </div>
   );
