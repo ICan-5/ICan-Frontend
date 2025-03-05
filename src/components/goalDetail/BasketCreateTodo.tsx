@@ -20,7 +20,6 @@ export type BasketFormValues = z.infer<typeof createBasketSchema>;
 
 type Props = {
   goalId: number;
-  basketId?: number | null;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
@@ -29,7 +28,6 @@ type Props = {
 
 export default function GoalTodoCreateModal({
   goalId,
-  basketId,
   onClose,
   onCancel,
   isVisible = true,
@@ -81,9 +79,7 @@ export default function GoalTodoCreateModal({
 
   return (
     <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
-      <h2 className="mb-4 text-lg font-bold">
-        {basketId ? '장바구니 할일 수정' : '장바구니 할일 생성'}
-      </h2>
+      <h2 className="mb-4 text-lg font-bold">장바구니 할일 생성</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="title"
@@ -126,7 +122,7 @@ export default function GoalTodoCreateModal({
             }`}
             disabled={!titleValue}
           >
-            {basketId ? '수정' : '추가'}
+            추가
           </Button>
         </div>
       </form>

@@ -9,7 +9,6 @@ export async function DELETE(
   const { basketTodoId } = params;
 
   const res = await fetchIntance({
-    base: 'CODEIT',
     method: 'DELETE',
     url: `/calendar/todo-basket/${basketTodoId}`,
   });

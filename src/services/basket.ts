@@ -28,7 +28,7 @@ export const addBasket = async (formData: BasketFormValues) => {
  */
 export const deleteBasket = async (basketTodoId: number) => {
   try {
-    const response = await fetch(`/api/todos/${basketTodoId}`, {
+    const response = await fetch(`/api/baskets/${basketTodoId}`, {
       method: 'DELETE',
     });
 
