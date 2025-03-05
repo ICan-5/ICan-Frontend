@@ -4,6 +4,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { useState } from 'react';
 import {
   faAnglesRight,
+  faFaceSadCry,
   faFilePen,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
@@ -35,18 +36,17 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
-      <div className="mb-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
-        <GoalHeader
-          doneItems={doneItems.length}
-          todoItems={todoItems.length}
-          id={params.id}
-          setGoalAvailable={setIsGoalAvailable}
-        />
-      </div>
-      {!isGoalAvailable ? (
-        <div className="flex h-screen items-center justify-center" />
-      ) : (
+      {isGoalAvailable ? (
         <>
+          <div className="mb-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
+            <GoalHeader
+              doneItems={doneItems.length}
+              todoItems={todoItems.length}
+              id={params.id}
+              setGoalAvailable={setIsGoalAvailable}
+            />
+          </div>
+
           <Link href={`${params.id}/note`} className="block">
             <div className="mb-6 h-[60px] cursor-pointer rounded-2xl bg-slate100 px-6 py-4 shadow">
               <h2 className="flex items-center text-18SB">
@@ -93,6 +93,18 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           )}
         </>
+      ) : (
+        <div className="flex h-screen flex-col items-center justify-center">
+          <div className="mb-5 text-40L text-gs600">
+            <FontAwesomeIcon icon={faFaceSadCry} />
+          </div>
+          <h3 className="text-18SB text-gs600">
+            목표가 존재하지 않거나 삭제되었습니다!
+          </h3>
+          <p className="mt-2 text-16R text-gs600">
+            목표를 추가 또는 선택해주세요.
+          </p>
+        </div>
       )}
     </div>
   );

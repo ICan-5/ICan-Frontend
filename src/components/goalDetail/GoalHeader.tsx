@@ -29,7 +29,7 @@ export default function GoalHeader({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
-  const goalTitle = goalItem?.title || '목표를 선택 또는 생성해주세요';
+  const goalTitle = goalItem?.title;
 
   useEffect(() => {
     setGoalAvailable(goalItem !== undefined);
