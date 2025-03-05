@@ -2,18 +2,14 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import cn from '@/utils/cn';
 import NavUserProfile from './NavUserProfile';
 import NavTab from './NavTab';
+import { useNavbar } from '../NavbarContext';
 
 export default function Navbar() {
-  const [isFolded, setIsFolded] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsFolded(window.innerWidth <= 768);
-  }, []);
+  const { isFolded, toggleNavbar } = useNavbar();
 
   return (
     <>
@@ -31,7 +27,7 @@ export default function Navbar() {
             'absolute right-0 top-20 z-10 flex h-10 w-5 items-center justify-center rounded-l-md bg-slate50',
           )}
           type="button"
-          onClick={() => setIsFolded((prev) => !prev)}
+          onClick={toggleNavbar}
         >
           <FontAwesomeIcon
             className={cn('h-3 w-3 transition-transform duration-300', {
@@ -57,7 +53,7 @@ export default function Navbar() {
         className={cn('md:hidden', {
           'fixed inset-0 z-10 bg-black bg-opacity-50': !isFolded,
         })}
-        onClick={() => setIsFolded(true)}
+        onClick={toggleNavbar}
       />
     </>
   );
