@@ -25,3 +25,13 @@ export const addTodoBasket = async (title: string) => {
 
   return data;
 };
+
+export const deleteTodoBasket = async (basketTodoId: number) => {
+  const res = await fetchIntance({
+    method: 'DELETE',
+    url: `/calendar/todo-basket/${basketTodoId}`,
+  });
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
+
+  return basketTodoId;
+};
