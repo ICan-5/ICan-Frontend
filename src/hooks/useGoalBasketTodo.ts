@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BasketFormValues } from '@/components/goalDetail/BasketCreateTodo';
-import { addBasket } from '@/services/basket';
+import { addBasket, deleteBasket } from '@/services/basket';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 export const useAddBasketTodo = () => {
@@ -19,6 +19,21 @@ export const useAddBasketTodo = () => {
 
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+    },
+  });
+};
+
+export const useDeleteBasketTodo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (basketTodoId: number) => deleteBasket(basketTodoId),
+
+    onSuccess: (_, _basketTodoId) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS],
+        refetchType: 'active',
       });
     },
   });

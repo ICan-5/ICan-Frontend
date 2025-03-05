@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Basket } from '@/types/todos';
 import BasketTodoModal from './BasketTodoModal';
+import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
 
 interface Props {
   basketItems: Basket[];
@@ -17,6 +18,17 @@ interface Props {
 
 export default function GoalBasket({ basketItems, goalId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const addTodoMutation = useGoalAddTodo();
+
+  const handleDateSelect = (date: Date | null, item: Basket) => {
+    if (!date) return;
+
+    addTodoMutation.mutate({
+      goal: { goalId: Number(goalId) },
+      title: item.title,
+      date,
+    });
+  };
 
   const handleAddTodo = () => {
     setIsModalOpen(true);
@@ -45,6 +57,10 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
                 <div className="relative flex items-center">
                   <DatePicker
                     dateFormat="yyyy-MM-dd"
+                    selected={null}
+                    onChange={(date: Date | null) =>
+                      handleDateSelect(date, item)
+                    }
                     customInput={
                       <button
                         type="button"
