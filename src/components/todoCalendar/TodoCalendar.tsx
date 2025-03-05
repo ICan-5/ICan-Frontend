@@ -118,7 +118,7 @@ export default function TodoCalendar() {
     </div>
   ) : (
     <div className="relative w-full">
-      <div className="flex flex-col justify-center gap-4 md:flex-row">
+      <div className="flex max-h-[calc(100vh-270px)] flex-col justify-center gap-4 overflow-auto px-1 md:flex-row">
         <div className="flex-1">
           {isLoading ? (
             <Loading />
