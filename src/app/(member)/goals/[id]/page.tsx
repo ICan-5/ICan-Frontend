@@ -88,7 +88,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   onToggle={handleToggleTodo}
                   goalId={params.id}
                 />
-                <GoalBasket basketItems={basketTodos} />
+                <GoalBasket basketItems={basketTodos} goalId={params.id} />
               </div>
             </div>
           )}
