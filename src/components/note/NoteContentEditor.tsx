@@ -6,6 +6,7 @@ import { Controller } from 'react-hook-form';
 import ErrorMessage from '../auth/ErrorMessage';
 import { NoteFormControlProps } from '@/types/note';
 import NoteSkeleton from './NoteSkeleton';
+import LinkModal from './LinkModal';
 
 interface ForwardedQuillProps
   extends React.ComponentProps<typeof ReactQuillType> {
@@ -36,17 +37,31 @@ export default function NoteContentEditor({
   control,
   errors,
 }: NoteFormControlProps) {
+  const [textLength, setTextLength] = useState(0);
+  const [trimmedTextLength, setTrimmedTextLength] = useState(0);
+  const quillInstance = useRef<ReactQuillType | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const modules = useMemo(() => {
     return {
       toolbar: {
         container: toolbarOptions,
+        handlers: {
+          //
+          link(isOpen) {
+            if (!quillInstance.current) return;
+            if (isOpen) {
+              // console.log('quillInstance?.current', quillInstance?.current);
+              // const href = prompt('Enter the URL');
+              setIsModalOpen((prev) => !prev);
+              // quillInstance?.current.format('link', href);
+            } else {
+              // quillInstance?.current.format('link', false);
+            }
+          },
+        },
       },
     };
   }, []);
-
-  const [textLength, setTextLength] = useState(0);
-  const [trimmedTextLength, setTrimmedTextLength] = useState(0);
-  const quillInstance = useRef<ReactQuillType | null>(null);
 
   // 텍스트 길이 업데이트 함수
   const updateTextLength = () => {
@@ -99,6 +114,7 @@ export default function NoteContentEditor({
           }}
         />
       </div>
+      {isModalOpen && <LinkModal onClose={() => setIsModalOpen(false)} />}
     </>
   );
 }
