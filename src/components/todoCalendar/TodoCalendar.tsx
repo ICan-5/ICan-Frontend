@@ -117,8 +117,8 @@ export default function TodoCalendar() {
       <p className="text-red-500">데이터를 불러오는 중 오류 발생</p>
     </div>
   ) : (
-    <div className="relative w-full">
-      <div className="flex max-h-[calc(100vh-270px)] flex-col justify-center gap-4 overflow-auto px-1 md:flex-row">
+    <div className="relative h-screen max-h-[calc(100vh-160px)] w-full overflow-auto md:max-h-[calc(100vh-270px)]">
+      <div className="flex flex-col justify-center gap-4 px-1 md:flex-row">
         <div className="flex-1">
           {isLoading ? (
             <Loading />
@@ -140,7 +140,7 @@ export default function TodoCalendar() {
         </div>
         {isCalendarLoaded && (
           <div
-            className="size-full md:w-[280px] xl:w-[350px]"
+            className="w-full md:w-[280px] xl:w-[350px]"
             style={{ height: calendarHeight }}
           >
             <TodoList

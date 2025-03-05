@@ -91,7 +91,7 @@ export default function TodoBasket({ basketList }: Props) {
         </div>
         <div
           ref={basketRef}
-          className="mb-4 flex h-36 flex-wrap gap-3 overflow-y-auto pl-4"
+          className="mb-4 flex h-20 flex-wrap gap-3 overflow-y-auto pl-4 md:h-36"
         >
           {isAdding ? (
             <div className="flex h-14 max-w-80 items-center justify-center gap-2 rounded-lg bg-slate50 p-3 focus-within:border focus-within:border-slate500 hover:bg-slate100">
