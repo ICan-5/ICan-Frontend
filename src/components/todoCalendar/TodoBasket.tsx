@@ -13,6 +13,7 @@ import {
   useDeleteTodoBasket,
   useTodoBasketLists,
 } from '@/hooks/useTodoBasket';
+import ConfirmModal from '../common/ConfirmModal';
 
 export default function TodoBasket() {
   const { isFolded } = useNavbar();
@@ -24,6 +25,8 @@ export default function TodoBasket() {
   const basketRef = useRef<HTMLDivElement>(null);
   const [isAdding, setIsAdding] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   useEffect(() => {
     if (isAdding && inputRef.current) {
       inputRef.current.focus();
@@ -62,6 +65,15 @@ export default function TodoBasket() {
     }
   };
 
+  const handleDeleteAll = () => {
+    setShowConfirm(true);
+  };
+
+  const confirmDeleteAll = () => {
+    deleteAllTodoBasket();
+    setShowConfirm(false);
+  };
+
   return createPortal(
     <div
       className={cn(
@@ -79,7 +91,7 @@ export default function TodoBasket() {
           <button
             type="button"
             className="text-14M text-gs600"
-            onClick={() => deleteAllTodoBasket()}
+            onClick={() => handleDeleteAll()}
           >
             모두 지우기
           </button>
@@ -140,6 +152,15 @@ export default function TodoBasket() {
           )}
         </div>
       </div>
+      {showConfirm && (
+        <ConfirmModal
+          title="정말 모두 지우시겠어요?"
+          description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={confirmDeleteAll}
+        />
+      )}
     </div>,
     document.body,
   );
