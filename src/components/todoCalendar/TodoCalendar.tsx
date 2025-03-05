@@ -10,35 +10,6 @@ import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
 import TodoBasket from './TodoBasket';
 
 // import Loading from '../common/Loading';
-// import TodoBasket from './TodoBasket';
-
-const initialBasketList = [
-  { id: 101, title: '코딩강의 듣기', goal: null },
-  { id: 102, title: '할 일이 길어지면 어쩌구 저쩌구', goal: null },
-  { id: 103, title: '할 일 52', goal: null },
-  { id: 104, title: '할 일 62', goal: null },
-  { id: 105, title: '할 일 72', goal: null },
-  { id: 106, title: '할 일 82', goal: null },
-  { id: 107, title: '할 일 92', goal: null },
-  { id: 108, title: '할 일 102', goal: null },
-  { id: 109, title: '할 일 112', goal: null },
-  { id: 110, title: '할 일 122', goal: null },
-  { id: 111, title: '할 일 132', goal: null },
-  { id: 112, title: '할 일 142', goal: null },
-  { id: 113, title: '할 일 152', goal: null },
-  { id: 114, title: '할 일 162', goal: null },
-  { id: 115, title: '할 일 172', goal: null },
-  {
-    id: 116,
-    title: '할 일 182',
-    goal: {
-      goalId: 1,
-      title: '강의 듣기',
-      color: 'goal01',
-      createdAt: '2025-02-26T02:49:55.691312Z',
-    },
-  },
-];
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -151,7 +122,7 @@ export default function TodoCalendar() {
           </div>
         )}
       </div>
-      {isCalendarLoaded && <TodoBasket basketList={initialBasketList} />}
+      {isCalendarLoaded && <TodoBasket />}
 
       {isModalOpen && (
         <TodoModal

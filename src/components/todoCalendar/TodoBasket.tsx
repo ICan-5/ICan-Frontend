@@ -7,12 +7,12 @@ import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
 import cn from '@/utils/cn';
 import { useNavbar } from '../common/NavbarContext';
-import { useTodoBasketLists } from '@/hooks/useTodoBasket';
+import { useAddTodoBasket, useTodoBasketLists } from '@/hooks/useTodoBasket';
 
 export default function TodoBasket() {
   const { isFolded } = useNavbar();
   const { data: basketList = [], isLoading, error } = useTodoBasketLists();
-
+  const { mutate: addTodoBasekt } = useAddTodoBasket();
   const basketRef = useRef<HTMLDivElement>(null);
   const [isAdding, setIsAdding] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -40,11 +40,12 @@ export default function TodoBasket() {
     const title = inputRef.current?.value.trim();
     if (!title) return;
 
-    // setNowBasketList((prev) => [
-    //   ...prev,
-    //   { id: Date.now(), title, goal: null },
-    // ]);
-    setIsAdding(false);
+    addTodoBasekt(title, {
+      onSuccess: () => {
+        console.log(title, '생성 성공');
+        setIsAdding(false);
+      },
+    });
   };
 
   const handleKeyDown = async (
