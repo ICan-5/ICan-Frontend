@@ -35,3 +35,11 @@ export const deleteTodoBasket = async (basketTodoId: number) => {
 
   return basketTodoId;
 };
+
+export const deleteAllTodoBasket = async () => {
+  const res = await fetchIntance({
+    method: 'DELETE',
+    url: '/calendar/todo-basket',
+  });
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
+};

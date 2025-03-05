@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '@/constants/queryKey';
 import {
   addTodoBasket,
+  deleteAllTodoBasket,
   deleteTodoBasket,
   fetchTodoBasket,
 } from '@/services/basket';
@@ -23,6 +24,10 @@ const addTodoBasketClient = async (title: string) => {
 
 const deleteTodoBasketClient = async (basketTodoId: number) => {
   return deleteTodoBasket(basketTodoId);
+};
+
+const deleteAllTdooBasketClient = async () => {
+  return deleteAllTodoBasket();
 };
 
 export const useTodoBasketLists = () => {
@@ -55,6 +60,17 @@ export const useDeleteTodoBasket = () => {
       queryClient.setQueryData([QUERY_KEY.TODO_BASKET], (oldData: Basket[]) => {
         return oldData.filter((todo) => todo.id !== deletedId);
       });
+    },
+  });
+};
+
+export const useDeleteAllTodoBasket = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteAllTdooBasketClient,
+    onSuccess: () => {
+      queryClient.setQueryData([QUERY_KEY.TODO_BASKET], []);
     },
   });
 };

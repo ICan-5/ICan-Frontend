@@ -9,6 +9,7 @@ import cn from '@/utils/cn';
 import { useNavbar } from '../common/NavbarContext';
 import {
   useAddTodoBasket,
+  useDeleteAllTodoBasket,
   useDeleteTodoBasket,
   useTodoBasketLists,
 } from '@/hooks/useTodoBasket';
@@ -18,6 +19,7 @@ export default function TodoBasket() {
   const { data: basketList = [], isLoading, error } = useTodoBasketLists();
   const { mutate: addTodoBasket } = useAddTodoBasket();
   const { mutate: deleteTodoBasket } = useDeleteTodoBasket();
+  const { mutate: deleteAllTodoBasket } = useDeleteAllTodoBasket();
 
   const basketRef = useRef<HTMLDivElement>(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -60,10 +62,6 @@ export default function TodoBasket() {
     }
   };
 
-  // const handleDeleteAllTodos = () => {
-  //   setNowBasketList([]);
-  // };
-
   return createPortal(
     <div
       className={cn(
@@ -81,7 +79,7 @@ export default function TodoBasket() {
           <button
             type="button"
             className="text-14M text-gs600"
-            // onClick={() => handleDeleteAllTodos()}
+            onClick={() => deleteAllTodoBasket()}
           >
             모두 지우기
           </button>
