@@ -80,7 +80,7 @@ export default function CalendarBody({
     const isSelectedDate =
       selectedDate.toDateString() === info.date.toDateString();
 
-    return cn(isSelectedDate && 'selected');
+    return cn(isSelectedDate && 'selected', 'cursor-pointer');
   };
 
   /**
