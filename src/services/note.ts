@@ -98,3 +98,15 @@ export const createNote = async ({
     throw error;
   }
 };
+
+// 목표별 노트 리스트 가져오기
+export async function getNotes(goalId: number) {
+  const res = await fetch(`/api/notes?goalId=${goalId}`);
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch notes');
+  }
+
+  const data = await res.json();
+  return data.notes;
+}

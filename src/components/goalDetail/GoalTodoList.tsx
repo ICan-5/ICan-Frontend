@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
@@ -23,7 +24,7 @@ interface GroupedTodos {
 export default function GoalTodoList({ list, onToggle, goalId }: Props) {
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
   const today = new Date().toLocaleDateString('sv-SE');
-
+  const router = useRouter();
   const [isFutureFold, setIsFutureFold] = useState(true);
   const [isPastFold, setIsPastFold] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,6 +65,14 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
     }
   });
 
+  const handleClickNote = (todo: Todo) => {
+    if (todo.noteId) {
+      router.push(`/note/${todo.noteId}`);
+    } else {
+      router.push(`/${todo.todoId}/note/create`);
+    }
+  };
+
   const isEmpty =
     groupedTodos.today.length === 0 &&
     Object.keys(groupedTodos.upcoming).length === 0 &&
@@ -101,6 +110,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.todoId)}
                     goal={todo.goal}
+                    onClickNote={() => handleClickNote(todo)}
                   />
                 ))}
               </div>
@@ -139,6 +149,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onClickNote={() => handleClickNote(todo)}
                           />
                         ))}
                       </div>
@@ -180,6 +191,7 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onClickNote={() => handleClickNote(todo)}
                           />
                         ))}
                       </div>
