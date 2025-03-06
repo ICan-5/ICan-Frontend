@@ -9,8 +9,6 @@ import Loading from '../common/Loading';
 import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
 import TodoBasket from './TodoBasket';
 
-// import Loading from '../common/Loading';
-
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentYear, setCurrentYear] = useState<number>(
@@ -48,24 +46,6 @@ export default function TodoCalendar() {
     }
   };
 
-  /**
-   * 드랍 시 todo에 추가 & 장바구니에서 제거
-   */
-  const handleDropTodo = (date: string, todoId: number) => {
-    console.log(date, todoId);
-    // const draggedTodo = basketList.find((todo) => todo.id === todoId);
-    // if (!draggedTodo) return;
-    // const newTodo: Todo = {
-    //   id: todoId,
-    //   title: draggedTodo.title,
-    //   date,
-    //   goal: draggedTodo.goal || null,
-    //   done: false,
-    // };
-    // setTodos((prev) => [...prev, newTodo]);
-    // setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
-  };
-
   useEffect(() => {
     if (calendarRef.current) {
       const observer = new MutationObserver(() => {
@@ -98,7 +78,6 @@ export default function TodoCalendar() {
               todos={monthlyTodos}
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
-              onDropTodo={handleDropTodo}
               calendarDivRef={calendarRef}
               isCalendarLoaded={isCalendarLoaded}
               onMonthChange={(year, month) => {

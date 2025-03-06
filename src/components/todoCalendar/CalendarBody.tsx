@@ -7,6 +7,8 @@ import '@/styles/calendar.css';
 import { useCallback, useEffect } from 'react';
 import cn from '@/utils/cn';
 import { Todo } from '@/types/todos';
+import { useAddTodo } from '@/hooks/useTodos';
+import { useDeleteTodoBasket } from '@/hooks/useTodoBasket';
 
 const goalColor: Record<string, string> = {
   goal01: 'bg-goal01-100 text-goal01',
@@ -59,7 +61,6 @@ interface Props {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
   calendarRef: React.RefObject<FullCalendar>;
-  onDropTodo: (date: string, todoId: number) => void;
   onMonthChange: (year: number, month: number) => void;
 }
 
@@ -68,9 +69,10 @@ export default function CalendarBody({
   selectedDate,
   onDateChange,
   calendarRef,
-  onDropTodo,
   onMonthChange,
 }: Props) {
+  const { mutate: addTodo } = useAddTodo();
+  const { mutate: deleteTodoBasket } = useDeleteTodoBasket();
   /**
    * 셀에 클래스 부여
    */
@@ -242,10 +244,21 @@ export default function CalendarBody({
       dayCellDidMount={handleDayCellMount}
       droppable
       eventReceive={(info) => {
-        const todoId = Number(info.event.id);
-        const date = info.event.startStr;
+        const id = Number(info.event.id);
+        const { title } = info.event;
+        const goalId = info.event.extendedProps.goalId
+          ? Number(info.event.extendedProps.goalId)
+          : null;
+        const date = new Date(info.event.startStr);
 
-        onDropTodo(date, todoId);
+        addTodo(
+          { title, date, goal: goalId ? { goalId } : null },
+          {
+            onSuccess: () => {
+              deleteTodoBasket(id);
+            },
+          },
+        );
         info.event.remove();
       }}
       datesSet={(info) => {

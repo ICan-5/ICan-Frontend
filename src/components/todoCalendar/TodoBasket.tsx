@@ -39,6 +39,8 @@ export default function TodoBasket() {
         itemSelector: '.draggable-todo',
         eventData: (eventEl) => ({
           id: eventEl.getAttribute('data-id'),
+          title: eventEl.getAttribute('data-title'),
+          goalId: eventEl.getAttribute('data-goalid'),
         }),
       });
 
@@ -51,9 +53,12 @@ export default function TodoBasket() {
     const title = inputRef.current?.value.trim();
     if (!title) return;
 
-    addTodoBasket(title, {
-      onSuccess: () => setIsAdding(false),
-    });
+    addTodoBasket(
+      { title },
+      {
+        onSuccess: () => setIsAdding(false),
+      },
+    );
   };
 
   const handleKeyDown = async (
@@ -61,6 +66,7 @@ export default function TodoBasket() {
   ) => {
     if (event.key === 'Escape') setIsAdding(false);
     else if (event.key === 'Enter') {
+      if (event.nativeEvent.isComposing) return;
       handleAddTodo();
     }
   };
@@ -137,6 +143,8 @@ export default function TodoBasket() {
                   className="draggable-todo flex h-14 max-w-80 cursor-grab items-center justify-between gap-2 rounded-lg bg-slate50 p-3 active:cursor-grabbing active:bg-slate200"
                   draggable
                   data-id={todo.id}
+                  data-title={todo.title}
+                  data-goalid={todo.goalId}
                 >
                   <span className="truncate text-16R text-gsBk">
                     {todo.title}
