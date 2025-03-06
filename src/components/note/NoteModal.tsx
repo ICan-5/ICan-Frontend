@@ -1,7 +1,12 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlag, faLink, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisVertical,
+  faFlag,
+  faLink,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -10,7 +15,7 @@ import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import IconButton from '../common/button/IconButton';
-import { useNoteDetail } from '@/hooks/useNotes';
+import { useDeleteNote, useNoteDetail } from '@/hooks/useNotes';
 import SkeletonNoteModal from './SkeletonNoteModal';
 import Icon from '../common/icon/Icon';
 
@@ -30,14 +35,30 @@ export default function NoteModal({ noteId }: Props) {
     }, 200);
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
 
   const { data: note, isLoading, error } = useNoteDetail(noteId);
+  const { mutate: deleteNote } = useDeleteNote();
 
   useEffect(() => {
     if (note?.content) {
       setSanitizedContent(DOMPurify.sanitize(note.content));
     }
   }, [note?.content]);
+
+  const handleEdit = () => {
+    setIsClosing(true);
+    router.replace(`/note/${noteId}/edit`);
+  };
+
+  const handleDelete = () => {
+    deleteNote(noteId, {
+      onSuccess: () => {
+        router.back();
+      },
+    });
+  };
 
   if (isLoading) return <p>로딩 중...</p>;
   if (error || !note) return <p>노트를 불러오는 중 오류 발생</p>;
@@ -77,22 +98,55 @@ export default function NoteModal({ noteId }: Props) {
             {!isLoading && !error && (
               <div className="flex grow flex-col gap-6 overflow-y-auto px-6">
                 <div className="flex flex-col gap-3">
-                  {/* 목표 제목 */}
-                  {note.goalTitle && (
-                    <div className="flex items-center justify-between">
-                      <h1 className="flex items-center gap-3 text-16M">
-                        <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
-                          <Icon icon={faFlag} />
+                  <div className="flex justify-between">
+                    {/* 목표 제목 */}
+                    {note.goalTitle && (
+                      <div className="flex items-center justify-between">
+                        <h1 className="flex items-center gap-3 text-16M">
+                          <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
+                            <Icon icon={faFlag} />
+                          </div>
+                          {note.goalTitle}
+                        </h1>
+                      </div>
+                    )}
+                    <div className="relative">
+                      <IconButton
+                        className="bg-gs00 text-gs400"
+                        icon={faEllipsisVertical}
+                        onClick={() => {
+                          setIsMenuOpen(true);
+                        }}
+                      />
+                      {isMenuOpen && (
+                        <div
+                          className="absolute right-0 z-10 mt-2 rounded bg-gs00 shadow-md"
+                          ref={menuRef}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button
+                            type="button"
+                            className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                            onClick={handleEdit}
+                          >
+                            수정하기
+                          </button>
+                          <button
+                            type="button"
+                            className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                            onClick={handleDelete}
+                          >
+                            삭제하기
+                          </button>
                         </div>
-                        {note.goalTitle}
-                      </h1>
+                      )}
                     </div>
-                  )}
+                  </div>
 
                   {/* To do */}
                   <div className="flex items-center gap-2 text-gs700">
                     <span className="rounded bg-gs200 p-1 text-12M">To do</span>
-                    <span className="text-14R">{note.todoTitle}</span>
+                    <span className="text-14R">{note.todo.title}</span>
                     <span className="ml-auto text-12R">{note.updatedAt}</span>
                   </div>
                 </div>
