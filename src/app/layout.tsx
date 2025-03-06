@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import localFont from 'next/font/local';
 import { SessionProvider } from 'next-auth/react';
+import { Toaster } from 'sonner';
 import ClientProvider from '@/components/common/ClientProvider';
 
 const pretendard = localFont({
@@ -28,6 +29,7 @@ export default function RootLayout({
             <div>{children}</div>
           </ClientProvider>
         </SessionProvider>
+        <Toaster position="top-center" />
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
 import '@/styles/textEditor.css';
@@ -45,17 +46,15 @@ export default function NoteEditor() {
           formData,
         });
 
-        // console.log('res________', res);
-
         if (res) {
-          alert('노트 생성이 완료됐습니다.');
+          toast.success('노트 생성이 완료됐습니다.');
           router.back();
         }
-      } catch (error) {
-        console.error('노트 생성 중 오류 발생1:', error);
+      } catch {
+        toast.error('노트 생성 중 오류 발생가 발생했습니다.');
       }
     } else {
-      console.error('todoId가 없습니다.');
+      toast.error('todoId가 없습니다.');
     }
   };
 

@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useTransition } from 'react';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import Button from './Button';
@@ -15,6 +17,8 @@ export interface Props {
   password: string;
 }
 export default function LoginForm() {
+  const [isPending, startTransition] = useTransition();
+
   const {
     register,
     handleSubmit,
@@ -35,17 +39,19 @@ export default function LoginForm() {
     });
 
     if (!res?.error) {
-      alert('로그인 성공!');
-      router.push('/');
+      toast.success('로그인 성공!');
+      startTransition(() => {
+        router.push('/');
+      });
       return;
     }
 
     const errorMessage =
       res.error === 'Configuration'
-        ? '잘못된 이메일 또는 비밀번호입니다. 다시 확인해 주세요.'
+        ? '아이디 혹은 비밀번호를 다시 확인해주세요.'
         : '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
 
-    alert(errorMessage);
+    toast.error(errorMessage);
   };
   return (
     <>
@@ -66,7 +72,11 @@ export default function LoginForm() {
             errors={errors}
           />
           <div className="mb-8" />
-          <Button label="로그인하기" type="submit" disabled={!isValid} />
+          <Button
+            label={isPending ? '로그인 중...' : '로그인하기'}
+            type="submit"
+            disabled={!isValid}
+          />
           <p className="text-center text-14M">
             I:can이 처음이신가요?{' '}
             <Link className="ml-1 text-slate500" href="/signup">
