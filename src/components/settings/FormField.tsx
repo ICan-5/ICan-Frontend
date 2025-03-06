@@ -20,7 +20,7 @@ interface Props<T extends FieldValues> {
   errors: FieldErrors<T>;
 }
 
-export default function FormInput<T extends FieldValues>({
+export default function FormField<T extends FieldValues>({
   label,
   name,
   placeholder,
@@ -43,7 +43,7 @@ export default function FormInput<T extends FieldValues>({
         <div className="relative w-full">
           <input
             className={cn(
-              'focus-visible:ring-ring max-h-12 w-full rounded-xl bg-slate50 py-3 pl-4 pr-12 text-14R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1 2xl:text-16R',
+              'focus-visible:ring-ring max-h-12 w-full rounded-xl bg-slate50 py-3 pl-4 pr-12 text-14R text-gsBk transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1 2xl:text-16R',
               errors[name] && 'bg-warn50 focus-visible:ring-red-500',
             )}
             type={!isPassword || isPasswordVisible ? 'text' : 'password'}
