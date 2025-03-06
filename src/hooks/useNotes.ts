@@ -3,11 +3,10 @@ import { QUERY_KEY } from '@/constants/queryKey';
 import { getNoteDetail, getNotes } from '@/services/note';
 import { NoteDetail } from '@/types/note';
 
-export const useNoteDetail = (noteId: number, initialData: NoteDetail) => {
-  return useQuery({
+export const useNoteDetail = (noteId: number) => {
+  return useQuery<NoteDetail>({
     queryKey: [QUERY_KEY.NOTE, noteId],
     queryFn: () => getNoteDetail(noteId),
-    initialData,
   });
 };
 

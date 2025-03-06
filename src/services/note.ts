@@ -66,7 +66,6 @@ export const getServerNoteDetail = async (noteId: number) => {
 
 /**
  * 노트 생성
- * @param
  */
 export const createNote = async ({
   formData,
@@ -80,7 +79,7 @@ export const createNote = async ({
   todoId: number;
 }) => {
   try {
-    const res = await fetch(`/api/note/${todoId}`, {
+    const res = await fetch(`/api/notes`, {
       method: 'POST',
       body: JSON.stringify({
         todoId,

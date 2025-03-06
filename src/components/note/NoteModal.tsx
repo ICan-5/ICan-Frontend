@@ -10,16 +10,15 @@ import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import IconButton from '../common/button/IconButton';
-import { NoteDetail } from '@/types/note';
 import { useNoteDetail } from '@/hooks/useNotes';
 import SkeletonNoteModal from './SkeletonNoteModal';
+import Icon from '../common/icon/Icon';
 
 interface Props {
   noteId: number;
-  initialNote: NoteDetail;
 }
 
-export default function NoteModal({ noteId, initialNote }: Props) {
+export default function NoteModal({ noteId }: Props) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
   const [sanitizedContent, setSanitizedContent] = useState<string | null>(null);
@@ -32,13 +31,16 @@ export default function NoteModal({ noteId, initialNote }: Props) {
   };
   const [modalRef] = useClickOutside<HTMLDivElement>(closeModal);
 
-  const { data: note, isLoading, error } = useNoteDetail(noteId, initialNote);
+  const { data: note, isLoading, error } = useNoteDetail(noteId);
 
   useEffect(() => {
     if (note?.content) {
       setSanitizedContent(DOMPurify.sanitize(note.content));
     }
   }, [note?.content]);
+
+  if (isLoading) return <p>로딩 중...</p>;
+  if (error || !note) return <p>노트를 불러오는 중 오류 발생</p>;
 
   return createPortal(
     <AnimatePresence>
@@ -80,7 +82,7 @@ export default function NoteModal({ noteId, initialNote }: Props) {
                     <div className="flex items-center justify-between">
                       <h1 className="flex items-center gap-3 text-16M">
                         <div className="flex size-8 items-center justify-center rounded-full bg-slate100 p-1 text-slate500">
-                          <FontAwesomeIcon icon={faFlag} />
+                          <Icon icon={faFlag} />
                         </div>
                         {note.goalTitle}
                       </h1>
