@@ -20,41 +20,40 @@ import NoteTitlesSkeleton from './NoteTitlesSkeleton';
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
+
+  // rhf을 통한 폼 상태 관리
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-    getValues,
-    setError,
-    clearErrors,
-    watch,
-    trigger,
   } = useForm({
-    resolver: zodResolver(NoteSchema),
+    resolver: zodResolver(NoteSchema), // Zod 스키마를 사용한 유효성 검사
     defaultValues: { title: '', content: '' },
     mode: 'onChange',
   });
 
-  // 할 일 제목, 목표 제목 가져오기
+  // 할 일과 목표 제목을 가져오는 훅
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
+  // 노트 작성 폼 제출 함수
   const onSubmit = async (formData: NoteSchemaType) => {
-    if (todoId) {
-      try {
-        const res = await createNote({
-          todoId: Number(todoId),
-          formData,
-        });
+    try {
+      // 노트 생성 요청
+      const res = await createNote({
+        todoId: Number(todoId),
+        formData,
+      });
 
-        if (res) {
-          toast.success('노트 생성이 완료됐습니다.');
-          router.back();
-        }
-      } catch {
-        toast.error('노트 생성 중 오류 발생가 발생했습니다.');
+      if (!res.data) {
+        const errorMessage = res?.message;
+        toast.error(errorMessage);
+        return;
       }
-    } else {
-      toast.error('todoId가 없습니다.');
+
+      toast.success(res?.data.message);
+      router.back(); // 이전 페이지로 이동
+    } catch {
+      toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
     }
   };
 
@@ -64,9 +63,11 @@ export default function NoteEditor() {
       className="mx-auto flex h-dvh w-full flex-col overflow-auto break-keep rounded-2xl bg-gs00 p-4 text-gs900 md:px-6 md:py-4"
     >
       <div>
+        {/* 노트 작성 헤더 섹션 */}
         <div className="mb-4 w-full items-center justify-between xs:flex">
           <h2 className="text-16SB xs:text-18SB">노트 작성</h2>
           <div className="flex justify-end gap-2 xs:justify-normal">
+            {/* 임시저장 버튼 */}
             <Button
               size="medium"
               variant="outline"
@@ -74,6 +75,7 @@ export default function NoteEditor() {
             >
               임시저장
             </Button>
+            {/* 작성 완료 버튼 */}
             <Button
               size="medium"
               className="px-1 py-3 transition-colors xs:px-6"
@@ -84,11 +86,13 @@ export default function NoteEditor() {
             </Button>
           </div>
         </div>
-        {/* goal 목표 있을 경우 */}
+
+        {/* 목표와 할 일 제목이 로딩 중일 경우 스켈레톤 표시 */}
         {todoQuery.isLoading || goalQuery.isLoading ? (
           <NoteTitlesSkeleton />
         ) : (
           <>
+            {/* 목표 제목이 있을 경우 표시 */}
             {goalQuery.data?.todo.title && (
               <section className="mb-3 flex items-center gap-2">
                 <Icon
@@ -101,6 +105,7 @@ export default function NoteEditor() {
               </section>
             )}
 
+            {/* 할 일 제목 */}
             <article className="mb-2 flex items-center gap-2 text-gs700">
               <span className="rounded-md bg-gs100 p-1 text-12M">To do</span>
               <h4 className="text-14R">{todoQuery.data?.title}</h4>
@@ -112,15 +117,7 @@ export default function NoteEditor() {
         {/* 노트 제목 */}
         <NoteTitle control={control} errors={errors} />
         {/* 노트 컨텐츠 영역 */}
-        <NoteContentEditor
-          control={control}
-          errors={errors}
-          watch={watch}
-          getValues={getValues}
-          setError={setError}
-          clearErrors={clearErrors}
-          trigger={trigger}
-        />
+        <NoteContentEditor control={control} errors={errors} />
       </div>
     </form>
   );

@@ -11,7 +11,7 @@ export default function Layout({
           할 일을 계획하고 관리해요!
         </p>
       </div>
-      <div className="w-full max-w-screen-sm px-4">{children}</div>{' '}
+      <div className="w-full max-w-screen-sm px-4">{children}</div>
     </div>
   );
 }
