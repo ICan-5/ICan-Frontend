@@ -129,15 +129,16 @@ export const useGoalAddTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (formData: TodoFormValues) => {
-      const date = formData.date ?? new Date();
-      return addTodo({
-        ...formData,
-        date,
-      });
-    },
+    mutationFn: (formData: TodoFormValues) => addTodo(formData),
+
     onSuccess: (newTodo) => {
-      const { goalId } = newTodo;
+      const goalId = newTodo.goal?.goalId;
+
+      if (goalId === undefined) {
+        console.error('goalId가 없습니다.');
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });

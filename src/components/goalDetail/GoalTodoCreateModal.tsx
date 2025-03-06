@@ -20,13 +20,13 @@ const createTodoSchema = z.object({
 
 type TodoFormValues = z.infer<typeof createTodoSchema>;
 
-type Props = {
+interface Props {
   goalId: string;
   todoId?: number | null;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
-};
+}
 
 export default function GoalTodoCreateModal({
   goalId,

@@ -32,8 +32,10 @@ export default function GoalHeader({
   const goalTitle = goalItem?.title || '목표를 선택 또는 생성해주세요';
 
   useEffect(() => {
-    setGoalAvailable(goalItem !== undefined);
-  }, [goalItem, setGoalAvailable]);
+    if (!isLoading) {
+      setGoalAvailable(goalItem !== undefined);
+    }
+  }, [goalItem, setGoalAvailable, isLoading]);
 
   const handleEditClick = () => {
     setIsEditing(true);

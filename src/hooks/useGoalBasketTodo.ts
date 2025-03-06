@@ -11,12 +11,10 @@ export const useAddBasketTodo = () => {
 
     onSuccess: (newBasket) => {
       const { goalId } = newBasket;
-
       if (goalId === undefined) {
         console.error('goalId가 없습니다.');
         return;
       }
-
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
