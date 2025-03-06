@@ -3,6 +3,9 @@
 import { usePathname } from 'next/navigation';
 import cn from '@/utils/cn';
 
+/**
+ * 캘린더 페이지는 layout 다르게 표시하기 위해 사용
+ */
 export default function MemberPageWrapper({
   children,
 }: {
