@@ -19,9 +19,9 @@ export default function TodayList() {
   const formattedDate = formatter.format(new Date());
 
   return (
-    <div className="relative flex w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-white px-6 py-4 2xl:rounded-3xl">
+    <div className="relative flex w-full flex-[4] flex-col overflow-hidden rounded-2xl bg-gs00 px-6 py-4 2xl:rounded-3xl">
       <section className="flex w-full flex-none items-start 2xl:mb-1">
-        <p className="mr-auto flex text-16M 2xl:text-18SB">
+        <p className="mr-auto flex text-16M text-gsBk 2xl:text-18SB">
           <span className="mr-1 hidden sm:inline-flex md:hidden xl:inline-flex">
             안녕하세요,
             <strong className="ml-1 text-slate500">{data?.user?.name}</strong>
