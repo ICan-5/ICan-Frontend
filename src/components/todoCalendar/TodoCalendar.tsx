@@ -7,7 +7,6 @@ import TodoList from './TodoList';
 import TodoModal from './TodoModal';
 import Loading from '../common/Loading';
 import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
-import TodoBasket from './TodoBasket';
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -68,7 +67,7 @@ export default function TodoCalendar() {
       <p className="text-red-500">데이터를 불러오는 중 오류 발생</p>
     </div>
   ) : (
-    <div className="relative h-screen max-h-[calc(100vh-160px)] w-full overflow-auto md:max-h-[calc(100vh-270px)]">
+    <div className="relative w-full">
       <div className="flex flex-col justify-center gap-4 px-1 md:flex-row">
         <div className="flex-1">
           {isLoading ? (
@@ -101,7 +100,6 @@ export default function TodoCalendar() {
           </div>
         )}
       </div>
-      {isCalendarLoaded && <TodoBasket />}
 
       {isModalOpen && (
         <TodoModal
