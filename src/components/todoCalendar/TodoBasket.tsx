@@ -2,6 +2,7 @@ import { Draggable } from '@fullcalendar/interaction';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import IconButton from '../common/button/IconButton';
 import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
@@ -14,6 +15,7 @@ import {
   useTodoBasketLists,
 } from '@/hooks/useTodoBasket';
 import ConfirmModal from '../common/ConfirmModal';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 export default function TodoBasket() {
   const { isFolded } = useNavbar();
@@ -26,6 +28,10 @@ export default function TodoBasket() {
   const [isAdding, setIsAdding] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [tooltipRef, showTooltip, setShowTooltip] =
+    useClickOutside<HTMLDivElement>(() => {
+      setShowTooltip(false);
+    });
 
   useEffect(() => {
     if (isAdding && inputRef.current) {
@@ -93,7 +99,23 @@ export default function TodoBasket() {
     >
       <div className="flex flex-col gap-4">
         <div className="flex justify-between px-4">
-          <h1 className="text-18SB text-gsBk">할일 장바구니</h1>
+          <div className="flex items-center gap-1">
+            <h1 className="text-18SB text-gsBk">할일 장바구니</h1>
+            <IconButton
+              icon={faCircleQuestion}
+              className="relative size-5 text-gs500"
+              onClick={() => setShowTooltip(true)}
+            />
+            {showTooltip && (
+              <div
+                ref={tooltipRef}
+                className="absolute left-0 top-10 w-52 translate-x-[60%] rounded-xl rounded-tl-none bg-gs00 p-3 text-14R text-gsBk shadow-lg md:w-64"
+              >
+                빠르게 할일을 추가해 모아놓으세요. 이후 필요한 날짜에 지정할 수
+                있습니다.
+              </div>
+            )}
+          </div>
           <button
             type="button"
             className="text-14M text-gs600"
