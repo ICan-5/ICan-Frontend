@@ -3,18 +3,24 @@
 import { useEffect, useState } from 'react';
 import cn from '@/utils/cn';
 import { THEMES } from '@/constants/thems';
+import { setTheme } from '@/services/theme';
 
-export default function ThemeTab() {
-  const [selectedTab, setSelectedTab] = useState<number>(2);
+interface Props {
+  initialTheme: string;
+}
 
-  const changeTheme = (index: number) => {
-    setSelectedTab(index);
+export default function ThemeTab({ initialTheme }: Props) {
+  const [selectedTab, setSelectedTab] = useState<string>(initialTheme);
+
+  const changeTheme = async (theme: string) => {
+    setSelectedTab(theme);
+    await setTheme(theme);
   };
 
   useEffect(() => {
-    if (selectedTab === 0) {
+    if (selectedTab === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
-    } else if (selectedTab === 1) {
+    } else if (selectedTab === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
@@ -27,12 +33,12 @@ export default function ThemeTab() {
         <>
           <button
             className={cn('flex-1 rounded-xl px-2 py-1 text-16M', {
-              'bg-gs00 text-gsBk': index === selectedTab,
-              'text-gs400': index !== selectedTab,
+              'bg-gs00 text-gsBk': theme.value === selectedTab,
+              'text-gs400': theme.value !== selectedTab,
             })}
             type="button"
             key={theme.value}
-            onClick={() => changeTheme(index)}
+            onClick={() => changeTheme(theme.value)}
           >
             {theme.text}
           </button>
