@@ -32,7 +32,7 @@ export default function TextField<T extends FieldValues>({
         <span className="mb-4 text-16SB">{label}</span>
         <input
           className={cn(
-            'focus-visible:ring-ring h-12 w-full rounded-xl bg-slate50 px-4 py-3 text-16R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
+            'focus-visible:ring-ring h-12 w-full rounded-xl bg-slate50 px-4 py-3 text-16R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1 dark:bg-gs900 dark:placeholder:text-gs500',
             errors[name] && 'bg-warn50 focus-visible:ring-red-500',
           )}
           id={name} // label을 연결

@@ -39,16 +39,7 @@ export default function SignupForm() {
   });
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="my-40 flex w-full flex-col items-center"
-    >
-      <div className="px-4 text-center">
-        <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
-        <p className="text-grayDarker mb-10 break-keep">
-          할 일을 계획하고 관리해요!
-        </p>
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full max-w-screen-sm px-4">
         <TextField
           label="이름"
