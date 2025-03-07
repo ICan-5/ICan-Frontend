@@ -1,145 +1,180 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faFontAwesome,
   faTrashCan,
   faPenToSquare,
   faFilePen,
+  faFontAwesome,
+  faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { Goal } from '@/types/goals';
-import { useClickOutside } from '@/hooks/useClickOutside';
 import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
+import goalColors from '@/presets/goalColors';
 
-type Props = {
+interface Props {
   id: string;
   setGoalAvailable: (value: boolean) => void;
-};
+}
+
+const colorKeys = Object.keys(goalColors) as (keyof typeof goalColors)[];
 
 export default function GoalHeader({ id, setGoalAvailable }: Props) {
-  const [menuRef, isMenuOpen, setIsMenuOpen] =
-    useClickOutside<HTMLDivElement>();
   const { data: goals, isLoading } = useGoals();
   const { mutate: updateGoal } = useUpdateGoal();
   const { mutate: deleteGoal } = useDeleteGoal();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState('');
+  const [selectedColor, setSelectedColor] =
+    useState<keyof typeof goalColors>('goal01');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
   const goalTitle = goalItem?.title;
 
   useEffect(() => {
-    setGoalAvailable(goalItem !== undefined);
-  }, [goalItem, setGoalAvailable]);
+    if (!isLoading) {
+      setGoalAvailable(goalItem !== undefined);
+      setSelectedColor(
+        (goalItem?.color as keyof typeof goalColors) || 'goal01',
+      );
+    }
+  }, [goalItem, setGoalAvailable, isLoading]);
 
   const handleEditClick = () => {
     setIsEditing(true);
-    setIsMenuOpen(false);
     setNewTitle(goalTitle === '목표를 선택 또는 생성해주세요' ? '' : goalTitle);
+    setShowMobileMenu(false);
   };
 
   const handleSave = () => {
     if (newTitle.trim()) {
-      updateGoal({ goalId: Number(id), updatedFields: { title: newTitle } });
+      updateGoal({
+        goalId: Number(id),
+        updatedFields: { title: newTitle, color: selectedColor },
+      });
       setIsEditing(false);
     }
   };
 
   const handleDelete = () => {
     if (goalItem?.goalId) {
-      deleteGoal(goalItem.goalId, {
-        onSuccess: () => {
-          setIsMenuOpen(false);
-        },
-      });
+      deleteGoal(goalItem.goalId);
     }
-  };
-  const handleBlur = () => {
-    setIsEditing(false);
+    setShowMobileMenu(false);
   };
 
+  const handleBlur = () => setIsEditing(false);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSave();
-    }
+    if (e.key === 'Enter') handleSave();
   };
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (isEditing && inputRef.current) inputRef.current.focus();
   }, [isEditing]);
 
-  let content;
-
-  if (isLoading) {
-    content = '로딩 중...';
-  } else if (isEditing) {
-    content = (
-      <div className="flex items-center space-x-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          className="border-b border-gs500"
-        />
-        <button
-          type="button"
-          onClick={handleSave}
-          className="rounded bg-blue-500 p-1 text-14R text-white"
-        >
-          저장
-        </button>
-      </div>
-    );
-  } else {
-    content = goalTitle;
-  }
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
 
   return (
-    <div>
-      <div className="mb-2 flex items-center justify-between">
-        <h1 className="flex items-center text-18SB">
+    <div className="flex flex-col gap-6 p-4 md:gap-14 md:px-6 md:py-5">
+      <div className="flex items-center justify-between">
+        <h1 className="flex max-w-full items-center truncate text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2 text-slate500"
           />
-          {content}
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              className="w-full border-b border-gs500"
+            />
+          ) : (
+            <span className="truncate">{goalTitle}</span>
+          )}
         </h1>
-        <div className="relative">
+      </div>
+
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0">
+        {isEditing ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-12M text-slate600 md:text-14M">
+              목표 컬러 수정
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {colorKeys.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setSelectedColor(key)}
+                  aria-label={`색상 변경: ${key}`}
+                  className={`size-6 rounded-full md:size-8 ${selectedColor === key ? 'ring-2 ring-slate500' : ''}`}
+                  style={{ backgroundColor: goalColors[key].DEFAULT }}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Link href={`${id}/note`} className="block">
+            <div className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate500 px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3">
+              <h2 className="flex items-center text-12M text-gs00 md:text-14M">
+                <FontAwesomeIcon icon={faFilePen} className="mr-1 md:mr-2" />
+                노트 모아보기
+              </h2>
+            </div>
+          </Link>
+        )}
+
+        <div className="ml-auto hidden gap-2 md:flex">
+          {!isEditing && (
+            <button
+              type="button"
+              onClick={handleEditClick}
+              className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate100 px-3 py-2 text-14M text-slate800 shadow md:h-10 md:w-36 md:px-5 md:py-3"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
+            </button>
+          )}
           <button
             type="button"
-            className="cflex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
+            onClick={handleDelete}
+            className="flex size-10 items-center justify-center rounded-full border border-warn500 p-2"
           >
-            <FontAwesomeIcon icon={faFontAwesome} className="text-gs500" />
+            <FontAwesomeIcon
+              icon={faTrashCan}
+              className="size-4 text-warn500"
+            />
           </button>
-          {isMenuOpen && (
-            <div
-              className="absolute right-4 mt-2 w-[120px] rounded bg-gs00 shadow-md"
-              ref={menuRef}
-            >
+        </div>
+
+        <div className="relative md:hidden">
+          <button
+            type="button"
+            onClick={toggleMobileMenu}
+            className="rounded-full bg-slate100 p-2 shadow"
+          >
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </button>
+          {showMobileMenu && (
+            <div className="absolute right-0 top-10 z-10 w-32 rounded-md bg-white shadow-lg">
               <button
                 type="button"
-                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
-              >
-                목표 색상 변경
-              </button>
-              <button
-                type="button"
-                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
                 onClick={handleEditClick}
+                className="block w-full px-4 py-2 text-12M text-slate800 hover:bg-slate100"
               >
                 수정하기
               </button>
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
                 onClick={handleDelete}
+                className="block w-full px-4 py-2 text-12M text-warn500 hover:bg-slate100"
               >
                 삭제하기
               </button>
