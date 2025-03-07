@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
-  faCartPlus,
   faTrashCan,
+  faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,13 +14,24 @@ interface Props {
 
 export default function GoalBasket({ basketItems }: Props) {
   return (
-    <div className="rounded-2xl bg-gs00 p-6 shadow">
-      <h3 className="mb-4 flex items-center text-18R font-bold">
-        <FontAwesomeIcon icon={faCartPlus} className="mr-2 text-slate400" />
-        Todo Bag
-      </h3>
-      <ul className="list-none space-y-2 pl-6">
-        {basketItems &&
+    <div className="relative h-[290px] overflow-auto rounded-2xl border-2">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b-2 bg-gs50 p-4">
+        <h3 className="text-18SB">할일 장바구니</h3>
+        <div className="group relative inline-block cursor-pointer">
+          <FontAwesomeIcon
+            icon={faCircleQuestion}
+            className="text-18SB text-gs400"
+          />
+          <div className="absolute left-1/2 right-0 top-full mt-1 w-60 rounded-md bg-gs00 p-2 text-center text-14M text-gsBk opacity-0 transition-opacity group-hover:opacity-100">
+            빠르게 할일을 추가해 모아놓으세요.
+            <br />
+            이후 필요한 날짜에 지정할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <ul className="min-h-[290px] list-none space-y-2 rounded-b-xl pl-6">
+        {basketItems && basketItems.length > 0 ? (
           basketItems.map((item) => (
             <li
               key={item.id}
@@ -52,13 +63,13 @@ export default function GoalBasket({ basketItems }: Props) {
                 </button>
               </div>
             </li>
-          ))}
+          ))
+        ) : (
+          <p className="flex items-center justify-center py-6 text-gs500">
+            장바구니에 할 일이 없어요
+          </p>
+        )}
       </ul>
-      {(!basketItems || basketItems.length === 0) && (
-        <p className="flex items-center justify-center py-6 text-gs500">
-          장바구니에 할 일이 없어요
-        </p>
-      )}
     </div>
   );
 }
