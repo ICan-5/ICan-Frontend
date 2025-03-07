@@ -8,13 +8,12 @@ interface Props {
 }
 
 export default function LinkModal({ onClose }: Props) {
-  // const [noteLink, setNoteLink] = useState<string>('');
   const {
     control,
     formState: { isValid },
   } = useForm({
-    // resolver: zodResolver(LoginSchema),
     mode: 'onChange',
+    defaultValues: { link: '' },
   });
   return createPortal(
     // 모달 딤

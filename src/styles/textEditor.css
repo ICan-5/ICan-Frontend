@@ -53,6 +53,9 @@
 .ql-snow .ql-toolbar:after {
   @apply hidden;
 }
-/* .ql-snow .ql-formats:after {
-  @apply hidden;
-} */
+
+.ql-snow.ql-toolbar {
+  max-width: 752px;
+  width: 100%;
+  margin: 0 auto;
+}
