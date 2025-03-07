@@ -66,10 +66,12 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
           />
 
           {/* 툴팁 */}
-          <div className="absolute left-8 top-full mt-2 w-max rounded-md bg-gs00 px-3 py-2 text-14M text-gsBk opacity-0 transition-opacity group-hover:opacity-100">
-            빠르게 할일을 추가해 모아놓으세요.
+          <div className="absolute top-full mt-2 w-max rounded-md bg-gs00 px-3 py-2 text-14M text-gsBk opacity-0 shadow transition-opacity group-hover:opacity-100">
+            할 일을 미리 입력해 두고
             <br />
-            이후 필요한 날짜에 지정할 수 있습니다.
+            원하는 날짜에 지정할 수 있습니다.
+            <br />
+            급하게 떠오른 할 일도 쉽게 저장하고 관리하세요!
           </div>
         </div>
 
