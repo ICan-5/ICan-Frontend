@@ -57,9 +57,9 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
 
   return (
     <div className="relative flex h-[285px] flex-col rounded-2xl shadow">
-      <div className="relative mb-4 flex items-center rounded-t-2xl bg-gs00 p-4">
+      <div className="relative mb-4 flex items-center rounded-t-2xl border-b bg-gs00 p-4">
         <div className="group relative flex items-center gap-2">
-          <h3 className="text-18R font-bold">할일 장바구니</h3>
+          <h3 className="text-18SB">할일 장바구니</h3>
           <FontAwesomeIcon
             icon={faCircleQuestion}
             className="cursor-pointer text-gs500"

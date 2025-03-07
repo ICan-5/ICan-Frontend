@@ -11,6 +11,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Goal } from '@/types/goals';
 import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
 import goalColors from '@/presets/goalColors';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   id: string;
@@ -28,6 +29,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const [selectedColor, setSelectedColor] =
     useState<keyof typeof goalColors>('goal01');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [selectedDeleteGoal, setSelectedDeleteGoal] = useState<number | null>(
+    null,
+  );
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
@@ -58,11 +62,22 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     }
   };
 
-  const handleDelete = () => {
+  const handleDeleteClick = () => {
     if (goalItem?.goalId) {
-      deleteGoal(goalItem.goalId);
+      setSelectedDeleteGoal(goalItem.goalId);
     }
     setShowMobileMenu(false);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedDeleteGoal) {
+      deleteGoal(selectedDeleteGoal);
+      setSelectedDeleteGoal(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedDeleteGoal(null);
   };
 
   const handleBlur = () => setIsEditing(false);
@@ -150,7 +165,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           )}
           <button
             type="button"
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             className="flex size-10 items-center justify-center rounded-full border border-warn500 p-2"
           >
             <FontAwesomeIcon
@@ -179,7 +194,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               </button>
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={handleDeleteClick}
                 className="block w-full px-4 py-2 text-12M text-warn500 hover:bg-slate100"
               >
                 삭제하기
@@ -188,6 +203,15 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           )}
         </div>
       </div>
+      {selectedDeleteGoal !== null && (
+        <ConfirmModal
+          title="해당 목표를 삭제 하시겠어요?"
+          description="목표가 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 }
