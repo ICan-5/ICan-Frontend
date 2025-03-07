@@ -18,7 +18,7 @@ export default function CustomDateHeader({
       <IconButton
         icon={faAngleLeft}
         onClick={decreaseMonth}
-        className="text-gsBk"
+        className="text-18SB text-gsBk"
       />
       <span className="text-18M text-gsBk">
         {getYear(date)}년 {getMonth(date) + 1}월
@@ -26,7 +26,7 @@ export default function CustomDateHeader({
       <IconButton
         icon={faAngleRight}
         onClick={increaseMonth}
-        className="text-gsBk"
+        className="text-18SB text-gsBk"
       />
     </div>
   );
