@@ -1,20 +1,18 @@
 import { createPortal } from 'react-dom';
-// import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import Button from '../common/button/Button';
+import { NoteFormControlProps } from '@/types/note';
 
-interface Props {
+interface Props extends NoteFormControlProps {
   onClose: () => void;
 }
 
-export default function LinkModal({ onClose }: Props) {
-  const {
-    control,
-    formState: { isValid },
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: { link: '' },
-  });
+export default function LinkModal({
+  onClose,
+  control,
+  isValid,
+  getValues,
+}: Props) {
   return createPortal(
     // 모달 딤
     <div
@@ -31,14 +29,14 @@ export default function LinkModal({ onClose }: Props) {
         <h4 className="mb-6 text-18M text-gsBk">링크 업로드</h4>
         <div className="">
           <label
-            htmlFor="link"
+            htmlFor="linkUrl"
             className="mb-9 flex flex-col gap-3 text-14M text-gs600"
           >
             {/* 라벨 에러 방지용 */}
             링크 주소
             <Controller
               control={control}
-              name="link"
+              name="linkUrl"
               rules={{
                 required: '링크를 입력해주세요',
                 pattern: {
@@ -77,6 +75,11 @@ export default function LinkModal({ onClose }: Props) {
               size="full"
               variant="default"
               className="transition-colors"
+              onClick={() => {
+                // getValues('link');
+                console.log('getValues();', getValues('linkUrl'));
+                onClose();
+              }}
             >
               확인
             </Button>

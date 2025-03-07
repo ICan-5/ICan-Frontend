@@ -31,7 +31,7 @@ export default function NoteEditor() {
     trigger,
   } = useForm({
     resolver: zodResolver(NoteSchema),
-    defaultValues: { title: '', content: '' },
+    defaultValues: { title: '', content: '', linkUrl: '' },
     mode: 'onChange',
   });
 
@@ -60,6 +60,13 @@ export default function NoteEditor() {
     }
   };
 
+  // 임시 저장
+  const handleTempSave = () => {
+    const noteData = getValues();
+    console.log('noteData', noteData);
+    localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -78,6 +85,7 @@ export default function NoteEditor() {
                 size="medium"
                 variant="outline"
                 className="border-none bg-transparent px-1 py-3 xs:px-6"
+                onClick={handleTempSave}
               >
                 임시저장
               </Button>
@@ -132,6 +140,7 @@ export default function NoteEditor() {
           setError={setError}
           clearErrors={clearErrors}
           trigger={trigger}
+          isValid={isValid}
         />
       </div>
     </form>

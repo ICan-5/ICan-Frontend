@@ -36,6 +36,8 @@ const toolbarOptions = [
 export default function NoteContentEditor({
   control,
   errors,
+  isValid,
+  getValues,
 }: NoteFormControlProps) {
   const [textLength, setTextLength] = useState(0);
   const [trimmedTextLength, setTrimmedTextLength] = useState(0);
@@ -46,8 +48,7 @@ export default function NoteContentEditor({
       toolbar: {
         container: toolbarOptions,
         handlers: {
-          //
-          link(isOpen) {
+          link(isOpen: boolean) {
             if (!quillInstance.current) return;
             if (isOpen) {
               // console.log('quillInstance?.current', quillInstance?.current);
@@ -115,7 +116,15 @@ export default function NoteContentEditor({
           }}
         />
       </div>
-      {isModalOpen && <LinkModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <LinkModal
+          onClose={() => setIsModalOpen(false)}
+          control={control}
+          isValid={isValid}
+          getValues={getValues}
+          errors={errors}
+        />
+      )}
     </>
   );
 }
