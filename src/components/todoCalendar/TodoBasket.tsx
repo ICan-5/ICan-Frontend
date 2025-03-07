@@ -59,7 +59,7 @@ export default function TodoBasket() {
       return () => draggable.destroy();
     }
     return undefined;
-  }, []);
+  }, [isClient]);
 
   const handleAddTodo = () => {
     const title = inputRef.current?.value.trim();
