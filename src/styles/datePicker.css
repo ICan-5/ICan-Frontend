@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.react-datepicker {
+  font-family: var(--font-pretendard) !important;
+  @apply !rounded-2xl !border-none;
+}
+
+.react-datepicker__header {
+  @apply !rounded-t-2xl !border-2 !border-gs200 !bg-gs50 !p-2;
+}
+
+.react-datepicker__day {
+  @apply !w-9 !rounded-lg py-1 !text-14M hover:!bg-gs200 2xl:!text-16M;
+  line-height: 1.25rem !important;
+}
+
+.react-datepicker__day-names {
+  @apply mt-1 flex justify-between;
+}
+
+.react-datepicker__day-name {
+  @apply !text-14M !text-gs500;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__day--keyboard-selected {
+  @apply !bg-gs00 hover:!bg-gs200;
+}
+
+.react-datepicker__day--sun {
+  @apply !text-warn500;
+}
+
+.react-datepicker__day--outside-month {
+  @apply !text-gs400;
+}
+
+.selected-day {
+  @apply !bg-slate500 !text-gs00;
+}
+
+.react-datepicker__month {
+  @apply !m-0 !rounded-b-xl !border-2 !border-t-0 !border-gs200 !p-1;
+}
