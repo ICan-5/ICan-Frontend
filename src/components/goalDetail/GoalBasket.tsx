@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
-  faCartPlus,
   faTrashCan,
+  faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -56,22 +56,32 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
   };
 
   return (
-    <div className="rounded-2xl bg-gs00 p-6 shadow">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-18R font-bold">
-          <FontAwesomeIcon icon={faCartPlus} className="mr-2 text-slate400" />
-          할일 장바구니
-        </h3>
-        <div className="cursor-pointer text-slate400" onClick={handleAddTodo}>
-          + 할 일 추가
+    <div className="relative flex h-[285px] flex-col rounded-2xl shadow">
+      <div className="relative mb-4 flex items-center rounded-t-2xl bg-gs00 p-4">
+        <div className="group relative flex items-center gap-2">
+          <h3 className="text-18R font-bold">할일 장바구니</h3>
+          <FontAwesomeIcon
+            icon={faCircleQuestion}
+            className="cursor-pointer text-gs500"
+          />
+
+          {/* 툴팁 */}
+          <div className="absolute left-8 top-full mt-2 w-max rounded-md bg-gs00 px-3 py-2 text-14M text-gsBk opacity-0 transition-opacity group-hover:opacity-100">
+            빠르게 할일을 추가해 모아놓으세요.
+            <br />
+            이후 필요한 날짜에 지정할 수 있습니다.
+          </div>
         </div>
+
+        <p className="ml-auto cursor-pointer text-gs500">모두 지우기</p>
       </div>
-      <ul className="list-none space-y-2">
+
+      <ul className="list-none space-y-2 overflow-y-auto px-6">
         {basketItems &&
           basketItems.map((item) => (
             <li
               key={item.id}
-              className={`flex items-center justify-between p-1 text-gs700 transition-colors ${
+              className={`flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors ${
                 hoveredItem === item.id ? 'text-slate500' : 'text-gs700'
               }`}
               onMouseEnter={() => setHoveredItem(item.id)}
@@ -83,13 +93,14 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
                   <DatePicker
                     dateFormat="yyyy-MM-dd"
                     selected={null}
+                    portalId="root-portal"
                     onChange={(date: Date | null) =>
                       handleDateSelect(date, item)
                     }
                     customInput={
                       <button
                         type="button"
-                        className={`flex size-8 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
+                        className={`flex size-7 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
                           hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
                         }`}
                       >
@@ -103,7 +114,7 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
                 </div>
                 <button
                   type="button"
-                  className={`flex size-8 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
+                  className={`flex size-7 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
                     hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
                   }`}
                   onClick={() => setSelectedDeleteTodo(item.id)}
@@ -115,11 +126,18 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
           ))}
       </ul>
       {(!basketItems || basketItems.length === 0) && (
-        <p className="flex items-center justify-center py-6 text-gs500">
-          장바구니에 할 일이 없어요
+        <p className="flex h-full items-center justify-center py-6 text-gs500">
+          장바구니에 할일이 없습니다.
         </p>
       )}
-
+      <div className="sticky z-10 rounded-b-xl bg-gs100 p-5">
+        <div
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
+          onClick={handleAddTodo}
+        >
+          + 장바구니에 새 할일 추가
+        </div>
+      </div>
       {isModalOpen && (
         <BasketTodoModal
           onClose={() => setIsModalOpen(false)}

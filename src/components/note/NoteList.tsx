@@ -1,7 +1,7 @@
 import React from 'react';
 import NoteItem from '@/components/note/NoteItem';
 
-interface Note {
+interface Props {
   id: number;
   title: string;
   todo: string;
@@ -10,7 +10,7 @@ interface Note {
 }
 
 interface NoteListProps {
-  notes: Note[];
+  notes: Props[];
 }
 
 export default function NoteList({ notes }: NoteListProps) {

@@ -51,34 +51,36 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
   };
 
   return (
-    <div className="relative h-[310px] overflow-auto rounded-2xl">
-      <div className="sticky top-0 z-10 bg-gs50 p-4">
+    <div className="relative flex h-[310px] flex-col rounded-2xl bg-gs00 shadow">
+      <div className="sticky top-0 z-10 flex-none rounded-2xl bg-gs50 p-4">
         <h3 className="text-18SB">완료된 할일</h3>
       </div>
+      <div className="flex-1 overflow-y-auto px-6">
+        {sortedList.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-gs500">
+            완료된 할일이 없습니다.
+          </div>
+        ) : (
+          <div>
+            {sortedList.map((done) => (
+              <CheckTodo
+                key={done.todoId}
+                id={done.todoId}
+                title={done.title}
+                done={done.done}
+                noteId={done.noteId}
+                onCheck={() => onToggle(done.todoId)}
+                onEdit={() => handleEditTodo(done)}
+                onDelete={() => handleDeleteTodo(done)}
+                onClickNote={() => handleClickNote(done)}
+                goal={done.goal}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
-      {sortedList.length === 0 ? (
-        <div className="flex items-center justify-center py-6 text-gs500">
-          완료된 할일이 없습니다
-        </div>
-      ) : (
-        <div className="min-h-[300px] bg-gs00 px-6">
-          {sortedList.map((done) => (
-            <CheckTodo
-              key={done.todoId}
-              id={done.todoId}
-              title={done.title}
-              done={done.done}
-              noteId={done.noteId}
-              onCheck={() => onToggle(done.todoId)}
-              onEdit={() => handleEditTodo(done)}
-              onDelete={() => handleDeleteTodo(done)}
-              onClickNote={() => handleClickNote(done)}
-              goal={done.goal}
-            />
-          ))}
-        </div>
-      )}
-
+      {/* 삭제 확인 모달 */}
       {selectedDeleteTodo && (
         <ConfirmModal
           title="할일을 삭제 하시겠어요?"
@@ -89,6 +91,7 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
         />
       )}
 
+      {/* 수정 모달 */}
       {isModalOpen && (
         <GoalTodoModal
           onClose={() => setIsModalOpen(false)}

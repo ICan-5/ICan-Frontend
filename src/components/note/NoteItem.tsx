@@ -10,7 +10,7 @@ import Link from 'next/link';
 import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
-interface Note {
+interface Props {
   id: number;
   title: string;
   todo: string;
@@ -19,7 +19,7 @@ interface Note {
 }
 
 interface NoteItemProps {
-  note: Note;
+  note: Props;
 }
 
 export default function NoteItem({ note }: NoteItemProps) {

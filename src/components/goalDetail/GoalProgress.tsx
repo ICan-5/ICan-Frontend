@@ -1,14 +1,11 @@
 import { motion } from 'framer-motion';
 
-interface GoalProgressProps {
+interface Props {
   doneItems: number;
   todoItems: number;
 }
 
-export default function GoalProgress({
-  doneItems,
-  todoItems,
-}: GoalProgressProps) {
+export default function GoalProgress({ doneItems, todoItems }: Props) {
   const progress = (doneItems / (todoItems + doneItems)) * 100 || 0;
 
   return (
@@ -38,7 +35,6 @@ export default function GoalProgress({
             transition={{ duration: 0.8, ease: 'easeOut' }}
           />
 
-          {/* Vertical dashed line at 50% */}
           <div className="absolute left-1/2 top-0 h-full -translate-x-1/2">
             <div className="h-full border-l border-dashed border-gray-400" />
           </div>

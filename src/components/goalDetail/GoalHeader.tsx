@@ -80,9 +80,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-4 md:gap-14 md:px-6 md:py-5">
-      <div className="flex items-center justify-between">
-        <h1 className="flex max-w-full items-center truncate text-16M md:max-w-2xl md:text-20M">
+    <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
+      <div className="flex min-h-[56px] items-start">
+        <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2 text-slate500"
@@ -97,12 +97,16 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               className="w-full border-b border-gs500"
             />
           ) : (
-            <span className="truncate">{goalTitle}</span>
+            <span className="w-full whitespace-pre-wrap break-words">
+              {goalTitle}
+            </span>
           )}
         </h1>
       </div>
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0">
+      <div className="flex-1" />
+
+      <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-12M text-slate600 md:text-14M">
@@ -115,7 +119,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                   type="button"
                   onClick={() => setSelectedColor(key)}
                   aria-label={`색상 변경: ${key}`}
-                  className={`size-6 rounded-full md:size-8 ${selectedColor === key ? 'ring-2 ring-slate500' : ''}`}
+                  className={`size-6 rounded-full md:size-8 ${
+                    selectedColor === key ? 'ring-2 ring-slate500' : ''
+                  }`}
                   style={{ backgroundColor: goalColors[key].DEFAULT }}
                 />
               ))}
@@ -124,7 +130,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
         ) : (
           <Link href={`${id}/note`} className="block">
             <div className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate500 px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3">
-              <h2 className="flex items-center text-12M text-gs00 md:text-14M">
+              <h2 className="flex items-center text-14M text-gs00">
                 <FontAwesomeIcon icon={faFilePen} className="mr-1 md:mr-2" />
                 노트 모아보기
               </h2>
@@ -137,7 +143,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             <button
               type="button"
               onClick={handleEditClick}
-              className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate100 px-3 py-2 text-14M text-slate800 shadow md:h-10 md:w-36 md:px-5 md:py-3"
+              className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-slate100 px-3 py-2 text-14M text-slate800 shadow md:h-10 md:w-36"
             >
               <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
             </button>
@@ -163,7 +169,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </button>
           {showMobileMenu && (
-            <div className="absolute right-0 top-10 z-10 w-32 rounded-md bg-white shadow-lg">
+            <div className="absolute right-0 top-10 z-10 w-32 rounded-md bg-gs00 shadow-lg">
               <button
                 type="button"
                 onClick={handleEditClick}
