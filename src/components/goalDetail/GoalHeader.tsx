@@ -6,54 +6,145 @@ import {
   faFilePen,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { useGoals } from '@/hooks/useGoals';
+import { useState, useRef, useEffect } from 'react';
 import { Goal } from '@/types/goals';
+import { useClickOutside } from '@/hooks/useClickOutside';
+import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
 
-interface Props {
+type Props = {
   id: string;
-}
+  setGoalAvailable: (value: boolean) => void;
+};
 
-export default function GoalHeader({ id }: Props) {
+export default function GoalHeader({ id, setGoalAvailable }: Props) {
+  const [menuRef, isMenuOpen, setIsMenuOpen] =
+    useClickOutside<HTMLDivElement>();
   const { data: goals, isLoading } = useGoals();
+  const { mutate: updateGoal } = useUpdateGoal();
+  const { mutate: deleteGoal } = useDeleteGoal();
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const goalTitle = goals?.find(
-    (goal: Goal) => goal.goalId === Number(id),
-  )?.title;
+  const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
+  const goalTitle = goalItem?.title;
+
+  useEffect(() => {
+    setGoalAvailable(goalItem !== undefined);
+  }, [goalItem, setGoalAvailable]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setIsMenuOpen(false);
+    setNewTitle(goalTitle === '목표를 선택 또는 생성해주세요' ? '' : goalTitle);
+  };
+
+  const handleSave = () => {
+    if (newTitle.trim()) {
+      updateGoal({ goalId: Number(id), updatedFields: { title: newTitle } });
+      setIsEditing(false);
+    }
+  };
+
+  const handleDelete = () => {
+    if (goalItem?.goalId) {
+      deleteGoal(goalItem.goalId, {
+        onSuccess: () => {
+          setIsMenuOpen(false);
+        },
+      });
+    }
+  };
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
+  let content;
+
+  if (isLoading) {
+    content = '로딩 중...';
+  } else if (isEditing) {
+    content = (
+      <div className="flex items-center space-x-2">
+        <input
+          ref={inputRef}
+          type="text"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          className="border-b border-gs500"
+        />
+        <button
+          type="button"
+          onClick={handleSave}
+          className="rounded bg-blue-500 p-1 text-14R text-white"
+        >
+          저장
+        </button>
+      </div>
+    );
+  } else {
+    content = goalTitle;
+  }
 
   return (
-    <div className="flex flex-col items-start justify-between gap-14 rounded-lg bg-gs00 px-6 py-5 shadow">
-      <div className="flex w-full items-center justify-between">
-        <h1 className="flex items-center truncate text-20M">
+    <div>
+      <div className="mb-2 flex items-center justify-between">
+        <h1 className="flex items-center text-18SB">
           <FontAwesomeIcon
             icon={faFontAwesome}
-            className="mr-2 shrink-0 text-slate400"
+            className="mr-2 text-slate500"
           />
-          {isLoading ? '로딩 중...' : goalTitle}
+          {content}
         </h1>
-      </div>
-
-      <div className="flex w-full flex-col items-center justify-between gap-3 sm:flex-row">
-        <Link href={`${id}/note`} className="w-full sm:w-auto">
-          <div className="flex h-10 w-full items-center justify-center rounded-full bg-slate500 px-4 text-14M text-gs00 shadow-md sm:w-[150px]">
-            <FontAwesomeIcon icon={faFilePen} className="mr-1 shrink-0" />
-            <span className="whitespace-nowrap">노트 모아보기</span>
-          </div>
-        </Link>
-
-        <div className="flex w-full items-center gap-2 sm:w-auto">
+        <div className="relative">
           <button
             type="button"
-            className="flex h-10 w-full items-center justify-center gap-1 rounded-full bg-slate100 px-4 text-14M text-slate800 sm:w-[150px]"
+            className="cflex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           >
-            <FontAwesomeIcon icon={faPenToSquare} className="mr-1 shrink-0" />
-            목표 수정
+            <FontAwesomeIcon icon={faFontAwesome} className="text-gs500" />
           </button>
-          <button
-            type="button"
-            className="flex size-10 shrink-0 items-center justify-center rounded-full border border-warn500 text-14M text-warn500"
-          >
-            <FontAwesomeIcon icon={faTrashCan} />
-          </button>
+          {isMenuOpen && (
+            <div
+              className="absolute right-4 mt-2 w-[120px] rounded bg-gs00 shadow-md"
+              ref={menuRef}
+            >
+              <button
+                type="button"
+                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
+              >
+                목표 색상 변경
+              </button>
+              <button
+                type="button"
+                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
+                onClick={handleEditClick}
+              >
+                수정하기
+              </button>
+              <button
+                type="button"
+                className="block w-full px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
+                onClick={handleDelete}
+              >
+                삭제하기
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

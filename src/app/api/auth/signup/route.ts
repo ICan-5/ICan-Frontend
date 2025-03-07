@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SignUpSchema } from '@/lib/validation';
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-// const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
-
-if (!apiUrl) {
-  throw new Error('필수 환경 변수가 설정되지 않았습니다.');
-}
-
 export async function POST(req: NextRequest) {
   try {
+    const url = process.env.BACKEND_API_URL;
+    if (!url)
+      return NextResponse.json(
+        { message: 'BACKEND_API_URL 환경변수가 없습니다.' },
+        { status: 500 },
+      );
+
     const formData = await req.json();
 
     const { name, email, password, confirmPassword } = formData;
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 외부 API로 요청
-    const response = await fetch(`${apiUrl}/api/v1/user/register`, {
+    const response = await fetch(`${url}/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       return NextResponse.json(
         { message: '회원가입 API 요청 실패', response },
-        { status: 500 },
+        { status: response.status },
       );
     }
     // 200 OK

@@ -236,7 +236,7 @@ export default function CalendarBody({
       dayHeaderFormat={{ weekday: 'long' }}
       dayHeaderClassNames="border-[0.5px] border-gs200 bg-gs50 !py-2 text-12M text-gs500 xl:text-14M"
       height="auto"
-      contentHeight="100%"
+      contentHeight="auto"
       dayCellContent={(info) => renderDayCellContent(info)}
       dayCellClassNames={(info) => getDayCellClassNames(info)}
       dayCellDidMount={handleDayCellMount}

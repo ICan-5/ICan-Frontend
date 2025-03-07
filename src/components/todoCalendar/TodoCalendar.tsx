@@ -4,10 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Calendar from './Calendar';
 
 import TodoList from './TodoList';
-import { Basket } from '@/types/todos';
 import TodoModal from './TodoModal';
 import Loading from '../common/Loading';
 import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
+import TodoBasket from './TodoBasket';
 
 // import Loading from '../common/Loading';
 // import TodoBasket from './TodoBasket';
@@ -48,7 +48,6 @@ export default function TodoCalendar() {
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth() + 1,
   );
-  const [basketList, setBasketList] = useState<Basket[]>(initialBasketList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarHeight, setCalendarHeight] = useState<number>(0);
   const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
@@ -79,26 +78,12 @@ export default function TodoCalendar() {
   };
 
   /**
-   * 장바구니에서 할 일 삭제
-   * @param id 삭제할 할 일의 id
-   */
-  // const handleDeleteBasketTodo = (id: number) => {
-  //   setBasketList((prev) => prev.filter((todo) => todo.id !== id));
-  // };
-
-  /**
-   * 모든 장바구니 삭제
-   */
-  // const handleDeleteAllBasket = () => {
-  //   setBasketList([]);
-  // };
-
-  /**
    * 드랍 시 todo에 추가 & 장바구니에서 제거
    */
   const handleDropTodo = (date: string, todoId: number) => {
-    const draggedTodo = basketList.find((todo) => todo.id === todoId);
-    if (!draggedTodo) return;
+    console.log(date, todoId);
+    // const draggedTodo = basketList.find((todo) => todo.id === todoId);
+    // if (!draggedTodo) return;
     // const newTodo: Todo = {
     //   id: todoId,
     //   title: draggedTodo.title,
@@ -107,7 +92,7 @@ export default function TodoCalendar() {
     //   done: false,
     // };
     // setTodos((prev) => [...prev, newTodo]);
-    setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
+    // setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
   };
 
   useEffect(() => {
@@ -132,47 +117,42 @@ export default function TodoCalendar() {
       <p className="text-red-500">데이터를 불러오는 중 오류 발생</p>
     </div>
   ) : (
-    <div className="flex flex-col justify-center gap-4 md:flex-row">
-      <div className="flex-1">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Calendar
-            todos={monthlyTodos}
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            onDropTodo={handleDropTodo}
-            calendarDivRef={calendarRef}
-            isCalendarLoaded={isCalendarLoaded}
-            onMonthChange={(year, month) => {
-              setCurrentYear(year);
-              setCurrentMonth(month);
-            }}
-          />
-        )}
-        {!isCalendarLoaded && <Loading />}
-      </div>
-      {isCalendarLoaded && (
-        <div
-          className="size-full md:w-[280px] xl:w-[350px]"
-          style={{ height: calendarHeight }}
-        >
-          <TodoList
-            selectedDate={selectedDate}
-            todos={dailyTodos}
-            onOpenModal={handleOpenModal}
-          />
+    <div className="relative h-screen max-h-[calc(100vh-160px)] w-full overflow-auto md:max-h-[calc(100vh-270px)]">
+      <div className="flex flex-col justify-center gap-4 px-1 md:flex-row">
+        <div className="flex-1">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Calendar
+              todos={monthlyTodos}
+              selectedDate={selectedDate}
+              onDateChange={setSelectedDate}
+              onDropTodo={handleDropTodo}
+              calendarDivRef={calendarRef}
+              isCalendarLoaded={isCalendarLoaded}
+              onMonthChange={(year, month) => {
+                setCurrentYear(year);
+                setCurrentMonth(month);
+              }}
+            />
+          )}
+          {!isCalendarLoaded && <Loading />}
         </div>
-      )}
-      {/* {isCalendarReady && (
-          <TodoBasket
-            basketList={basketList}
-            onDeleteBasketTodo={handleDeleteBasketTodo}
-            onDeleteAllBasket={handleDeleteAllBasket}
-          />
+        {isCalendarLoaded && (
+          <div
+            className="w-full md:w-[280px] xl:w-[350px]"
+            style={{ height: calendarHeight }}
+          >
+            <TodoList
+              selectedDate={selectedDate}
+              todos={dailyTodos}
+              onOpenModal={handleOpenModal}
+            />
+          </div>
         )}
+      </div>
+      {isCalendarLoaded && <TodoBasket basketList={initialBasketList} />}
 
-        )} */}
       {isModalOpen && (
         <TodoModal
           selectedDate={selectedDate}
