@@ -29,7 +29,7 @@ export default function GoalHeader({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
-  const goalTitle = goalItem?.title || '목표를 선택 또는 생성해주세요';
+  const goalTitle = goalItem?.title;
 
   useEffect(() => {
     if (!isLoading) {
@@ -39,6 +39,7 @@ export default function GoalHeader({
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setIsMenuOpen(false);
     setNewTitle(goalTitle === '목표를 선택 또는 생성해주세요' ? '' : goalTitle);
   };
 
@@ -58,6 +59,15 @@ export default function GoalHeader({
       });
     }
   };
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    }
+  };
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -66,6 +76,7 @@ export default function GoalHeader({
   }, [isEditing]);
 
   let content;
+
   if (isLoading) {
     content = '로딩 중...';
   } else if (isEditing) {
@@ -76,12 +87,14 @@ export default function GoalHeader({
           type="text"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          className="border-b border-gs500 p-1"
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          className="border-b border-gs500"
         />
         <button
           type="button"
           onClick={handleSave}
-          className="rounded bg-blue-500 p-1 text-white"
+          className="rounded bg-blue-500 p-1 text-14R text-white"
         >
           저장
         </button>
