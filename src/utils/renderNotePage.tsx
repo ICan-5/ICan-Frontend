@@ -3,11 +3,12 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import NoteModal from '@/components/note/NoteModal';
+import NoteModal from '@/components/note/noteDetail/NoteModal';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { getServerNoteDetail } from '@/services/note';
+import NoteDetail from '@/components/note/noteDetail/NoteDetail';
 
-export async function renderNoteDetail(noteId: number) {
+export async function renderNoteDetail(noteId: number, isModal?: boolean) {
   const queryClient = new QueryClient();
   try {
     await queryClient.prefetchQuery({
@@ -20,7 +21,11 @@ export async function renderNoteDetail(noteId: number) {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <NoteModal noteId={noteId} />
+        {isModal ? (
+          <NoteModal noteId={noteId} />
+        ) : (
+          <NoteDetail noteId={noteId} />
+        )}
       </HydrationBoundary>
     );
   } catch {

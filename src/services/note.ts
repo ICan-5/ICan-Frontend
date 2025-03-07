@@ -13,7 +13,6 @@ const formatDate = (isoString: string) => {
 
 const formatNoteData = (noteData: NoteResponse, todoData: Todo) => {
   return {
-    goalTitle: noteData.goal?.title || null,
     title: noteData.title,
     content: noteData.content,
     linkUrl: noteData.linkUrl || null,
