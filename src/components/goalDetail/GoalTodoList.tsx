@@ -3,10 +3,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
+import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   list: Todo[];
@@ -21,12 +24,18 @@ interface GroupedTodos {
 }
 
 export default function GoalTodoList({ list, onToggle, goalId }: Props) {
+  const router = useRouter();
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
   const today = new Date().toLocaleDateString('sv-SE');
 
-  const [isFutureFold, setIsFutureFold] = useState(true);
-  const [isPastFold, setIsPastFold] = useState(true);
+  const [isFutureFold, setIsFutureFold] = useState(false);
+  const [isPastFold, setIsPastFold] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const { mutate: deleteGoalTodo } = useDeleteGoalTodo(Number(goalId));
+  const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<Todo | null>(
+    null,
+  );
 
   list.forEach(({ todoId, title, date, done, noteId, goal, createdAt }) => {
     if (date < today) {
@@ -63,6 +72,36 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
       });
     }
   });
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingTodo(null);
+  };
+
+  const handleEditTodo = (todo: Todo) => {
+    setEditingTodo(todo);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteTodo = (todo: Todo) => {
+    setSelectedDeleteTodo(todo);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedDeleteTodo) {
+      deleteGoalTodo(selectedDeleteTodo.todoId, {
+        onSuccess: () => {
+          setSelectedDeleteTodo(null);
+        },
+      });
+    }
+  };
+  const handleClickNote = (todo: Todo) => {
+    if (todo.noteId) {
+      router.push(`/note/${todo.noteId}`);
+    } else {
+      router.push(`/${todo.todoId}/note/create`);
+    }
+  };
 
   const isEmpty =
     groupedTodos.today.length === 0 &&
@@ -101,6 +140,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                     noteId={todo.noteId ?? null}
                     onCheck={() => onToggle(todo.todoId)}
                     goal={todo.goal}
+                    onClickNote={() => handleClickNote(todo)}
+                    onEdit={() => handleEditTodo(todo)}
+                    onDelete={() => handleDeleteTodo(todo)}
                   />
                 ))}
               </div>
@@ -139,6 +181,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onClickNote={() => handleClickNote(todo)}
+                            onEdit={() => handleEditTodo(todo)}
+                            onDelete={() => handleDeleteTodo(todo)}
                           />
                         ))}
                       </div>
@@ -180,6 +225,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
                             noteId={todo.noteId ?? null}
                             onCheck={() => onToggle(todo.todoId)}
                             goal={todo.goal}
+                            onClickNote={() => handleClickNote(todo)}
+                            onEdit={() => handleEditTodo(todo)}
+                            onDelete={() => handleDeleteTodo(todo)}
                           />
                         ))}
                       </div>
@@ -190,9 +238,21 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
           </>
         )}
       </div>
-
+      {selectedDeleteTodo && (
+        <ConfirmModal
+          title="할일을 삭제 하시겠어요?"
+          description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={() => setSelectedDeleteTodo(null)}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
       {isModalOpen && (
-        <GoalTodoModal onClose={() => setIsModalOpen(false)} goalId={goalId} />
+        <GoalTodoModal
+          onClose={handleCloseModal}
+          goalId={goalId}
+          todoId={editingTodo ? editingTodo.todoId : null}
+        />
       )}
     </div>
   );

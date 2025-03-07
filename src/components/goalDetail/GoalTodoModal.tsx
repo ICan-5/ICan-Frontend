@@ -5,12 +5,13 @@ import ReactDOM from 'react-dom';
 import GoalTodoCreateModal from './GoalTodoCreateModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
 
-type Props = {
+interface Props {
   goalId: string;
+  todoId?: number | null;
   onClose: () => void;
-};
+}
 
-export default function GoalTodoModal({ goalId, onClose }: Props) {
+export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(true);
 
@@ -25,10 +26,11 @@ export default function GoalTodoModal({ goalId, onClose }: Props) {
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-      {/* 할 일 생성 모달 */}
+      {/* 할 일 생성/수정 모달 */}
       {isCreateOpen && (
         <GoalTodoCreateModal
           goalId={goalId}
+          todoId={todoId}
           onClose={handleFinalClose}
           onCancel={handleCancelCreate}
           isVisible={!isConfirmOpen}
