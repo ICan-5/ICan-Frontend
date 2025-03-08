@@ -1,6 +1,6 @@
 export default function NoteTitlesSkeleton() {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="mx-6 flex flex-col gap-1">
       <section className="mt-2 flex size-full items-center gap-2">
         <div className="h-6 w-full animate-pulse bg-gs100" />
       </section>
