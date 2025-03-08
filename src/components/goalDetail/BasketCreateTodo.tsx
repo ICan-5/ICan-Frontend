@@ -1,107 +1,85 @@
+import { useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback } from 'react';
 import TextInput from '@/components/common/input/TextInput';
-import DateInput from '../common/input/DateInput';
 import Button from '../common/button/Button';
 import { useGoals } from '@/hooks/useGoals';
 import { Goal } from '@/types/goals';
-import { useGoalAddTodo, useUpdateGoalTodo } from '@/hooks/useGoalsTodo';
+import { useAddBasketTodo } from '@/hooks/useGoalBasketTodo';
 
-const createTodoSchema = z.object({
+const createBasketSchema = z.object({
   title: z
     .string()
     .nonempty('제목을 입력해주세요')
     .max(30, '제목은 30자 이하여야 합니다'),
   goal: z.any().nullable().optional(),
-  date: z.date().optional(),
 });
 
-type TodoFormValues = z.infer<typeof createTodoSchema>;
+export type BasketFormValues = z.infer<typeof createBasketSchema>;
 
-interface Props {
-  goalId: string;
-  todoId?: number | null;
+type Props = {
+  goalId: number;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
-}
+  initialData?: { title: string };
+};
 
 export default function GoalTodoCreateModal({
   goalId,
-  todoId,
   onClose,
   onCancel,
   isVisible = true,
+  initialData,
 }: Props) {
   const { data: goals } = useGoals();
-  const { mutate: addTodoMutation } = useGoalAddTodo();
-  const { mutate: updateTodoMutation } = useUpdateGoalTodo();
+  const { mutate: addBasketTodo } = useAddBasketTodo();
 
-  const goalTitle = goals?.find(
-    (goal: Goal) => goal.goalId === Number(goalId),
-  )?.title;
+  const goalTitle =
+    goals?.find((goal: Goal) => goal.goalId === goalId)?.title || '목표 없음';
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<TodoFormValues>({
+    setValue,
+  } = useForm<BasketFormValues>({
     mode: 'onChange',
-    resolver: zodResolver(createTodoSchema),
+    resolver: zodResolver(createBasketSchema),
     defaultValues: {
-      title: '',
-      date: new Date(),
+      title: initialData?.title || '',
     },
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setValue('title', initialData.title);
+    }
+  }, [initialData, setValue]);
 
   const titleValue = watch('title');
 
   const onSubmit = useCallback(
-    (data: TodoFormValues) => {
-      const formattedDate = data.date ?? new Date();
-
-      if (todoId) {
-        updateTodoMutation(
-          {
-            todoId,
-            goalId: Number(goalId),
-            title: data.title,
-            date: formattedDate.toISOString(),
+    (data: BasketFormValues) => {
+      addBasketTodo(
+        { title: data.title, goal: { goalId } },
+        {
+          onSuccess: () => {
+            onClose();
           },
-          {
-            onSuccess: () => {
-              onClose();
-            },
-          },
-        );
-      } else {
-        addTodoMutation(
-          {
-            title: data.title,
-            goal: { goalId: Number(goalId) },
-            date: formattedDate,
-          },
-          {
-            onSuccess: () => {
-              onClose();
-            },
-          },
-        );
-      }
+        },
+      );
     },
-    [addTodoMutation, updateTodoMutation, goalId, todoId, onClose],
+    [goalId, addBasketTodo, onClose],
   );
 
   if (!isVisible) return null;
 
   return (
     <div className="w-[520px] flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
-      <h2 className="mb-4 text-lg font-bold">
-        {todoId ? '할 일 수정' : '할 일 생성'}
-      </h2>
+      <h2 className="mb-4 text-lg font-bold">장바구니 할일 생성</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="title"
@@ -125,9 +103,6 @@ export default function GoalTodoCreateModal({
           readOnly
           className="mb-3 w-full cursor-not-allowed rounded-lg bg-gs100 p-2 px-4 py-3 text-16R text-gs600"
         />
-        <div className="relative mt-3">
-          <DateInput name="date" control={control} label="날짜" />
-        </div>
         <div className="mt-4 flex w-full flex-row gap-2">
           <Button
             type="button"
@@ -140,10 +115,14 @@ export default function GoalTodoCreateModal({
           <Button
             type="submit"
             size="full"
-            className={`py-4 ${titleValue ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
+            className={`py-4 ${
+              titleValue
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-300 text-gray-600'
+            }`}
             disabled={!titleValue}
           >
-            {todoId ? '수정' : '추가'}
+            추가
           </Button>
         </div>
       </form>

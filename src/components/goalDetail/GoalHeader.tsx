@@ -32,8 +32,10 @@ export default function GoalHeader({
   const goalTitle = goalItem?.title;
 
   useEffect(() => {
-    setGoalAvailable(goalItem !== undefined);
-  }, [goalItem, setGoalAvailable]);
+    if (!isLoading) {
+      setGoalAvailable(goalItem !== undefined);
+    }
+  }, [goalItem, setGoalAvailable, isLoading]);
 
   const handleEditClick = () => {
     setIsEditing(true);
