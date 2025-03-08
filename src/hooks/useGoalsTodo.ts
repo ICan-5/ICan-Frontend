@@ -45,6 +45,7 @@ export const useGoalTodo = (
 
       const data = await response.json();
       return {
+        color: data.color || 'default',
         todos: Array.isArray(data.todos) ? data.todos : [],
         basketTodos: Array.isArray(data.basketTodos) ? data.basketTodos : [],
       };

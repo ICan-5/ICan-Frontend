@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import {
   faTrashCan,
   faPenToSquare,
@@ -7,7 +8,6 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
 import { Goal } from '@/types/goals';
 import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
 import goalColors from '@/presets/goalColors';
@@ -53,13 +53,24 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   };
 
   const handleSave = () => {
-    if (newTitle.trim()) {
+    const trimmedTitle = newTitle.trim();
+    const isTitleChanged = trimmedTitle && trimmedTitle !== goalItem?.title;
+    const isColorChanged = selectedColor !== goalItem?.color;
+
+    if (isTitleChanged || isColorChanged) {
       updateGoal({
         goalId: Number(id),
-        updatedFields: { title: newTitle, color: selectedColor },
+        updatedFields: {
+          title: isTitleChanged ? trimmedTitle : goalItem?.title, // 항상 title 포함
+          color: isColorChanged ? selectedColor : goalItem?.color,
+        },
       });
-      setIsEditing(false);
     }
+    setIsEditing(false);
+  };
+
+  const handleColorSelect = (key: keyof typeof goalColors) => {
+    setSelectedColor(key);
   };
 
   const handleDeleteClick = () => {
@@ -94,14 +105,22 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     setShowMobileMenu(!showMobileMenu);
   };
 
+  const headerColorStyle: React.CSSProperties = useMemo(() => {
+    const validColor =
+      goalColors[goalItem?.color as keyof typeof goalColors]?.DEFAULT;
+    return validColor ? { color: validColor } : { color: '#64748B' };
+  }, [goalItem?.color]);
+
   return (
     <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
       <div className="flex min-h-[56px] items-start">
         <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
-            className="mr-2 text-slate500"
+            className="mr-2"
+            style={headerColorStyle}
           />
+
           {isEditing ? (
             <input
               ref={inputRef}
@@ -124,18 +143,19 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
       <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-12M text-slate600 md:text-14M">
-              목표 컬러 수정
-            </span>
+            <span className="text-12M text-gs600 md:text-14M">목표 색상</span>
             <div className="flex flex-wrap gap-2">
               {colorKeys.map((key) => (
                 <button
                   key={key}
                   type="button"
-                  onClick={() => setSelectedColor(key)}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleColorSelect(key)}
                   aria-label={`색상 변경: ${key}`}
-                  className={`size-6 rounded-full md:size-8 ${
-                    selectedColor === key ? 'ring-2 ring-slate500' : ''
+                  className={`size-6 rounded-full border-2 transition-all md:size-8 ${
+                    selectedColor === key
+                      ? 'border-gray-700 ring-2 ring-gray-700'
+                      : 'border-transparent'
                   }`}
                   style={{ backgroundColor: goalColors[key].DEFAULT }}
                 />

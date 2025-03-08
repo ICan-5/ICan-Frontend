@@ -13,6 +13,7 @@ export const updateGoal = async (
   try {
     const body = {
       ...updatedFields,
+      color: updatedFields.color || undefined,
     };
 
     const response = await fetch(`/api/goals/${goalId}`, {
@@ -31,6 +32,7 @@ export const updateGoal = async (
     throw error;
   }
 };
+
 /**
  * 목표 삭제
  * @param goalId 목표 id
