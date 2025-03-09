@@ -1,6 +1,5 @@
 import { createPortal } from 'react-dom';
 import { Controller, useForm } from 'react-hook-form';
-// import { useEffect } from 'react';
 import Button from '../common/button/Button';
 import { NoteFormControlProps } from '@/types/note';
 
@@ -11,14 +10,24 @@ interface Props extends NoteFormControlProps {
 export default function LinkModal({ onClose, setValue }: Props) {
   const {
     control,
-    // setValue,
-    // watch,
+    getValues,
     trigger,
     formState: { isValid },
   } = useForm({
     mode: 'onChange',
     defaultValues: { link: '' },
   });
+
+  const handleConfirmClick = async () => {
+    // 유효성 검사 실행
+    const isValidLink = await trigger('link');
+    if (isValidLink) {
+      const link = getValues('link');
+      setValue('linkUrl', link);
+      onClose(); // 모달 닫기
+    }
+  };
+
   return createPortal(
     // 모달 딤
     <div
@@ -57,21 +66,10 @@ export default function LinkModal({ onClose, setValue }: Props) {
                 <>
                   <input
                     id="link"
-                    /* eslint-disable react/jsx-props-no-spreading */
-                    // {...field}
                     className="rounded-xl bg-slate50 px-4 py-3 text-16R placeholder:text-gs400"
                     placeholder="링크 주소를 입력해 주세요"
                     value={value}
-                    onChange={async (e) => {
-                      const newValue = e.target.value;
-                      onChange(newValue); // 기존 값 업데이트
-
-                      // 유효성 검사 실행 후 통과하면 linkUrl 업데이트
-                      const isValidLink = await trigger('link');
-                      if (isValidLink) {
-                        setValue('linkUrl', newValue);
-                      }
-                    }}
+                    onChange={onChange}
                   />
 
                   {error && (
@@ -95,9 +93,7 @@ export default function LinkModal({ onClose, setValue }: Props) {
               size="full"
               variant="default"
               className="transition-colors"
-              onClick={() => {
-                onClose();
-              }}
+              onClick={handleConfirmClick}
             >
               확인
             </Button>

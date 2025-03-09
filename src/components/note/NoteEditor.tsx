@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faExclamation } from '@fortawesome/free-solid-svg-icons';
 import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
 import '@/styles/textEditor.css';
@@ -63,26 +63,21 @@ export default function NoteEditor() {
   // 임시 저장
   const handleTempSave = () => {
     const noteData = getValues();
-    console.log('noteData', noteData);
     localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
   };
 
-  useEffect(() => {
-    const savedData = localStorage.getItem(`todo-${todoId}`);
+  const savedData = localStorage.getItem(`todo-${todoId}`);
+  const [showSaveData, setShowSavedData] = useState(!!savedData);
 
+  const setTempData = () => {
     if (savedData) {
-      const confirmLoad = window.confirm(
-        '임시 저장된 내용이 있습니다. 불러오시겠습니까?',
-      );
-
-      if (confirmLoad) {
-        const parsedData = JSON.parse(savedData);
-        Object.keys(parsedData).forEach((key) => {
-          setValue(key, parsedData[key]);
-        });
-      }
+      const parsedData = JSON.parse(savedData);
+      Object.keys(parsedData).forEach((key) => {
+        setValue(key as 'title' | 'content' | 'linkUrl', parsedData[key]);
+      });
+      trigger();
     }
-  }, [setValue, todoId]);
+  };
 
   return (
     <form
@@ -90,7 +85,7 @@ export default function NoteEditor() {
       className="mx-auto flex h-dvh w-full flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900"
     >
       <div>
-        <div className="mb-4 w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
+        <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
           <button type="button" onClick={() => router.back()}>
             <Icon icon={faArrowLeft} className="size-5" />
           </button>
@@ -98,16 +93,20 @@ export default function NoteEditor() {
             <h2 className="text-14SB xs:text-16SB md:text-18SB">노트 작성</h2>
             <div className="flex justify-end gap-2 xs:justify-normal">
               <Button
+                disabled={!isValid}
                 size="medium"
                 variant="outline"
-                className="border-none bg-transparent px-1 py-3 xs:px-6"
-                onClick={handleTempSave}
+                className="border-none bg-transparent px-1 py-3 xs:px-6 2xl:rounded-lg 2xl:px-6 2xl:!text-14SB"
+                onClick={() => {
+                  handleTempSave();
+                  alert('임시 저장이 완료되었습니다');
+                }}
               >
                 임시저장
               </Button>
               <Button
                 size="medium"
-                className="px-1 py-3 transition-colors xs:px-6"
+                className="px-1 py-3 transition-colors xs:px-6 2xl:rounded-lg 2xl:px-6 2xl:!text-14SB"
                 type="submit"
                 disabled={!isValid}
               >
@@ -116,13 +115,41 @@ export default function NoteEditor() {
             </div>
           </div>
         </div>
+        {showSaveData && (
+          <section className="flex h-fit w-full flex-wrap items-center rounded-b-[28px] bg-slate100 px-4 py-2">
+            <div className="mb-1 flex flex-1 flex-nowrap items-center sm:mb-0">
+              <Icon icon={faExclamation} className="text-slate500" />
+              <p className="text-14M text-slate500">
+                임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?
+              </p>
+            </div>
+            <div className="ml-auto flex min-w-40 items-center justify-end">
+              <Button
+                className="bg-transparent !py-2 px-5 !text-14R text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent 2xl:!text-14R"
+                onClick={() => setShowSavedData(false)}
+              >
+                닫기
+              </Button>
+              <Button
+                variant="outline"
+                className="h-9 rounded-full px-4 py-2 text-14M transition-colors 2xl:rounded-full 2xl:py-2 2xl:!text-14M"
+                onClick={() => {
+                  setTempData();
+                  setShowSavedData(false);
+                }}
+              >
+                불러오기
+              </Button>
+            </div>
+          </section>
+        )}
         {/* goal 목표 있을 경우 */}
         {todoQuery.isLoading || goalQuery.isLoading ? (
           <NoteTitlesSkeleton />
         ) : (
           <>
             {goalQuery.data?.todo.title && (
-              <section className="mx-6 mb-2 flex items-center gap-3">
+              <section className="mx-6 mb-2 mt-4 flex items-center gap-3">
                 <Icon
                   icon={faFontAwesome}
                   className="size-4 rounded-lg text-lg text-[#FB923C]"
@@ -144,7 +171,7 @@ export default function NoteEditor() {
           </>
         )}
       </div>
-      <div className="mx-6 mb-8 flex h-full min-h-0 flex-col text-gs800">
+      <div className="mx-6 mb-6 flex h-full min-h-0 flex-col text-gs800">
         {/* 노트 제목 */}
         <NoteTitle control={control} errors={errors} />
         {/* 노트 컨텐츠 영역 */}
