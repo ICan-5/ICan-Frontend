@@ -34,7 +34,7 @@
 
 .ql-toolbar.ql-snow {
   @apply z-10 w-full min-w-[460px] max-w-[752px] rounded-full border-gs200 bg-gs00;
-  @apply absolute bottom-2 left-1/2 -translate-x-1/2 transform;
+  @apply absolute bottom-2 transform sm:left-1/2 sm:-translate-x-1/2;
   box-shadow: 0px 1px 2px 0px #0000000d;
 }
 
