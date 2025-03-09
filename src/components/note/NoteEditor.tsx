@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
@@ -62,10 +62,22 @@ export default function NoteEditor() {
   };
 
   // 임시 저장
-  const handleTempSave = () => {
-    const noteData = getValues();
-    localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
-  };
+  const handleTempSave = useCallback(() => {
+    if (isValid) {
+      const noteData = getValues();
+      localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
+      alert('임시 저장이 완료되었습니다');
+    }
+  }, [isValid, getValues, todoId]);
+
+  // 자동 임시 저장 기능
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleTempSave();
+    }, 300000); // 5분
+
+    return () => clearInterval(interval);
+  }, [handleTempSave]);
 
   const savedData = localStorage.getItem(`todo-${todoId}`);
   const [showSaveData, setShowSavedData] = useState(!!savedData);
@@ -100,7 +112,6 @@ export default function NoteEditor() {
                 className="border-none bg-transparent px-1 py-3 xs:px-6 2xl:rounded-lg 2xl:px-6 2xl:!text-14SB"
                 onClick={() => {
                   handleTempSave();
-                  alert('임시 저장이 완료되었습니다');
                 }}
               >
                 임시저장
