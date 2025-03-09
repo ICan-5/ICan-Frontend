@@ -36,8 +36,10 @@ const toolbarOptions = [
 export default function NoteContentEditor({
   control,
   errors,
-  isValid,
   getValues,
+  setValue,
+  // watch,
+  // trigger,
 }: NoteFormControlProps) {
   const [textLength, setTextLength] = useState(0);
   const [trimmedTextLength, setTrimmedTextLength] = useState(0);
@@ -51,12 +53,7 @@ export default function NoteContentEditor({
           link(isOpen: boolean) {
             if (!quillInstance.current) return;
             if (isOpen) {
-              // console.log('quillInstance?.current', quillInstance?.current);
-              // const href = prompt('Enter the URL');
               setIsModalOpen((prev) => !prev);
-              // quillInstance?.current.format('link', href);
-            } else {
-              // quillInstance?.current.format('link', false);
             }
           },
         },
@@ -119,10 +116,12 @@ export default function NoteContentEditor({
       {isModalOpen && (
         <LinkModal
           onClose={() => setIsModalOpen(false)}
-          control={control}
-          isValid={isValid}
+          // control={control}
           getValues={getValues}
-          errors={errors}
+          setValue={setValue}
+          // errors={errors}
+          // watch={watch}
+          // trigger={trigger}
         />
       )}
     </>

@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
-import { Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+// import { useEffect } from 'react';
 import Button from '../common/button/Button';
 import { NoteFormControlProps } from '@/types/note';
 
@@ -7,12 +8,17 @@ interface Props extends NoteFormControlProps {
   onClose: () => void;
 }
 
-export default function LinkModal({
-  onClose,
-  control,
-  isValid,
-  getValues,
-}: Props) {
+export default function LinkModal({ onClose, setValue }: Props) {
+  const {
+    control,
+    // setValue,
+    // watch,
+    trigger,
+    formState: { isValid },
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: { link: '' },
+  });
   return createPortal(
     // 모달 딤
     <div
@@ -29,14 +35,14 @@ export default function LinkModal({
         <h4 className="mb-6 text-18M text-gsBk">링크 업로드</h4>
         <div className="">
           <label
-            htmlFor="linkUrl"
+            htmlFor="link"
             className="mb-9 flex flex-col gap-3 text-14M text-gs600"
           >
             {/* 라벨 에러 방지용 */}
             링크 주소
             <Controller
               control={control}
-              name="linkUrl"
+              name="link"
               rules={{
                 required: '링크를 입력해주세요',
                 pattern: {
@@ -44,15 +50,30 @@ export default function LinkModal({
                   message: '유효한 URL을 입력해주세요',
                 },
               }}
-              render={({ field, fieldState: { error } }) => (
+              render={({
+                field: { value, onChange },
+                fieldState: { error },
+              }) => (
                 <>
                   <input
                     id="link"
                     /* eslint-disable react/jsx-props-no-spreading */
-                    {...field}
+                    // {...field}
                     className="rounded-xl bg-slate50 px-4 py-3 text-16R placeholder:text-gs400"
                     placeholder="링크 주소를 입력해 주세요"
+                    value={value}
+                    onChange={async (e) => {
+                      const newValue = e.target.value;
+                      onChange(newValue); // 기존 값 업데이트
+
+                      // 유효성 검사 실행 후 통과하면 linkUrl 업데이트
+                      const isValidLink = await trigger('link');
+                      if (isValidLink) {
+                        setValue('linkUrl', newValue);
+                      }
+                    }}
                   />
+
                   {error && (
                     <span className="text-red-500">{error.message}</span>
                   )}
@@ -65,7 +86,6 @@ export default function LinkModal({
               variant="outline"
               size="full"
               className="border-none bg-gs100 py-4 text-gs600 transition-colors hover:bg-gs200"
-              // onClick={onClose}
               onClick={onClose}
             >
               취소
@@ -76,8 +96,6 @@ export default function LinkModal({
               variant="default"
               className="transition-colors"
               onClick={() => {
-                // getValues('link');
-                console.log('getValues();', getValues('linkUrl'));
                 onClose();
               }}
             >

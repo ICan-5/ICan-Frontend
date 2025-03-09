@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
@@ -26,13 +26,15 @@ export default function NoteEditor() {
     formState: { errors, isValid },
     getValues,
     setError,
+    setValue,
     clearErrors,
     watch,
     trigger,
   } = useForm({
     resolver: zodResolver(NoteSchema),
+    shouldFocusError: true,
     defaultValues: { title: '', content: '', linkUrl: '' },
-    mode: 'onChange',
+    mode: 'all',
   });
 
   // 할 일 제목, 목표 제목 가져오기
@@ -45,8 +47,6 @@ export default function NoteEditor() {
           todoId: Number(todoId),
           formData,
         });
-
-        // console.log('res________', res);
 
         if (res) {
           alert('노트 생성이 완료됐습니다.');
@@ -67,19 +67,35 @@ export default function NoteEditor() {
     localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
   };
 
+  useEffect(() => {
+    const savedData = localStorage.getItem(`todo-${todoId}`);
+
+    if (savedData) {
+      const confirmLoad = window.confirm(
+        '임시 저장된 내용이 있습니다. 불러오시겠습니까?',
+      );
+
+      if (confirmLoad) {
+        const parsedData = JSON.parse(savedData);
+        Object.keys(parsedData).forEach((key) => {
+          setValue(key, parsedData[key]);
+        });
+      }
+    }
+  }, [setValue, todoId]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mx-auto flex h-dvh w-full flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900"
     >
-      {/* p-4 md:px-6 md:py-4 */}
       <div>
         <div className="mb-4 w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
-          <button type="button">
+          <button type="button" onClick={() => router.back()}>
             <Icon icon={faArrowLeft} className="size-5" />
           </button>
           <div className="ml-2 flex w-full items-center justify-between">
-            <h2 className="text-16SB md:text-18SB">노트 작성</h2>
+            <h2 className="text-14SB xs:text-16SB md:text-18SB">노트 작성</h2>
             <div className="flex justify-end gap-2 xs:justify-normal">
               <Button
                 size="medium"
@@ -109,7 +125,7 @@ export default function NoteEditor() {
               <section className="mx-6 mb-2 flex items-center gap-3">
                 <Icon
                   icon={faFontAwesome}
-                  className="size-4 rounded-lg text-lg text-orange-300"
+                  className="size-4 rounded-lg text-lg text-[#FB923C]"
                 />
                 <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
                   {goalQuery.data?.todo.title}
@@ -140,6 +156,7 @@ export default function NoteEditor() {
           setError={setError}
           clearErrors={clearErrors}
           trigger={trigger}
+          setValue={setValue}
           isValid={isValid}
         />
       </div>
