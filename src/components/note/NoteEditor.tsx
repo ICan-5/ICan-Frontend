@@ -16,6 +16,7 @@ import NoteTitle from './NoteTitle';
 import { createNote } from '@/services/note';
 import { useTodoWithGoalTitle } from '@/hooks/useTodoWithGoalTitle';
 import NoteTitlesSkeleton from './NoteTitlesSkeleton';
+import cn from '@/utils/cn';
 
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
@@ -160,7 +161,12 @@ export default function NoteEditor() {
               </section>
             )}
 
-            <article className="mx-6 mb-4 flex items-center gap-2 text-gs700">
+            <article
+              className={cn(
+                'mx-6 mb-4 flex items-center gap-2 text-gs700',
+                !goalQuery.data?.todo.title && 'mt-4',
+              )}
+            >
               <span className="h-5 min-w-10 rounded-s bg-gs100 p-1 text-center text-12M">
                 To do
               </span>
