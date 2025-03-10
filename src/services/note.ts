@@ -1,23 +1,25 @@
 import { getErrorMessage } from '@/constants/errorMessages';
 import { fetchIntance } from './fetchInstance';
+import { Todo } from '@/types/todos';
 
 const formatDate = (isoString: string) => {
   const date = new Date(isoString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
 
   return `${year}.${month}.${day}`;
 };
 
-const formatNoteData = (data: NoteResponse) => ({
-  goalTitle: data.goal?.title ?? null,
-  todoTitle: data.todo.title,
-  title: data.title,
-  content: data.content,
-  linkUrl: data.linkUrl,
-  updatedAt: formatDate(data.updatedAt),
-});
+const formatNoteData = (noteData: NoteResponse, todoData: Todo) => {
+  return {
+    title: noteData.title,
+    content: noteData.content,
+    linkUrl: noteData.linkUrl || null,
+    updatedAt: formatDate(noteData.updatedAt),
+    todo: todoData,
+  };
+};
 
 export interface NoteResponse {
   id: number;
@@ -41,24 +43,34 @@ export const getNoteDetail = async (noteId: number) => {
   const res = await fetch(`/api/notes/${noteId}`);
   if (!res.ok) throw new Error(getErrorMessage(res.status));
 
-  const data: NoteResponse = await res.json();
+  const { noteData, todoData }: { noteData: NoteResponse; todoData: Todo } =
+    await res.json();
 
-  return formatNoteData(data);
+  return formatNoteData(noteData, todoData);
 };
 
 // 서버 컴포넌트에서 호출
 export const getServerNoteDetail = async (noteId: number) => {
   try {
-    const res = await fetchIntance({
+    const res1 = await fetchIntance({
       base: 'CODEIT',
       method: 'GET',
       url: `/notes/${noteId}`,
     });
-    if (!res.ok) throw new Error(getErrorMessage(res.status));
+    if (!res1.ok) return res1;
 
-    const data: NoteResponse = await res.json();
+    const noteData: NoteResponse = await res1.json();
 
-    return formatNoteData(data);
+    const res2 = await fetchIntance({
+      method: 'GET',
+      url: `/todos/${noteData.todo.id}`,
+    });
+
+    if (!res2.ok) return res2;
+
+    const todoData: Todo = await res2.json();
+
+    return formatNoteData(noteData, todoData);
   } catch {
     return null;
   }
@@ -66,7 +78,6 @@ export const getServerNoteDetail = async (noteId: number) => {
 
 /**
  * 노트 생성
- * @param
  */
 export const createNote = async ({
   formData,
@@ -80,7 +91,7 @@ export const createNote = async ({
   todoId: number;
 }) => {
   try {
-    const response = await fetch(`/api/note/${todoId}`, {
+    const res = await fetch(`/api/notes`, {
       method: 'POST',
       body: JSON.stringify({
         todoId,
@@ -90,13 +101,28 @@ export const createNote = async ({
       }),
     });
 
-    if (!response.ok) throw new Error(getErrorMessage(response.status));
-    const data = response.json();
+    const data = await res.json();
+    if (!res.ok) {
+      return data;
+    }
+    console.log('data', data);
     return { data };
   } catch (error) {
-    console.error('노트 생성 중 오류 발생:', error);
-    throw error;
+    console.log('err');
+    return error;
   }
+};
+
+/**
+ * 노트 삭제
+ */
+export const deleteNote = async (noteId: number) => {
+  const res = await fetch(`/api/notes/${noteId}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
+  return noteId;
 };
 
 // 목표별 노트 리스트 가져오기

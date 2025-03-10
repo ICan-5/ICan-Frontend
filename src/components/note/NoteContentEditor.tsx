@@ -65,7 +65,7 @@ export default function NoteContentEditor({
   return (
     <>
       <span className="mb-2 mt-3 text-12M">
-        공백포함 : 총 {textLength > 0 ? textLength : 0}자 | 공백제외 : 총{' '}
+        공백포함 : 총 {textLength > 0 ? textLength : 0}자 | 공백제외 : 총
         {trimmedTextLength > 0 ? trimmedTextLength : 0}자
       </span>
       {errors.content && (

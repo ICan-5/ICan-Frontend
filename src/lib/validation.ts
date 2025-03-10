@@ -11,8 +11,7 @@ const ERROR_MESSAGE = {
     invalidId: '이메일 형식으로 입력해주세요',
   },
   password: {
-    invalid:
-      '비밀번호는 공백을 제외, 영문 대소문자, 숫자, 특수문자를 포함한 최소 8자 이상이어야 합니다',
+    invalid: '비밀번호는 공백을 제외한 영문, 숫자, 특수문자를 포함해야 합니다',
     min: '비밀번호는 최소 8자 이상 입력 가능합니다',
     max: '비밀번호는 최대 12자 입력 가능합니다',
     match: '비밀번호가 일치하지 않습니다',
@@ -33,19 +32,19 @@ export const SignUpSchema = z
     password: z
       .string()
       .trim()
+      .min(8, { message: ERROR_MESSAGE.password.min })
+      .max(12, { message: ERROR_MESSAGE.password.max })
       .regex(PASSWORD_VALIDATION, {
         message: ERROR_MESSAGE.password.invalid,
-      })
-      .min(8, { message: ERROR_MESSAGE.password.min })
-      .max(12, { message: ERROR_MESSAGE.password.max }),
+      }),
     confirmPassword: z
       .string()
       .trim()
+      .min(8, { message: ERROR_MESSAGE.password.min })
+      .max(12, { message: ERROR_MESSAGE.password.max })
       .regex(PASSWORD_VALIDATION, {
         message: ERROR_MESSAGE.password.invalid,
-      })
-      .min(8, { message: ERROR_MESSAGE.password.min })
-      .max(12, { message: ERROR_MESSAGE.password.max }),
+      }),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

@@ -5,7 +5,7 @@ interface Props extends React.HTMLAttributes<HTMLParagraphElement> {
 }
 export default function ErrorMessage({ message, className }: Props) {
   return (
-    <p className={cn('ml-2 mt-1 break-keep text-14M text-warn500', className)}>
+    <p className={cn('ml-2 mt-2 break-keep text-14M text-warn500', className)}>
       {message}
     </p>
   );
