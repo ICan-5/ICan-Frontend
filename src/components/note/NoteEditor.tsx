@@ -25,6 +25,7 @@ import cn from '@/utils/cn';
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
+  // RHF 설정
   const {
     control,
     handleSubmit,
@@ -45,10 +46,14 @@ export default function NoteEditor() {
   // 할 일 제목, 목표 제목 가져오기
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
+  // 임베드 URL 상태 관리
   const linkUrl = watch('linkUrl');
   const [embedUrl, setEmbedUrl] = useState(linkUrl);
   const [embedVisible, setEmbedVisible] = useState(false);
+  // 노트 수정하기 상태
+  const [isEditMode, setIsEditMode] = useState(false);
 
+  // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
     if (todoId) {
       try {
@@ -69,7 +74,7 @@ export default function NoteEditor() {
     }
   };
 
-  // 임시 저장
+  // 임시 저장 기능
   const handleTempSave = useCallback(() => {
     if (isValid) {
       const noteData = getValues();
@@ -78,7 +83,7 @@ export default function NoteEditor() {
     }
   }, [isValid, getValues, todoId]);
 
-  // 자동 임시 저장 기능
+  // 자동 임시 저장 기능(5분마다)
   useEffect(() => {
     const interval = setInterval(() => {
       handleTempSave();
@@ -88,17 +93,10 @@ export default function NoteEditor() {
   }, [handleTempSave]);
 
   const [savedData, setSavedData] = useState<string | null>(null);
-
   const [showSavedData, setShowSavedData] = useState(!!savedData);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setSavedData(localStorage.getItem(`todo-${todoId}`));
-      setShowSavedData(true);
-    }
-  }, [todoId, savedData]);
-
-  const setTempData = () => {
+  // 임시 저장된 데이터 가져오기
+  const setTempData = useCallback(() => {
     if (savedData) {
       const parsedData = JSON.parse(savedData);
       Object.keys(parsedData).forEach((key) => {
@@ -106,14 +104,29 @@ export default function NoteEditor() {
       });
       trigger();
     }
-  };
+  }, [savedData, setValue, trigger]);
 
+  useEffect(() => {
+    setIsEditMode(false);
+    // 노트 수정하기
+    if (isEditMode) {
+      // 기존 노트 데이터 가져오기
+      //
+    } else if (typeof window !== 'undefined') {
+      const storedData = localStorage.getItem(`todo-${todoId}`);
+      setSavedData(storedData);
+      setShowSavedData(!!storedData);
+    }
+  }, [todoId, isEditMode, setTempData]);
+
+  // 링크 URL 변경 시 임베드 URL 업데이트
   useEffect(() => {
     setEmbedUrl(linkUrl);
   }, [linkUrl]);
 
   return (
     <div className="flex h-dvh w-full flex-col sm:flex-row">
+      {/* 임베드 URL이 있으면 표시 */}
       {embedVisible && embedUrl !== '' && (
         <section className="relative h-auto flex-1">
           <iframe
@@ -130,10 +143,12 @@ export default function NoteEditor() {
           </button>
         </section>
       )}
+      {/* 노트 작성 폼 */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900"
       >
+        {/* 상단 헤더 */}
         <div>
           <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
             <button type="button" onClick={() => router.back()}>
@@ -142,28 +157,32 @@ export default function NoteEditor() {
             <div className="ml-2 flex w-full items-center justify-between">
               <h2 className="text-14SB xs:text-16SB md:text-18SB">노트 작성</h2>
               <div className="flex justify-end gap-2 xs:justify-normal">
+                {/* 임시 저장 버튼 */}
                 <Button
                   disabled={!isValid}
                   size="medium"
                   variant="outline"
-                  className="border-none bg-transparent px-1 py-3 xs:px-6 2xl:rounded-lg 2xl:px-6 2xl:!text-14SB"
+                  className="border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
                   onClick={() => {
                     handleTempSave();
                   }}
                 >
                   임시저장
                 </Button>
+                {/* 제출 버튼 */}
                 <Button
                   size="medium"
-                  className="!px-1 !py-3 transition-colors xs:px-6 2xl:rounded-lg 2xl:px-6 2xl:!text-14SB"
+                  className="!px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
                   type="submit"
                   disabled={!isValid}
                 >
-                  작성 완료
+                  {isEditMode ? '수정 완료' : '작성 완료'}
                 </Button>
               </div>
             </div>
           </div>
+
+          {/* 임시 저장된 노트 알림 */}
           {showSavedData && (
             <section className="flex h-fit w-full flex-wrap items-center rounded-b-[28px] bg-slate100 px-4 py-2">
               <div className="mb-1 flex flex-1 flex-nowrap items-center sm:mb-0">
@@ -192,7 +211,7 @@ export default function NoteEditor() {
               </div>
             </section>
           )}
-          {/* goal 목표 있을 경우 */}
+          {/* 목표 제목과 할 일 제목 표시 */}
           {todoQuery.isLoading || goalQuery.isLoading ? (
             <NoteTitlesSkeleton />
           ) : (
@@ -208,7 +227,6 @@ export default function NoteEditor() {
                   </h3>
                 </section>
               )}
-
               <article
                 className={cn(
                   'mx-6 mb-4 flex items-center gap-2 text-gs700',
