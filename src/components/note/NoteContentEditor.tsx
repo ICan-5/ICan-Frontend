@@ -33,13 +33,13 @@ export default function NoteContentEditor({
   getValues,
   setValue,
   trigger,
+  setEmbedVisible,
 }: NoteFormControlProps) {
   const quillInstance = useRef<ReactQuillType | null>(null);
   const [textLength, setTextLength] = useState(0);
   const [trimmedTextLength, setTrimmedTextLength] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const linkUrl = getValues('linkUrl');
-  // const content = getValues('content');
 
   const updateTextLength = () => {
     if (!quillInstance.current) return;
@@ -87,9 +87,15 @@ export default function NoteContentEditor({
             icon={faLink}
             className="mr-2 size-6 rounded-full bg-slate500 text-gs00"
           />
-          <p className="text-overflow w-[calc(100%-56px)] text-gs600">
-            {linkUrl}
-          </p>
+          <button
+            type="button"
+            className="w-[calc(100%-56px)] text-left"
+            onClick={() => setEmbedVisible?.(true)}
+          >
+            <p className="text-overflow text-gs600 transition-colors hover:text-slate500 focus:text-slate500 active:text-slate500">
+              {linkUrl}
+            </p>
+          </button>
           <button
             type="button"
             className="ml-auto"

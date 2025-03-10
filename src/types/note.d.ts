@@ -40,6 +40,7 @@ export interface NoteFormControlProps {
     content: string;
     linkUrl?: string;
   }>;
+  setEmbedVisible?: (val: boolian) => void;
 }
 
 export interface NoteDetail {
