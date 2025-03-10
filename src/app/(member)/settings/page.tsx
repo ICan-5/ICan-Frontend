@@ -8,14 +8,14 @@ export default async function page() {
   const themeColor = await getThemeColor();
 
   return (
-    <div className="flex flex-col gap-2 text-gsBk md:flex-row">
+    <div className="flex w-full flex-col gap-2 text-gsBk md:flex-row">
       <div className="flex-1">
         <h1 className="rounded-t-2xl border-2 border-gs200 bg-gs50 px-4 py-3 text-16SB 2xl:rounded-t-3xl 2xl:py-4 2xl:text-18SB">
           프로필 수정
         </h1>
         <SettingForm />
       </div>
-      <div className="flex size-full flex-col md:w-[280px] lg:w-[350px]">
+      <div className="flex size-full flex-none flex-col md:w-[280px] lg:w-[350px]">
         <h1 className="flex rounded-t-2xl border-2 border-gs200 bg-gs50 px-4 py-3 text-16SB 2xl:rounded-t-3xl 2xl:py-4 2xl:text-18SB">
           테마변경
         </h1>

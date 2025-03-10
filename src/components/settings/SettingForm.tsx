@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 import Button from '../common/button/Button';
 import ProfileForm from './ProfileField';
 import FormTitle from './FormTitle';
-import FormField from './FormField';
 import { SettingSchema, SettingSchemaType } from '@/lib/validation';
+import TextField from '../auth/TextField';
 
 interface Props {
   name?: string;
@@ -60,7 +60,7 @@ export default function SettingForm() {
               {data?.user?.email}
             </div>
           </div>
-          <FormField
+          <TextField
             label="닉네임"
             name="name"
             placeholder="변경할 닉네임을 입력해주세요"
@@ -69,35 +69,7 @@ export default function SettingForm() {
           />
         </div>
       </FormTitle>
-      <hr className="border border-gs200" />
-      <FormTitle title="비밀 번호">
-        <div className="flex w-full flex-col">
-          <FormField
-            label="현재 비밀번호"
-            name="currentPassword"
-            placeholder="현재 비밀번호를 입력해주세요"
-            isPassword
-            register={register}
-            errors={errors}
-          />
-          <FormField
-            label="새로운 비밀변호"
-            name="newPassword"
-            placeholder="새로운 비밀번호를 입력해주세요"
-            isPassword
-            register={register}
-            errors={errors}
-          />
-          <FormField
-            label="새로운 비밀번호 확인"
-            name="confirmPassword"
-            placeholder="새로운 비밀번호를 확인해주세요"
-            isPassword
-            register={register}
-            errors={errors}
-          />
-        </div>
-      </FormTitle>
+
       <Button
         type="submit"
         className="my-3 ml-auto flex-none 2xl:my-4"
