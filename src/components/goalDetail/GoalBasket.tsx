@@ -84,7 +84,7 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
         </div>
         <p className="ml-auto cursor-pointer text-gs500">모두 지우기</p>
       </div>
-      <div className="flex-1 overflow-y-auto px-6">
+      <div className="flex-1 overflow-y-auto px-6 pb-16">
         <ul className="list-none space-y-2">
           {basketItems &&
             basketItems.map((item) => (
@@ -145,7 +145,7 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
           </p>
         )}
       </div>
-      <div className="absolute bottom-0 left-0 w-full rounded-b-xl bg-gs100 p-5">
+      <div className="absolute bottom-0 left-0 w-full bg-gs100 p-5">
         <div
           className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
           onClick={handleAddTodo}

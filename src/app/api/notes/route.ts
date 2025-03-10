@@ -16,5 +16,6 @@ export async function GET(req: Request) {
     url: `/notes?goalId=${goalId}`,
   });
 
-  return res;
+  const data = await res.json();
+  return NextResponse.json(data);
 }
