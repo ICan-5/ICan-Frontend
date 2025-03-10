@@ -2,8 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import cn from '@/utils/cn';
-import { THEMES } from '@/constants/thems';
 import { setThemeDark, setThemeMode } from '@/services/theme';
+
+export const THEMES = [
+  { value: 'light', text: '밝게' },
+  { value: 'dark', text: '어둡게' },
+  { value: 'system', text: '시스템' },
+];
 
 interface Props {
   initialThemeMode: string;

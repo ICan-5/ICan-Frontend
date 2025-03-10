@@ -4,8 +4,14 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Icon from '@/components/common/icon/Icon';
 import cn from '@/utils/cn';
-import { THEME_COLORS } from '@/constants/thems';
 import { setThemeColor } from '@/services/theme';
+
+const THEME_COLORS = [
+  { id: 'blue', primary: 'bg-[#60A5FA]', secondary: 'bg-[#DBEAFE]' },
+  { id: 'green', primary: 'bg-[#34D399]', secondary: 'bg-[#D1FAE5]' },
+  { id: 'pink', primary: 'bg-[#F472B6]', secondary: 'bg-[#FCE7F3]' },
+  { id: 'purple', primary: 'bg-[#A78BFA]', secondary: 'bg-[#EDE9FE]' },
+] as const;
 
 interface Props {
   initialColor: 'blue' | 'green' | 'pink' | 'purple';
