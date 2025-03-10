@@ -30,12 +30,14 @@ export default function ThemeTab({ initialTheme }: Props) {
   return (
     <div className="flex w-full gap-2 rounded-xl bg-gs100 p-2">
       {THEMES.map((theme, index) => (
-        <>
+        <div
+          key={theme.value}
+          className={cn('flex-1 rounded-xl px-2 py-1 text-center text-16M', {
+            'bg-gs00 text-gsBk': theme.value === selectedTab,
+            'text-gs400': theme.value !== selectedTab,
+          })}
+        >
           <button
-            className={cn('flex-1 rounded-xl px-2 py-1 text-16M', {
-              'bg-gs00 text-gsBk': theme.value === selectedTab,
-              'text-gs400': theme.value !== selectedTab,
-            })}
             type="button"
             key={theme.value}
             onClick={() => changeTheme(theme.value)}
@@ -43,7 +45,7 @@ export default function ThemeTab({ initialTheme }: Props) {
             {theme.text}
           </button>
           {index < THEMES.length - 1 && <div className="w-px bg-gs200" />}
-        </>
+        </div>
       ))}
     </div>
   );

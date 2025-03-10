@@ -56,7 +56,7 @@ export default function SettingForm() {
         <div className="flex w-full flex-col">
           <div className="mb-6 flex w-full flex-col gap-2 text-14M text-gs400 2xl:gap-3 2xl:text-16M">
             <p>이메일</p>
-            <div className="h-11 w-full rounded-xl bg-gs200 py-3 pl-4 pr-12 text-14R 2xl:h-12 2xl:text-16R">
+            <div className="min-h-11 overflow-x-auto rounded-xl bg-gs200 px-4 py-3 text-14R 2xl:h-12 2xl:text-16R">
               {data?.user?.email}
             </div>
           </div>

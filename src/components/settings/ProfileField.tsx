@@ -55,14 +55,14 @@ export default function ProfileForm({ url, onChange }: Props) {
 
   return (
     <FormTitle title="프로필 사진">
-      <div className="flex w-full flex-col gap-3">
-        <div className="flex items-center gap-3">
+      <div className="flex size-full flex-col gap-3">
+        <div className="flex flex-col items-center gap-3 md:flex-row">
           <Image
-            className="size-16 flex-none rounded-full object-cover"
+            className="size-20 flex-none rounded-full object-cover"
             src={imageUrl || '/images/profile.png'}
             alt="profileImage"
-            width="64"
-            height="64"
+            width="80"
+            height="80"
           />
           <label
             className="flex cursor-pointer flex-row items-center gap-2 rounded-full border border-gs300 px-6 py-2 hover:border-slate500 hover:text-slate500"
