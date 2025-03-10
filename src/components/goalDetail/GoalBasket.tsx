@@ -16,9 +16,13 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 interface Props {
   basketItems: Basket[];
   goalId: string;
+  color: {
+    100: string;
+    DEFAULT: string;
+  };
 }
 
-export default function GoalBasket({ basketItems, goalId }: Props) {
+export default function GoalBasket({ basketItems, goalId, color }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<number | null>(
@@ -84,15 +88,16 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
         </div>
         <p className="ml-auto cursor-pointer text-gs500">모두 지우기</p>
       </div>
-      <div className="flex-1 overflow-y-auto px-6">
+      <div className="flex-1 overflow-y-auto px-6 pb-16">
         <ul className="list-none space-y-2">
           {basketItems &&
             basketItems.map((item) => (
               <li
                 key={item.id}
-                className={`flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors ${
-                  hoveredItem === item.id ? 'text-slate500' : 'text-gs700'
-                }`}
+                className="flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors"
+                style={{
+                  color: hoveredItem === item.id ? color.DEFAULT : undefined,
+                }}
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
@@ -117,7 +122,7 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
                         >
                           <FontAwesomeIcon
                             icon={faCalendar}
-                            className="text-slate400"
+                            style={{ color: color.DEFAULT }}
                           />
                         </button>
                       }
@@ -145,9 +150,10 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
           </p>
         )}
       </div>
-      <div className="absolute bottom-0 left-0 w-full rounded-b-xl bg-gs100 p-5">
+      <div className="absolute bottom-0 left-0 w-full bg-gs100 p-5">
         <div
-          className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 p-1 text-14M"
+          style={{ color: color.DEFAULT, borderColor: color.DEFAULT }}
           onClick={handleAddTodo}
         >
           + 장바구니에 새 할일 추가

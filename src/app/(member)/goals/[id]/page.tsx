@@ -100,7 +100,16 @@ export default function Page({ params }: { params: { id: string } }) {
               onToggle={handleToggleTodo}
               goalId={params.id}
             />
-            <GoalBasket basketItems={basketTodos} goalId={params.id} />
+            <GoalBasket
+              basketItems={basketTodos}
+              goalId={params.id}
+              color={
+                goalColors[color as keyof typeof goalColors] || {
+                  100: '#D1D5DB',
+                  DEFAULT: '#6B7280',
+                }
+              }
+            />
           </div>
         </div>
       )}

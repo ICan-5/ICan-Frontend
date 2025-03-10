@@ -12,6 +12,7 @@ import { Goal } from '@/types/goals';
 import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
 import goalColors from '@/presets/goalColors';
 import ConfirmModal from '../common/ConfirmModal';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface Props {
   id: string;
@@ -33,6 +34,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     null,
   );
   const inputRef = useRef<HTMLInputElement>(null);
+  const [menuRef] = useClickOutside<HTMLDivElement>(() =>
+    setShowMobileMenu(false),
+  );
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
   const goalTitle = goalItem?.title;
@@ -102,23 +106,23 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   }, [isEditing]);
 
   const toggleMobileMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
+    setShowMobileMenu((prev) => !prev);
   };
 
   const defaultColorStyle: React.CSSProperties = useMemo(() => {
     const validColor =
       goalColors[goalItem?.color as keyof typeof goalColors]?.DEFAULT;
     return validColor
-      ? { backgroundColor: validColor, borderColor: validColor }
-      : { backgroundColor: '#64748B', borderColor: '#64748B' };
+      ? { backgroundColor: validColor }
+      : { backgroundColor: '#64748B' };
   }, [goalItem?.color]);
 
   const colorStyle: React.CSSProperties = useMemo(() => {
     const validColor =
       goalColors[goalItem?.color as keyof typeof goalColors]?.['100'];
     return validColor
-      ? { backgroundColor: validColor, borderColor: validColor }
-      : { backgroundColor: '#CBD5E1', borderColor: '#CBD5E1' };
+      ? { backgroundColor: validColor }
+      : { backgroundColor: '#CBD5E1' };
   }, [goalItem?.color]);
 
   return (
@@ -130,7 +134,6 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             className="mr-2"
             style={{ color: defaultColorStyle.backgroundColor }}
           />
-
           {isEditing ? (
             <input
               ref={inputRef}
@@ -141,7 +144,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               className="w-full border-b border-gs500"
             />
           ) : (
-            <span className="w-full whitespace-pre-wrap break-words">
+            <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
               {goalTitle}
             </span>
           )}
@@ -186,7 +189,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           </Link>
         )}
 
-        <div className="ml-auto hidden gap-2 md:flex">
+        <div className="ml-auto hidden gap-2 lg:flex">
           {!isEditing && (
             <button
               type="button"
@@ -209,7 +212,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           </button>
         </div>
 
-        <div className="relative md:hidden">
+        <div ref={menuRef} className="relative lg:hidden">
           <button
             type="button"
             onClick={toggleMobileMenu}
@@ -218,7 +221,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </button>
           {showMobileMenu && (
-            <div className="absolute right-0 top-10 z-10 w-32 rounded-md bg-gs00 shadow-lg">
+            <div className="absolute right-0 top-10 z-50 w-32 rounded-md bg-gs00 shadow-lg">
               <button
                 type="button"
                 onClick={handleEditClick}

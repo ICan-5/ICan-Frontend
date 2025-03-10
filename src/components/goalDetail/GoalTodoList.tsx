@@ -5,7 +5,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
-import CheckTodo from '@/components/common/todo/CheckTodo';
+import GoalCheckTodo from '@/components/common/todo/GoalCheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
 import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
@@ -122,7 +122,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
           <h3 className="mb-1 mt-3 text-18SB text-gs600">오늘</h3>
           {groupedTodos.today.length > 0 ? (
             groupedTodos.today.map((todo) => (
-              <CheckTodo
+              <GoalCheckTodo
                 key={todo.todoId}
                 id={todo.todoId}
                 title={todo.title}
@@ -166,7 +166,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                   <div key={date} className="relative mb-4">
                     <div className="text-16M text-gs700">{date}</div>
                     {todos.map((todo) => (
-                      <CheckTodo
+                      <GoalCheckTodo
                         key={todo.todoId}
                         id={todo.todoId}
                         title={todo.title}
@@ -213,7 +213,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                   <div key={date} className="relative mb-4">
                     <div className="text-16M text-gs700">{date}</div>
                     {todos.map((todo) => (
-                      <CheckTodo
+                      <GoalCheckTodo
                         key={todo.todoId}
                         id={todo.todoId}
                         title={todo.title}
@@ -239,7 +239,8 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
 
       <div className="sticky z-10 rounded-b-xl bg-gs00 p-5">
         <div
-          className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 p-1 text-14M"
+          style={{ color: color.DEFAULT, borderColor: color.DEFAULT }}
           onClick={() => setIsModalOpen(true)}
         >
           + 새 할일 생성
