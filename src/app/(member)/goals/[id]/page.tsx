@@ -30,6 +30,7 @@ export default function Page({ params }: { params: { id: string } }) {
     await toggleTodoMutation.mutateAsync({ todoId, todo });
   };
 
+  // 로딩 화면 렌더링 함수
   const renderLoading = () => (
     <div className="flex h-full items-center justify-center">
       <FontAwesomeIcon

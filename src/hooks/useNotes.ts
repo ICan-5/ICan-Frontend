@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '@/constants/queryKey';
-import { getNoteDetail } from '@/services/note';
+import { getNoteDetail, getNotes } from '@/services/note';
 import { NoteDetail } from '@/types/note';
 
 export const useNoteDetail = (noteId: number, initialData: NoteDetail) => {
@@ -10,3 +10,10 @@ export const useNoteDetail = (noteId: number, initialData: NoteDetail) => {
     initialData,
   });
 };
+
+export function useNoteList(goalId: number) {
+  return useQuery({
+    queryKey: [QUERY_KEY.NOTE, goalId],
+    queryFn: () => getNotes(goalId),
+  });
+}

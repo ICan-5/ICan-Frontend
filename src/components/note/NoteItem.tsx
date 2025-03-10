@@ -1,21 +1,11 @@
 'use client';
 
-import {
-  faLayerGroup,
-  faEllipsisVertical,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
 import Link from 'next/link';
-import ConfirmDeleteModal from '@/components/note/ConfirmDeleteModal';
-import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface Props {
   id: number;
   title: string;
-  todo: string;
-  content: string;
-  date: string;
+  todo: { title: string };
 }
 
 interface NoteItemProps {
@@ -23,82 +13,21 @@ interface NoteItemProps {
 }
 
 export default function NoteItem({ note }: NoteItemProps) {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [menuRef, isMenuOpen, setIsMenuOpen] = useClickOutside<HTMLDivElement>(
-    () => setIsMenuOpen(false),
-  );
-
-  const handleDelete = () => {
-    setIsDeleteModalOpen(false);
-  };
-
   return (
-    <>
-      <div className="mb-4 rounded-xl border bg-gs00 shadow-md sm:max-h-[192px] md:max-h-[160px] lg:max-h-[164px]">
-        <div className="p-6">
-          {/* 상단 아이콘 */}
-          <div className="flex items-center justify-between">
-            <div className="flex size-7 items-center justify-center rounded-full bg-slate100 text-slate300">
-              <FontAwesomeIcon icon={faLayerGroup} />
-            </div>
+    <div className="mb-4 rounded-xl border bg-gs00 p-6 shadow-md sm:max-h-[200px] md:max-h-[200px] lg:max-h-[120px]">
+      {/* 제목 */}
+      <Link
+        href={`/note/${note.id}`}
+        className="block w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"
+      >
+        {note.title}
+      </Link>
 
-            <div className="relative" ref={menuRef}>
-              <div
-                className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsMenuOpen((prev) => !prev);
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faEllipsisVertical}
-                  className="text-gs400"
-                />
-              </div>
-              {isMenuOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-24 rounded bg-gs00 shadow-md">
-                  <button
-                    type="button"
-                    className="block w-full border-b px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                  >
-                    수정하기
-                  </button>
-                  <button
-                    type="button"
-                    className="block w-full px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                    onClick={() => {
-                      setIsDeleteModalOpen(true);
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    삭제하기
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* 제목 */}
-          <Link
-            href={`/note/${note.id}`}
-            className="mt-2 block w-full cursor-pointer border-b pb-3 text-left text-18M font-semibold hover:text-slate500"
-          >
-            {note.title}
-          </Link>
-
-          {/* todo */}
-          <div className="mb-6 mt-3 flex items-center gap-2 text-12M text-gs700">
-            <span className="mr-2 rounded-lg bg-gs200 p-2">To do</span>
-            <span>{note.todo}</span>
-          </div>
-        </div>
+      {/* todo */}
+      <div className="mt-3 flex items-center gap-2 text-gs700">
+        <span className="mr-2 rounded-[4px] bg-gs200 p-1 text-12SB">To do</span>
+        <span className="mr-2 text-12R">{note.todo.title}</span>
       </div>
-      {/* 모달 */}
-      <ConfirmDeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onDelete={handleDelete}
-      />
-    </>
+    </div>
   );
 }
