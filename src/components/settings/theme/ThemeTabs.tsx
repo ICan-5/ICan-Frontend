@@ -3,27 +3,54 @@
 import { useEffect, useState } from 'react';
 import cn from '@/utils/cn';
 import { THEMES } from '@/constants/thems';
-import { setTheme } from '@/services/theme';
+import { setThemeDark, setThemeMode } from '@/services/theme';
 
 interface Props {
-  initialTheme: string;
+  initialThemeMode: string;
 }
 
-export default function ThemeTab({ initialTheme }: Props) {
-  const [selectedTab, setSelectedTab] = useState<string>(initialTheme);
+export default function ThemeTab({ initialThemeMode }: Props) {
+  const [selectedTab, setSelectedTab] = useState<string>(initialThemeMode);
 
+  /**
+   * theme모드를 변경하는 함수, 탭 클릭 시 실행
+   * @param theme 'light', 'dark', 'system'
+   */
   const changeTheme = async (theme: string) => {
     setSelectedTab(theme);
-    await setTheme(theme);
+    await setThemeMode(theme);
   };
 
+  /**
+   * system모드가 dark인지 알려주는 함수
+   * @returns system모드가 dark면 true, light면 false
+   */
+  const isSystemDark = () => {
+    return !!window.matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+
+  /**
+   * 선택된 탭이 변할 때마다, document 속성과 themeDark를 변경
+   */
   useEffect(() => {
-    if (selectedTab === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else if (selectedTab === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
+    switch (selectedTab) {
+      case 'light': {
+        document.documentElement.setAttribute('data-dark', 'false');
+        setThemeDark(false);
+        break;
+      }
+      case 'dark': {
+        document.documentElement.setAttribute('data-dark', 'true');
+        setThemeDark(true);
+        break;
+      }
+      case 'system': {
+        const isDark = isSystemDark();
+        document.documentElement.setAttribute('data-dark', String(isDark));
+        setThemeDark(isDark);
+        break;
+      }
+      default:
     }
   }, [selectedTab]);
 

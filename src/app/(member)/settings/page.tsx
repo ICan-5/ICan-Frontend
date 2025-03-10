@@ -1,10 +1,10 @@
 import SettingForm from '@/components/settings/SettingForm';
 import ThemeColors from '@/components/settings/theme/ThemeColors';
 import ThemeTab from '@/components/settings/theme/ThemeTabs';
-import { getTheme, getThemeColor } from '@/services/theme';
+import { getThemeColor, getThemeMode } from '@/services/theme';
 
 export default async function page() {
-  const theme = await getTheme();
+  const themeMode = await getThemeMode();
   const themeColor = await getThemeColor();
 
   return (
@@ -20,7 +20,7 @@ export default async function page() {
           테마변경
         </h1>
         <div className="flex flex-1 flex-col gap-5 rounded-b-2xl border-x-2 border-b-2 border-gs200 bg-gs00 p-3 2xl:rounded-b-3xl 2xl:p-4">
-          <ThemeTab initialTheme={theme} />
+          <ThemeTab initialThemeMode={themeMode} />
           <ThemeColors initialColor={themeColor} />
         </div>
       </div>
