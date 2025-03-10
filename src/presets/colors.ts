@@ -17,12 +17,11 @@ const colors = {
   warn50: '#FFF2F2',
   warn500: '#F95F5F',
 
-  goal01: { 100: '#93C5FD', DEFAULT: '#3B82F6' },
-  goal02: { 100: '#FFEEE0', DEFAULT: '#FB923C' },
-  goal03: { 100: '#FFF9E1', DEFAULT: '#FACC15' },
-  goal04: { 100: '#E0FFFB', DEFAULT: '#2DD4BF' },
-  goal05: { 100: '#F1EBFF', DEFAULT: '#8B5CF6' },
-  goal06: { 100: '#FFECEC', DEFAULT: '#F87171' },
+  goal01: { 100: '#FFEEE0', DEFAULT: '#FB923C' },
+  goal02: { 100: '#FFF9E1', DEFAULT: '#FACC15' },
+  goal03: { 100: '#E0FFFB', DEFAULT: '#2DD4BF' },
+  goal04: { 100: '#F1EBFF', DEFAULT: '#8B5CF6' },
+  goal05: { 100: '#FFECEC', DEFAULT: '#F87171' },
 
   slate50: '#EFF6FF',
   slate100: '#DBEAFE',
