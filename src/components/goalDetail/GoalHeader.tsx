@@ -183,10 +183,13 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <button
             type="button"
             onClick={toggleMobileMenu}
-            className="rounded-full bg-slate100 p-2 shadow"
+            className="relative flex items-center justify-center rounded-full bg-slate100 p-1 shadow"
           >
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <span className="flex size-8 items-center justify-center rounded-full">
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </span>
           </button>
+
           {showMobileMenu && (
             <div className="absolute right-0 top-10 z-50 w-32 rounded-md bg-gs00 shadow-lg">
               <button

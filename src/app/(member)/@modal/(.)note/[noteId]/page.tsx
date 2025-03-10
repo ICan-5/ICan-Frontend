@@ -6,5 +6,5 @@ export default async function NoteDetailPage({
   params: { noteId: number };
 }) {
   const noteId = Number(params.noteId);
-  return renderNoteDetail(noteId);
+  return renderNoteDetail(noteId, true);
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
+import IconButton from '@/components/common/button/IconButton';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
 import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
@@ -140,13 +140,12 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-4 text-18SB text-gs600">예정된 할일</h3>
-            <FontAwesomeIcon
+            <IconButton
+              icon={faAngleDown}
               className={cn(
-                'size-4 text-gs500 transition-transform duration-300',
+                'text-gs500 transition-transform duration-300',
                 isFutureFold ? 'rotate-180' : 'rotate-0',
               )}
-              icon={faAngleDown}
-              size="xl"
               onClick={() => setIsFutureFold((prev) => !prev)}
             />
           </div>
@@ -187,13 +186,12 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-4 text-18SB text-gs600">지난 할일</h3>
-            <FontAwesomeIcon
+            <IconButton
+              icon={faAngleDown}
               className={cn(
-                'size-4 text-gs500 transition-transform duration-300',
+                'text-gs500 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
-              icon={faAngleDown}
-              size="xl"
               onClick={() => setIsPastFold((prev) => !prev)}
             />
           </div>
