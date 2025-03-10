@@ -11,12 +11,8 @@ import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { Goal } from '@/types/goals';
-
-const goalColor: Record<string, string> = {
-  goal01: 'text-goal01',
-  goal02: 'text-goal02',
-  default: 'text-slate500',
-};
+import { useGoalTodo } from '@/hooks/useGoalsTodo';
+import goalColors from '@/presets/goalColors';
 
 interface Props {
   id: number;
@@ -55,6 +51,12 @@ export default function CheckTodo({
   const noteIcon = noteId ? faFileLines : faFilePen;
   const [menuRef, isMenuOpen, setIsMenuOpen] =
     useClickOutside<HTMLDivElement>();
+  const { color } = useGoalTodo(goal?.goalId ?? 0);
+
+  const goalColor = goalColors[color as keyof typeof goalColors] ?? {
+    100: '',
+    DEFAULT: '#64748b',
+  };
 
   return (
     <>
@@ -62,10 +64,19 @@ export default function CheckTodo({
       <label
         htmlFor={`${id}`}
         className={cn(
-          'group flex w-full cursor-pointer items-center justify-center gap-2 border-b border-dashed border-gs200 p-2 text-gsBk 2xl:gap-3 2xl:px-3 2xl:py-4',
-          { 'hover:bg-slate50 hover:text-slate700': !done },
-          { 'bg-slate50 text-slate700': isMenuOpen },
+          'group flex w-full cursor-pointer items-center justify-center gap-2 border-b border-dashed border-gs200 p-2 2xl:gap-3 2xl:px-3 2xl:py-4',
         )}
+        style={{
+          color: isMenuOpen ? goalColor.DEFAULT : undefined,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = goalColor.DEFAULT;
+          e.currentTarget.style.backgroundColor = goalColor['100'];
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = '';
+          e.currentTarget.style.backgroundColor = '';
+        }}
         onClick={() => {
           if (onCheck) onCheck();
         }}
@@ -79,9 +90,12 @@ export default function CheckTodo({
         />
         <span
           className={cn(
-            'flex size-4 flex-none items-center justify-center rounded-[4px] border border-slate500 bg-gs00 2xl:h-5 2xl:w-5',
+            'flex size-4 flex-none items-center justify-center rounded-[4px] border bg-gs00 2xl:h-5 2xl:w-5',
             { 'border-0 bg-gs400 text-gs00': done },
           )}
+          style={{
+            borderColor: done ? 'transparent' : goalColor.DEFAULT,
+          }}
         >
           {done && <FontAwesomeIcon className="size-3" icon={faCheck} />}
         </span>
@@ -90,7 +104,6 @@ export default function CheckTodo({
             <span
               className={cn(
                 'overflow-hidden text-ellipsis whitespace-nowrap break-words text-12M text-gs500 2xl:text-14M',
-                goalColor[goal?.color || 'default'],
               )}
             >
               {goal?.title}
@@ -106,13 +119,13 @@ export default function CheckTodo({
           </span>
         </p>
         <IconButton
-          className={cn(
-            'flex-none rounded-2xl bg-gs00 text-slate500 group-hover:bg-gs00',
-            {
-              'opacity-100': isMenuOpen,
-              'opacity-0 group-hover:opacity-100': !isMenuOpen,
-            },
-          )}
+          className={cn('flex-none rounded-2xl bg-gs00 group-hover:bg-gs00', {
+            'opacity-100': isMenuOpen,
+            'opacity-0 group-hover:opacity-100': !isMenuOpen,
+          })}
+          style={{
+            color: goalColor.DEFAULT,
+          }}
           icon={noteIcon}
           onClick={(e) => {
             e.stopPropagation();

@@ -18,13 +18,13 @@ const createBasketSchema = z.object({
 
 export type BasketFormValues = z.infer<typeof createBasketSchema>;
 
-type Props = {
+interface Props {
   goalId: number;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
   initialData?: { title: string };
-};
+}
 
 export default function GoalTodoCreateModal({
   goalId,

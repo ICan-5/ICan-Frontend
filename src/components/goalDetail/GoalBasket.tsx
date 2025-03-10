@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
-  faCartPlus,
   faTrashCan,
+  faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,9 +16,13 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 interface Props {
   basketItems: Basket[];
   goalId: string;
+  color: {
+    100: string;
+    DEFAULT: string;
+  };
 }
 
-export default function GoalBasket({ basketItems, goalId }: Props) {
+export default function GoalBasket({ basketItems, goalId, color }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<number | null>(
@@ -26,6 +30,7 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
   );
   const addTodoMutation = useGoalAddTodo();
   const deleteTodoMutation = useDeleteBasketTodo();
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   const handleDateSelect = (date: Date | null, item: Basket) => {
     if (!date) return;
@@ -54,71 +59,106 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
       setSelectedDeleteTodo(null);
     }
   };
-
   return (
-    <div className="rounded-2xl bg-gs00 p-6 shadow">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-18R font-bold">
-          <FontAwesomeIcon icon={faCartPlus} className="mr-2 text-slate400" />
-          할일 장바구니
-        </h3>
-        <div className="cursor-pointer text-slate400" onClick={handleAddTodo}>
-          + 할 일 추가
+    <div className="relative flex h-[285px] flex-col rounded-2xl shadow">
+      <div className="relative mb-4 flex items-center rounded-t-2xl border-b bg-gs00 p-4">
+        <div className="relative flex items-center gap-2">
+          <h3 className="text-18SB">할일 장바구니</h3>
+          <div
+            className="relative flex items-center"
+            onMouseEnter={() => setIsTooltipOpen(true)}
+            onMouseLeave={() => setIsTooltipOpen(false)}
+          >
+            <FontAwesomeIcon
+              icon={faCircleQuestion}
+              className="cursor-pointer text-gs500"
+            />
+            <div
+              className={`absolute top-full -ml-12 mt-2 min-w-[205px] rounded-md bg-gs00 p-2 text-14M text-gsBk shadow transition-opacity duration-200 ${
+                isTooltipOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+              }`}
+            >
+              할 일을 미리 입력해 두고
+              <br />
+              원하는 날짜에 지정할 수 있습니다.
+              <br />
+              급하게 떠오른 할 일도 쉽게 저장하고 관리하세요!
+            </div>
+          </div>
+        </div>
+        <p className="ml-auto cursor-pointer text-gs500">모두 지우기</p>
+      </div>
+      <div className="flex-1 overflow-y-auto px-6 pb-16">
+        <ul className="list-none space-y-2">
+          {basketItems &&
+            basketItems.map((item) => (
+              <li
+                key={item.id}
+                className="flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors"
+                style={{
+                  color: hoveredItem === item.id ? color.DEFAULT : undefined,
+                }}
+                onMouseEnter={() => setHoveredItem(item.id)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <span>{item.title}</span>
+                <div className="flex items-center space-x-3">
+                  <div className="relative flex items-center">
+                    <DatePicker
+                      dateFormat="yyyy-MM-dd"
+                      selected={null}
+                      portalId="root-portal"
+                      onChange={(date: Date | null) =>
+                        handleDateSelect(date, item)
+                      }
+                      customInput={
+                        <button
+                          type="button"
+                          className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
+                            hoveredItem === item.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          }`}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCalendar}
+                            style={{ color: color.DEFAULT }}
+                          />
+                        </button>
+                      }
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
+                      hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onClick={() => setSelectedDeleteTodo(item.id)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      className="text-warn500"
+                    />
+                  </button>
+                </div>
+              </li>
+            ))}
+        </ul>
+        {(!basketItems || basketItems.length === 0) && (
+          <p className="flex h-full items-center justify-center py-6 text-gs500">
+            장바구니에 할일이 없습니다.
+          </p>
+        )}
+      </div>
+      <div className="absolute bottom-0 left-0 w-full bg-gs100 p-5">
+        <div
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 p-1 text-14M"
+          style={{ color: color.DEFAULT, borderColor: color.DEFAULT }}
+          onClick={handleAddTodo}
+        >
+          + 장바구니에 새 할일 추가
         </div>
       </div>
-      <ul className="list-none space-y-2">
-        {basketItems &&
-          basketItems.map((item) => (
-            <li
-              key={item.id}
-              className={`flex items-center justify-between p-1 text-gs700 transition-colors ${
-                hoveredItem === item.id ? 'text-slate500' : 'text-gs700'
-              }`}
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <span>{item.title}</span>
-              <div className="flex items-center space-x-3">
-                <div className="relative flex items-center">
-                  <DatePicker
-                    dateFormat="yyyy-MM-dd"
-                    selected={null}
-                    onChange={(date: Date | null) =>
-                      handleDateSelect(date, item)
-                    }
-                    customInput={
-                      <button
-                        type="button"
-                        className={`flex size-8 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
-                          hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      >
-                        <FontAwesomeIcon
-                          icon={faCalendar}
-                          className="text-slate400"
-                        />
-                      </button>
-                    }
-                  />
-                </div>
-                <button
-                  type="button"
-                  className={`flex size-8 items-center justify-center rounded-full bg-white p-1 shadow-md transition-opacity duration-200 ${
-                    hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={() => setSelectedDeleteTodo(item.id)}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} className="text-warn500" />
-                </button>
-              </div>
-            </li>
-          ))}
-      </ul>
-      {(!basketItems || basketItems.length === 0) && (
-        <p className="flex items-center justify-center py-6 text-gs500">
-          장바구니에 할 일이 없어요
-        </p>
-      )}
 
       {isModalOpen && (
         <BasketTodoModal

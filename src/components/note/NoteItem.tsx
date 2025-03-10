@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 
-interface Note {
+interface Props {
   id: number;
   title: string;
   todo: { title: string };
 }
 
 interface NoteItemProps {
-  note: Note;
+  note: Props;
 }
 
 export default function NoteItem({ note }: NoteItemProps) {

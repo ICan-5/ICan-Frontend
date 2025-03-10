@@ -7,7 +7,7 @@ export async function PATCH(
 ) {
   const { goalId } = params;
   const body = await req.json();
-  const { title } = body;
+  const { title, color } = body;
 
   if (!title) {
     return NextResponse.json({ message: 'title is required' }, { status: 400 });
@@ -29,7 +29,7 @@ export async function PATCH(
   const res2 = await fetchIntance({
     method: 'PATCH',
     url: `/goals/${goalId}`,
-    body: { goalId, title },
+    body: { goalId, title, color },
   });
 
   return res2;

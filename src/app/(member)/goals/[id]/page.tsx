@@ -2,25 +2,21 @@
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { useState } from 'react';
-import {
-  faAnglesRight,
-  faFaceSadCry,
-  faFilePen,
-  faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
+import { faFaceSadCry, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
 import GoalHeader from '@/components/goalDetail/GoalHeader';
+import GoalProgress from '@/components/goalDetail/GoalProgress';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
+import goalColors from '@/presets/goalColors';
 
 config.autoAddCss = false;
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { todoItems, doneItems, basketTodos, isLoading } = useGoalTodo(
+  const { todoItems, doneItems, basketTodos, color, isLoading } = useGoalTodo(
     Number(params.id),
   );
   const toggleTodoMutation = useToggleTodo(Number(params.id));
@@ -62,38 +58,40 @@ export default function Page({ params }: { params: { id: string } }) {
   // 목표가 있을 때 화면 렌더링 함수
   const renderGoal = () => (
     <>
-      <div className="mb-6 h-[136px] rounded-2xl bg-gs00 p-6 shadow">
-        <GoalHeader
-          doneItems={doneItems.length}
-          todoItems={todoItems.length}
-          id={params.id}
-          setGoalAvailable={setIsGoalAvailable}
-        />
-      </div>
-
-      <Link href={`${params.id}/note`} className="block">
-        <div className="mb-6 h-[60px] cursor-pointer rounded-2xl bg-slate100 px-6 py-4 shadow">
-          <h2 className="flex items-center text-18SB">
-            <FontAwesomeIcon icon={faFilePen} className="mr-2 text-slate500" />
-            노트 모아보기
-            <FontAwesomeIcon
-              icon={faAnglesRight}
-              className="ml-auto text-slate500"
-            />
-          </h2>
+      <div className="mb-[10px] grid gap-[10px] md:grid-cols-[minmax(300px,750px),minmax(200px,440px)]">
+        <div className="h-[162px] rounded-2xl bg-gs00 shadow">
+          <GoalHeader id={params.id} setGoalAvailable={setIsGoalAvailable} />
         </div>
-      </Link>
+        <div className="h-[162px] rounded-2xl bg-gs00 shadow">
+          <GoalProgress
+            doneItems={doneItems.length}
+            todoItems={todoItems.length}
+            color={
+              goalColors[color as keyof typeof goalColors] || {
+                100: '#D1D5DB',
+                DEFAULT: '#6B7280',
+              }
+            }
+          />
+        </div>
+      </div>
 
       {isLoading ? (
         renderLoading()
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid gap-[10px] md:grid-cols-[minmax(300px,750px),minmax(200px,440px)]">
           <GoalTodoList
             list={todoItems}
             onToggle={handleToggleTodo}
             goalId={params.id}
+            color={
+              goalColors[color as keyof typeof goalColors] || {
+                100: '#D1D5DB',
+                DEFAULT: '#6B7280',
+              }
+            }
           />
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-[10px]">
             <GoalDoneList
               list={doneItems.map((item) => ({
                 ...item,
@@ -102,14 +100,23 @@ export default function Page({ params }: { params: { id: string } }) {
               onToggle={handleToggleTodo}
               goalId={params.id}
             />
-            <GoalBasket basketItems={basketTodos} goalId={params.id} />
+            <GoalBasket
+              basketItems={basketTodos}
+              goalId={params.id}
+              color={
+                goalColors[color as keyof typeof goalColors] || {
+                  100: '#D1D5DB',
+                  DEFAULT: '#6B7280',
+                }
+              }
+            />
           </div>
         </div>
       )}
     </>
   );
 
-  // 메인 렌더링 로직
+  // 메인
   let content;
   if (isLoading) {
     content = renderLoading();

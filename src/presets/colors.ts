@@ -15,17 +15,13 @@ const colors = {
   gsBk: '#000000',
 
   warn50: '#FFF2F2',
-  warn500: '#EE1E1E',
+  warn500: '#F95F5F',
 
-  goal01: {
-    100: '#EFE6FB',
-    DEFAULT: '#9747FF',
-  },
-
-  goal02: {
-    100: '#FFE6E4',
-    DEFAULT: '#F86F65',
-  },
+  goal01: { 100: '#FFEEE0', DEFAULT: '#FB923C' },
+  goal02: { 100: '#FFF9E1', DEFAULT: '#FACC15' },
+  goal03: { 100: '#E0FFFB', DEFAULT: '#2DD4BF' },
+  goal04: { 100: '#F1EBFF', DEFAULT: '#8B5CF6' },
+  goal05: { 100: '#FFECEC', DEFAULT: '#F87171' },
 
   slate50: '#EFF6FF',
   slate100: '#DBEAFE',
