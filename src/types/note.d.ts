@@ -35,7 +35,7 @@ export interface NoteFormControlProps {
     content: string;
     linkUrl?: string;
   }>;
-  setValue?: UseFormTrigger<{
+  setValue?: UseFormSetValue<{
     title: string;
     content: string;
     linkUrl?: string;

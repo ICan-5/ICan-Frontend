@@ -11,6 +11,7 @@ import {
   faClose,
   faExclamation,
 } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'sonner';
 import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
 import '@/styles/textEditor.css';
@@ -25,7 +26,8 @@ import cn from '@/utils/cn';
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
-  // RHF 설정
+
+  // rhf을 통한 폼 상태 관리
   const {
     control,
     handleSubmit,
@@ -37,10 +39,9 @@ export default function NoteEditor() {
     watch,
     trigger,
   } = useForm({
-    resolver: zodResolver(NoteSchema),
-    shouldFocusError: true,
+    resolver: zodResolver(NoteSchema), // Zod 스키마를 사용한 유효성 검사
     defaultValues: { title: '', content: '', linkUrl: '' },
-    mode: 'all',
+    mode: 'onChange',
   });
 
   // 할 일 제목, 목표 제목 가져오기
@@ -62,15 +63,17 @@ export default function NoteEditor() {
           formData,
         });
 
-        if (res) {
-          alert('노트 생성이 완료됐습니다.');
-          router.back();
+        if (!res.data) {
+          const errorMessage = res?.message;
+          toast.error(errorMessage);
+          return;
         }
-      } catch (error) {
-        console.error('노트 생성 중 오류 발생1:', error);
+
+        toast.success(res?.data.message);
+        router.back(); // 이전 페이지로 이동
+      } catch {
+        toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
       }
-    } else {
-      console.error('todoId가 없습니다.');
     }
   };
 
@@ -79,7 +82,7 @@ export default function NoteEditor() {
     if (isValid) {
       const noteData = getValues();
       localStorage.setItem(`todo-${todoId}`, JSON.stringify(noteData));
-      alert('임시 저장이 완료되었습니다');
+      toast.success('임시 저장이 완료되었습니다');
     }
   }, [isValid, getValues, todoId]);
 
@@ -98,11 +101,19 @@ export default function NoteEditor() {
   // 임시 저장된 데이터 가져오기
   const setTempData = useCallback(() => {
     if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      Object.keys(parsedData).forEach((key) => {
-        setValue(key as 'title' | 'content' | 'linkUrl', parsedData[key]);
-      });
-      trigger();
+      try {
+        const parsedData = JSON.parse(savedData);
+        Object.keys(parsedData).forEach((key) => {
+          setValue(key as 'title' | 'content' | 'linkUrl', parsedData[key]);
+        });
+        trigger();
+      } catch (error) {
+        toast.error('임시저장된 데이터를 불러오는 중 오류가 발생했습니다:');
+        console.error(
+          '임시저장된 데이터를 불러오는 중 오류가 발생했습니다:',
+          error,
+        );
+      }
     }
   }, [savedData, setValue, trigger]);
 
@@ -121,7 +132,7 @@ export default function NoteEditor() {
 
   // 링크 URL 변경 시 임베드 URL 업데이트
   useEffect(() => {
-    setEmbedUrl(linkUrl);
+    if (linkUrl) setEmbedUrl(linkUrl);
   }, [linkUrl]);
 
   return (
@@ -132,7 +143,9 @@ export default function NoteEditor() {
           <iframe
             src={embedUrl}
             className="size-full rounded-2xl"
-            title="Embedded Content"
+            title="EmbeddedContent"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            referrerPolicy="no-referrer"
             onError={() => setEmbedVisible(false)}
           />
           <button type="button" onClick={() => setEmbedVisible(false)}>
@@ -148,8 +161,8 @@ export default function NoteEditor() {
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900"
       >
-        {/* 상단 헤더 */}
         <div>
+          {/* 노트 작성 헤더 섹션 */}
           <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
             <button type="button" onClick={() => router.back()}>
               <Icon icon={faArrowLeft} className="size-5" />
@@ -211,11 +224,12 @@ export default function NoteEditor() {
               </div>
             </section>
           )}
-          {/* 목표 제목과 할 일 제목 표시 */}
+          {/* 목표와 할 일 제목이 로딩 중일 경우 스켈레톤 표시 */}
           {todoQuery.isLoading || goalQuery.isLoading ? (
             <NoteTitlesSkeleton />
           ) : (
             <>
+              {/* 목표 제목이 있을 경우 표시 */}
               {goalQuery.data?.todo.title && (
                 <section className="mx-6 mb-2 mt-4 flex items-center gap-3">
                   <Icon
@@ -227,6 +241,7 @@ export default function NoteEditor() {
                   </h3>
                 </section>
               )}
+              {/* 할 일 제목 */}
               <article
                 className={cn(
                   'mx-6 mb-4 flex items-center gap-2 text-gs700',
