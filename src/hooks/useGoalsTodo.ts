@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo, Basket } from '@/types/todos';
 import { TodoFormValues } from '@/components/todoCalendar/CreateTodo';
-import { addTodo } from '@/services/todo';
+import { addTodo, updateGoalTodo, deleteTodo } from '@/services/todo';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 interface GoalTodoData {
@@ -16,6 +16,13 @@ interface GoalTodoResponse {
   doneItems: Todo[];
   isLoading: boolean;
   error: Error | null;
+}
+
+interface UpdateTodoParams {
+  todoId: number;
+  goalId: number;
+  title?: string;
+  date?: string;
 }
 
 export const useGoalTodo = (
@@ -122,15 +129,112 @@ export const useGoalAddTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (formData: TodoFormValues) => {
-      const date = formData.date ?? new Date();
-      return addTodo({
-        ...formData,
-        date,
+    mutationFn: (formData: TodoFormValues) => addTodo(formData),
+
+    onSuccess: (newTodo) => {
+      const goalId = newTodo.goal?.goalId;
+
+      if (goalId === undefined) {
+        console.error('goalId가 없습니다.');
+        return;
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });
     },
-    onSuccess: (newTodo) => {
-      const { goalId } = newTodo;
+  });
+};
+
+export const useUpdateGoalTodo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ todoId, goalId, title, date }: UpdateTodoParams) => {
+      return updateGoalTodo(todoId, goalId, { title, date });
+    },
+    onMutate: async ({ todoId, goalId, title, date }) => {
+      await queryClient.cancelQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+
+      const previousData = queryClient.getQueryData<{ todos: Todo[] }>([
+        QUERY_KEY.GOAL_TODOS,
+        goalId,
+      ]);
+
+      if (previousData) {
+        const updatedTodos = previousData.todos.map((todo) =>
+          todo.todoId === todoId
+            ? { ...todo, title: title ?? todo.title, date: date ?? todo.date }
+            : todo,
+        );
+
+        queryClient.setQueryData([QUERY_KEY.GOAL_TODOS, goalId], {
+          ...previousData,
+          todos: updatedTodos,
+        });
+      }
+
+      return { previousData };
+    },
+
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, variables.goalId],
+          context.previousData,
+        );
+      }
+    },
+    onSettled: (_, __, { goalId }) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+    },
+  });
+};
+
+// 목표별 할일 삭제
+export const useDeleteGoalTodo = (goalId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (todoId: number) => {
+      return deleteTodo(todoId);
+    },
+    onMutate: async (todoId) => {
+      await queryClient.cancelQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
+      });
+
+      const previousData = queryClient.getQueryData<GoalTodoData>([
+        QUERY_KEY.GOAL_TODOS,
+        goalId,
+      ]);
+
+      if (previousData) {
+        const updatedTodos = previousData.todos.filter(
+          (todo) => todo.todoId !== todoId,
+        );
+
+        queryClient.setQueryData([QUERY_KEY.GOAL_TODOS, goalId], {
+          ...previousData,
+          todos: updatedTodos,
+        });
+      }
+
+      return { previousData };
+    },
+    onError: (err, todoId, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          [QUERY_KEY.GOAL_TODOS, goalId],
+          context.previousData,
+        );
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GOAL_TODOS, goalId],
       });

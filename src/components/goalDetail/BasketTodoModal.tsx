@@ -2,16 +2,15 @@
 
 import { useState } from 'react';
 import ReactDOM from 'react-dom';
-import GoalTodoCreateModal from './GoalTodoCreateModal';
+import BasketCreateTodo from './BasketCreateTodo';
 import ConfirmModal from '@/components/common/ConfirmModal';
 
 interface Props {
-  goalId: string;
-  todoId?: number | null;
+  goalId: number;
   onClose: () => void;
 }
 
-export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
+export default function BasketTodoModal({ goalId, onClose }: Props) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(true);
 
@@ -26,11 +25,10 @@ export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-      {/* 할 일 생성/수정 모달 */}
+      {/* 할 일 생성 */}
       {isCreateOpen && (
-        <GoalTodoCreateModal
-          goalId={goalId}
-          todoId={todoId}
+        <BasketCreateTodo
+          goalId={Number(goalId)}
           onClose={handleFinalClose}
           onCancel={handleCancelCreate}
           isVisible={!isConfirmOpen}
