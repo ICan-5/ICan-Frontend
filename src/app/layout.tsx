@@ -14,6 +14,9 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   title: 'I:Can',
+  icons: {
+    icon: '/images/favicon.ico',
+  },
 };
 
 export default function RootLayout({
