@@ -40,9 +40,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   useEffect(() => {
     if (!isLoading) {
       setGoalAvailable(goalItem !== undefined);
-      setSelectedColor(
-        (goalItem?.color as keyof typeof goalColors) || 'goal01',
-      );
+      const goalColor =
+        (goalItem?.color as keyof typeof goalColors) || 'goal01';
+      setSelectedColor(goalColor);
     }
   }, [goalItem, setGoalAvailable, isLoading]);
 
@@ -61,7 +61,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
       updateGoal({
         goalId: Number(id),
         updatedFields: {
-          title: isTitleChanged ? trimmedTitle : goalItem?.title, // 항상 title 포함
+          title: isTitleChanged ? trimmedTitle : goalItem?.title,
           color: isColorChanged ? selectedColor : goalItem?.color,
         },
       });
@@ -108,7 +108,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const headerColorStyle: React.CSSProperties = useMemo(() => {
     const validColor =
       goalColors[goalItem?.color as keyof typeof goalColors]?.DEFAULT;
-    return validColor ? { color: validColor } : { color: '#64748B' };
+    return validColor
+      ? { backgroundColor: validColor, borderColor: validColor }
+      : { backgroundColor: '#64748B', borderColor: '#64748B' };
   }, [goalItem?.color]);
 
   return (
@@ -118,7 +120,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2"
-            style={headerColorStyle}
+            style={{ color: headerColorStyle.backgroundColor }}
           />
 
           {isEditing ? (
@@ -164,7 +166,10 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           </div>
         ) : (
           <Link href={`${id}/note`} className="block">
-            <div className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate500 px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3">
+            <div
+              className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3"
+              style={headerColorStyle}
+            >
               <h2 className="flex items-center text-14M text-gs00">
                 <FontAwesomeIcon icon={faFilePen} className="mr-1 md:mr-2" />
                 노트 모아보기

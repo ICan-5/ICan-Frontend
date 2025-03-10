@@ -7,6 +7,7 @@ import { QUERY_KEY } from '@/constants/queryKey';
 interface GoalTodoData {
   todos: Todo[];
   basketTodos: Basket[];
+  color: string;
 }
 
 interface GoalTodoResponse {
@@ -14,6 +15,7 @@ interface GoalTodoResponse {
   basketTodos: Basket[];
   todoItems: Todo[];
   doneItems: Todo[];
+  color: string;
   isLoading: boolean;
   error: Error | null;
 }
@@ -61,6 +63,7 @@ export const useGoalTodo = (
     basketTodos: queryData?.basketTodos || [],
     todoItems,
     doneItems,
+    color: queryData?.color || 'default',
     isLoading,
     error: error || null,
   };

@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
+import cn from '@/utils/cn';
 
 interface Props {
   doneItems: number;
   todoItems: number;
+  color: string;
 }
 
-export default function GoalProgress({ doneItems, todoItems }: Props) {
+export default function GoalProgress({ doneItems, todoItems, color }: Props) {
   const progress = (doneItems / (todoItems + doneItems)) * 100 || 0;
 
   return (
@@ -18,7 +20,7 @@ export default function GoalProgress({ doneItems, todoItems }: Props) {
       <div className="relative mt-5">
         <div className="absolute top-0 -translate-y-7">
           <span className="text-14SB text-gs400">
-            <span className="text-slate500">{doneItems}</span>/
+            <span className={`text-${color}`}>{doneItems}</span>/
             {todoItems + doneItems}
           </span>
         </div>
@@ -29,7 +31,7 @@ export default function GoalProgress({ doneItems, todoItems }: Props) {
 
         <div className="relative h-5 w-full overflow-hidden rounded-full bg-gs200">
           <motion.div
-            className="h-5 rounded-full bg-slate300"
+            className={cn('h-5 rounded-full', `bg-${color}`)}
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.8, ease: 'easeOut' }}

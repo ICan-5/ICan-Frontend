@@ -15,7 +15,7 @@ import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
 config.autoAddCss = false;
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { todoItems, doneItems, basketTodos, isLoading } = useGoalTodo(
+  const { todoItems, doneItems, basketTodos, color, isLoading } = useGoalTodo(
     Number(params.id),
   );
   const toggleTodoMutation = useToggleTodo(Number(params.id));
@@ -65,6 +65,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}
+            color={color}
           />
         </div>
       </div>
