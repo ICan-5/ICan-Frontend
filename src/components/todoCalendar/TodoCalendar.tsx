@@ -7,38 +7,6 @@ import TodoList from './TodoList';
 import TodoModal from './TodoModal';
 import Loading from '../common/Loading';
 import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
-import TodoBasket from './TodoBasket';
-
-// import Loading from '../common/Loading';
-// import TodoBasket from './TodoBasket';
-
-const initialBasketList = [
-  { id: 101, title: '코딩강의 듣기', goal: null },
-  { id: 102, title: '할 일이 길어지면 어쩌구 저쩌구', goal: null },
-  { id: 103, title: '할 일 52', goal: null },
-  { id: 104, title: '할 일 62', goal: null },
-  { id: 105, title: '할 일 72', goal: null },
-  { id: 106, title: '할 일 82', goal: null },
-  { id: 107, title: '할 일 92', goal: null },
-  { id: 108, title: '할 일 102', goal: null },
-  { id: 109, title: '할 일 112', goal: null },
-  { id: 110, title: '할 일 122', goal: null },
-  { id: 111, title: '할 일 132', goal: null },
-  { id: 112, title: '할 일 142', goal: null },
-  { id: 113, title: '할 일 152', goal: null },
-  { id: 114, title: '할 일 162', goal: null },
-  { id: 115, title: '할 일 172', goal: null },
-  {
-    id: 116,
-    title: '할 일 182',
-    goal: {
-      goalId: 1,
-      title: '강의 듣기',
-      color: 'goal01',
-      createdAt: '2025-02-26T02:49:55.691312Z',
-    },
-  },
-];
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -77,24 +45,6 @@ export default function TodoCalendar() {
     }
   };
 
-  /**
-   * 드랍 시 todo에 추가 & 장바구니에서 제거
-   */
-  const handleDropTodo = (date: string, todoId: number) => {
-    console.log(date, todoId);
-    // const draggedTodo = basketList.find((todo) => todo.id === todoId);
-    // if (!draggedTodo) return;
-    // const newTodo: Todo = {
-    //   id: todoId,
-    //   title: draggedTodo.title,
-    //   date,
-    //   goal: draggedTodo.goal || null,
-    //   done: false,
-    // };
-    // setTodos((prev) => [...prev, newTodo]);
-    // setBasketList((prev) => prev.filter((todo) => todo.id !== todoId));
-  };
-
   useEffect(() => {
     if (calendarRef.current) {
       const observer = new MutationObserver(() => {
@@ -117,7 +67,7 @@ export default function TodoCalendar() {
       <p className="text-red-500">데이터를 불러오는 중 오류 발생</p>
     </div>
   ) : (
-    <div className="relative h-screen max-h-[calc(100vh-160px)] w-full overflow-auto md:max-h-[calc(100vh-270px)]">
+    <div className="relative w-full">
       <div className="flex flex-col justify-center gap-4 px-1 md:flex-row">
         <div className="flex-1">
           {isLoading ? (
@@ -127,7 +77,6 @@ export default function TodoCalendar() {
               todos={monthlyTodos}
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
-              onDropTodo={handleDropTodo}
               calendarDivRef={calendarRef}
               isCalendarLoaded={isCalendarLoaded}
               onMonthChange={(year, month) => {
@@ -151,7 +100,6 @@ export default function TodoCalendar() {
           </div>
         )}
       </div>
-      {isCalendarLoaded && <TodoBasket basketList={initialBasketList} />}
 
       {isModalOpen && (
         <TodoModal

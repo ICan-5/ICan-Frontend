@@ -10,7 +10,6 @@ interface Props {
   isCalendarLoaded: boolean;
   calendarDivRef: React.RefObject<HTMLDivElement>;
   onDateChange: (date: Date) => void;
-  onDropTodo: (date: string, todoId: number) => void;
   onMonthChange: (year: number, month: number) => void;
 }
 
@@ -30,7 +29,6 @@ export default function Calendar({
   isCalendarLoaded,
   calendarDivRef,
   onDateChange,
-  onDropTodo,
   onMonthChange,
 }: Props) {
   const calendarRef = useRef<FullCalendar>(null);
@@ -48,7 +46,6 @@ export default function Calendar({
         selectedDate={selectedDate}
         onDateChange={onDateChange}
         calendarRef={calendarRef}
-        onDropTodo={onDropTodo}
         onMonthChange={onMonthChange}
       />
     </div>

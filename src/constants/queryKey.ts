@@ -7,4 +7,5 @@ export const QUERY_KEY = {
   TODO: 'TODO',
   GOAL: 'GOAL',
   NOTE: 'NOTE',
+  TODO_BASKET: 'TODO_BASKET',
 } as const;

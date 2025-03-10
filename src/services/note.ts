@@ -80,7 +80,7 @@ export const createNote = async ({
   todoId: number;
 }) => {
   try {
-    const response = await fetch(`/api/note/${todoId}`, {
+    const res = await fetch(`/api/note/${todoId}`, {
       method: 'POST',
       body: JSON.stringify({
         todoId,
@@ -90,11 +90,26 @@ export const createNote = async ({
       }),
     });
 
-    if (!response.ok) throw new Error(getErrorMessage(response.status));
-    const data = response.json();
+    const data = await res.json();
+    if (!res.ok) {
+      return data;
+    }
+    console.log('data', data);
     return { data };
   } catch (error) {
-    console.error('노트 생성 중 오류 발생:', error);
-    throw error;
+    console.log('err');
+    return error;
   }
 };
+
+// 목표별 노트 리스트 가져오기
+export async function getNotes(goalId: number) {
+  const res = await fetch(`/api/notes?goalId=${goalId}`);
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch notes');
+  }
+
+  const data = await res.json();
+  return data.notes;
+}
