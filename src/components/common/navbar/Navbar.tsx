@@ -3,12 +3,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import Link from 'next/link';
-import Image from 'next/image';
 import cn from '@/utils/cn';
 import NavUserProfile from './NavUserProfile';
 import NavTab from './NavTab';
 import { useNavbar } from '../NavbarContext';
-import Logo from '../Logo';
+import IcanLogo from '../IcanLogo';
+import IcanTitle from '../IcanTitle';
 
 export default function Navbar() {
   const { isFolded, toggleNavbar } = useNavbar();
@@ -46,22 +46,18 @@ export default function Navbar() {
             'flex h-9 items-center gap-2 rounded-lg p-[3px] text-18SB 2xl:h-10',
           )}
         >
-          <Logo
+          <IcanLogo
             className={cn(
-              'size-6 flex-none transition-transform duration-300 2xl:size-[30px]',
+              'size-6 flex-none transition-transform duration-500 2xl:size-[30px]',
               {
                 'mx-2 rotate-90': isFolded,
               },
             )}
           />
-          <Image
-            className={cn('h-5 transition-transform duration-300', {
+          <IcanTitle
+            className={cn('h-5 w-16 transition-transform duration-300', {
               invisible: isFolded,
             })}
-            src="/images/title.png"
-            height="20"
-            width="66"
-            alt="Ican Title"
           />
         </Link>
         <NavUserProfile isFolded={isFolded} />

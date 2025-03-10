@@ -1,7 +1,7 @@
 import { SVGProps } from 'react';
 
 /* eslint-disable react/jsx-props-no-spreading */
-export default function Logo(props: SVGProps<SVGSVGElement>) {
+export default function IcanLogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="30"
