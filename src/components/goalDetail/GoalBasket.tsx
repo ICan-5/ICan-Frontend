@@ -12,6 +12,7 @@ import BasketTodoModal from './BasketTodoModal';
 import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
 import { useDeleteBasketTodo } from '@/hooks/useGoalBasketTodo';
 import ConfirmModal from '@/components/common/ConfirmModal';
+import IconButton from '../common/button/IconButton';
 
 interface Props {
   basketItems: Basket[];
@@ -65,20 +66,17 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
             onMouseEnter={() => setIsTooltipOpen(true)}
             onMouseLeave={() => setIsTooltipOpen(false)}
           >
-            <FontAwesomeIcon
+            <IconButton
               icon={faCircleQuestion}
-              className="cursor-pointer text-gs500"
+              className="relative size-5 text-gs500"
             />
             <div
               className={`absolute top-full -ml-12 mt-2 min-w-[205px] rounded-md bg-gs00 p-2 text-14M text-gsBk shadow transition-opacity duration-200 ${
                 isTooltipOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
               }`}
             >
-              할 일을 미리 입력해 두고
-              <br />
-              원하는 날짜에 지정할 수 있습니다.
-              <br />
-              급하게 떠오른 할 일도 쉽게 저장하고 관리하세요!
+              빠르게 할일을 추가해 모아놓으세요. 이후 필요한 날짜에 지정할 수
+              있습니다.
             </div>
           </div>
         </div>
