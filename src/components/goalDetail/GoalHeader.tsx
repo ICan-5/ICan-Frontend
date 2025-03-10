@@ -105,12 +105,20 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     setShowMobileMenu(!showMobileMenu);
   };
 
-  const headerColorStyle: React.CSSProperties = useMemo(() => {
+  const defaultColorStyle: React.CSSProperties = useMemo(() => {
     const validColor =
       goalColors[goalItem?.color as keyof typeof goalColors]?.DEFAULT;
     return validColor
       ? { backgroundColor: validColor, borderColor: validColor }
       : { backgroundColor: '#64748B', borderColor: '#64748B' };
+  }, [goalItem?.color]);
+
+  const colorStyle: React.CSSProperties = useMemo(() => {
+    const validColor =
+      goalColors[goalItem?.color as keyof typeof goalColors]?.['100'];
+    return validColor
+      ? { backgroundColor: validColor, borderColor: validColor }
+      : { backgroundColor: '#CBD5E1', borderColor: '#CBD5E1' };
   }, [goalItem?.color]);
 
   return (
@@ -120,7 +128,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2"
-            style={{ color: headerColorStyle.backgroundColor }}
+            style={{ color: defaultColorStyle.backgroundColor }}
           />
 
           {isEditing ? (
@@ -168,7 +176,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <Link href={`${id}/note`} className="block">
             <div
               className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3"
-              style={headerColorStyle}
+              style={defaultColorStyle}
             >
               <h2 className="flex items-center text-14M text-gs00">
                 <FontAwesomeIcon icon={faFilePen} className="mr-1 md:mr-2" />
@@ -183,7 +191,8 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             <button
               type="button"
               onClick={handleEditClick}
-              className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-slate100 px-3 py-2 text-14M text-slate800 shadow md:h-10 md:w-36"
+              className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl px-3 py-2 text-14M text-gsBk shadow md:h-10 md:w-36"
+              style={colorStyle}
             >
               <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
             </button>

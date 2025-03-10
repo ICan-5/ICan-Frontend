@@ -76,6 +76,9 @@ export const useUpdateGoal = () => {
           goal.goalId === variables.goalId ? updatedGoal : goal,
         );
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.GOAL_TODOS, variables.goalId],
+      });
     },
   });
 };

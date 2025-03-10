@@ -11,6 +11,7 @@ import GoalProgress from '@/components/goalDetail/GoalProgress';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
+import goalColors from '@/presets/goalColors';
 
 config.autoAddCss = false;
 
@@ -29,7 +30,6 @@ export default function Page({ params }: { params: { id: string } }) {
     await toggleTodoMutation.mutateAsync({ todoId, todo });
   };
 
-  // 로딩 화면 렌더링 함수
   const renderLoading = () => (
     <div className="flex h-full items-center justify-center">
       <FontAwesomeIcon
@@ -65,7 +65,12 @@ export default function Page({ params }: { params: { id: string } }) {
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}
-            color={color}
+            color={
+              goalColors[color as keyof typeof goalColors] || {
+                100: '#D1D5DB',
+                DEFAULT: '#6B7280',
+              }
+            }
           />
         </div>
       </div>
@@ -78,6 +83,12 @@ export default function Page({ params }: { params: { id: string } }) {
             list={todoItems}
             onToggle={handleToggleTodo}
             goalId={params.id}
+            color={
+              goalColors[color as keyof typeof goalColors] || {
+                100: '#D1D5DB',
+                DEFAULT: '#6B7280',
+              }
+            }
           />
           <div className="flex flex-col gap-[10px]">
             <GoalDoneList
@@ -95,7 +106,7 @@ export default function Page({ params }: { params: { id: string } }) {
     </>
   );
 
-  // 메인 렌더링 로직
+  // 메인
   let content;
   if (isLoading) {
     content = renderLoading();

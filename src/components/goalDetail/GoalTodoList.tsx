@@ -15,6 +15,10 @@ interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
   goalId: string;
+  color: {
+    100: string;
+    DEFAULT: string;
+  };
 }
 
 interface GroupedTodos {
@@ -23,7 +27,7 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({ list, onToggle, goalId }: Props) {
+export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
   const router = useRouter();
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
   const today = new Date().toLocaleDateString('sv-SE');
@@ -107,7 +111,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
     <div className="relative flex h-[605px] flex-col rounded-2xl shadow">
       <div className="sticky top-0 z-10 flex items-center gap-2 rounded-t-2xl bg-gs50 p-4">
         <h3 className="text-18SB">남은 할일</h3>
-        <h3 className="text-18SB text-slate500">{list.length}</h3>
+        <h3 className="text-18SB" style={{ color: color.DEFAULT }}>
+          {list.length}
+        </h3>
       </div>
 
       <div className="h-full overflow-auto bg-gs00 px-6 pb-20">
