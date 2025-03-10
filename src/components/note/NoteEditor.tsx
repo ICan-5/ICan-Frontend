@@ -175,7 +175,7 @@ export default function NoteEditor() {
                   disabled={!isValid}
                   size="medium"
                   variant="outline"
-                  className="border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
+                  className="2xl:!text-14SB border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6"
                   onClick={() => {
                     handleTempSave();
                   }}
@@ -185,7 +185,7 @@ export default function NoteEditor() {
                 {/* 제출 버튼 */}
                 <Button
                   size="medium"
-                  className="!px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
+                  className="2xl:!text-14SB !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6"
                   type="submit"
                   disabled={!isValid}
                 >
@@ -206,14 +206,14 @@ export default function NoteEditor() {
               </div>
               <div className="ml-auto flex min-w-40 items-center justify-end">
                 <Button
-                  className="bg-transparent !py-2 px-5 !text-14R text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent 2xl:!text-14R"
+                  className="!text-14R 2xl:!text-14R bg-transparent !py-2 px-5 text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent"
                   onClick={() => setShowSavedData(false)}
                 >
                   닫기
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-9 rounded-full px-4 py-2 text-14M transition-colors 2xl:rounded-full 2xl:py-2 2xl:!text-14M"
+                  className="text-14M 2xl:!text-14M h-9 rounded-full px-4 py-2 transition-colors 2xl:rounded-full 2xl:py-2"
                   onClick={() => {
                     setTempData();
                     setShowSavedData(false);
@@ -236,7 +236,7 @@ export default function NoteEditor() {
                     icon={faFontAwesome}
                     className="size-4 rounded-lg text-lg text-[#FB923C]"
                   />
-                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
+                  <h3 className="text-16M w-[calc(100%-40px)] break-words text-gs800">
                     {goalQuery.data?.todo.title}
                   </h3>
                 </section>
@@ -248,10 +248,10 @@ export default function NoteEditor() {
                   !goalQuery.data?.todo.title && 'mt-4',
                 )}
               >
-                <span className="h-5 min-w-10 rounded-s bg-gs100 p-1 text-center text-12M">
+                <span className="text-12M h-5 min-w-10 rounded-s bg-gs100 p-1 text-center">
                   To do
                 </span>
-                <h4 className="w-[calc(100%-44px)] break-words text-14R text-gs600">
+                <h4 className="text-14R w-[calc(100%-44px)] break-words text-gs600">
                   {todoQuery.data?.title}
                 </h4>
               </article>

@@ -2,14 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchIntance } from '@/services/fetchInstance';
 
 // 노트 생성
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { todoId: number } },
-) {
+export async function POST(req: NextRequest) {
   try {
-    const { todoId } = params;
     const body = await req.json();
-    const { title, content, linkUrl } = body;
+    const { todoId, title, content, linkUrl } = body;
 
     const res1 = await fetchIntance({
       base: 'CODEIT',
@@ -50,4 +46,22 @@ export async function POST(
       { status: 500 },
     );
   }
+}
+
+// 목표별 노트 리스트
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const goalId = searchParams.get('goalId');
+
+  if (!goalId || Number.isNaN(Number(goalId))) {
+    return NextResponse.json({ error: 'Invalid goalId' }, { status: 400 });
+  }
+
+  const res = await fetchIntance({
+    base: 'CODEIT',
+    method: 'GET',
+    url: `/notes?goalId=${goalId}`,
+  });
+
+  return res;
 }

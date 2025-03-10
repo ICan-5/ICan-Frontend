@@ -1,3 +1,5 @@
+import { Todo } from './todos';
+
 export interface NoteFormControlProps {
   control?: Control<{
     title: string;
@@ -45,9 +47,9 @@ export interface NoteFormControlProps {
 
 export interface NoteDetail {
   goalTitle?: string | null;
-  todoTitle: string;
   title: string;
   content: string;
   linkUrl?: string | null;
   updatedAt: string;
+  todo: Todo;
 }

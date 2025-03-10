@@ -13,6 +13,15 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+  /* 다크모드일 때, 자동 완성된 입력 필드 배경색 변경 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #334155 inset; /* 배경색 설정 */
+    -webkit-text-fill-color: #fff; /* 텍스트 색상 설정 */
+    background-clip: content-box; /* 배경색을 모서리까지 적용 */
+  }
 }
 
 body {
