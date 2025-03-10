@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
+import { toast } from 'sonner';
 import TextField from './TextField';
 import PasswordField from './PasswordField';
-import Button from './Button';
 import { SignUpSchema, SignUpSchemaType } from '@/lib/validation';
 import signup from '@/services/auth';
+import Button from '../common/button/Button';
 
 export interface Props {
   name: string;
@@ -19,36 +21,37 @@ export interface Props {
 
 export default function SignupForm() {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition(); // 비동기 작업 중 상태 처리
 
+  // 회원가입 폼 제출 호출 함수
   const onSubmit = async (formData: Props) => {
     const { success, message } = await signup(formData);
 
-    alert(message);
+    // 회원가입 성공
     if (success) {
-      router.push('/login');
+      toast.success(message);
+      startTransition(() => {
+        router.push('/login');
+      });
+      return;
     }
+    // 회원가입 실패
+    toast.error(`회원가입에 실패했습니다. 
+  사용하신 이메일이 이미 존재할 수 있습니다. 이메일을 다시 확인해주세요.`);
   };
 
+  // RHF 사용한 폼 상태 관리
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
+    resolver: zodResolver(SignUpSchema), // Zod 스키마로 유효성 검사
     mode: 'onChange',
   });
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="my-40 flex w-full flex-col items-center"
-    >
-      <div className="px-4 text-center">
-        <h2 className="mb-4 text-3xl font-bold">I:Can</h2>
-        <p className="text-grayDarker mb-10 break-keep">
-          할 일을 계획하고 관리해요!
-        </p>
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full max-w-screen-sm px-4">
         <TextField
           label="이름"
@@ -79,9 +82,18 @@ export default function SignupForm() {
           errors={errors}
         />
         <div className="mb-8" />
-        <Button label="회원가입하기" type="submit" disabled={!isValid} />
+        {/* 회원가입 버튼 */}
+        <Button
+          disabled={!isValid}
+          type="submit"
+          size="full"
+          variant="default"
+          className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 dark:disabled:bg-gs700 dark:disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+        >
+          {isPending ? '회원가입 중...' : '회원가입하기'}
+        </Button>
         <p className="text-center text-14M">
-          이미 회원이신가요?{' '}
+          이미 회원이신가요?
           <Link className="ml-1 text-slate500" href="/login">
             로그인
           </Link>
