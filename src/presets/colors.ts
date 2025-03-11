@@ -13,17 +13,28 @@ const colors = {
   gs900: '#0F172A',
   gsBk: 'var(--gsBk)',
 
-  warn50: '#FFF2F2',
-  warn500: '#F95F5F',
+  warn50: 'var(--warn50)',
+  warn500: 'var(--warn500)',
 
   goal01: {
-    100: '#FFEEE0',
-    DEFAULT: '#FB923C',
+    100: 'var(--goal01-100)',
+    DEFAULT: 'var(--goal01)',
   },
-
   goal02: {
-    100: '#FFF9E1',
-    DEFAULT: '#FACC15',
+    100: 'var(--goal02-100)',
+    DEFAULT: 'var(--goal02)',
+  },
+  goal03: {
+    100: 'var(--goal03-100)',
+    DEFAULT: 'var(--goal03)',
+  },
+  goal04: {
+    100: 'var(--goal04-100)',
+    DEFAULT: 'var(--goal04)',
+  },
+  goal05: {
+    100: 'var(--goal05-100)',
+    DEFAULT: 'var(--goal05)',
   },
 
   slate50: 'var(--slate50)',

@@ -17,7 +17,7 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          'fixed top-0 z-30 flex h-screen flex-none flex-col items-start bg-white py-4 transition-all duration-300 first-line:left-0 md:relative 2xl:py-5',
+          'fixed top-0 z-30 flex h-screen flex-none flex-col items-start bg-gs00 py-4 transition-all duration-300 first-line:left-0 md:relative 2xl:py-5',
           {
             'w-16 px-2': isFolded,
             'w-64 px-4 2xl:w-80 2xl:px-6': !isFolded,

@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --fc-border-color: #e2e8f0;
+
   --gs00: #ffffff;
   --gsBk: #000000;
   --gs20: #fcfdfe;
@@ -16,6 +17,21 @@
   --gs400: #94a3b8;
   --gs500: #64748b;
   --gs600: #475569;
+
+  --warn50: #fff2f2;
+  --warn500: #f95f5f;
+
+  --goal01: #fb923c;
+  --goal01-100: #ffeee0;
+  --goal02: #facc15;
+  --goal02-100: #fff9e1;
+  --goal03: #2dd4bf;
+  --goal03-100: #e0fffb;
+  --goal04: #8b5cf6;
+  --goal04-100: #f1ebff;
+  --goal05: #f87171;
+  --goal05-100: #ffecec;
+
   --slate50: #eff6ff;
   --slate100: #dbeafe;
   --slate200: #bfdbfe;
@@ -26,7 +42,7 @@
   --slate800: #1e40af;
 }
 
-[data-theme='dark'] {
+[data-dark='true'] {
   --gs00: #1a1d21;
   --gsBk: #f2f2f2;
   --gs20: #1a1a1a;
@@ -37,6 +53,38 @@
   --gs400: #5a5a5a;
   --gs500: #6a6a6a;
   --gs600: #7a7a7a;
+
+  --warn50: #fff2f2;
+  --warn500: #d64747;
+
+  --goal01: #d9792e;
+  --goal01-100: #ffeee0;
+  --goal02: #c9a811;
+  --goal02-100: #fff9e1;
+  --goal03: #24a296;
+  --goal03-100: #e0fffb;
+  --goal04: #6f45c5;
+  --goal04-100: #f1ebff;
+  --goal05: #c95a5a;
+  --goal05-100: #ffecec;
+
+  --slate50: #1e2a3a;
+  --slate100: #23314a;
+  --slate200: #2b3f64;
+  --slate300: #3a5685;
+  --slate400: #4e6fa5;
+  --slate500: #295baa;
+  --slate700: #1d4ed8;
+  --slate800: #1e40af;
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #334155 inset; /* 배경색 설정 */
+    -webkit-text-fill-color: #fff; /* 텍스트 색상 설정 */
+    background-clip: content-box; /* 배경색을 모서리까지 적용 */
+  }
 }
 
 [data-color='green'] {
@@ -72,25 +120,9 @@
   --slate800: #5b21b6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-  /* 다크모드일 때, 자동 완성된 입력 필드 배경색 변경 */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #334155 inset; /* 배경색 설정 */
-    -webkit-text-fill-color: #fff; /* 텍스트 색상 설정 */
-    background-clip: content-box; /* 배경색을 모서리까지 적용 */
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--gsBk);
+  background: var(--gs00);
   font-family: Arial, Helvetica, sans-serif;
 }
 
