@@ -1,15 +1,15 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
-import GoalCheckTodo from '@/components/common/todo/GoalCheckTodo';
+import CheckTodo from '@/components/common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
 import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
 import ConfirmModal from '../common/ConfirmModal';
+import IconButton from '../common/button/IconButton';
 
 interface Props {
   list: Todo[];
@@ -122,7 +122,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
           <h3 className="mb-1 mt-3 text-18SB text-gs600">오늘</h3>
           {groupedTodos.today.length > 0 ? (
             groupedTodos.today.map((todo) => (
-              <GoalCheckTodo
+              <CheckTodo
                 key={todo.todoId}
                 id={todo.todoId}
                 title={todo.title}
@@ -146,13 +146,12 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-4 text-18SB text-gs600">예정된 할일</h3>
-            <FontAwesomeIcon
+            <IconButton
+              icon={faAngleDown}
               className={cn(
-                'size-4 text-gs500 transition-transform duration-300',
+                'text-gs500 transition-transform duration-300',
                 isFutureFold ? 'rotate-180' : 'rotate-0',
               )}
-              icon={faAngleDown}
-              size="xl"
               onClick={() => setIsFutureFold((prev) => !prev)}
             />
           </div>
@@ -166,7 +165,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                   <div key={date} className="relative mb-4">
                     <div className="text-16M text-gs700">{date}</div>
                     {todos.map((todo) => (
-                      <GoalCheckTodo
+                      <CheckTodo
                         key={todo.todoId}
                         id={todo.todoId}
                         title={todo.title}
@@ -193,13 +192,12 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="mb-4 text-18SB text-gs600">지난 할일</h3>
-            <FontAwesomeIcon
+            <IconButton
+              icon={faAngleDown}
               className={cn(
-                'size-4 text-gs500 transition-transform duration-300',
+                'text-gs500 transition-transform duration-300',
                 isPastFold ? 'rotate-180' : 'rotate-0',
               )}
-              icon={faAngleDown}
-              size="xl"
               onClick={() => setIsPastFold((prev) => !prev)}
             />
           </div>
@@ -213,7 +211,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                   <div key={date} className="relative mb-4">
                     <div className="text-16M text-gs700">{date}</div>
                     {todos.map((todo) => (
-                      <GoalCheckTodo
+                      <CheckTodo
                         key={todo.todoId}
                         id={todo.todoId}
                         title={todo.title}

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Goal } from '@/types/goals';
 import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
 import goalColors from '@/presets/goalColors';
+import colors from '@/presets/colors';
 import ConfirmModal from '../common/ConfirmModal';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
@@ -110,19 +111,23 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   };
 
   const defaultColorStyle: React.CSSProperties = useMemo(() => {
+    const goalColor = goalColors[goalItem?.color as keyof typeof goalColors];
     const validColor =
-      goalColors[goalItem?.color as keyof typeof goalColors]?.DEFAULT;
-    return validColor
-      ? { backgroundColor: validColor }
-      : { backgroundColor: '#64748B' };
+      goalColor?.DEFAULT ??
+      colors[goalItem?.color as keyof typeof colors] ??
+      colors.slate500;
+
+    return { backgroundColor: validColor as string };
   }, [goalItem?.color]);
 
   const colorStyle: React.CSSProperties = useMemo(() => {
+    const goalColor = goalColors[goalItem?.color as keyof typeof goalColors];
     const validColor =
-      goalColors[goalItem?.color as keyof typeof goalColors]?.['100'];
-    return validColor
-      ? { backgroundColor: validColor }
-      : { backgroundColor: '#CBD5E1' };
+      goalColor?.['100'] ??
+      colors[goalItem?.color as keyof typeof colors] ??
+      colors.slate100;
+
+    return { backgroundColor: validColor as string };
   }, [goalItem?.color]);
 
   return (
@@ -216,9 +221,11 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <button
             type="button"
             onClick={toggleMobileMenu}
-            className="rounded-full bg-slate100 p-2 shadow"
+            className="relative flex items-center justify-center rounded-full bg-slate100 p-1 shadow"
           >
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <span className="flex size-8 items-center justify-center rounded-full">
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </span>
           </button>
           {showMobileMenu && (
             <div className="absolute right-0 top-10 z-50 w-32 rounded-md bg-gs00 shadow-lg">

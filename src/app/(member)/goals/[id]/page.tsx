@@ -12,8 +12,18 @@ import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
 import goalColors from '@/presets/goalColors';
+import colors from '@/presets/colors';
 
 config.autoAddCss = false;
+
+const getGoalColor = (color: string) => {
+  return (
+    goalColors[color as keyof typeof goalColors] ?? {
+      100: colors.slate100,
+      DEFAULT: colors.slate500,
+    }
+  );
+};
 
 export default function Page({ params }: { params: { id: string } }) {
   const { todoItems, doneItems, basketTodos, color, isLoading } = useGoalTodo(
@@ -66,12 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}
-            color={
-              goalColors[color as keyof typeof goalColors] || {
-                100: '#D1D5DB',
-                DEFAULT: '#6B7280',
-              }
-            }
+            color={getGoalColor(color)}
           />
         </div>
       </div>
@@ -84,12 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
             list={todoItems}
             onToggle={handleToggleTodo}
             goalId={params.id}
-            color={
-              goalColors[color as keyof typeof goalColors] || {
-                100: '#D1D5DB',
-                DEFAULT: '#6B7280',
-              }
-            }
+            color={getGoalColor(color)}
           />
           <div className="flex flex-col gap-[10px]">
             <GoalDoneList
@@ -103,12 +103,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <GoalBasket
               basketItems={basketTodos}
               goalId={params.id}
-              color={
-                goalColors[color as keyof typeof goalColors] || {
-                  100: '#D1D5DB',
-                  DEFAULT: '#6B7280',
-                }
-              }
+              color={getGoalColor(color)}
             />
           </div>
         </div>
