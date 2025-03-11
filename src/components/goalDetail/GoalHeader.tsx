@@ -74,6 +74,12 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     setIsEditing(false);
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('.save-button')) {
+      handleSave();
+    }
+  };
+
   const handleColorSelect = (key: keyof typeof goalColors) => {
     setSelectedColor(key);
   };
@@ -95,8 +101,6 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const handleCancelDelete = () => {
     setSelectedDeleteGoal(null);
   };
-
-  const handleBlur = () => setIsEditing(false);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSave();
@@ -132,7 +136,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
 
   return (
     <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
-      <div className="flex min-h-[56px] items-start">
+      <div className="flex min-h-[56px] items-start justify-between">
         <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
@@ -140,20 +144,34 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             style={{ color: defaultColorStyle.backgroundColor }}
           />
           {isEditing ? (
-            <input
-              ref={inputRef}
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
-              className="w-full border-b border-gs500"
-            />
+            <div className="flex w-full items-center">
+              <input
+                ref={inputRef}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onBlur={handleBlur}
+                className="w-full border-b border-gs500"
+              />
+            </div>
           ) : (
             <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
               {goalTitle}
             </span>
           )}
         </h1>
+
+        {isEditing && (
+          <button
+            type="button"
+            onClick={handleSave}
+            className="save-button ml-2 flex items-center justify-center rounded-2xl p-2 text-gs00"
+            style={defaultColorStyle}
+            title="수정완료"
+          >
+            수정 완료
+          </button>
+        )}
       </div>
 
       <div className="flex-1" />
