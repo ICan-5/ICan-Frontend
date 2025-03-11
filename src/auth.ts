@@ -83,8 +83,7 @@ export const {
       if (trigger === 'update' && session) {
         return {
           ...token,
-          accessToken: session.accessToken,
-          refreshToken: session.refreshToken,
+          ...session,
         };
       }
 
@@ -94,6 +93,10 @@ export const {
       if (token?.accessToken) {
         return {
           ...session,
+          user: {
+            ...session.user,
+            imaage: token?.picture || null,
+          },
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
         };

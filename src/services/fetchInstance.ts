@@ -53,7 +53,7 @@ const handleTokenRefresh = async () => {
   if (!res.ok) return null;
 
   const data = await res.json();
-  update({ ...session, accessToken: data.accessToken });
+  update({ accessToken: data.accessToken });
   return session.accessToken;
 };
 

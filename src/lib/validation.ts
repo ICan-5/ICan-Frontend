@@ -74,20 +74,10 @@ export const LoginSchema = z.object({
 export const SettingSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, { message: '닉네임은 최소 1자 이상이어야 합니다.' })
-    .max(10, '닉네임은 10자 이하여야 합니다')
-    .optional(),
+    .max(10, '닉네임은 10자 이하여야 합니다'),
   profile: z.instanceof(File).optional(),
-  currentPassword: z.string().optional(),
-  newPassword: z.preprocess(
-    (value) => (value === '' ? undefined : value),
-    z
-      .string()
-      .min(8, { message: ERROR_MESSAGE.password.min })
-      .max(12, { message: ERROR_MESSAGE.password.max })
-      .optional(),
-  ),
-  confirmPassword: z.string().optional(),
 });
 
 // 스키마의 z.infer를 사용하여 스키마 유형도 내보내기
