@@ -1,10 +1,12 @@
 import DatePicker from 'react-datepicker';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { ko } from 'date-fns/locale';
-
+import { getDay } from 'date-fns';
+import '@/styles/datePicker.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
-import CustomDateInput from './CustomDateInput';
+import CustomDateInput from './datePicker/CustomDateInput';
+import CustomDateHeader from './datePicker/CustomDateHeader';
 
 // 제네릭 사용하여 컴포넌트를 호출 할 때 타입 전달 받음
 type Props<T extends FieldValues> = {
@@ -37,6 +39,23 @@ export default function DateInput<T extends FieldValues>({
             locale={ko}
             shouldCloseOnSelect
             onCalendarClose={() => setIsFocus(false)}
+            popperPlacement="bottom"
+            renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+              <CustomDateHeader
+                date={date}
+                decreaseMonth={decreaseMonth}
+                increaseMonth={increaseMonth}
+              />
+            )}
+            dayClassName={(d) => {
+              const baseClass =
+                d.toDateString() === field.value?.toDateString()
+                  ? 'selected-day'
+                  : 'default-day';
+              return getDay(d) === 0
+                ? `${baseClass} react-datepicker__day--sun`
+                : baseClass;
+            }}
             customInput={
               <CustomDateInput isFocus={isFocus} setIsFocus={setIsFocus} />
             }

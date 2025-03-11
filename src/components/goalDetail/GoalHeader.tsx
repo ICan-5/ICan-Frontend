@@ -6,6 +6,7 @@ import {
   faFilePen,
   faFontAwesome,
   faEllipsisVertical,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { Goal } from '@/types/goals';
@@ -148,9 +149,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               <input
                 ref={inputRef}
                 value={newTitle}
+                onBlur={handleBlur}
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
                 className="w-full border-b border-gs500"
               />
             </div>
