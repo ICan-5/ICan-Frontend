@@ -5,6 +5,7 @@ import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import FormTitle from './FormTitle';
 import Icon from '@/components/common/icon/Icon';
+import NonProfile from '../common/NonProfile';
 
 interface Props {
   url: string;
@@ -57,13 +58,17 @@ export default function ProfileForm({ url, onChange }: Props) {
     <FormTitle title="프로필 사진">
       <div className="flex size-full flex-col gap-3">
         <div className="flex flex-col items-center gap-3 md:flex-row">
-          <Image
-            className="size-20 flex-none rounded-full object-cover"
-            src={imageUrl || '/images/profile.png'}
-            alt="profileImage"
-            width="80"
-            height="80"
-          />
+          {imageUrl ? (
+            <Image
+              className="size-20 flex-none rounded-full object-cover"
+              src={imageUrl}
+              alt="profileImage"
+              width="80"
+              height="80"
+            />
+          ) : (
+            <NonProfile className="size-20 flex-none rounded-full object-cover" />
+          )}
           <label
             className="flex cursor-pointer flex-row items-center gap-2 rounded-full border border-gs300 px-6 py-2 hover:border-slate500 hover:text-slate500"
             htmlFor="uploadImage"
