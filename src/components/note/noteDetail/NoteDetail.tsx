@@ -106,7 +106,7 @@ export default function NoteDetail({
       )}
     >
       {embedVisible && embedUrl && (
-        <div className="relative flex flex-col bg-gray-100 lg:w-1/2">
+        <div className="relative flex h-2/5 flex-col bg-gray-100 lg:h-full lg:w-1/2">
           {/* 닫기 버튼 */}
           <IconButton
             className="absolute right-2 top-2 rounded-full bg-white p-2"

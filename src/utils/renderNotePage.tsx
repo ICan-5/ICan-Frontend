@@ -24,7 +24,9 @@ export async function renderNoteDetail(noteId: number, isModal?: boolean) {
         {isModal ? (
           <NoteModal noteId={noteId} />
         ) : (
-          <NoteDetail noteId={noteId} />
+          <div className="h-screen">
+            <NoteDetail noteId={noteId} />
+          </div>
         )}
       </HydrationBoundary>
     );
