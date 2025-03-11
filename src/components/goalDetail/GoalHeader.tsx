@@ -165,7 +165,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <button
             type="button"
             onClick={handleSave}
-            className="save-button ml-2 flex items-center justify-center rounded-2xl p-2 text-gs00"
+            className="save-button ml-2 flex h-9 w-32 items-center justify-center rounded-2xl px-3 py-2 text-14M text-gs00 md:h-10 md:w-36 md:px-5 md:py-3"
             style={defaultColorStyle}
             title="수정완료"
           >
