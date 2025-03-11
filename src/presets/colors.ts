@@ -15,16 +15,16 @@ const colors = {
   gsBk: '#000000',
 
   warn50: '#FFF2F2',
-  warn500: '#EE1E1E',
+  warn500: '#F95F5F',
 
   goal01: {
-    100: '#EFE6FB',
-    DEFAULT: '#9747FF',
+    100: '#FFEEE0',
+    DEFAULT: '#FB923C',
   },
 
   goal02: {
-    100: '#FFE6E4',
-    DEFAULT: '#F86F65',
+    100: '#FFF9E1',
+    DEFAULT: '#FACC15',
   },
 
   slate50: '#EFF6FF',

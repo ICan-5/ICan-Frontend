@@ -1,32 +1,42 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlag, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrashCan,
+  faPenToSquare,
+  faFilePen,
+  faFontAwesome,
+  faEllipsisVertical,
+} from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import { useClickOutside } from '@/hooks/useClickOutside';
-import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
-import GoalProgress from './GoalProgress';
 import { Goal } from '@/types/goals';
+import { useGoals, useUpdateGoal, useDeleteGoal } from '@/hooks/useGoals';
+import goalColors from '@/presets/goalColors';
+import ConfirmModal from '../common/ConfirmModal';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
-type Props = {
-  doneItems: number;
-  todoItems: number;
+interface Props {
   id: string;
   setGoalAvailable: (value: boolean) => void;
-};
+}
 
-export default function GoalHeader({
-  doneItems,
-  todoItems,
-  id,
-  setGoalAvailable,
-}: Props) {
-  const [menuRef, isMenuOpen, setIsMenuOpen] =
-    useClickOutside<HTMLDivElement>();
+const colorKeys = Object.keys(goalColors) as (keyof typeof goalColors)[];
+
+export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const { data: goals, isLoading } = useGoals();
   const { mutate: updateGoal } = useUpdateGoal();
   const { mutate: deleteGoal } = useDeleteGoal();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState('');
+  const [selectedColor, setSelectedColor] =
+    useState<keyof typeof goalColors>('goal01');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [selectedDeleteGoal, setSelectedDeleteGoal] = useState<number | null>(
+    null,
+  );
   const inputRef = useRef<HTMLInputElement>(null);
+  const [menuRef] = useClickOutside<HTMLDivElement>(() =>
+    setShowMobileMenu(false),
+  );
 
   const goalItem = goals?.find((goal: Goal) => goal.goalId === Number(id));
   const goalTitle = goalItem?.title;
@@ -34,113 +44,165 @@ export default function GoalHeader({
   useEffect(() => {
     if (!isLoading) {
       setGoalAvailable(goalItem !== undefined);
+      setSelectedColor(
+        (goalItem?.color as keyof typeof goalColors) || 'goal01',
+      );
     }
   }, [goalItem, setGoalAvailable, isLoading]);
 
   const handleEditClick = () => {
     setIsEditing(true);
-    setIsMenuOpen(false);
     setNewTitle(goalTitle === '목표를 선택 또는 생성해주세요' ? '' : goalTitle);
+    setShowMobileMenu(false);
   };
 
   const handleSave = () => {
     if (newTitle.trim()) {
-      updateGoal({ goalId: Number(id), updatedFields: { title: newTitle } });
+      updateGoal({
+        goalId: Number(id),
+        updatedFields: { title: newTitle, color: selectedColor },
+      });
       setIsEditing(false);
     }
   };
 
-  const handleDelete = () => {
+  const handleDeleteClick = () => {
     if (goalItem?.goalId) {
-      deleteGoal(goalItem.goalId, {
-        onSuccess: () => {
-          setIsMenuOpen(false);
-        },
-      });
+      setSelectedDeleteGoal(goalItem.goalId);
     }
-  };
-  const handleBlur = () => {
-    setIsEditing(false);
+    setShowMobileMenu(false);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSave();
+  const handleConfirmDelete = () => {
+    if (selectedDeleteGoal) {
+      deleteGoal(selectedDeleteGoal);
+      setSelectedDeleteGoal(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedDeleteGoal(null);
+  };
+
+  const handleBlur = () => setIsEditing(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSave();
   };
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (isEditing && inputRef.current) inputRef.current.focus();
   }, [isEditing]);
 
-  let content;
-
-  if (isLoading) {
-    content = '로딩 중...';
-  } else if (isEditing) {
-    content = (
-      <div className="flex items-center space-x-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          className="border-b border-gs500"
-        />
-        <button
-          type="button"
-          onClick={handleSave}
-          className="rounded bg-blue-500 p-1 text-14R text-white"
-        >
-          저장
-        </button>
-      </div>
-    );
-  } else {
-    content = goalTitle;
-  }
+  const toggleMobileMenu = () => {
+    setShowMobileMenu((prev) => !prev);
+  };
 
   return (
-    <div>
-      <div className="mb-2 flex items-center justify-between">
-        <h1 className="flex items-center text-18SB">
-          <FontAwesomeIcon icon={faFlag} className="mr-2 text-slate500" />
-          {content}
+    <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
+      <div className="flex min-h-[56px] items-start">
+        <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
+          <FontAwesomeIcon
+            icon={faFontAwesome}
+            className="mr-2 text-slate500"
+          />
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              className="w-full border-b border-gs500"
+            />
+          ) : (
+            <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
+              {goalTitle}
+            </span>
+          )}
         </h1>
-        <div className="relative">
+      </div>
+
+      <div className="flex-1" />
+
+      <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
+        {isEditing ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-12M text-slate600 md:text-14M">
+              목표 색상 수정
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {colorKeys.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setSelectedColor(key)}
+                  aria-label={`색상 변경: ${key}`}
+                  className={`size-6 rounded-full md:size-8 ${
+                    selectedColor === key ? 'ring-2 ring-slate500' : ''
+                  }`}
+                  style={{ backgroundColor: goalColors[key].DEFAULT }}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Link href={`${id}/note`} className="block">
+            <div className="flex h-9 w-32 cursor-pointer items-center justify-center rounded-2xl bg-slate500 px-3 py-2 shadow md:h-10 md:w-36 md:px-5 md:py-3">
+              <h2 className="flex items-center text-14M text-gs00">
+                <FontAwesomeIcon icon={faFilePen} className="mr-1 md:mr-2" />
+                노트 모아보기
+              </h2>
+            </div>
+          </Link>
+        )}
+
+        <div className="ml-auto hidden gap-2 lg:flex">
+          {!isEditing && (
+            <button
+              type="button"
+              onClick={handleEditClick}
+              className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-slate100 px-3 py-2 text-14M text-slate800 shadow md:h-10 md:w-36"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
+            </button>
+          )}
           <button
             type="button"
-            className="cflex size-8 cursor-pointer items-center justify-center rounded-full bg-gs100"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
+            onClick={handleDeleteClick}
+            className="flex size-10 items-center justify-center rounded-full border border-warn500 p-2"
           >
-            <FontAwesomeIcon icon={faEllipsisV} className="text-gs500" />
+            <FontAwesomeIcon
+              icon={faTrashCan}
+              className="size-4 text-warn500"
+            />
           </button>
-          {isMenuOpen && (
-            <div
-              className="absolute right-4 mt-2 w-[120px] rounded bg-gs00 shadow-md"
-              ref={menuRef}
-            >
+        </div>
+
+        <div ref={menuRef} className="relative lg:hidden">
+          <button
+            type="button"
+            onClick={toggleMobileMenu}
+            className="relative flex items-center justify-center rounded-full bg-slate100 p-1 shadow"
+          >
+            <span className="flex size-8 items-center justify-center rounded-full">
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </span>
+          </button>
+
+          {showMobileMenu && (
+            <div className="absolute right-0 top-10 z-50 w-32 rounded-md bg-gs00 shadow-lg">
               <button
                 type="button"
-                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
-              >
-                목표 색상 변경
-              </button>
-              <button
-                type="button"
-                className="block w-full border-b px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
                 onClick={handleEditClick}
+                className="block w-full px-4 py-2 text-12M text-slate800 hover:bg-slate100"
               >
                 수정하기
               </button>
               <button
                 type="button"
-                className="block w-full px-4 py-2 text-center text-14R text-gs700 hover:bg-gs200"
-                onClick={handleDelete}
+                onClick={handleDeleteClick}
+                className="block w-full px-4 py-2 text-12M text-warn500 hover:bg-slate100"
               >
                 삭제하기
               </button>
@@ -148,7 +210,15 @@ export default function GoalHeader({
           )}
         </div>
       </div>
-      <GoalProgress doneItems={doneItems} todoItems={todoItems} />
+      {selectedDeleteGoal !== null && (
+        <ConfirmModal
+          title="해당 목표를 삭제 하시겠어요?"
+          description="목표가 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 }
