@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import GoalCheckTodo from '../common/todo/GoalCheckTodo';
+import CheckTodo from '../common/todo/CheckTodo';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
 import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
@@ -63,7 +63,7 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
         ) : (
           <div>
             {sortedList.map((done) => (
-              <GoalCheckTodo
+              <CheckTodo
                 key={done.todoId}
                 id={done.todoId}
                 title={done.title}
