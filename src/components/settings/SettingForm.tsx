@@ -6,11 +6,11 @@ import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import Button from '../common/button/Button';
-import ProfileForm from './ProfileField';
 import FormTitle from './FormTitle';
 import { SettingSchema, SettingSchemaType } from '@/lib/validation';
 import TextField from '../auth/TextField';
 import { updateUser } from '@/services/setting';
+import ProfileField from './ProfileField';
 
 interface Props {
   name: string;
@@ -68,7 +68,7 @@ export default function SettingForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col rounded-b-2xl border-x-2 border-b-2 border-gs200 bg-gs00 px-4 2xl:rounded-b-3xl"
     >
-      <ProfileForm onChange={(file?: File) => setValue('profile', file)} />
+      <ProfileField onChange={(file?: File) => setValue('profile', file)} />
       <hr className="border border-gs200" />
       <FormTitle title="사용자 정보">
         <div className="flex w-full flex-col">
