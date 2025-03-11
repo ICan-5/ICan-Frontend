@@ -95,6 +95,11 @@ export default function CreateTodo({
                 control={control}
                 errors={errors}
               />
+              <DateInput<TodoFormValues>
+                name="date"
+                label="날짜"
+                control={control}
+              />
               <DropDownInput<TodoFormValues>
                 name="goal"
                 label="목표"
@@ -102,11 +107,6 @@ export default function CreateTodo({
                 options={goalList}
                 control={control}
                 isLoading={isLoading}
-              />
-              <DateInput<TodoFormValues>
-                name="date"
-                label="날짜"
-                control={control}
               />
             </div>
             <div className="flex w-full flex-row gap-2">
