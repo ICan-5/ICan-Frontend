@@ -122,7 +122,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="relative left-1/2 size-full max-w-screen-xl -translate-x-1/2 bg-gs100">
+    <div className="relative left-1/2 w-full max-w-screen-xl -translate-x-1/2 bg-gs100">
       {content}
     </div>
   );
