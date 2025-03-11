@@ -6,7 +6,6 @@ import {
   faFilePen,
   faFontAwesome,
   faEllipsisVertical,
-  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { Goal } from '@/types/goals';
