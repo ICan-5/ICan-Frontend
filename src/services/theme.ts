@@ -38,7 +38,7 @@ export const getThemeMode = async () => {
  */
 export const getThemeDark = async () => {
   const data = cookies().get('themeDark')?.value;
-  return data || false;
+  return data || 'false';
 };
 
 export const getThemeColor = async (): Promise<
