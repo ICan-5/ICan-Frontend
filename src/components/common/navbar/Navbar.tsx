@@ -7,6 +7,8 @@ import cn from '@/utils/cn';
 import NavUserProfile from './NavUserProfile';
 import NavTab from './NavTab';
 import { useNavbar } from '../NavbarContext';
+import IcanLogo from '../IcanLogo';
+import IcanTitle from '../IcanTitle';
 
 export default function Navbar() {
   const { isFolded, toggleNavbar } = useNavbar();
@@ -41,10 +43,22 @@ export default function Navbar() {
         <Link
           href="/"
           className={cn(
-            'flex h-9 rounded-lg p-[3px] text-18SB transition-transform duration-300 2xl:h-10',
+            'flex h-9 items-center gap-2 rounded-lg p-[3px] text-18SB 2xl:h-10',
           )}
         >
-          I:Can
+          <IcanLogo
+            className={cn(
+              'size-6 flex-none transition-transform duration-500 2xl:size-[30px]',
+              {
+                'mx-2 rotate-90': isFolded,
+              },
+            )}
+          />
+          <IcanTitle
+            className={cn('h-5 w-16 transition-transform duration-300', {
+              invisible: isFolded,
+            })}
+          />
         </Link>
         <NavUserProfile isFolded={isFolded} />
         <NavTab isFolded={isFolded} />
