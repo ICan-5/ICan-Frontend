@@ -6,7 +6,7 @@ import Calendar from './Calendar';
 import TodoList from './TodoList';
 import TodoModal from './TodoModal';
 import Loading from '../common/Loading';
-import { useDailyTodos, useMonthlyTodos } from '@/hooks/useTodos';
+import { useMonthlyTodos } from '@/hooks/useTodos';
 
 export default function TodoCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -27,11 +27,6 @@ export default function TodoCalendar() {
     isLoading,
     error,
   } = useMonthlyTodos(currentYear, currentMonth);
-
-  // 하루 단위 할 일
-  const { data: dailyTodos } = useDailyTodos(
-    selectedDate.toLocaleDateString('sv-SE'),
-  );
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -94,7 +89,6 @@ export default function TodoCalendar() {
           >
             <TodoList
               selectedDate={selectedDate}
-              todos={dailyTodos}
               onOpenModal={handleOpenModal}
             />
           </div>
