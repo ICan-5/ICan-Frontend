@@ -22,6 +22,7 @@ import { createNote } from '@/services/note';
 import { useTodoWithGoalTitle } from '@/hooks/useTodoWithGoalTitle';
 import NoteTitlesSkeleton from './NoteTitlesSkeleton';
 import cn from '@/utils/cn';
+import ConfirmModal from '../common/ConfirmModal';
 
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
@@ -53,6 +54,13 @@ export default function NoteEditor() {
   const [embedVisible, setEmbedVisible] = useState(false);
   // 노트 수정하기 상태
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const [confirmModalContent, setConfirmModalContent] = useState({
+    title: '',
+    description: '',
+    confirmText: '',
+    onConfirm: () => {},
+  });
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
@@ -98,24 +106,62 @@ export default function NoteEditor() {
   const [savedData, setSavedData] = useState<string | null>(null);
   const [showSavedData, setShowSavedData] = useState(!!savedData);
 
+  const [confirmModal, setConfirmModal] = useState(false);
+
+  // 임시 저장된 데이터 setValue
+  const setFormData = useCallback(
+    (parsedData: { [key: string]: string }) => {
+      Object.keys(parsedData).forEach((key) => {
+        setValue(key as 'title' | 'content' | 'linkUrl', parsedData[key]);
+      });
+      trigger();
+    },
+    [setValue, trigger],
+  );
+
+  // 임시 저장된 노트 불러오기 클릭
+  const handleConfirmLoad = useCallback(() => {
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        setFormData(parsedData);
+        setConfirmModal(false); // 모달 닫기
+        toast.success('임시 저장된 노트를 불러왔습니다.');
+      } catch (error) {
+        toast.error('임시 저장된 데이터를 불러오는 중 오류가 발생했습니다.');
+        console.error('임시 저장된 데이터를 불러오는 중 오류:', error);
+      }
+    }
+  }, [savedData, setFormData]);
   // 임시 저장된 데이터 가져오기
   const setTempData = useCallback(() => {
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        Object.keys(parsedData).forEach((key) => {
-          setValue(key as 'title' | 'content' | 'linkUrl', parsedData[key]);
-        });
-        trigger();
+        // 현재 입력된 값 가져오기
+        const currentTitle = getValues('title');
+        const currentContent = getValues('content');
+        const currentLinkUrl = getValues('linkUrl');
+
+        // 입력 값이 있으면 모달 띄우기
+
+        if (currentTitle || currentContent || currentLinkUrl) {
+          setConfirmModalContent({
+            title: '작성 중인 내용이 있습니다.',
+            description: '임시 저장된 노트를 불러오면 기존 내용이 변경됩니다.',
+            confirmText: '불러오기',
+            onConfirm: handleConfirmLoad,
+          });
+          setConfirmModal(true);
+        } else {
+          setFormData(parsedData);
+        }
       } catch (error) {
-        toast.error('임시저장된 데이터를 불러오는 중 오류가 발생했습니다:');
-        console.error(
-          '임시저장된 데이터를 불러오는 중 오류가 발생했습니다:',
-          error,
-        );
+        toast.error('임시 저장된 데이터를 불러오는 중 오류가 발생했습니다.');
+        console.error('임시 저장된 데이터를 불러오는 중 오류:', error);
       }
     }
-  }, [savedData, setValue, trigger]);
+  }, [savedData, getValues, handleConfirmLoad, setFormData]);
 
   useEffect(() => {
     setIsEditMode(false);
@@ -134,6 +180,27 @@ export default function NoteEditor() {
   useEffect(() => {
     if (linkUrl) setEmbedUrl(linkUrl);
   }, [linkUrl]);
+  const handleBack = () => {
+    const currentTitle = getValues('title');
+    const currentContent = getValues('content');
+    const currentLinkUrl = getValues('linkUrl');
+
+    if (currentTitle || currentContent || currentLinkUrl) {
+      setConfirmModalContent({
+        title: '작성 중인 내용이 있습니다.',
+        description:
+          '페이지를 나가면 작성 중인 내용이 사라질 수 있습니다. 계속 진행하시겠습니까?',
+        confirmText: '나가기',
+        onConfirm: () => {
+          setConfirmModal(false); // 모달 닫기
+          router.back(); // 이전 페이지로 이동
+        },
+      });
+      setConfirmModal(true);
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <div className="flex h-dvh w-full flex-col sm:flex-row">
@@ -144,9 +211,9 @@ export default function NoteEditor() {
             src={embedUrl}
             className="size-full rounded-2xl"
             title="EmbeddedContent"
-            sandbox="allow-scripts allow-same-origin allow-popups"
+            id="EmbeddedContent"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
             referrerPolicy="no-referrer"
-            onError={() => setEmbedVisible(false)}
           />
           <button type="button" onClick={() => setEmbedVisible(false)}>
             <Icon
@@ -164,7 +231,7 @@ export default function NoteEditor() {
         <div>
           {/* 노트 작성 헤더 섹션 */}
           <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
-            <button type="button" onClick={() => router.back()}>
+            <button type="button" onClick={handleBack}>
               <Icon icon={faArrowLeft} className="size-5" />
             </button>
             <div className="ml-2 flex w-full items-center justify-between">
@@ -175,7 +242,7 @@ export default function NoteEditor() {
                   disabled={!isValid}
                   size="medium"
                   variant="outline"
-                  className="2xl:!text-14SB border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6"
+                  className="border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
                   onClick={() => {
                     handleTempSave();
                   }}
@@ -185,7 +252,7 @@ export default function NoteEditor() {
                 {/* 제출 버튼 */}
                 <Button
                   size="medium"
-                  className="2xl:!text-14SB !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6"
+                  className="!px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
                   type="submit"
                   disabled={!isValid}
                 >
@@ -206,14 +273,14 @@ export default function NoteEditor() {
               </div>
               <div className="ml-auto flex min-w-40 items-center justify-end">
                 <Button
-                  className="!text-14R 2xl:!text-14R bg-transparent !py-2 px-5 text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent"
+                  className="bg-transparent !py-2 px-5 !text-14R text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent 2xl:!text-14R"
                   onClick={() => setShowSavedData(false)}
                 >
                   닫기
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-14M 2xl:!text-14M h-9 rounded-full px-4 py-2 transition-colors 2xl:rounded-full 2xl:py-2"
+                  className="h-9 rounded-full px-4 py-2 text-14M transition-colors 2xl:rounded-full 2xl:py-2 2xl:!text-14M"
                   onClick={() => {
                     setTempData();
                     setShowSavedData(false);
@@ -236,7 +303,7 @@ export default function NoteEditor() {
                     icon={faFontAwesome}
                     className="size-4 rounded-lg text-lg text-[#FB923C]"
                   />
-                  <h3 className="text-16M w-[calc(100%-40px)] break-words text-gs800">
+                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
                     {goalQuery.data?.todo.title}
                   </h3>
                 </section>
@@ -248,10 +315,10 @@ export default function NoteEditor() {
                   !goalQuery.data?.todo.title && 'mt-4',
                 )}
               >
-                <span className="text-12M h-5 min-w-10 rounded-s bg-gs100 p-1 text-center">
+                <span className="h-5 min-w-10 rounded-s bg-gs100 p-1 text-center text-12M">
                   To do
                 </span>
-                <h4 className="text-14R w-[calc(100%-44px)] break-words text-gs600">
+                <h4 className="w-[calc(100%-44px)] break-words text-14R text-gs600">
                   {todoQuery.data?.title}
                 </h4>
               </article>
@@ -276,6 +343,16 @@ export default function NoteEditor() {
           />
         </div>
       </form>
+
+      {confirmModal && (
+        <ConfirmModal
+          title={confirmModalContent.title}
+          description={confirmModalContent.description}
+          confirmText={confirmModalContent.confirmText}
+          onCancel={() => setConfirmModal(false)}
+          onConfirm={confirmModalContent.onConfirm}
+        />
+      )}
     </div>
   );
 }
