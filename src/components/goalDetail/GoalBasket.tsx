@@ -96,13 +96,15 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          className="ml-auto cursor-pointer border-none bg-transparent text-gs500"
-          onClick={() => setIsConfirmDeleteAllOpen(true)}
-        >
-          모두 지우기
-        </button>
+        {basketItems.length > 0 && (
+          <button
+            type="button"
+            className="ml-auto cursor-pointer border-none bg-transparent text-gs500"
+            onClick={() => setIsConfirmDeleteAllOpen(true)}
+          >
+            모두 지우기
+          </button>
+        )}
       </div>
       <div className="flex-1 overflow-y-auto px-6 pb-16">
         <ul className="list-none space-y-2">
