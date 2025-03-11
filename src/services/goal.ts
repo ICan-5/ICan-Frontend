@@ -1,5 +1,8 @@
 import { getErrorMessage } from '@/constants/errorMessages';
 import { Goal } from '@/types/goals';
+import colors from '@/presets/colors';
+
+const DEFAULT_COLOR = colors.slate500;
 
 /**
  * 목표 수정
@@ -13,7 +16,7 @@ export const updateGoal = async (
   try {
     const body = {
       ...updatedFields,
-      color: updatedFields.color || undefined,
+      color: updatedFields.color || DEFAULT_COLOR,
     };
 
     const response = await fetch(`/api/goals/${goalId}`, {
