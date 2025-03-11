@@ -48,3 +48,27 @@ export async function DELETE(
 
   return res2;
 }
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { noteId: number } },
+) {
+  const { noteId } = params;
+  const body = await req.json();
+  const { title, content, linkUrl } = body;
+
+  const res1 = await fetchIntance({
+    base: 'CODEIT',
+    method: 'PATCH',
+    url: `/notes/${noteId}`,
+    body: {
+      title,
+      content,
+      linkUrl,
+    },
+  });
+
+  if (!res1.ok) return res1;
+
+  return res1;
+}

@@ -138,3 +138,34 @@ export async function getNotes(goalId: number) {
   const data = await res.json();
   return data.notes;
 }
+
+export const editNote = async ({
+  formData,
+  noteId,
+}: {
+  formData: {
+    title: string;
+    content: string;
+    linkUrl: string;
+  };
+  noteId: number;
+}) => {
+  try {
+    const res = await fetch(`/api/notes/${noteId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        title: formData.title,
+        content: formData.content,
+        linkUrl: formData.linkUrl || null,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      return data;
+    }
+    return { data };
+  } catch (error) {
+    return error;
+  }
+};
