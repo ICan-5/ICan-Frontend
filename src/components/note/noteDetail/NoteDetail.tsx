@@ -17,6 +17,7 @@ import SkeletonNoteModal from './SkeletonNoteModal';
 import Icon from '../../common/icon/Icon';
 import cn from '@/utils/cn';
 import EmbedPreview from '../noteCreate/EmbedPreview';
+import ConfirmModal from '@/components/common/ConfirmModal';
 
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
@@ -49,6 +50,7 @@ export default function NoteDetail({
   const { mutate: deleteNote } = useDeleteNote();
 
   const [embedVisible, setEmbedVisible] = useState(embedVisibleProp ?? false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     if (note?.content) {
@@ -66,12 +68,17 @@ export default function NoteDetail({
     }
   };
 
-  const handleDelete = () => {
+  const handleDeleteButton = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
     deleteNote(noteId, {
       onSuccess: () => {
         router.back();
       },
     });
+    setShowConfirm(false);
   };
 
   const handleBack = () => {
@@ -170,7 +177,7 @@ export default function NoteDetail({
                     <button
                       type="button"
                       className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                      onClick={handleDelete}
+                      onClick={handleDeleteButton}
                     >
                       삭제하기
                     </button>
@@ -218,6 +225,15 @@ export default function NoteDetail({
           </div>
         </div>
       </div>
+      {showConfirm && (
+        <ConfirmModal
+          title="노트를 삭제 하시겠어요?"
+          description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
+          confirmText="지우기"
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 }
