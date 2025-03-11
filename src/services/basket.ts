@@ -4,7 +4,7 @@ import { BasketFormValues } from '@/components/goalDetail/BasketCreateTodo';
 // 장바구니 추가
 export const addBasket = async (formData: BasketFormValues) => {
   try {
-    const response = await fetch('/api/baskets', {
+    const response = await fetch('/api/basket', {
       method: 'POST',
       body: JSON.stringify({
         title: formData.title,
@@ -23,18 +23,28 @@ export const addBasket = async (formData: BasketFormValues) => {
 };
 
 /**
+ * 장바구니  모두 삭제
+ */
+export const deleteAllBasket = async (goalId: number) => {
+  const res = await fetch(`/api/basket?goalId=${goalId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(getErrorMessage(res.status));
+};
+
+/**
  * 장바구니 삭제
  * @param basketTodoId 장바구니 할일 id
  */
-export const deleteBasket = async (basketTodoId: number) => {
+export const deleteBasket = async (id: number) => {
   try {
-    const response = await fetch(`/api/baskets/${basketTodoId}`, {
+    const response = await fetch(`/api/basket/${id}`, {
       method: 'DELETE',
     });
 
     if (!response.ok) throw new Error(getErrorMessage(response.status));
 
-    return { basketTodoId };
+    return { id };
   } catch (error) {
     console.error('할 일 삭제 중 오류 발생:', error);
     throw error;

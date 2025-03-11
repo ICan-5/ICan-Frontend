@@ -161,22 +161,24 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
       <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-12M text-gs600 md:text-14M">목표 색상</span>
-            <div className="flex flex-wrap gap-2">
+            <span className="text-14M text-gs600">목표 컬러 수정</span>
+            <div className="flex flex-wrap gap-1">
               {colorKeys.map((key) => (
-                <button
+                <div
                   key={key}
-                  type="button"
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => handleColorSelect(key)}
-                  aria-label={`색상 변경: ${key}`}
-                  className={`size-6 rounded-full border-2 transition-all md:size-8 ${
-                    selectedColor === key
-                      ? 'border-gray-700 ring-2 ring-gray-700'
-                      : 'border-transparent'
+                  className={`flex size-9 items-center justify-center rounded-lg p-1 ${
+                    selectedColor === key ? 'border-2 border-slate400' : ''
                   }`}
-                  style={{ backgroundColor: goalColors[key].DEFAULT }}
-                />
+                >
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleColorSelect(key)}
+                    aria-label={`색상 변경: ${key}`}
+                    className="size-6 rounded-full border border-transparent"
+                    style={{ backgroundColor: goalColors[key].DEFAULT }}
+                  />
+                </div>
               ))}
             </div>
           </div>
