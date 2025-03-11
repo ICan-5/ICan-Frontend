@@ -48,10 +48,10 @@ export default function TodoList({ selectedDate, onOpenModal }: Props) {
           )}
         >
           <h3 className="mb-2 text-14M text-gs500">
-            미완료({incompleteTodos?.length || 0})
+            미완료({incompleteTodos.length})
           </h3>
           <div className="h-full">
-            {isFetching && <SimpleTodoSkeleton />}
+            {isFetching && <SimpleTodoSkeleton repeat={3} />}
             {!isFetching && incompleteTodos.length > 0 ? (
               <TodoListItem todoList={incompleteTodos} />
             ) : (
@@ -86,7 +86,7 @@ export default function TodoList({ selectedDate, onOpenModal }: Props) {
           </div>
           {isCompletedOpen && (
             <div className="h-full overflow-y-auto">
-              {isFetching && <SimpleTodoSkeleton />}
+              {isFetching && <SimpleTodoSkeleton repeat={3} />}
               {!isFetching && completeTodos.length > 0 ? (
                 <TodoListItem todoList={completeTodos} />
               ) : (

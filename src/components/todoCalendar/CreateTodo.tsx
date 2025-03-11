@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 import TextInput from '@/components/common/input/TextInput';
 import DropDownInput from '@/components/common/input/DropDownInput';
 import DateInput from '../common/input/DateInput';
@@ -44,8 +45,13 @@ export default function CreateTodo({
   const { data: goalList, isLoading } = useGoals();
   const { mutate: addTodo } = useAddTodo();
   const { mutate: updateTodo } = useUpdateTodo();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (formData: TodoFormValues) => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     if (isEdit && todoId) {
       updateTodo(
         {
