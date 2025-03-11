@@ -28,7 +28,7 @@ export default function ConfirmModal({
 }: Props) {
   return createPortal(
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-      <div className="flex w-[450px] flex-col gap-6 rounded-lg bg-gs00 p-6">
+      <div className="flex w-[300px] flex-col gap-6 rounded-lg bg-gs00 p-6 md:w-[450px]">
         <div className="flex w-full flex-col items-center justify-center gap-1">
           <div className="px-4 py-2">
             <div className="flex size-16 items-center justify-center rounded-full bg-gray-400">

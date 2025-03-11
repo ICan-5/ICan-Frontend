@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { forwardRef } from 'react';
 import cn from '@/utils/cn';
 
-type Props = {
+interface Props {
   value?: string;
   onClick?: () => void;
   isFocus: boolean;
   setIsFocus: (isFocus: boolean) => void;
-};
+}
 
 // date picker의 ref를 받아와야 해서 함수 표현식으로 컴포넌트 생성
 // eslint-disable-next-line react/display-name

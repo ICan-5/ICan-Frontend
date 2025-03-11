@@ -37,7 +37,7 @@ export default function NoteModal({ noteId }: Props) {
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-40 flex max-h-full flex-col bg-gs00 pb-6 shadow-lg sm:w-full lg:w-[45%] xl:w-[45%]"
+            className="fixed inset-y-0 right-0 z-40 flex max-h-full w-full flex-col bg-gs00 pb-6 shadow-lg lg:w-[45%]"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
