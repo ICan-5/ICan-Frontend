@@ -220,7 +220,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl px-3 py-2 text-14M text-gsBk shadow md:h-10 md:w-36"
               style={colorStyle}
             >
-              <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
+              <FontAwesomeIcon icon={faPenToSquare} /> 목표 수정
             </button>
           )}
           <button
@@ -252,7 +252,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onClick={handleEditClick}
                 className="block w-full px-4 py-2 text-12M text-slate800 hover:bg-slate100"
               >
-                수정하기
+                목표 수정
               </button>
               <button
                 type="button"
