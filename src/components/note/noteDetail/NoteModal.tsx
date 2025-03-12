@@ -32,7 +32,7 @@ export default function NoteModal({ noteId }: Props) {
       {!isClosing && (
         <>
           <motion.div
-            className="fixed inset-0 z-40 bg-gsBk/50"
+            className="bg-gsBk/50 fixed inset-0 z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -41,7 +41,7 @@ export default function NoteModal({ noteId }: Props) {
             ref={modalRef}
             className={cn(
               'fixed inset-y-0 right-0 z-40 flex max-h-full w-full flex-col bg-gs00 pb-6 shadow-lg lg:w-[45%]',
-              { 'lg:w-[80%]': embedVisible },
+              { 'lg:w-[75%]': embedVisible },
             )}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}

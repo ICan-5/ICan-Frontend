@@ -3,7 +3,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft,
-  faClose,
   faEllipsisVertical,
   faFlag,
   faLink,
@@ -17,6 +16,7 @@ import { useDeleteNote, useNoteDetail } from '@/hooks/useNotes';
 import SkeletonNoteModal from './SkeletonNoteModal';
 import Icon from '../../common/icon/Icon';
 import cn from '@/utils/cn';
+import EmbedPreview from '../noteCreate/EmbedPreview';
 
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
@@ -48,15 +48,11 @@ export default function NoteDetail({
   const { data: note, isLoading, error } = useNoteDetail(noteId);
   const { mutate: deleteNote } = useDeleteNote();
 
-  const [embedUrl, setEmbedUrl] = useState<string | null>(null);
   const [embedVisible, setEmbedVisible] = useState(embedVisibleProp ?? false);
 
   useEffect(() => {
     if (note?.content) {
       setSanitizedContent(DOMPurify.sanitize(note.content));
-    }
-    if (note?.linkUrl) {
-      setEmbedUrl(note.linkUrl);
     }
   }, [note?.content, note?.linkUrl]);
 
@@ -105,31 +101,22 @@ export default function NoteDetail({
         { 'lg:flex': embedVisible },
       )}
     >
-      {embedVisible && embedUrl && (
-        <div className="relative flex h-2/5 flex-col bg-gray-100 lg:h-full lg:w-1/2">
-          {/* 닫기 버튼 */}
-          <IconButton
-            className="absolute right-2 top-2 rounded-full bg-white p-2"
-            icon={faClose}
-            onClick={() => {
-              if (setEmbedVisibleProp) {
-                setEmbedVisibleProp(false);
-              }
-              setEmbedVisible(false);
-            }}
-          />
-          <iframe
-            src={embedUrl}
-            className="size-full rounded-lg"
-            title="Embedded Content"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
-            referrerPolicy="no-referrer"
-          />
-        </div>
+      {note.linkUrl && (
+        <EmbedPreview
+          embedUrl={note.linkUrl}
+          embedVisible={embedVisible}
+          onClose={() => {
+            if (setEmbedVisibleProp) {
+              setEmbedVisibleProp(false);
+            }
+            setEmbedVisible(false);
+          }}
+        />
       )}
+
       <div
         className={cn('flex grow flex-col', {
-          'lg:w-1/2': embedVisible,
+          'md:w-1/4': embedVisible,
         })}
       >
         {!isModal && (
@@ -146,8 +133,8 @@ export default function NoteDetail({
           <div className="flex flex-col gap-3">
             <div className="flex justify-between">
               {/* 목표 제목 */}
-              {note.todo.goal && (
-                <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between">
+                {note.todo.goal && (
                   <h1 className="flex items-center gap-3 text-16M">
                     <Icon
                       icon={faFlag}
@@ -157,8 +144,8 @@ export default function NoteDetail({
                     />
                     {note.todo.goal?.title}
                   </h1>
-                </div>
-              )}
+                )}
+              </div>
               <div className="relative">
                 <IconButton
                   className="bg-gs00 text-gs400"

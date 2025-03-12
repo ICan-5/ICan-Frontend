@@ -55,7 +55,7 @@ export default function LinkModal({ onClose, setValue }: Props) {
               rules={{
                 required: '링크를 입력해주세요',
                 pattern: {
-                  value: /^(http|https):\/\/[\w]+(\.[\w]+)+[/#?]?.*$/,
+                  value: /^(https?:\/\/)[\w.-]+(?:\.[\w.-]+)+(\/\S*)?$/,
                   message: '유효한 URL을 입력해주세요',
                 },
               }}
