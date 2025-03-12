@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { Controller, useForm } from 'react-hook-form';
-import Button from '../common/button/Button';
+import Button from '../../common/button/Button';
 import { NoteFormControlProps } from '@/types/note';
 
 interface Props extends NoteFormControlProps {

@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import { Controller } from 'react-hook-form';
 import { faClose, faLink } from '@fortawesome/free-solid-svg-icons';
 import type ReactQuillType from 'react-quill-new';
-import ErrorMessage from '../auth/ErrorMessage';
+import ErrorMessage from '../../auth/ErrorMessage';
 import NoteSkeleton from './NoteSkeleton';
 import LinkModal from './LinkModal';
-import Icon from '../common/icon/Icon';
+import Icon from '../../common/icon/Icon';
 import type { NoteFormControlProps } from '@/types/note';
 
 interface ForwardedQuillProps
@@ -34,6 +34,7 @@ export default function NoteContentEditor({
   setValue,
   trigger,
   setEmbedVisible,
+  checkEmbedUrl,
 }: NoteFormControlProps) {
   const quillInstance = useRef<ReactQuillType | null>(null);
   const [textLength, setTextLength] = useState(0);
@@ -90,7 +91,10 @@ export default function NoteContentEditor({
           <button
             type="button"
             className="w-[calc(100%-56px)] text-left"
-            onClick={() => setEmbedVisible?.(true)}
+            onClick={() => {
+              setEmbedVisible?.(true);
+              checkEmbedUrl?.();
+            }}
           >
             <p className="text-overflow text-gs600 transition-colors hover:text-slate500 focus:text-slate500 active:text-slate500">
               {linkUrl}
@@ -116,7 +120,7 @@ export default function NoteContentEditor({
         <ErrorMessage className="ml-0" message={errors.content.message} />
       )}
 
-      <div className="relative size-full min-h-60 flex-1 basis-auto overflow-auto">
+      <div className="relative flex size-full min-h-60 flex-1 basis-auto overflow-auto">
         <Controller
           control={control}
           name="content"
