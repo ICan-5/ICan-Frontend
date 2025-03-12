@@ -1,5 +1,5 @@
 .quill {
-  @apply flex h-full flex-col-reverse;
+  @apply flex size-full min-h-[inherit] flex-1 flex-col-reverse items-center;
 }
 
 .ql-container {
@@ -7,7 +7,7 @@
 }
 
 .ql-container.ql-snow {
-  @apply min-h-0 flex-1 border-none;
+  @apply min-h-0 w-full flex-1 border-none;
 }
 
 .ql-editor {
@@ -25,7 +25,7 @@
 }
 
 .ql-editor.ql-blank::before {
-  @apply text-16R left-0 not-italic text-gs400;
+  @apply left-0 text-16R not-italic text-gs400;
 }
 
 .ql-editor p {
@@ -33,8 +33,8 @@
 }
 
 .ql-toolbar.ql-snow {
-  @apply z-10 w-full min-w-[460px] max-w-[752px] rounded-full border-gs200 bg-gs00;
-  @apply absolute bottom-2 transform sm:left-1/2 sm:-translate-x-1/2;
+  @apply z-10 w-full min-w-[400px] max-w-[752px] rounded-full border-gs200 bg-gs00;
+  @apply absolute bottom-3 left-0 md:left-[unset];
   box-shadow: 0px 1px 2px 0px #0000000d;
 }
 

@@ -120,7 +120,7 @@ export default function NoteContentEditor({
         <ErrorMessage className="ml-0" message={errors.content.message} />
       )}
 
-      <div className="relative size-full min-h-60 flex-1 basis-auto overflow-auto">
+      <div className="relative flex size-full min-h-60 flex-1 basis-auto overflow-auto">
         <Controller
           control={control}
           name="content"

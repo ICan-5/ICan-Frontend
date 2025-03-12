@@ -180,7 +180,9 @@ export default function NoteEditor() {
 
   // 링크 URL 변경 시 임베드 URL 업데이트
   useEffect(() => {
+    console.log('linkUrl바뀜!', linkUrl);
     setEmbedUrl(linkUrl || '');
+
     if (!linkUrl) setEmbedVisible(false);
   }, [linkUrl]);
 
@@ -226,14 +228,15 @@ export default function NoteEditor() {
   }, []);
 
   return (
-    <div className="flex h-dvh w-full flex-col sm:flex-row">
+    <div className="flex size-full flex-col md:h-dvh md:flex-row">
       {/* 임베드 URL이 있으면 표시 */}
       {embedVisible && embedUrl !== '' && (
         <section className="relative h-auto flex-1">
           {fallback ? (
             <iframe
               src={embedUrl}
-              className="size-full rounded-2xl"
+              key={embedUrl}
+              className="size-full min-h-80 rounded-2xl"
               title="EmbeddedContent"
               id="EmbeddedContent"
               sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
@@ -243,7 +246,8 @@ export default function NoteEditor() {
             <object
               ref={objectRef}
               data={embedUrl}
-              className="flex size-full items-center justify-center break-keep rounded-2xl bg-gs200 px-4 text-center"
+              key={embedUrl}
+              className="flex size-full min-h-80 items-center justify-center break-keep rounded-2xl bg-gs200 px-4 text-center"
             >
               <p>
                 <a
@@ -256,7 +260,7 @@ export default function NoteEditor() {
                 </a>
                 <br />
                 <span className="mt-3 inline-block text-14R text-gs600">
-                  이 콘텐츠는 직접 임베드할 수 없습니다!
+                  이 콘텐츠는 미리보기를 제공하지 않습니다
                   <br />
                   링크로 이동하여 콘텐츠를 확인하세요
                 </span>
@@ -275,11 +279,11 @@ export default function NoteEditor() {
       {/* 노트 작성 폼 */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900"
+        className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900 md:min-w-[452px]"
       >
         <div>
           {/* 노트 작성 헤더 섹션 */}
-          <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex">
+          <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex sm:min-w-[400px]">
             <button type="button" onClick={handleBack}>
               <Icon icon={faArrowLeft} className="size-5" />
             </button>
