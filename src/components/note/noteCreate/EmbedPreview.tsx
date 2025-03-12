@@ -24,6 +24,7 @@ export default function EmbedPreview({
       {fallback ? (
         <iframe
           src={embedUrl}
+          key={embedUrl}
           className="size-full min-h-80 rounded-2xl"
           title="EmbeddedContent"
           sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
@@ -33,6 +34,7 @@ export default function EmbedPreview({
         <object
           ref={objectRef}
           data={embedUrl}
+          key={embedUrl}
           className="flex size-full min-h-80 items-center justify-center break-keep rounded-2xl bg-gs200 px-4 text-center"
         >
           <p>

@@ -184,21 +184,20 @@ export default function NoteEditor() {
 
   // object 지원 체크
   const checkEmbedUrl = useCallback(() => {
-    if (!objectRef.current) {
+    const objectEl = objectRef.current;
+    if (!objectEl) {
       return;
     }
 
     setTimeout(() => {
-      const objectEl = objectRef.current;
       if (
         objectEl &&
         (objectEl.clientWidth === 0 || objectEl.clientHeight === 0)
       ) {
-        console.warn('object 태그가 지원되지 않음. iframe으로 대체');
         // iframe 대체
         setFallback(true);
       }
-    }, 100);
+    }, 500);
   }, []);
 
   // 자동 임시 저장 기능(5분마다)
