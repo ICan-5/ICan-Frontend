@@ -11,11 +11,22 @@ import GoalProgress from '@/components/goalDetail/GoalProgress';
 import GoalTodoList from '@/components/goalDetail/GoalTodoList';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
+import goalColors from '@/presets/goalColors';
+import colors from '@/presets/colors';
 
 config.autoAddCss = false;
 
+const getGoalColor = (color: string) => {
+  return (
+    goalColors[color as keyof typeof goalColors] ?? {
+      100: colors.slate100,
+      DEFAULT: colors.slate500,
+    }
+  );
+};
+
 export default function Page({ params }: { params: { id: string } }) {
-  const { todoItems, doneItems, basketTodos, isLoading } = useGoalTodo(
+  const { todoItems, doneItems, basketTodos, color, isLoading } = useGoalTodo(
     Number(params.id),
   );
   const toggleTodoMutation = useToggleTodo(Number(params.id));
@@ -65,6 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}
+            color={getGoalColor(color)}
           />
         </div>
       </div>
@@ -77,6 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
             list={todoItems}
             onToggle={handleToggleTodo}
             goalId={params.id}
+            color={getGoalColor(color)}
           />
           <div className="flex flex-col gap-[10px]">
             <GoalDoneList
@@ -87,14 +100,18 @@ export default function Page({ params }: { params: { id: string } }) {
               onToggle={handleToggleTodo}
               goalId={params.id}
             />
-            <GoalBasket basketItems={basketTodos} goalId={params.id} />
+            <GoalBasket
+              basketItems={basketTodos}
+              goalId={params.id}
+              color={getGoalColor(color)}
+            />
           </div>
         </div>
       )}
     </>
   );
 
-  // 메인 렌더링 로직
+  // 메인
   let content;
   if (isLoading) {
     content = renderLoading();

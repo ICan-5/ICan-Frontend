@@ -5,16 +5,20 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import CheckTodo from '@/components/common/todo/CheckTodo';
-import IconButton from '@/components/common/button/IconButton';
 import GoalTodoModal from './GoalTodoModal';
 import { Todo } from '@/types/todos';
 import { useDeleteGoalTodo } from '@/hooks/useGoalsTodo';
 import ConfirmModal from '../common/ConfirmModal';
+import IconButton from '../common/button/IconButton';
 
 interface Props {
   list: Todo[];
   onToggle: (id: number) => void;
   goalId: string;
+  color: {
+    100: string;
+    DEFAULT: string;
+  };
 }
 
 interface GroupedTodos {
@@ -23,7 +27,7 @@ interface GroupedTodos {
   upcoming: Record<string, Todo[]>;
 }
 
-export default function GoalTodoList({ list, onToggle, goalId }: Props) {
+export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
   const router = useRouter();
   const groupedTodos: GroupedTodos = { past: {}, today: [], upcoming: {} };
   const today = new Date().toLocaleDateString('sv-SE');
@@ -107,7 +111,9 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
     <div className="relative flex h-[605px] flex-col rounded-2xl shadow">
       <div className="sticky top-0 z-10 flex items-center gap-2 rounded-t-2xl bg-gs50 p-4">
         <h3 className="text-18SB">남은 할일</h3>
-        <h3 className="text-18SB text-slate500">{list.length}</h3>
+        <h3 className="text-18SB" style={{ color: color.DEFAULT }}>
+          {list.length}
+        </h3>
       </div>
 
       <div className="h-full overflow-auto bg-gs00 px-6 pb-20">
@@ -231,7 +237,8 @@ export default function GoalTodoList({ list, onToggle, goalId }: Props) {
 
       <div className="sticky z-10 rounded-b-xl bg-gs00 p-5">
         <div
-          className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 p-1 text-14M"
+          style={{ color: color.DEFAULT, borderColor: color.DEFAULT }}
           onClick={() => setIsModalOpen(true)}
         >
           + 새 할일 생성

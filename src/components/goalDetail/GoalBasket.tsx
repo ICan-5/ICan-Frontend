@@ -17,9 +17,13 @@ import IconButton from '../common/button/IconButton';
 interface Props {
   basketItems: Basket[];
   goalId: string;
+  color: {
+    100: string;
+    DEFAULT: string;
+  };
 }
 
-export default function GoalBasket({ basketItems, goalId }: Props) {
+export default function GoalBasket({ basketItems, goalId, color }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<number | null>(
@@ -145,7 +149,8 @@ export default function GoalBasket({ basketItems, goalId }: Props) {
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-gs100 p-5">
         <div
-          className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-slate500 p-1 text-14M text-slate500"
+          className="flex cursor-pointer items-center justify-center rounded-xl border-2 p-1 text-14M"
+          style={{ color: color.DEFAULT, borderColor: color.DEFAULT }}
           onClick={handleAddTodo}
         >
           + 장바구니에 새 할일 추가
