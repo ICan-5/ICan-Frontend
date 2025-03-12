@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   // 로딩 화면 렌더링 함수
   const renderLoading = () => (
-    <div className="flex h-full items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <FontAwesomeIcon
         icon={faSpinner}
         spin

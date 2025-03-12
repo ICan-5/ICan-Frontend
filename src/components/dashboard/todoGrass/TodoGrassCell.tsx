@@ -15,7 +15,7 @@ export default function TodoGrassCell({ date, progress }: Props) {
     if (progress < 60) return 'bg-slate300'; // 중간색
     if (progress < 80) return 'bg-slate400'; // 진한 색
     if (progress < 100) return 'bg-slate500';
-    return 'bg-slate600'; // 매우 진한 색
+    return 'bg-slate700'; // 매우 진한 색
   };
 
   return (

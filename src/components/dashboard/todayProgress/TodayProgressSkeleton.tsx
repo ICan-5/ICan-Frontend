@@ -3,7 +3,7 @@ import cn from '@/utils/cn';
 export default function TodayProgressSkeleton() {
   return (
     <div className="relative flex size-full min-h-48 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
-      <p className="text-16SB 2xl:text-18SB">금일 진행도</p>
+      <p className="text-16SB text-gsBk 2xl:text-18SB">금일 진행도</p>
       <div className="relative top-6 flex-1">
         <div className="clip-circle-40 absolute bottom-0 left-1/2 aspect-square h-full w-auto -translate-x-1/2 rounded-full bg-gradient-to-b from-gs00 to-transparent" />
         <svg

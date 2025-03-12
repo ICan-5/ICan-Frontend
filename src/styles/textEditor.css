@@ -1,58 +1,55 @@
 .quill {
-  @apply h-full;
-  @apply flex;
-  @apply flex-col-reverse;
+  @apply flex h-full flex-col-reverse;
 }
+
 .ql-container {
-  flex: 1;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-1 flex-col overflow-auto;
 }
 
 .ql-container.ql-snow {
-  @apply border-none;
-  @apply flex-1;
-  @apply min-h-0;
-  @apply pb-2;
+  @apply min-h-0 flex-1 border-none;
 }
+
 .ql-editor {
-  @apply p-0;
-  flex: 1;
-  overflow: auto;
+  @apply flex-1 overflow-auto p-0;
 }
+
+.ql-editor::after {
+  @apply pointer-events-none absolute bottom-0 left-0 h-7 w-full;
+  content: '';
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 .ql-editor.ql-blank::before {
-  @apply left-0;
-  @apply not-italic;
-  @apply text-16R;
-  @apply text-gs400;
+  @apply text-16R left-0 not-italic text-gs400;
 }
 
 .ql-editor p {
   @apply text-16R;
 }
+
 .ql-toolbar.ql-snow {
-  @apply border-gs200;
-  @apply rounded-full;
-  @apply sticky;
-  @apply z-10;
-  @apply bottom-0;
-  @apply bg-gs00;
+  @apply z-10 w-full min-w-[460px] max-w-[752px] rounded-full border-gs200 bg-gs00;
+  @apply absolute bottom-2 transform sm:left-1/2 sm:-translate-x-1/2;
   box-shadow: 0px 1px 2px 0px #0000000d;
-  @apply min-w-[460px];
 }
+
 .ql-toolbar.ql-snow .ql-formats {
   @apply mr-4;
 }
+
 .ql-toolbar.ql-snow .ql-formats:last-child {
-  @apply absolute;
-  @apply right-2;
-  @apply mr-0;
+  @apply absolute right-2 mr-0;
 }
-.ql-snow.ql-toolbar:after,
-.ql-snow .ql-toolbar:after {
+
+.ql-snow.ql-toolbar:after {
   @apply hidden;
 }
-/* .ql-snow .ql-formats:after {
-  @apply hidden;
-} */
+
+.ql-picker-options {
+  @apply bottom-full top-auto !important;
+}

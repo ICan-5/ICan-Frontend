@@ -1,29 +1,33 @@
 import { faAngleUp, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { Todo } from '@/types/todos';
 import TodoListItem from './TodoListItem';
 import Button from '../common/button/Button';
 import Icon from '../common/icon/Icon';
 import cn from '@/utils/cn';
+import { useDailyTodos } from '@/hooks/useTodos';
+import SimpleTodoSkeleton from '../common/todo/SimpleTodoSkeleton';
 
 interface Props {
   selectedDate: Date;
-  todos: Todo[];
   onOpenModal: () => void;
 }
 
 /**
  * 각 날짜의 할 일 목록을 보여주는 컴포넌트
  * @param selectedDate 선택한 날짜
- * @param todos 해당 날짜에 해당하는 할 일
  * @param onToggleTodo 할 일 토글 버튼(완료/미완료)
  */
-export default function TodoList({ selectedDate, todos, onOpenModal }: Props) {
+export default function TodoList({ selectedDate, onOpenModal }: Props) {
+  // 하루 단위 할 일
+  const { data: todos, isFetching } = useDailyTodos(
+    selectedDate.toLocaleDateString('sv-SE'),
+  );
+
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
 
-  const incompleteTodos = todos.filter((todo) => !todo.done);
-  const completeTodos = todos.filter((todo) => todo.done);
+  const incompleteTodos = todos ? todos.filter((todo) => !todo.done) : [];
+  const completeTodos = todos ? todos.filter((todo) => todo.done) : [];
 
   return (
     <div className="flex size-full flex-col rounded-[20px] border-2 border-gs200 bg-gs00">
@@ -39,15 +43,16 @@ export default function TodoList({ selectedDate, todos, onOpenModal }: Props) {
         {/* 미완료 */}
         <div
           className={cn(
-            'flex min-h-0 flex-1 flex-col transition-all duration-500 ease-in-out',
+            'flex min-h-0 flex-1 flex-col overflow-y-auto transition-all duration-500 ease-in-out',
             isCompletedOpen ? 'max-h-[50%]' : 'max-h-[85%]',
           )}
         >
           <h3 className="mb-2 text-14M text-gs500">
             미완료({incompleteTodos.length})
           </h3>
-          <div className="h-full overflow-y-auto">
-            {incompleteTodos.length > 0 ? (
+          <div className="h-full">
+            {isFetching && <SimpleTodoSkeleton repeat={3} />}
+            {!isFetching && incompleteTodos.length > 0 ? (
               <TodoListItem todoList={incompleteTodos} />
             ) : (
               <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
@@ -66,7 +71,7 @@ export default function TodoList({ selectedDate, todos, onOpenModal }: Props) {
         >
           <div className="flex justify-between">
             <h3 className="mb-2 text-14M text-gs500">
-              완료 ({completeTodos.length})
+              완료 ({completeTodos?.length || 0})
             </h3>
             <button
               type="button"
@@ -81,7 +86,8 @@ export default function TodoList({ selectedDate, todos, onOpenModal }: Props) {
           </div>
           {isCompletedOpen && (
             <div className="h-full overflow-y-auto">
-              {completeTodos.length > 0 ? (
+              {isFetching && <SimpleTodoSkeleton repeat={3} />}
+              {!isFetching && completeTodos.length > 0 ? (
                 <TodoListItem todoList={completeTodos} />
               ) : (
                 <div className="flex h-full items-center justify-center text-center text-14M text-gs500">

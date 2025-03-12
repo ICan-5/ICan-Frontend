@@ -74,6 +74,12 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
     setIsEditing(false);
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('.save-button')) {
+      handleSave();
+    }
+  };
+
   const handleColorSelect = (key: keyof typeof goalColors) => {
     setSelectedColor(key);
   };
@@ -95,8 +101,6 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const handleCancelDelete = () => {
     setSelectedDeleteGoal(null);
   };
-
-  const handleBlur = () => setIsEditing(false);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSave();
@@ -132,7 +136,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
 
   return (
     <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
-      <div className="flex min-h-[56px] items-start">
+      <div className="flex min-h-[56px] items-start justify-between">
         <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
@@ -140,20 +144,34 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
             style={{ color: defaultColorStyle.backgroundColor }}
           />
           {isEditing ? (
-            <input
-              ref={inputRef}
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
-              className="w-full border-b border-gs500"
-            />
+            <div className="flex w-full items-center">
+              <input
+                ref={inputRef}
+                value={newTitle}
+                onBlur={handleBlur}
+                onChange={(e) => setNewTitle(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full border-b border-gs500"
+              />
+            </div>
           ) : (
             <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
               {goalTitle}
             </span>
           )}
         </h1>
+
+        {isEditing && (
+          <button
+            type="button"
+            onClick={handleSave}
+            className="save-button ml-2 flex h-9 w-32 items-center justify-center rounded-2xl px-3 py-2 text-14M text-gs00 md:h-10 md:w-36 md:px-5 md:py-3"
+            style={defaultColorStyle}
+            title="수정완료"
+          >
+            수정 완료
+          </button>
+        )}
       </div>
 
       <div className="flex-1" />
@@ -161,7 +179,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
       <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-14M text-gs600">목표 컬러 수정</span>
+            <span className="text-12M text-gs600 md:text-14M">
+              목표 색상 수정
+            </span>
             <div className="flex flex-wrap gap-1">
               {colorKeys.map((key) => (
                 <div
@@ -204,7 +224,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               className="flex h-9 w-32 cursor-pointer items-center justify-center gap-2 rounded-2xl px-3 py-2 text-14M text-gsBk shadow md:h-10 md:w-36"
               style={colorStyle}
             >
-              <FontAwesomeIcon icon={faPenToSquare} /> 수정하기
+              <FontAwesomeIcon icon={faPenToSquare} /> 목표 수정
             </button>
           )}
           <button
@@ -236,7 +256,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onClick={handleEditClick}
                 className="block w-full px-4 py-2 text-12M text-slate800 hover:bg-slate100"
               >
-                수정하기
+                목표 수정
               </button>
               <button
                 type="button"
