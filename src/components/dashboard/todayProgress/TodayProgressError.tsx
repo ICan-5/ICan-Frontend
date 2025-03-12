@@ -7,7 +7,7 @@ import Button from '@/components/common/button/Button';
 export default function TodayProgressError() {
   return (
     <div className="relative flex size-full min-h-48 flex-[3] flex-col rounded-2xl border-2 border-gs200 px-6 py-4 2xl:rounded-3xl">
-      <p className="text-16SB 2xl:text-18SB">금일 진행도</p>
+      <p className="text-16SB text-gsBk 2xl:text-18SB">금일 진행도</p>
       <div className="flex h-full flex-col items-center justify-center gap-2">
         <FontAwesomeIcon
           className="size-10 text-warn500"

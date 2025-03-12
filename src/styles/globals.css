@@ -6,14 +6,77 @@
   --background: #ffffff;
   --foreground: #171717;
   --fc-border-color: #e2e8f0;
+
+  --gs00: #ffffff;
+  --gsBk: #000000;
+  --gs20: #fcfdfe;
+  --gs50: #f8fafc;
+  --gs100: #f1f5f9;
+  --gs200: #e2e8f0;
+  --gs300: #cbd5e1;
+  --gs400: #94a3b8;
+  --gs500: #64748b;
+  --gs600: #475569;
+
+  --warn50: #fff2f2;
+  --warn500: #f95f5f;
+
+  --goal01: #fb923c;
+  --goal01-100: #ffeee0;
+  --goal02: #facc15;
+  --goal02-100: #fff9e1;
+  --goal03: #2dd4bf;
+  --goal03-100: #e0fffb;
+  --goal04: #8b5cf6;
+  --goal04-100: #f1ebff;
+  --goal05: #f87171;
+  --goal05-100: #ffecec;
+
+  --slate50: #eff6ff;
+  --slate100: #dbeafe;
+  --slate200: #bfdbfe;
+  --slate300: #93c5fd;
+  --slate400: #60a5fa;
+  --slate500: #3b82f6;
+  --slate700: #1d4ed8;
+  --slate800: #1e40af;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-  /* 다크모드일 때, 자동 완성된 입력 필드 배경색 변경 */
+[data-dark='true'] {
+  --gs00: #1a1d21;
+  --gsBk: #f2f2f2;
+  --gs20: #1a1a1a;
+  --gs50: #222222;
+  --gs100: #2a2a2a;
+  --gs200: #333333;
+  --gs300: #4a4a4a;
+  --gs400: #5a5a5a;
+  --gs500: #6a6a6a;
+  --gs600: #7a7a7a;
+
+  --warn50: #fff2f2;
+  --warn500: #d64747;
+
+  --goal01: #d9792e;
+  --goal01-100: #ffeee0;
+  --goal02: #c9a811;
+  --goal02-100: #fff9e1;
+  --goal03: #24a296;
+  --goal03-100: #e0fffb;
+  --goal04: #6f45c5;
+  --goal04-100: #f1ebff;
+  --goal05: #c95a5a;
+  --goal05-100: #ffecec;
+
+  --slate50: #1e2a3a;
+  --slate100: #23314a;
+  --slate200: #2b3f64;
+  --slate300: #3a5685;
+  --slate400: #4e6fa5;
+  --slate500: #295baa;
+  --slate700: #1d4ed8;
+  --slate800: #1e40af;
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -24,9 +87,42 @@
   }
 }
 
+[data-color='green'] {
+  --slate50: #ecfdf5;
+  --slate100: #d1fae5;
+  --slate200: #a7f3d0;
+  --slate300: #6ee7b7;
+  --slate400: #34d399;
+  --slate500: #10b981;
+  --slate700: #047857;
+  --slate800: #065f46;
+}
+
+[data-color='pink'] {
+  --slate50: #fdf2f8;
+  --slate100: #fce7f3;
+  --slate200: #fbcfe8;
+  --slate300: #f9a8d4;
+  --slate400: #f472b6;
+  --slate500: #ec4899;
+  --slate700: #be185d;
+  --slate800: #9d174d;
+}
+
+[data-color='purple'] {
+  --slate50: #f5f3ff;
+  --slate100: #ede9fe;
+  --slate200: #ddd6fe;
+  --slate300: #c4b5fd;
+  --slate400: #a78bfa;
+  --slate500: #8b5cf6;
+  --slate700: #6d28d9;
+  --slate800: #5b21b6;
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--gsBk);
+  background: var(--gs00);
   font-family: Arial, Helvetica, sans-serif;
 }
 
