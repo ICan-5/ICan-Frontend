@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import cn from '@/utils/cn';
+import NonProfile from '../NonProfile';
 
 type Props = {
   isFolded: boolean;
@@ -11,17 +12,26 @@ export default function NavUserProfile({ isFolded }: Props) {
 
   return (
     <div className="my-6 flex h-16 w-full flex-none items-center gap-3 overflow-hidden 2xl:my-8">
-      <Image
-        className={cn(
-          'size-12 rounded-full transition-all duration-300 2xl:size-16',
-          { 'ml-1 opacity-0 2xl:size-10': isFolded },
-        )}
-        src={data?.user?.image || '/images/profile.png'}
-        width="64"
-        height="64"
-        alt="profileImage"
-        priority
-      />
+      {status === 'authenticated' && data?.user?.image ? (
+        <Image
+          className={cn(
+            'size-12 flex-none rounded-full object-cover transition-all duration-300 2xl:size-16',
+            { 'ml-1 opacity-0 2xl:size-10': isFolded },
+          )}
+          src={data?.user?.image}
+          width="64"
+          height="64"
+          alt="profileImage"
+          priority
+        />
+      ) : (
+        <NonProfile
+          className={cn(
+            'size-12 flex-none rounded-full transition-all duration-300 2xl:size-16',
+            { 'ml-1 opacity-0 2xl:size-10': isFolded },
+          )}
+        />
+      )}
       <div className="flex w-full flex-col gap-1 overflow-hidden">
         <span
           className={cn(

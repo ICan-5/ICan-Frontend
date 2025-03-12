@@ -25,7 +25,7 @@ export default function MemberPageWrapper({
         className={cn(
           'relative left-1/2 flex w-full max-w-screen-xl -translate-x-1/2 flex-col gap-4 overflow-auto p-4 md:gap-8 md:p-10',
           {
-            'max-h-[1000px] md:h-screen': !isCalendarPage,
+            'md:h-screen md:max-h-[1000px]': !isCalendarPage,
           },
         )}
       >
