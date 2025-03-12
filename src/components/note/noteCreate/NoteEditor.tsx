@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,10 +24,6 @@ import cn from '@/utils/cn';
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
-  // 오브젝트 (임베드)
-  const objectRef = useRef<HTMLObjectElement | null>(null);
-  // 오브젝트 대체
-  const [fallback, setFallback] = useState(false);
   // 할 일 제목, 목표 제목 가져오기
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
@@ -182,24 +178,6 @@ export default function NoteEditor() {
     }
   };
 
-  // object 지원 체크
-  const checkEmbedUrl = useCallback(() => {
-    const objectEl = objectRef.current;
-    if (!objectEl) {
-      return;
-    }
-
-    setTimeout(() => {
-      if (
-        objectEl &&
-        (objectEl.clientWidth === 0 || objectEl.clientHeight === 0)
-      ) {
-        // iframe 대체
-        setFallback(true);
-      }
-    }, 500);
-  }, []);
-
   // 자동 임시 저장 기능(5분마다)
   useEffect(() => {
     const interval = setInterval(() => {
@@ -233,7 +211,6 @@ export default function NoteEditor() {
       <EmbedPreview
         embedUrl={embedUrl}
         embedVisible={embedVisible}
-        fallback={fallback}
         onClose={() => setEmbedVisible(false)}
       />
 
@@ -305,7 +282,6 @@ export default function NoteEditor() {
             setValue={setValue}
             isValid={isValid}
             setEmbedVisible={setEmbedVisible}
-            checkEmbedUrl={checkEmbedUrl}
           />
         </div>
       </form>

@@ -9,7 +9,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import DOMPurify from 'dompurify';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import IconButton from '../../common/button/IconButton';
@@ -17,6 +16,7 @@ import { useDeleteNote, useNoteDetail } from '@/hooks/useNotes';
 import SkeletonNoteModal from './SkeletonNoteModal';
 import Icon from '../../common/icon/Icon';
 import cn from '@/utils/cn';
+import EmbedPreview from '../noteCreate/EmbedPreview';
 
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
@@ -27,10 +27,18 @@ const goalColor: Record<string, string> = {
 interface Props {
   noteId: number;
   isModal?: boolean;
+  embedVisible?: boolean;
+  setEmbedVisible?: (visible: boolean) => void;
   setIsClosing?: (value: boolean) => void;
 }
 
-export default function NoteDetail({ noteId, isModal, setIsClosing }: Props) {
+export default function NoteDetail({
+  noteId,
+  isModal,
+  embedVisible: embedVisibleProp,
+  setEmbedVisible: setEmbedVisibleProp,
+  setIsClosing,
+}: Props) {
   const router = useRouter();
   const [sanitizedContent, setSanitizedContent] = useState<string | null>(null);
 
@@ -40,11 +48,13 @@ export default function NoteDetail({ noteId, isModal, setIsClosing }: Props) {
   const { data: note, isLoading, error } = useNoteDetail(noteId);
   const { mutate: deleteNote } = useDeleteNote();
 
+  const [embedVisible, setEmbedVisible] = useState(embedVisibleProp ?? false);
+
   useEffect(() => {
     if (note?.content) {
       setSanitizedContent(DOMPurify.sanitize(note.content));
     }
-  }, [note?.content]);
+  }, [note?.content, note?.linkUrl]);
 
   const handleEdit = () => {
     if (setIsClosing) {
@@ -83,100 +93,129 @@ export default function NoteDetail({ noteId, isModal, setIsClosing }: Props) {
 
   return (
     <div
-      className={cn('h-full overflow-y-auto bg-gs00', {
-        'rounded-2xl border-2 border-gs200': !isModal,
-      })}
-    >
-      {!isModal && (
-        <div className="flex w-full gap-2 border-b-2 border-gs200 bg-gs50 p-4">
-          <IconButton icon={faArrowLeft} onClick={handleBack} />
-          <h1 className="text-18SB text-gsBk">노트</h1>
-        </div>
+      className={cn(
+        'h-full overflow-y-auto bg-gs00',
+        {
+          'rounded-2xl border-2 border-gs200': !isModal,
+        },
+        { 'lg:flex': embedVisible },
       )}
+    >
+      {note.linkUrl && (
+        <EmbedPreview
+          embedUrl={note.linkUrl}
+          embedVisible={embedVisible}
+          onClose={() => {
+            if (setEmbedVisibleProp) {
+              setEmbedVisibleProp(false);
+            }
+            setEmbedVisible(false);
+          }}
+        />
+      )}
+
       <div
-        className={cn('flex grow flex-col gap-6 px-6', {
-          'pt-6': !isModal,
+        className={cn('flex grow flex-col', {
+          'md:w-1/4': embedVisible,
         })}
       >
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between">
-            {/* 목표 제목 */}
-            {note.todo.goal && (
+        {!isModal && (
+          <div className="flex w-full gap-2 border-b-2 border-gs200 bg-gs50 p-4">
+            <IconButton icon={faArrowLeft} onClick={handleBack} />
+            <h1 className="text-18SB text-gsBk">노트</h1>
+          </div>
+        )}
+        <div
+          className={cn('flex grow flex-col gap-6 px-6', {
+            'pt-6': !isModal,
+          })}
+        >
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between">
+              {/* 목표 제목 */}
               <div className="flex items-center justify-between">
-                <h1 className="flex items-center gap-3 text-16M">
-                  <Icon
-                    icon={faFlag}
-                    className={cn(
-                      goalColor[note.todo.goal?.color || 'default'],
-                    )}
-                  />
-                  {note.todo.goal?.title}
-                </h1>
+                {note.todo.goal && (
+                  <h1 className="flex items-center gap-3 text-16M">
+                    <Icon
+                      icon={faFlag}
+                      className={cn(
+                        goalColor[note.todo.goal?.color || 'default'],
+                      )}
+                    />
+                    {note.todo.goal?.title}
+                  </h1>
+                )}
               </div>
-            )}
-            <div className="relative">
-              <IconButton
-                className="bg-gs00 text-gs400"
-                icon={faEllipsisVertical}
-                onClick={() => {
-                  setIsMenuOpen(true);
-                }}
-              />
-              {isMenuOpen && (
-                <div
-                  className="absolute right-0 z-10 mt-2 rounded bg-gs00 shadow-md"
-                  ref={menuRef}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    type="button"
-                    className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                    onClick={handleEdit}
+              <div className="relative">
+                <IconButton
+                  className="bg-gs00 text-gs400"
+                  icon={faEllipsisVertical}
+                  onClick={() => {
+                    setIsMenuOpen(true);
+                  }}
+                />
+                {isMenuOpen && (
+                  <div
+                    className="absolute right-0 z-10 mt-2 rounded bg-gs00 shadow-md"
+                    ref={menuRef}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    수정하기
-                  </button>
-                  <button
-                    type="button"
-                    className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
-                    onClick={handleDelete}
-                  >
-                    삭제하기
-                  </button>
-                </div>
-              )}
+                    <button
+                      type="button"
+                      className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      onClick={handleEdit}
+                    >
+                      수정하기
+                    </button>
+                    <button
+                      type="button"
+                      className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      onClick={handleDelete}
+                    >
+                      삭제하기
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* To do */}
+            <div className="flex items-center gap-2 text-gs700">
+              <span className="rounded bg-gs200 p-1 text-12M">To do</span>
+              <span className="text-14R">{note.todo.title}</span>
+              <span className="ml-auto text-12R">{note.updatedAt}</span>
             </div>
           </div>
 
-          {/* To do */}
-          <div className="flex items-center gap-2 text-gs700">
-            <span className="rounded bg-gs200 p-1 text-12M">To do</span>
-            <span className="text-14R">{note.todo.title}</span>
-            <span className="ml-auto text-12R">{note.updatedAt}</span>
-          </div>
-        </div>
+          <div className="flex flex-col gap-4">
+            {/* 노트 제목 */}
+            <div className="flex items-center justify-between border-y py-3">
+              <h1 className="flex items-center text-18M">{note.title}</h1>
+            </div>
+            {note.linkUrl && (
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
+                onClick={() => {
+                  if (setEmbedVisibleProp) {
+                    setEmbedVisibleProp(true);
+                  }
+                  setEmbedVisible(true);
+                }}
+              >
+                <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
+                  <FontAwesomeIcon icon={faLink} className="size-3 text-gs00" />
+                </div>
+                <p className="truncate text-16M">{note.linkUrl}</p>
+              </button>
+            )}
 
-        <div className="flex flex-col gap-4">
-          {/* 노트 제목 */}
-          <div className="flex items-center justify-between border-y py-3">
-            <h1 className="flex items-center text-18M">{note.title}</h1>
+            {/* 내용 */}
+            <div
+              className="whitespace-pre-line text-16R text-gs700"
+              dangerouslySetInnerHTML={{ __html: sanitizedContent || '' }}
+            />
           </div>
-          {note.linkUrl && (
-            <Link
-              href={note.linkUrl}
-              className="flex w-full items-center gap-2 rounded-3xl bg-gs200 px-2 py-1"
-            >
-              <div className="flex size-6 flex-none items-center justify-center rounded-full bg-slate500">
-                <FontAwesomeIcon icon={faLink} className="size-3 text-gs00" />
-              </div>
-              <p className="truncate text-16M">{note.linkUrl}</p>
-            </Link>
-          )}
-
-          {/* 내용 */}
-          <div
-            className="whitespace-pre-line text-16R text-gs700"
-            dangerouslySetInnerHTML={{ __html: sanitizedContent || '' }}
-          />
         </div>
       </div>
     </div>

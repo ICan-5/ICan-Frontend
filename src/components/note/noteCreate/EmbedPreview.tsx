@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import Icon from '../../common/icon/Icon';
 
@@ -6,16 +6,35 @@ type Props = {
   embedUrl: string;
   embedVisible: boolean;
   onClose: () => void;
-  fallback: boolean;
 };
 
 export default function EmbedPreview({
   embedUrl,
   embedVisible,
   onClose,
-  fallback,
 }: Props) {
+  // 오브젝트 대체
+  const [fallback, setFallback] = useState(false);
   const objectRef = useRef<HTMLObjectElement | null>(null);
+
+  useEffect(() => {
+    if (!embedUrl || !embedVisible) return undefined;
+
+    const objectEl = objectRef.current;
+    if (!objectEl) return undefined;
+
+    const timer = setTimeout(() => {
+      if (
+        objectEl &&
+        (objectEl.clientWidth === 0 || objectEl.clientHeight === 0)
+      ) {
+        // iframe 대체
+        setFallback(true);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [embedUrl, embedVisible]);
 
   if (!embedVisible || !embedUrl) return null;
 

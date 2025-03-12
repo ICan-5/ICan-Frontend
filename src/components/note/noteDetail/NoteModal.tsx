@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import IconButton from '../../common/button/IconButton';
 import NoteDetail from './NoteDetail';
+import cn from '@/utils/cn';
 
 interface Props {
   noteId: number;
@@ -16,6 +17,7 @@ interface Props {
 export default function NoteModal({ noteId }: Props) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
+  const [embedVisible, setEmbedVisible] = useState(false);
 
   const closeModal = () => {
     setIsClosing(true);
@@ -30,14 +32,17 @@ export default function NoteModal({ noteId }: Props) {
       {!isClosing && (
         <>
           <motion.div
-            className="fixed inset-0 z-40 bg-gsBk/50"
+            className="bg-gsBk/50 fixed inset-0 z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
           <motion.div
             ref={modalRef}
-            className="fixed inset-y-0 right-0 z-40 flex max-h-full w-full flex-col bg-gs00 pb-6 shadow-lg lg:w-[45%]"
+            className={cn(
+              'fixed inset-y-0 right-0 z-40 flex max-h-full w-full flex-col bg-gs00 pb-6 shadow-lg lg:w-[45%]',
+              { 'lg:w-[75%]': embedVisible },
+            )}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -49,7 +54,13 @@ export default function NoteModal({ noteId }: Props) {
               onClick={closeModal}
               icon={faXmark}
             />
-            <NoteDetail noteId={noteId} isModal setIsClosing={setIsClosing} />
+            <NoteDetail
+              noteId={noteId}
+              isModal
+              setIsClosing={setIsClosing}
+              embedVisible={embedVisible}
+              setEmbedVisible={setEmbedVisible}
+            />
           </motion.div>
         </>
       )}
