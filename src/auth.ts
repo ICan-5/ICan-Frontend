@@ -49,6 +49,12 @@ export const {
           }
 
           const { user } = data;
+
+          if (user.profile !== null) {
+            user.image = user.profile; // profile 값을 image로 변경
+            delete user.profile; // profile 필드를 삭제 (선택 사항)
+          }
+
           return {
             ...user,
             accessToken: data.accessToken,
