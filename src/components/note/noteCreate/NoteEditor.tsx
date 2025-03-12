@@ -81,10 +81,7 @@ export default function NoteEditor({
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
-    // const storedData = localStorage.getItem(`todo-${todoId}`);
     localStorage.removeItem(`todo-${todoId}`);
-    // if (storedData) {
-    // }
     if (!isEditMode) {
       try {
         const res = await createNote({

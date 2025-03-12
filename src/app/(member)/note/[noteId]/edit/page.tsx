@@ -1,4 +1,4 @@
-import NoteEditor from '@/components/note/NoteEditor';
+import NoteEditor from '@/components/note/noteCreate/NoteEditor';
 
 export default function page() {
   return <NoteEditor isEditMode />;
