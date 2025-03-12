@@ -3,32 +3,33 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
-import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import {
-  faArrowLeft,
-  faClose,
-  faExclamation,
-} from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'sonner';
-import Button from '../common/button/Button';
-import Icon from '../common/icon/Icon';
 import '@/styles/textEditor.css';
+import { faFontAwesome } from '@fortawesome/free-solid-svg-icons';
 import { NoteSchema, NoteSchemaType } from '@/lib/note-validation';
 import NoteContentEditor from './NoteContentEditor';
 import NoteTitle from './NoteTitle';
 import { createNote } from '@/services/note';
 import { useTodoWithGoalTitle } from '@/hooks/useTodoWithGoalTitle';
 import NoteTitlesSkeleton from './NoteTitlesSkeleton';
+import ConfirmModal from '../../common/ConfirmModal';
+import EmbedPreview from './EmbedPreview';
+import TempSaveNotification from './TempSaveNotification';
+import NoteEditHeader from './NoteEditHeader';
+import Icon from '../../common/icon/Icon';
 import cn from '@/utils/cn';
-import ConfirmModal from '../common/ConfirmModal';
 
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
+  // 오브젝트 (임베드)
   const objectRef = useRef<HTMLObjectElement | null>(null);
+  // 오브젝트 대체
   const [fallback, setFallback] = useState(false);
+  // 할 일 제목, 목표 제목 가져오기
+  const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
   // rhf을 통한 폼 상태 관리
   const {
@@ -47,22 +48,30 @@ export default function NoteEditor() {
     mode: 'onChange',
   });
 
-  // 할 일 제목, 목표 제목 가져오기
-  const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
-
   // 임베드 URL 상태 관리
   const linkUrl = watch('linkUrl');
+  // 임베드 링크
   const [embedUrl, setEmbedUrl] = useState(linkUrl);
+  // 임베드 보기 여부
   const [embedVisible, setEmbedVisible] = useState(false);
   // 노트 수정하기 상태
   const [isEditMode, setIsEditMode] = useState(false);
 
+  // 임시저장 데이터
+  const [savedData, setSavedData] = useState<string | null>(null);
+  // 임시저장 안내창 보기 여부
+  const [showSavedData, setShowSavedData] = useState(!!savedData);
+
+  // 안내 모달창 내용
   const [confirmModalContent, setConfirmModalContent] = useState({
     title: '',
     description: '',
     confirmText: '',
     onConfirm: () => {},
   });
+
+  // 안내 모달창 보기 여부
+  const [confirmModal, setConfirmModal] = useState(false);
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
@@ -96,20 +105,6 @@ export default function NoteEditor() {
     }
   }, [isValid, getValues, todoId]);
 
-  // 자동 임시 저장 기능(5분마다)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleTempSave();
-    }, 300000); // 5분
-
-    return () => clearInterval(interval);
-  }, [handleTempSave]);
-
-  const [savedData, setSavedData] = useState<string | null>(null);
-  const [showSavedData, setShowSavedData] = useState(!!savedData);
-
-  const [confirmModal, setConfirmModal] = useState(false);
-
   // 임시 저장된 데이터 setValue
   const setFormData = useCallback(
     (parsedData: { [key: string]: string }) => {
@@ -135,6 +130,7 @@ export default function NoteEditor() {
       }
     }
   }, [savedData, setFormData]);
+
   // 임시 저장된 데이터 가져오기
   const setTempData = useCallback(() => {
     if (savedData) {
@@ -146,7 +142,6 @@ export default function NoteEditor() {
         const currentLinkUrl = getValues('linkUrl');
 
         // 입력 값이 있으면 모달 띄우기
-
         if (currentTitle || currentContent || currentLinkUrl) {
           setConfirmModalContent({
             title: '작성 중인 내용이 있습니다.',
@@ -165,27 +160,7 @@ export default function NoteEditor() {
     }
   }, [savedData, getValues, handleConfirmLoad, setFormData]);
 
-  useEffect(() => {
-    setIsEditMode(false);
-    // 노트 수정하기
-    if (isEditMode) {
-      // 기존 노트 데이터 가져오기
-      //
-    } else if (typeof window !== 'undefined') {
-      const storedData = localStorage.getItem(`todo-${todoId}`);
-      setSavedData(storedData);
-      setShowSavedData(!!storedData);
-    }
-  }, [todoId, isEditMode, setTempData]);
-
-  // 링크 URL 변경 시 임베드 URL 업데이트
-  useEffect(() => {
-    console.log('linkUrl바뀜!', linkUrl);
-    setEmbedUrl(linkUrl || '');
-
-    if (!linkUrl) setEmbedVisible(false);
-  }, [linkUrl]);
-
+  // 뒤로가기
   const handleBack = () => {
     const currentTitle = getValues('title');
     const currentContent = getValues('content');
@@ -194,8 +169,7 @@ export default function NoteEditor() {
     if (currentTitle || currentContent || currentLinkUrl) {
       setConfirmModalContent({
         title: '작성 중인 내용이 있습니다.',
-        description:
-          '페이지를 나가면 작성 중인 내용이 사라질 수 있습니다. 계속 진행하시겠습니까?',
+        description: '페이지를 나가면 작성 중인 내용이 사라집니다',
         confirmText: '나가기',
         onConfirm: () => {
           setConfirmModal(false); // 모달 닫기
@@ -227,124 +201,64 @@ export default function NoteEditor() {
     }, 100);
   }, []);
 
+  // 자동 임시 저장 기능(5분마다)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleTempSave();
+    }, 300000); // 5분
+
+    return () => clearInterval(interval);
+  }, [handleTempSave]);
+
+  useEffect(() => {
+    setIsEditMode(false);
+    // 노트 수정하기
+    if (isEditMode) {
+      // 기존 노트 데이터 가져오기
+      //
+    } else if (typeof window !== 'undefined') {
+      const storedData = localStorage.getItem(`todo-${todoId}`);
+      setSavedData(storedData);
+      setShowSavedData(!!storedData);
+    }
+  }, [todoId, isEditMode, setTempData]);
+
+  // 링크 URL 변경 시 임베드 URL 업데이트
+  useEffect(() => {
+    setEmbedUrl(linkUrl || '');
+    if (!linkUrl) setEmbedVisible(false);
+  }, [linkUrl]);
+
   return (
     <div className="flex size-full flex-col md:h-dvh md:flex-row">
-      {/* 임베드 URL이 있으면 표시 */}
-      {embedVisible && embedUrl !== '' && (
-        <section className="relative h-auto flex-1">
-          {fallback ? (
-            <iframe
-              src={embedUrl}
-              key={embedUrl}
-              className="size-full min-h-80 rounded-2xl"
-              title="EmbeddedContent"
-              id="EmbeddedContent"
-              sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <object
-              ref={objectRef}
-              data={embedUrl}
-              key={embedUrl}
-              className="flex size-full min-h-80 items-center justify-center break-keep rounded-2xl bg-gs200 px-4 text-center"
-            >
-              <p>
-                <a
-                  href={embedUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-slate500 underline underline-offset-4 transition-colors hover:text-slate700 focus:text-slate700 active:text-slate700"
-                >
-                  링크 열기
-                </a>
-                <br />
-                <span className="mt-3 inline-block text-14R text-gs600">
-                  이 콘텐츠는 미리보기를 제공하지 않습니다
-                  <br />
-                  링크로 이동하여 콘텐츠를 확인하세요
-                </span>
-              </p>
-            </object>
-          )}
+      <EmbedPreview
+        embedUrl={embedUrl}
+        embedVisible={embedVisible}
+        fallback={fallback}
+        onClose={() => setEmbedVisible(false)}
+      />
 
-          <button type="button" onClick={() => setEmbedVisible(false)}>
-            <Icon
-              icon={faClose}
-              className="absolute right-4 top-4 rounded-full bg-gs600 text-gs00 transition-colors hover:bg-gs700 focus:bg-gs700 active:bg-gs700"
-            />
-          </button>
-        </section>
-      )}
-      {/* 노트 작성 폼 */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900 md:min-w-[452px]"
       >
         <div>
-          {/* 노트 작성 헤더 섹션 */}
-          <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex sm:min-w-[400px]">
-            <button type="button" onClick={handleBack}>
-              <Icon icon={faArrowLeft} className="size-5" />
-            </button>
-            <div className="ml-2 flex w-full items-center justify-between">
-              <h2 className="text-14SB xs:text-16SB md:text-18SB">노트 작성</h2>
-              <div className="flex justify-end gap-2 xs:justify-normal">
-                {/* 임시 저장 버튼 */}
-                <Button
-                  disabled={!isValid}
-                  size="medium"
-                  variant="outline"
-                  className="border-none bg-transparent !px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
-                  onClick={() => {
-                    handleTempSave();
-                  }}
-                >
-                  임시저장
-                </Button>
-                {/* 제출 버튼 */}
-                <Button
-                  size="medium"
-                  className="!px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
-                  type="submit"
-                  disabled={!isValid}
-                >
-                  {isEditMode ? '수정 완료' : '작성 완료'}
-                </Button>
-              </div>
-            </div>
-          </div>
+          <NoteEditHeader
+            handleBack={handleBack}
+            isValid={isValid}
+            handleTempSave={handleTempSave}
+            isEditMode={isEditMode}
+            onSubmit={handleSubmit(onSubmit)}
+          />
 
-          {/* 임시 저장된 노트 알림 */}
-          {showSavedData && (
-            <section className="flex h-fit w-full flex-wrap items-center rounded-b-[28px] bg-slate100 px-4 py-2">
-              <div className="mb-1 flex flex-1 flex-nowrap items-center sm:mb-0">
-                <Icon icon={faExclamation} className="text-slate500" />
-                <p className="text-14M text-slate500">
-                  임시 저장된 노트가 있어요. 저장된 노트를 불러오시겠어요?
-                </p>
-              </div>
-              <div className="ml-auto flex min-w-40 items-center justify-end">
-                <Button
-                  className="bg-transparent !py-2 px-5 !text-14R text-gs600 transition-colors hover:bg-transparent focus:bg-transparent active:bg-transparent 2xl:!text-14R"
-                  onClick={() => setShowSavedData(false)}
-                >
-                  닫기
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-9 rounded-full px-4 py-2 text-14M transition-colors 2xl:rounded-full 2xl:py-2 2xl:!text-14M"
-                  onClick={() => {
-                    setTempData();
-                    setShowSavedData(false);
-                  }}
-                >
-                  불러오기
-                </Button>
-              </div>
-            </section>
-          )}
-          {/* 목표와 할 일 제목이 로딩 중일 경우 스켈레톤 표시 */}
+          <TempSaveNotification
+            savedData={savedData}
+            showSavedData={showSavedData}
+            setShowSavedData={setShowSavedData}
+            setTempData={setTempData}
+          />
+
+          {/* 목표 및 할 일 제목 섹션 */}
           {todoQuery.isLoading || goalQuery.isLoading ? (
             <NoteTitlesSkeleton />
           ) : (
@@ -378,10 +292,9 @@ export default function NoteEditor() {
             </>
           )}
         </div>
+
         <div className="mx-6 mb-6 flex h-full min-h-0 flex-col text-gs800">
-          {/* 노트 제목 */}
           <NoteTitle control={control} errors={errors} />
-          {/* 노트 컨텐츠 영역 */}
           <NoteContentEditor
             control={control}
             errors={errors}

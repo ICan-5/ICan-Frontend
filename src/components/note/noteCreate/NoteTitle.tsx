@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form';
-import ErrorMessage from '../auth/ErrorMessage';
+import ErrorMessage from '../../auth/ErrorMessage';
 import { NoteFormControlProps } from '@/types/note';
 
 export default function NoteTitle({ control, errors }: NoteFormControlProps) {

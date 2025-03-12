@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import { Controller } from 'react-hook-form';
 import { faClose, faLink } from '@fortawesome/free-solid-svg-icons';
 import type ReactQuillType from 'react-quill-new';
-import ErrorMessage from '../auth/ErrorMessage';
+import ErrorMessage from '../../auth/ErrorMessage';
 import NoteSkeleton from './NoteSkeleton';
 import LinkModal from './LinkModal';
-import Icon from '../common/icon/Icon';
+import Icon from '../../common/icon/Icon';
 import type { NoteFormControlProps } from '@/types/note';
 
 interface ForwardedQuillProps
