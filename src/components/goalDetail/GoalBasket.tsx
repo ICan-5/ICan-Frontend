@@ -10,7 +10,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Basket } from '@/types/todos';
 import BasketTodoModal from './BasketTodoModal';
 import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
-import { useDeleteBasketTodo } from '@/hooks/useGoalBasketTodo';
+import {
+  useDeleteBasketTodo,
+  useDeleteAllBasket,
+} from '@/hooks/useGoalBasketTodo';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import IconButton from '../common/button/IconButton';
 
@@ -29,9 +32,12 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
   const [selectedDeleteTodo, setSelectedDeleteTodo] = useState<number | null>(
     null,
   );
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [isConfirmDeleteAllOpen, setIsConfirmDeleteAllOpen] = useState(false);
+
   const addTodoMutation = useGoalAddTodo();
   const deleteTodoMutation = useDeleteBasketTodo();
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const deleteAllMutation = useDeleteAllBasket();
 
   const handleDateSelect = (date: Date | null, item: Basket) => {
     if (!date) return;
@@ -60,6 +66,12 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
       setSelectedDeleteTodo(null);
     }
   };
+
+  const handleDeleteAllBasket = () => {
+    deleteAllMutation.mutate(Number(goalId));
+    setIsConfirmDeleteAllOpen(false);
+  };
+
   return (
     <div className="relative flex h-[285px] flex-col rounded-2xl shadow">
       <div className="relative mb-4 flex items-center rounded-t-2xl border-b bg-gs00 p-4">
@@ -84,7 +96,15 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
             </div>
           </div>
         </div>
-        <p className="ml-auto cursor-pointer text-gs500">모두 지우기</p>
+        {basketItems.length > 0 && (
+          <button
+            type="button"
+            className="ml-auto cursor-pointer border-none bg-transparent text-gs500"
+            onClick={() => setIsConfirmDeleteAllOpen(true)}
+          >
+            모두 지우기
+          </button>
+        )}
       </div>
       <div className="flex-1 overflow-y-auto px-6 pb-16">
         <ul className="list-none space-y-2">
@@ -171,6 +191,16 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
           confirmText="지우기"
           onCancel={() => setSelectedDeleteTodo(null)}
           onConfirm={handleConfirmDelete}
+        />
+      )}
+
+      {isConfirmDeleteAllOpen && (
+        <ConfirmModal
+          title="정말 모든 할일을 삭제하시겠어요?"
+          description="모든 할일이 삭제되며 복구할 수 없습니다."
+          confirmText="모두 삭제"
+          onCancel={() => setIsConfirmDeleteAllOpen(false)}
+          onConfirm={handleDeleteAllBasket}
         />
       )}
     </div>
