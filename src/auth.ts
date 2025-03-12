@@ -51,7 +51,7 @@ export const {
           const { user } = data;
 
           if (user.profile !== null) {
-            user.image = user.profile; // profile 값을 image로 변경
+            user.image = `${user.profile}?v=${Date.now()}`; // profile 값을 image로 변경
             delete user.profile; // profile 필드를 삭제 (선택 사항)
           }
 
@@ -101,7 +101,7 @@ export const {
           ...session,
           user: {
             ...session.user,
-            imaage: token?.picture || null,
+            image: token?.picture || null,
           },
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,

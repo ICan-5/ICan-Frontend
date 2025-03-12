@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import FormTitle from './FormTitle';
 import Icon from '@/components/common/icon/Icon';
 import NonProfile from '../common/NonProfile';
+import cn from '@/utils/cn';
 
 interface Props {
   onChange: (file?: File) => void;
@@ -96,7 +97,9 @@ export default function ProfileField({ onChange }: Props) {
           </label>
           <button
             type="button"
-            className="text-14R text-warn500 underline"
+            className={cn('text-14R text-warn500 underline opacity-0', {
+              'opacity-100': imageUrl && imageUrl !== data?.user?.image,
+            })}
             onClick={deleteImage}
           >
             사진 삭제
