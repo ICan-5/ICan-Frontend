@@ -11,7 +11,7 @@ import { faFontAwesome } from '@fortawesome/free-solid-svg-icons';
 import { NoteSchema, NoteSchemaType } from '@/lib/note-validation';
 import NoteContentEditor from './NoteContentEditor';
 import NoteTitle from './NoteTitle';
-import { createNote } from '@/services/note';
+import { createNote, editNote } from '@/services/note';
 import { useTodoWithGoalTitle } from '@/hooks/useTodoWithGoalTitle';
 import NoteTitlesSkeleton from './NoteTitlesSkeleton';
 import ConfirmModal from '../../common/ConfirmModal';
@@ -20,10 +20,22 @@ import TempSaveNotification from './TempSaveNotification';
 import NoteEditHeader from './NoteEditHeader';
 import Icon from '../../common/icon/Icon';
 import cn from '@/utils/cn';
+import { useNoteDetail } from '@/hooks/useNotes';
 
-export default function NoteEditor() {
-  const { todoId } = useParams<{ todoId: string }>();
+export default function NoteEditor({
+  isEditMode = false,
+}: {
+  isEditMode?: boolean;
+}) {
+  const params = useParams();
   const router = useRouter();
+
+  const noteId = isEditMode ? Number(params.noteId) : null;
+  const { data: editNoteData } = useNoteDetail(noteId);
+
+  const todoId = !isEditMode
+    ? String(params.todoId)
+    : String(editNoteData?.todo.todoId);
   // 할 일 제목, 목표 제목 가져오기
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
@@ -50,8 +62,6 @@ export default function NoteEditor() {
   const [embedUrl, setEmbedUrl] = useState(linkUrl);
   // 임베드 보기 여부
   const [embedVisible, setEmbedVisible] = useState(false);
-  // 노트 수정하기 상태
-  const [isEditMode, setIsEditMode] = useState(false);
 
   // 임시저장 데이터
   const [savedData, setSavedData] = useState<string | null>(null);
@@ -71,7 +81,8 @@ export default function NoteEditor() {
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
-    if (todoId) {
+    localStorage.removeItem(`todo-${todoId}`);
+    if (!isEditMode) {
       try {
         const res = await createNote({
           todoId: Number(todoId),
@@ -86,6 +97,21 @@ export default function NoteEditor() {
 
         toast.success(res?.data.message);
         router.back(); // 이전 페이지로 이동
+      } catch {
+        toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
+      }
+    } else {
+      if (!noteId) return;
+      try {
+        const res = await editNote({ noteId, formData });
+        if (!res.data) {
+          const errorMessage = res?.message;
+          toast.error(errorMessage);
+          return;
+        }
+
+        toast.success('노트 수정이 완료되었습니다.');
+        router.back();
       } catch {
         toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
       }
@@ -188,17 +214,20 @@ export default function NoteEditor() {
   }, [handleTempSave]);
 
   useEffect(() => {
-    setIsEditMode(false);
     // 노트 수정하기
-    if (isEditMode) {
+    if (isEditMode && editNoteData) {
       // 기존 노트 데이터 가져오기
-      //
-    } else if (typeof window !== 'undefined') {
+      setValue('title', editNoteData.title || '');
+      setValue('content', editNoteData.content || '');
+      setValue('linkUrl', editNoteData.linkUrl || '');
+      trigger();
+    }
+    if (typeof window !== 'undefined') {
       const storedData = localStorage.getItem(`todo-${todoId}`);
       setSavedData(storedData);
       setShowSavedData(!!storedData);
     }
-  }, [todoId, isEditMode, setTempData]);
+  }, [todoId, isEditMode, setTempData, editNoteData, setValue, trigger]);
 
   // 링크 URL 변경 시 임베드 URL 업데이트
   useEffect(() => {

@@ -1,3 +1,5 @@
+import NoteEditor from '@/components/note/noteCreate/NoteEditor';
+
 export default function page() {
-  return <div>수정페이지</div>;
+  return <NoteEditor isEditMode />;
 }
