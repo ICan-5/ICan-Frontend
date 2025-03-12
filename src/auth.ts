@@ -49,6 +49,12 @@ export const {
           }
 
           const { user } = data;
+
+          if (user.profile !== null) {
+            user.image = `${user.profile}?v=${Date.now()}`; // profile 값을 image로 변경
+            delete user.profile; // profile 필드를 삭제 (선택 사항)
+          }
+
           return {
             ...user,
             accessToken: data.accessToken,
@@ -83,8 +89,7 @@ export const {
       if (trigger === 'update' && session) {
         return {
           ...token,
-          accessToken: session.accessToken,
-          refreshToken: session.refreshToken,
+          ...session,
         };
       }
 
@@ -94,6 +99,10 @@ export const {
       if (token?.accessToken) {
         return {
           ...session,
+          user: {
+            ...session.user,
+            image: token?.picture || null,
+          },
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
         };

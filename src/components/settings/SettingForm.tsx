@@ -4,25 +4,46 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 import Button from '../common/button/Button';
-import ProfileForm from './ProfileField';
 import FormTitle from './FormTitle';
 import { SettingSchema, SettingSchemaType } from '@/lib/validation';
 import TextField from '../auth/TextField';
+import { updateUser } from '@/services/setting';
+import ProfileField from './ProfileField';
 
 interface Props {
-  name?: string;
+  name: string;
   profile?: File;
-  currentPassword?: string;
-  newPassword?: string;
-  confirmPassword?: string;
 }
 
 export default function SettingForm() {
-  const { data, status } = useSession();
-
+  const { data, status, update } = useSession();
+  /**
+   * updateUser에서 오류나면 error message string 리턴
+   * updateUser가 성공하면 session data 업데이트
+   */
   const onSubmit = async (formData: Props) => {
-    alert(JSON.stringify(formData));
+    const { name, profile } = formData;
+    const formDataInstance = new FormData();
+
+    formDataInstance.append(
+      'user',
+      new Blob([JSON.stringify({ name })], { type: 'application/json' }),
+    );
+    if (profile) formDataInstance.append('image', profile);
+
+    const res = await updateUser(formDataInstance);
+
+    if (typeof res === 'string') {
+      toast.error(res);
+      return;
+    }
+
+    const picture = `${res.profile}?v=${Date.now()}`;
+
+    update({ name: res.name, picture });
+    toast.success('프로필 수정에 성공하였습니다.');
   };
 
   const {
@@ -47,10 +68,7 @@ export default function SettingForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col rounded-b-2xl border-x-2 border-b-2 border-gs200 bg-gs00 px-4 2xl:rounded-b-3xl"
     >
-      <ProfileForm
-        url={data?.user?.image || ''}
-        onChange={(file?: File) => setValue('profile', file)}
-      />
+      <ProfileField onChange={(file?: File) => setValue('profile', file)} />
       <hr className="border border-gs200" />
       <FormTitle title="사용자 정보">
         <div className="flex w-full flex-col">

@@ -3,23 +3,26 @@
 import Image from 'next/image';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import FormTitle from './FormTitle';
 import Icon from '@/components/common/icon/Icon';
 import NonProfile from '../common/NonProfile';
+import cn from '@/utils/cn';
 
 interface Props {
-  url: string;
   onChange: (file?: File) => void;
 }
 
-export default function ProfileForm({ url, onChange }: Props) {
-  const [imageUrl, setImageUrl] = useState<string>(url);
+export default function ProfileField({ onChange }: Props) {
+  const { data } = useSession();
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   /**
    * 사진 삭제 눌렀을 때, 미리보기 이미지 없애주는 함수
    */
   const deleteImage = () => {
-    setImageUrl(url);
+    setImageUrl(data?.user?.image || '');
     onChange();
   };
 
@@ -31,7 +34,7 @@ export default function ProfileForm({ url, onChange }: Props) {
     const file = e.target.files?.[0];
 
     if (file && file.size > 5 * 1024 * 1024) {
-      alert('파일 크기가 5MB를 초과합니다. 다른 파일을 선택해주세요.');
+      toast.error('파일 크기가 5MB를 초과합니다. 다른 파일을 선택해주세요.');
       e.target.value = ''; // 선택된 파일 초기화
       return;
     }
@@ -48,11 +51,20 @@ export default function ProfileForm({ url, onChange }: Props) {
    */
   useEffect(() => {
     return () => {
-      if (imageUrl && imageUrl !== url) {
+      if (imageUrl && imageUrl !== data?.user?.image) {
         URL.revokeObjectURL(imageUrl);
       }
     };
-  }, [imageUrl, url]);
+  }, [imageUrl, data?.user?.image]);
+
+  /**
+   * 처음에 user.image가 존재하면 imageUrl에 설정
+   */
+  useEffect(() => {
+    if (data?.user?.image) {
+      setImageUrl(data?.user?.image);
+    }
+  }, [data?.user?.image]);
 
   return (
     <FormTitle title="프로필 사진">
@@ -85,7 +97,9 @@ export default function ProfileForm({ url, onChange }: Props) {
           </label>
           <button
             type="button"
-            className="text-14R text-warn500 underline"
+            className={cn('text-14R text-warn500 underline opacity-0', {
+              'opacity-100': imageUrl && imageUrl !== data?.user?.image,
+            })}
             onClick={deleteImage}
           >
             사진 삭제
