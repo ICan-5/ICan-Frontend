@@ -90,7 +90,7 @@ export default function CreateTodo({
   const watchedValues = watch();
 
   return (
-    <div className="flex h-full w-[520px] flex-col gap-6 bg-gs00 p-6 md:h-auto md:rounded-lg">
+    <div className="flex size-full flex-col gap-6 bg-gs00 p-6 md:h-auto md:w-[520px] md:rounded-lg">
       <div className="flex justify-between">
         <h2 className="text-18SB">{isEdit ? '할일 수정' : '할일 생성'}</h2>
         <IconButton

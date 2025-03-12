@@ -81,6 +81,10 @@ export default function NoteEditor({
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
+    // const storedData = localStorage.getItem(`todo-${todoId}`);
+    localStorage.removeItem(`todo-${todoId}`);
+    // if (storedData) {
+    // }
     if (!isEditMode) {
       try {
         const res = await createNote({
@@ -220,7 +224,8 @@ export default function NoteEditor({
       setValue('content', editNoteData.content || '');
       setValue('linkUrl', editNoteData.linkUrl || '');
       trigger();
-    } else if (typeof window !== 'undefined') {
+    }
+    if (typeof window !== 'undefined') {
       const storedData = localStorage.getItem(`todo-${todoId}`);
       setSavedData(storedData);
       setShowSavedData(!!storedData);
