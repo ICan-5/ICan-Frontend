@@ -39,7 +39,9 @@ export default function ConfirmModal({
             </div>
           </div>
           <span className="text-18M">{title}</span>
-          <span className="text-14M text-gs400">{description}</span>
+          <span className="whitespace-pre-line text-center text-14M text-gs400">
+            {description}
+          </span>
         </div>
         <div className="flex w-full flex-row gap-2">
           <Button
