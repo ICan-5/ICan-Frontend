@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function ProfileField({ onChange }: Props) {
-  const { data, status } = useSession();
+  const { data } = useSession();
   const [imageUrl, setImageUrl] = useState<string>('');
 
   /**
@@ -56,11 +56,20 @@ export default function ProfileField({ onChange }: Props) {
     };
   }, [imageUrl, data?.user?.image]);
 
+  /**
+   * 처음에 user.image가 존재하면 imageUrl에 설정
+   */
+  useEffect(() => {
+    if (data?.user?.image) {
+      setImageUrl(data?.user?.image);
+    }
+  }, [data?.user?.image]);
+
   return (
     <FormTitle title="프로필 사진">
       <div className="flex size-full flex-col gap-3">
         <div className="flex flex-col items-center gap-3 md:flex-row">
-          {imageUrl || (status === 'authenticated' && data?.user?.image) ? (
+          {imageUrl ? (
             <Image
               className="size-20 flex-none rounded-full object-cover"
               src={imageUrl}
