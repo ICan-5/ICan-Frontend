@@ -43,6 +43,7 @@ export interface NoteFormControlProps {
     linkUrl?: string;
   }>;
   setEmbedVisible?: (val: boolean) => void;
+  checkEmbedUrl?: () => void;
 }
 
 export interface NoteDetail {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons/faFontAwesome';
@@ -27,6 +27,8 @@ import ConfirmModal from '../common/ConfirmModal';
 export default function NoteEditor() {
   const { todoId } = useParams<{ todoId: string }>();
   const router = useRouter();
+  const objectRef = useRef<HTMLObjectElement | null>(null);
+  const [fallback, setFallback] = useState(false);
 
   // rhf을 통한 폼 상태 관리
   const {
@@ -178,8 +180,10 @@ export default function NoteEditor() {
 
   // 링크 URL 변경 시 임베드 URL 업데이트
   useEffect(() => {
-    if (linkUrl) setEmbedUrl(linkUrl);
+    setEmbedUrl(linkUrl || '');
+    if (!linkUrl) setEmbedVisible(false);
   }, [linkUrl]);
+
   const handleBack = () => {
     const currentTitle = getValues('title');
     const currentContent = getValues('content');
@@ -202,19 +206,64 @@ export default function NoteEditor() {
     }
   };
 
+  // object 지원 체크
+  const checkEmbedUrl = useCallback(() => {
+    if (!objectRef.current) {
+      return;
+    }
+
+    setTimeout(() => {
+      const objectEl = objectRef.current;
+      if (
+        objectEl &&
+        (objectEl.clientWidth === 0 || objectEl.clientHeight === 0)
+      ) {
+        console.warn('object 태그가 지원되지 않음. iframe으로 대체');
+        // iframe 대체
+        setFallback(true);
+      }
+    }, 100);
+  }, []);
+
   return (
     <div className="flex h-dvh w-full flex-col sm:flex-row">
       {/* 임베드 URL이 있으면 표시 */}
       {embedVisible && embedUrl !== '' && (
         <section className="relative h-auto flex-1">
-          <iframe
-            src={embedUrl}
-            className="size-full rounded-2xl"
-            title="EmbeddedContent"
-            id="EmbeddedContent"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
-            referrerPolicy="no-referrer"
-          />
+          {fallback ? (
+            <iframe
+              src={embedUrl}
+              className="size-full rounded-2xl"
+              title="EmbeddedContent"
+              id="EmbeddedContent"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <object
+              ref={objectRef}
+              data={embedUrl}
+              className="flex size-full items-center justify-center break-keep rounded-2xl bg-gs200 px-4 text-center"
+            >
+              <p>
+                <a
+                  href={embedUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-slate500 underline underline-offset-4 transition-colors hover:text-slate700 focus:text-slate700 active:text-slate700"
+                >
+                  링크 열기
+                </a>
+                <br />
+                <span className="mt-3 inline-block text-14R text-gs600">
+                  이 콘텐츠는 직접 임베드할 수 없습니다!
+                  <br />
+                  링크로 이동하여 콘텐츠를 확인하세요
+                </span>
+              </p>
+            </object>
+          )}
+
           <button type="button" onClick={() => setEmbedVisible(false)}>
             <Icon
               icon={faClose}
@@ -340,6 +389,7 @@ export default function NoteEditor() {
             setValue={setValue}
             isValid={isValid}
             setEmbedVisible={setEmbedVisible}
+            checkEmbedUrl={checkEmbedUrl}
           />
         </div>
       </form>

@@ -34,6 +34,7 @@ export default function NoteContentEditor({
   setValue,
   trigger,
   setEmbedVisible,
+  checkEmbedUrl,
 }: NoteFormControlProps) {
   const quillInstance = useRef<ReactQuillType | null>(null);
   const [textLength, setTextLength] = useState(0);
@@ -90,7 +91,10 @@ export default function NoteContentEditor({
           <button
             type="button"
             className="w-[calc(100%-56px)] text-left"
-            onClick={() => setEmbedVisible?.(true)}
+            onClick={() => {
+              setEmbedVisible?.(true);
+              checkEmbedUrl?.();
+            }}
           >
             <p className="text-overflow text-gs600 transition-colors hover:text-slate500 focus:text-slate500 active:text-slate500">
               {linkUrl}
