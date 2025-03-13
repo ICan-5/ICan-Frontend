@@ -123,6 +123,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       }
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
+                      popperClassName="z-[9999]"
                       dayClassName={(date) =>
                         date.toDateString() === new Date().toDateString()
                           ? 'text-slate500'
