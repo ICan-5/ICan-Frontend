@@ -98,9 +98,7 @@ export default function NavGoal() {
         {!isFetching &&
           goalList?.map((goal: Goal) => (
             <NavGoalItem
-              id={goal.goalId}
-              title={goal.title}
-              color={goal.color}
+              goal={goal}
               isSelected={pathname === `/goals/${goal.goalId}`}
               key={goal.goalId}
             />
