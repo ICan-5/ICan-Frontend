@@ -22,13 +22,13 @@
   --warn500: #f95f5f;
 
   --goal01: #fb923c;
-  --goal01-100: #ffeee0;
+  --goal01-100: #ffedd5;
   --goal02: #facc15;
-  --goal02-100: #fff9e1;
-  --goal03: #2dd4bf;
-  --goal03-100: #e0fffb;
-  --goal04: #8b5cf6;
-  --goal04-100: #f1ebff;
+  --goal02-100: #f4f1e3;
+  --goal03: #1eeabe;
+  --goal03-100: #effffc;
+  --goal04: #c95aee;
+  --goal04-100: #fcf3fe;
   --goal05: #f87171;
   --goal05-100: #ffecec;
 
@@ -40,51 +40,6 @@
   --slate500: #3b82f6;
   --slate700: #1d4ed8;
   --slate800: #1e40af;
-}
-
-[data-dark='true'] {
-  --gs00: #1a1d21;
-  --gsBk: #f2f2f2;
-  --gs20: #1a1a1a;
-  --gs50: #222222;
-  --gs100: #2a2a2a;
-  --gs200: #333333;
-  --gs300: #4a4a4a;
-  --gs400: #5a5a5a;
-  --gs500: #6a6a6a;
-  --gs600: #7a7a7a;
-
-  --warn50: #fff2f2;
-  --warn500: #d64747;
-
-  --goal01: #d9792e;
-  --goal01-100: #ffeee0;
-  --goal02: #c9a811;
-  --goal02-100: #fff9e1;
-  --goal03: #24a296;
-  --goal03-100: #e0fffb;
-  --goal04: #6f45c5;
-  --goal04-100: #f1ebff;
-  --goal05: #c95a5a;
-  --goal05-100: #ffecec;
-
-  --slate50: #1e2a3a;
-  --slate100: #23314a;
-  --slate200: #2b3f64;
-  --slate300: #3a5685;
-  --slate400: #4e6fa5;
-  --slate500: #295baa;
-  --slate700: #1d4ed8;
-  --slate800: #1e40af;
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #334155 inset; /* 배경색 설정 */
-    -webkit-text-fill-color: #fff; /* 텍스트 색상 설정 */
-    background-clip: content-box; /* 배경색을 모서리까지 적용 */
-  }
 }
 
 [data-color='green'] {
@@ -118,6 +73,84 @@
   --slate500: #8b5cf6;
   --slate700: #6d28d9;
   --slate800: #5b21b6;
+}
+
+[data-dark='true'] {
+  --gs00: #000000;
+  --gsBk: #ffffff;
+  --gs20: #181a1d;
+  --gs50: #181a1d;
+  --gs100: #252a30;
+  --gs200: #353d49;
+  --gs300: #404853;
+  --gs400: #5b6a7d;
+  --gs500: #647893;
+  --gs600: #7a899e;
+
+  --warn50: #fff2f2;
+  --warn500: #d64747;
+
+  --goal01: #fb923c;
+  --goal01-100: #40382e;
+  --goal02: #facc15;
+  --goal02-100: #444134;
+  --goal03: #1eeabe;
+  --goal03-100: #2c3634;
+  --goal04: #c95aee;
+  --goal04-100: #44334a;
+  --goal05: #f87171;
+  --goal05-100: #493737;
+
+  --slate50: #111c2f;
+  --slate100: #1e2f4a;
+  --slate200: #183863;
+  --slate300: #214c85;
+  --slate400: #2462b4;
+  --slate500: #3a81f3;
+  --slate700: #8cb5f6;
+  --slate800: #b1ccf6;
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #334155 inset; /* 배경색 설정 */
+    -webkit-text-fill-color: #fff; /* 텍스트 색상 설정 */
+    background-clip: content-box; /* 배경색을 모서리까지 적용 */
+  }
+}
+
+[data-dark='true'][data-color='green'] {
+  --slate50: #0b281e;
+  --slate100: #0e382a;
+  --slate200: #0e382a;
+  --slate300: #16644a;
+  --slate400: #1e8d68;
+  --slate500: #10b981;
+  --slate700: #62dcb4;
+  --slate800: #b4ead9;
+}
+
+[data-dark='true'][data-color='pink'] {
+  --slate50: #23121a;
+  --slate100: #462133;
+  --slate200: #71274b;
+  --slate300: #933061;
+  --slate400: #c74284;
+  --slate500: #ec4899;
+  --slate700: #ea98c1;
+  --slate800: #f7cfe3;
+}
+
+[data-dark='true'][data-color='purple'] {
+  --slate50: #1c142f;
+  --slate100: #312159;
+  --slate200: #47307e;
+  --slate300: #513790;
+  --slate400: #6945be;
+  --slate500: #8b5cf6;
+  --slate700: #c4aff6;
+  --slate800: #e5d9ff;
 }
 
 body {
