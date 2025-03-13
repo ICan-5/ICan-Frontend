@@ -12,13 +12,11 @@ import Icon from '@/components/common/icon/Icon';
 import IconButton from '@/components/common/button/IconButton';
 import { Goal } from '@/types/goals';
 import { useGoals } from '@/hooks/useGoals';
+import { useNavbar } from '../../NavbarContext';
 
-type Props = {
-  headerFolded: boolean;
-};
-
-export default function NavGoal({ headerFolded }: Props) {
+export default function NavGoal() {
   const pathname = usePathname();
+  const { isFolded: headerFolded, closeNavbar } = useNavbar();
   const { data: goalList, isFetching } = useGoals();
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
@@ -31,13 +29,19 @@ export default function NavGoal({ headerFolded }: Props) {
   };
 
   /**
-   * @param event 마우스 이벤트
    * 새로운 목표 생성 & 목표 리스트가 접혀져있다면 펼치기 함수
    */
   const addGoalList = (event: React.MouseEvent) => {
     event?.stopPropagation();
     setShowNewGoal(true);
     if (isFolded) setIsFolded(false);
+  };
+
+  /**
+   * 모바일에서 클릭 시 navbar닫히게
+   */
+  const foldHeaderOnMobile = () => {
+    if (window.innerWidth <= 768) closeNavbar();
   };
 
   return (
@@ -80,6 +84,7 @@ export default function NavGoal({ headerFolded }: Props) {
           { 'scale-y-0': isFolded },
           { 'invisible overflow-hidden': headerFolded },
         )}
+        onClick={foldHeaderOnMobile}
       >
         {showNewGoal && (
           <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />

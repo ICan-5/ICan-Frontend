@@ -2,14 +2,11 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import cn from '@/utils/cn';
 import NonProfile from '../NonProfile';
+import { useNavbar } from '../NavbarContext';
 
-type Props = {
-  isFolded: boolean;
-};
-
-export default function NavUserProfile({ isFolded }: Props) {
+export default function NavUserProfile() {
   const { data, status } = useSession();
-
+  const { isFolded } = useNavbar();
   return (
     <div className="my-6 flex h-16 w-full flex-none items-center gap-3 overflow-hidden 2xl:my-8">
       {status === 'authenticated' && data?.user?.image ? (
