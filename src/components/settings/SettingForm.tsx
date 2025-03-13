@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
@@ -8,9 +9,10 @@ import { toast } from 'sonner';
 import Button from '../common/button/Button';
 import FormTitle from './FormTitle';
 import { SettingSchema, SettingSchemaType } from '@/lib/validation';
-import TextField from '../auth/TextField';
 import { updateUser } from '@/services/setting';
 import ProfileField from './ProfileField';
+import ErrorMessage from '../auth/ErrorMessage';
+import cn from '@/utils/cn';
 
 interface Props {
   name: string;
@@ -74,17 +76,29 @@ export default function SettingForm() {
         <div className="flex w-full flex-col">
           <div className="mb-6 flex w-full flex-col gap-2 text-14M text-gs400 2xl:gap-3 2xl:text-16M">
             <p>이메일</p>
-            <div className="min-h-11 overflow-x-auto rounded-xl bg-gs200 px-4 py-3 text-14R 2xl:h-12 2xl:text-16R">
+            <div className="h-11 overflow-x-auto overflow-y-hidden rounded-xl bg-gs200 px-4 py-3 text-14R 2xl:h-12 2xl:text-16R">
               {data?.user?.email}
             </div>
           </div>
-          <TextField
-            label="닉네임"
-            name="name"
-            placeholder="변경할 닉네임을 입력해주세요"
-            register={register}
-            errors={errors}
-          />
+          <label
+            className="mb-6 flex w-full flex-col gap-2 text-14M text-gs400 2xl:gap-3 2xl:text-16M"
+            htmlFor="name"
+          >
+            <p>닉네임</p>
+            <input
+              className={cn(
+                'focus-visible:ring-ring overflow-x-auto overflow-y-hidden rounded-xl bg-slate50 px-4 py-3 text-14R text-gsBk 2xl:h-12 2xl:text-16R',
+                errors.name && 'bg-warn50 focus-visible:ring-red-500',
+              )}
+              id="name"
+              type="text"
+              placeholder="변경할 닉네임을 입력해주세요"
+              {...register('name')}
+            />
+            {errors.name && (
+              <ErrorMessage message={String(errors.name?.message || '')} />
+            )}
+          </label>
         </div>
       </FormTitle>
 
