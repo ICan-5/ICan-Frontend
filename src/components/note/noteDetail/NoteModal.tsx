@@ -32,7 +32,7 @@ export default function NoteModal({ noteId }: Props) {
       {!isClosing && (
         <>
           <motion.div
-            className="bg-gsBk/50 fixed inset-0 z-40"
+            className="fixed inset-0 z-40 bg-black/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

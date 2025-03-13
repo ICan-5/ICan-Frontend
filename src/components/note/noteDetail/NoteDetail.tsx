@@ -22,6 +22,9 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
   goal02: 'text-goal02',
+  goal03: 'text-goal03',
+  goal04: 'text-goal04',
+  goal05: 'text-goal05',
   default: 'text-slate500',
 };
 
