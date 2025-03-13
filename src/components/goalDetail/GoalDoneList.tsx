@@ -96,7 +96,9 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
         <GoalTodoModal
           onClose={() => setIsModalOpen(false)}
           goalId={goalId}
-          todoId={editingTodo ? editingTodo.todoId : undefined}
+          todoId={editingTodo?.todoId ?? null}
+          title={editingTodo?.title ?? ''}
+          date={editingTodo?.date ?? ''}
         />
       )}
     </div>
