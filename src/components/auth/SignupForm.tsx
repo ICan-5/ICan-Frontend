@@ -34,11 +34,12 @@ export default function SignupForm() {
     if (success) {
       toast.success(message);
       router.push('/login');
-    } else {
-      toast.error(
-        '회원가입에 실패했습니다. 사용하신 이메일이 이미 존재할 수 있습니다.',
-      );
+      return;
     }
+
+    toast.error(
+      '회원가입에 실패했습니다. 사용하신 이메일이 이미 존재할 수 있습니다.',
+    );
 
     setIsLoading(false);
   };
