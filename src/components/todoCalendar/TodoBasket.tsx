@@ -123,13 +123,15 @@ export default function TodoBasket() {
                   </div>
                 )}
               </div>
-              <button
-                type="button"
-                className="text-14M text-gs600"
-                onClick={() => handleDeleteAll()}
-              >
-                모두 지우기
-              </button>
+              {basketList.length > 0 && (
+                <button
+                  type="button"
+                  className="text-14M text-gs600"
+                  onClick={() => handleDeleteAll()}
+                >
+                  모두 지우기
+                </button>
+              )}
             </div>
 
             <div
