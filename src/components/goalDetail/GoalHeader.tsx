@@ -75,6 +75,15 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const trimmedTitle = newTitle.trim();
+    const isTitleChanged = trimmedTitle && trimmedTitle !== goalItem?.title;
+    const isColorChanged = selectedColor !== goalItem?.color;
+
+    if (!isTitleChanged && !isColorChanged) {
+      setIsEditing(false);
+      return;
+    }
+
     if (!e.relatedTarget || !e.relatedTarget.closest('.save-button')) {
       handleSave();
     }
@@ -135,9 +144,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   }, [goalItem?.color]);
 
   return (
-    <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
-      <div className="flex min-h-[56px] items-start justify-between">
-        <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
+    <div className="flex min-h-[160px] flex-col gap-4 p-6 md:px-6 md:py-5">
+      <div className="flex h-[50px] items-start justify-between sm:h-[40px] md:mb-4 lg:mb-6">
+        <h1 className="flex w-full items-center text-16M md:max-w-2xl md:text-20M">
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2"
@@ -151,11 +160,11 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onBlur={handleBlur}
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full border-none bg-transparent px-2 py-1 outline-none"
+                className="w-full border-none bg-transparent outline-none"
               />
             </div>
           ) : (
-            <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
+            <span className="max-h-[40px] w-full overflow-y-auto whitespace-pre-wrap break-words">
               {goalTitle}
             </span>
           )}
@@ -173,10 +182,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           </button>
         )}
       </div>
-
-      <div className="flex-1" />
-
-      <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
+      <div className="mb-[20px] mt-auto flex max-h-[55px] flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-12M text-gs600 md:text-14M">

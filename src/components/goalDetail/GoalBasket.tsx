@@ -117,12 +117,17 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       dateFormat="yyyy-MM-dd"
                       selected={null}
                       portalId="root-portal"
-                      popperPlacement="bottom-start"
+                      popperPlacement="top-start"
                       onChange={(date: Date | null) =>
                         handleDateSelect(date, item)
                       }
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
+                      dayClassName={(date) =>
+                        date.toDateString() === new Date().toDateString()
+                          ? 'text-slate500'
+                          : ''
+                      }
                       customInput={
                         <button
                           type="button"

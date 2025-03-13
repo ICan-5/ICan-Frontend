@@ -148,6 +148,10 @@ export default function GoalTodoCreateModal({
                 />
               )}
             />
+            {/* 날짜 선택 */}
+            <div className="relative mt-3">
+              <DateInput name="date" control={control} label="날짜" />
+            </div>
 
             {/* 목표 제목 (읽기 전용) */}
             <p className="mt-4 text-16SB text-gsBk">목표</p>
@@ -157,11 +161,6 @@ export default function GoalTodoCreateModal({
               readOnly
               className="mb-3 w-full cursor-not-allowed rounded-lg bg-gs100 p-2 px-4 py-3 text-16R text-gs600"
             />
-
-            {/* 날짜 선택 */}
-            <div className="relative mt-3">
-              <DateInput name="date" control={control} label="날짜" />
-            </div>
 
             {/* 버튼 영역 */}
             <div className="mt-4 flex w-full flex-row gap-2">
