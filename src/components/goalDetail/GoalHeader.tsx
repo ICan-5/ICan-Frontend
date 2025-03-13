@@ -151,7 +151,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onBlur={handleBlur}
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full border-b border-gs500"
+                className="w-full border-none bg-transparent px-2 py-1 outline-none"
               />
             </div>
           ) : (
@@ -195,7 +195,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleColorSelect(key)}
                     aria-label={`색상 변경: ${key}`}
-                    className="size-6 rounded-full border border-transparent"
+                    className="size-6 rounded-full border border-transparent transition-colors duration-300"
                     style={{ backgroundColor: goalColors[key].DEFAULT }}
                   />
                 </div>
