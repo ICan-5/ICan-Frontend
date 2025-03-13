@@ -10,10 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Basket } from '@/types/todos';
 import BasketTodoModal from './BasketTodoModal';
 import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
-import {
-  useDeleteBasketTodo,
-  useDeleteAllBasket,
-} from '@/hooks/useGoalBasketTodo';
+import { useDeleteBasketTodo } from '@/hooks/useGoalBasketTodo';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import IconButton from '../common/button/IconButton';
 
@@ -33,11 +30,12 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
     null,
   );
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const [isConfirmDeleteAllOpen, setIsConfirmDeleteAllOpen] = useState(false);
+  const [openDatePickerItemId, setOpenDatePickerItemId] = useState<
+    number | null
+  >(null);
 
   const addTodoMutation = useGoalAddTodo();
   const deleteTodoMutation = useDeleteBasketTodo();
-  const deleteAllMutation = useDeleteAllBasket();
 
   const handleDateSelect = (date: Date | null, item: Basket) => {
     if (!date) return;
@@ -67,14 +65,17 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
     }
   };
 
-  const handleDeleteAllBasket = () => {
-    deleteAllMutation.mutate(Number(goalId));
-    setIsConfirmDeleteAllOpen(false);
+  const handleCalendarOpen = (itemId: number) => {
+    setOpenDatePickerItemId(itemId);
+  };
+
+  const handleCalendarClose = () => {
+    setOpenDatePickerItemId(null);
   };
 
   return (
-    <div className="relative flex h-[285px] flex-col rounded-2xl shadow">
-      <div className="relative mb-4 flex items-center rounded-t-2xl border-b bg-gs00 p-4">
+    <div className="relative flex h-[285px] flex-col rounded-xl shadow">
+      <div className="relative mb-4 flex items-center rounded-t-xl border-b bg-gs00 p-4">
         <div className="relative flex items-center gap-2">
           <h3 className="text-18SB">할일 장바구니</h3>
           <div
@@ -96,15 +97,6 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
             </div>
           </div>
         </div>
-        {basketItems.length > 0 && (
-          <button
-            type="button"
-            className="ml-auto cursor-pointer border-none bg-transparent text-gs500"
-            onClick={() => setIsConfirmDeleteAllOpen(true)}
-          >
-            모두 지우기
-          </button>
-        )}
       </div>
       <div className="flex-1 overflow-y-auto px-6 pb-16">
         <ul className="list-none space-y-2">
@@ -125,14 +117,18 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       dateFormat="yyyy-MM-dd"
                       selected={null}
                       portalId="root-portal"
+                      popperPlacement="bottom-start"
                       onChange={(date: Date | null) =>
                         handleDateSelect(date, item)
                       }
+                      onCalendarOpen={() => handleCalendarOpen(item.id)}
+                      onCalendarClose={handleCalendarClose}
                       customInput={
                         <button
                           type="button"
                           className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
-                            hoveredItem === item.id
+                            hoveredItem === item.id ||
+                            openDatePickerItemId === item.id
                               ? 'opacity-100'
                               : 'opacity-0'
                           }`}
@@ -148,7 +144,10 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                   <button
                     type="button"
                     className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
-                      hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
+                      hoveredItem === item.id ||
+                      openDatePickerItemId === item.id
+                        ? 'opacity-100'
+                        : 'opacity-0'
                     }`}
                     onClick={() => setSelectedDeleteTodo(item.id)}
                   >
@@ -191,16 +190,6 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
           confirmText="지우기"
           onCancel={() => setSelectedDeleteTodo(null)}
           onConfirm={handleConfirmDelete}
-        />
-      )}
-
-      {isConfirmDeleteAllOpen && (
-        <ConfirmModal
-          title="정말 모든 할일을 삭제하시겠어요?"
-          description="모든 할일이 삭제되며 복구할 수 없습니다."
-          confirmText="모두 삭제"
-          onCancel={() => setIsConfirmDeleteAllOpen(false)}
-          onConfirm={handleDeleteAllBasket}
         />
       )}
     </div>

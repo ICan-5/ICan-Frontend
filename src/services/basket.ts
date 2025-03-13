@@ -23,16 +23,6 @@ export const addBasket = async (formData: BasketFormValues) => {
 };
 
 /**
- * 장바구니  모두 삭제
- */
-export const deleteAllBasket = async (goalId: number) => {
-  const res = await fetch(`/api/basket?goalId=${goalId}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error(getErrorMessage(res.status));
-};
-
-/**
  * 장바구니 삭제
  * @param basketTodoId 장바구니 할일 id
  */

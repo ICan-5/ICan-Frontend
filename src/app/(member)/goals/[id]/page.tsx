@@ -69,10 +69,10 @@ export default function Page({ params }: { params: { id: string } }) {
   const renderGoal = () => (
     <>
       <div className="mb-[10px] grid gap-[10px] md:grid-cols-[minmax(300px,750px),minmax(200px,440px)]">
-        <div className="h-[162px] rounded-2xl bg-gs00 shadow">
+        <div className="h-[162px] rounded-xl bg-gs00 shadow">
           <GoalHeader id={params.id} setGoalAvailable={setIsGoalAvailable} />
         </div>
-        <div className="h-[162px] rounded-2xl bg-gs00 shadow">
+        <div className="h-[162px] rounded-xl bg-gs00 shadow">
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}
