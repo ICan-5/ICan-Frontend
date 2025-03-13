@@ -21,6 +21,19 @@ interface Props {
 
 export default function SettingForm() {
   const { data, status, update } = useSession();
+
+  /** use-hook-form관련 함수 */
+  const {
+    reset,
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<SettingSchemaType>({
+    resolver: zodResolver(SettingSchema),
+    mode: 'onChange',
+  });
   /**
    * updateUser에서 오류나면 error message string 리턴
    * updateUser가 성공하면 session data 업데이트
@@ -28,7 +41,6 @@ export default function SettingForm() {
   const onSubmit = async (formData: Props) => {
     const { name, profile } = formData;
     const formDataInstance = new FormData();
-
     formDataInstance.append(
       'user',
       new Blob([JSON.stringify({ name })], { type: 'application/json' }),
@@ -36,28 +48,19 @@ export default function SettingForm() {
     if (profile) formDataInstance.append('image', profile);
 
     const res = await updateUser(formDataInstance);
-
     if (typeof res === 'string') {
       toast.error(res);
       return;
     }
 
     const picture = `${res.profile}?v=${Date.now()}`;
-
     update({ name: res.name, picture });
     toast.success('프로필 수정에 성공하였습니다.');
   };
 
-  const {
-    reset,
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<SettingSchemaType>({
-    resolver: zodResolver(SettingSchema),
-    mode: 'onChange',
-  });
+  const isSameName = watch('profile')
+    ? !isValid
+    : !data?.user?.name || watch('name') === data?.user?.name || !isValid;
 
   useEffect(() => {
     if (status === 'authenticated' && data?.user?.name) {
@@ -106,6 +109,7 @@ export default function SettingForm() {
         type="submit"
         className="my-3 ml-auto flex-none 2xl:my-4"
         size="medium"
+        disabled={isSameName}
       >
         변경
       </Button>
