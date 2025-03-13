@@ -88,7 +88,7 @@ export default function SignupForm() {
           type="submit"
           size="full"
           variant="default"
-          className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 dark:disabled:bg-gs700 dark:disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+          className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
         >
           {isPending ? '회원가입 중...' : '회원가입하기'}
         </Button>

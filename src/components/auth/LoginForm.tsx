@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useTransition } from 'react';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import { LoginSchema, LoginSchemaType } from '@/lib/validation';
@@ -17,8 +16,6 @@ export interface Props {
   password: string;
 }
 export default function LoginForm() {
-  const [isPending, startTransition] = useTransition(); // 비동기 작업 중 상태 처리
-
   const {
     register,
     handleSubmit,
@@ -43,9 +40,7 @@ export default function LoginForm() {
     if (!res?.error) {
       // 로그인 성공
       // toast.success('로그인 성공!');
-      startTransition(() => {
-        router.replace('/');
-      });
+      router.replace('/');
       return;
     }
 
@@ -80,9 +75,9 @@ export default function LoginForm() {
           size="full"
           type="submit"
           variant="default"
-          className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 dark:disabled:bg-gs700 dark:disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+          className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
         >
-          {isPending ? '로그인 중...' : '로그인하기'}
+          로그인하기
         </Button>
         <p className="text-center text-14M">
           I:can이 처음이신가요?
