@@ -2,6 +2,34 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
+// refresh token을 사용하여 access token을 갱신하는 함수
+/* eslint-disable @typescript-eslint/no-explicit-any */
+async function refreshAccessToken(token: any) {
+  try {
+    const response = await fetch(
+      `${process.env.BACKEND_API_URL}/auth/refresh`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token?.refreshToken}` },
+        next: { revalidate: 60 },
+      },
+    );
+
+    const refreshedTokens = await response.json();
+    if (response.ok && refreshedTokens) {
+      // 새로 발급된 토큰 정보를 반환
+      return {
+        ...token,
+        accessToken: refreshedTokens.accessToken,
+        accessTokenExpires: Date.now() + 60 * 60 * 1000,
+      };
+    }
+    throw refreshAccessToken;
+  } catch {
+    return { ...token };
+  }
+}
+
 export const {
   auth,
   handlers,
@@ -72,7 +100,7 @@ export const {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60, // 1시간 후 세션 만료
+    maxAge: 24 * 60 * 60, // 1일 후 세션 만료
   },
   secret: process.env.AUTH_SECRET,
   callbacks: {
@@ -83,6 +111,7 @@ export const {
           ...token,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
+          accessTokenExpires: Date.now() + 60 * 60 * 1000,
         };
       }
 
@@ -93,21 +122,19 @@ export const {
         };
       }
 
-      return token;
+      const accessTokenExpires = token.accessTokenExpires as number;
+      if (Date.now() < accessTokenExpires) return token;
+      return refreshAccessToken(token);
     },
     async session({ session, token }) {
-      if (token?.accessToken) {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            image: token?.picture || null,
-          },
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
-        };
+      const newSession = { ...session, user: { ...session.user } };
+      if (token) {
+        newSession.user.name = token.name;
+        newSession.user.image = token.picture;
+        newSession.user.email = token.email || '';
+        newSession.accessToken = (token.accessToken as string) || '';
       }
-      return session;
+      return newSession;
     },
   },
 });

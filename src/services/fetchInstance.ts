@@ -1,7 +1,7 @@
 'use server';
 
 import { NextResponse } from 'next/server';
-import { auth, update } from '@/auth';
+import { auth } from '@/auth';
 import { ERROR_MESSAGES, getErrorMessage } from '@/constants/errorMessages';
 
 const BASEURL = {
@@ -33,28 +33,6 @@ const getConfig = async <T>(
   }
 
   return { method, headers, body: JSON.stringify(body) };
-};
-
-/**
- * refresh 요청 후 session의 accessToken 업데이트
- * @returns accessToekn 또는 null
- */
-const handleTokenRefresh = async () => {
-  const session = await auth();
-  if (!session?.refreshToken) {
-    return null;
-  }
-
-  const res = await fetch(`${BASEURL.BACKEND}/auth/refresh`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${session?.refreshToken}` },
-  });
-
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  update({ accessToken: data.accessToken });
-  return session.accessToken;
 };
 
 /**
@@ -93,17 +71,8 @@ export const fetchIntance = async <T>(options: {
       baseUrl = `${baseUrl}?${searchParams.toString()}`;
     }
 
-    let config = await getConfig(method, body);
-    let res = await fetch(baseUrl, config);
-
-    // 요청 이후 코드
-    if (res.status === 401) {
-      const newToken = await handleTokenRefresh();
-      if (!newToken) return res;
-
-      config = await getConfig(method, body);
-      res = await fetch(baseUrl, config);
-    }
+    const config = await getConfig(method, body);
+    const res = await fetch(baseUrl, config);
 
     if (!res.ok) {
       const message = getErrorMessage(res.status);
