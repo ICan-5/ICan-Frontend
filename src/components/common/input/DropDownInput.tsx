@@ -13,6 +13,9 @@ import { Goal } from '@/types/goals';
 const colorClasses: Record<string, string> = {
   goal01: 'bg-goal01',
   goal02: 'bg-goal02',
+  goal03: 'bg-goal03',
+  goal04: 'bg-goal04',
+  goal05: 'bg-goal05',
   default: 'bg-slate500',
 };
 
