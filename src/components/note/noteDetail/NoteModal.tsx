@@ -18,8 +18,10 @@ export default function NoteModal({ noteId }: Props) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
   const [embedVisible, setEmbedVisible] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const closeModal = () => {
+    if (showConfirm) return;
     setIsClosing(true);
     setTimeout(() => {
       router.back();
@@ -60,6 +62,7 @@ export default function NoteModal({ noteId }: Props) {
               setIsClosing={setIsClosing}
               embedVisible={embedVisible}
               setEmbedVisible={setEmbedVisible}
+              setShowConfirm={setShowConfirm}
             />
           </motion.div>
         </>

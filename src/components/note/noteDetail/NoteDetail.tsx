@@ -34,6 +34,7 @@ interface Props {
   embedVisible?: boolean;
   setEmbedVisible?: (visible: boolean) => void;
   setIsClosing?: (value: boolean) => void;
+  setShowConfirm?: (value: boolean) => void;
 }
 
 export default function NoteDetail({
@@ -42,6 +43,7 @@ export default function NoteDetail({
   embedVisible: embedVisibleProp,
   setEmbedVisible: setEmbedVisibleProp,
   setIsClosing,
+  setShowConfirm: setShowConfirmProp,
 }: Props) {
   const router = useRouter();
   const [sanitizedContent, setSanitizedContent] = useState<string | null>(null);
@@ -72,6 +74,9 @@ export default function NoteDetail({
   };
 
   const handleDeleteButton = () => {
+    if (setShowConfirmProp) {
+      setShowConfirmProp(true);
+    }
     setShowConfirm(true);
   };
 
@@ -82,6 +87,9 @@ export default function NoteDetail({
       },
     });
     setShowConfirm(false);
+    if (setShowConfirmProp) {
+      setShowConfirmProp(false);
+    }
   };
 
   const handleBack = () => {
@@ -239,7 +247,12 @@ export default function NoteDetail({
           title="노트를 삭제 하시겠어요?"
           description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
           confirmText="지우기"
-          onCancel={() => setShowConfirm(false)}
+          onCancel={() => {
+            if (setShowConfirmProp) {
+              setShowConfirmProp(false);
+            }
+            setShowConfirm(false);
+          }}
           onConfirm={handleConfirmDelete}
         />
       )}
