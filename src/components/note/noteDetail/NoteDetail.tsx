@@ -104,10 +104,8 @@ export default function NoteDetail({
   return (
     <div
       className={cn(
-        'h-full overflow-y-auto bg-gs00',
-        {
-          'rounded-2xl border-2 border-gs200': !isModal,
-        },
+        'size-full overflow-y-auto',
+
         { 'lg:flex': embedVisible },
       )}
     >
@@ -125,18 +123,26 @@ export default function NoteDetail({
       )}
 
       <div
-        className={cn('flex grow flex-col', {
-          'md:w-1/4': embedVisible,
-        })}
+        className={cn(
+          'flex grow flex-col bg-gs00',
+          {
+            'md:w-1/4': embedVisible && isModal,
+            'md:w-1/3': embedVisible && !isModal,
+          },
+          {
+            'rounded-2xl border-2 border-gs200': !isModal,
+          },
+        )}
       >
         {!isModal && (
-          <div className="flex w-full gap-2 border-b-2 border-gs200 bg-gs50 p-4">
+          <div className="flex w-full gap-2 rounded-t-2xl border-b-2 border-gs200 bg-gs50 p-4">
             <IconButton icon={faArrowLeft} onClick={handleBack} />
             <h1 className="text-18SB text-gsBk">노트</h1>
           </div>
         )}
+
         <div
-          className={cn('flex grow flex-col gap-6 px-6', {
+          className={cn('flex size-full grow flex-col gap-6 px-6', {
             'pt-6': !isModal,
           })}
         >
