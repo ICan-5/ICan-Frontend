@@ -151,7 +151,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onBlur={handleBlur}
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full border-none bg-transparent px-2 py-1 outline-none"
+                className="w-full border-b border-gs500"
               />
             </div>
           ) : (
