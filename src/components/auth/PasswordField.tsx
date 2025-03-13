@@ -30,6 +30,20 @@ export default function PasswordField<T extends FieldValues>({
   const handleTogglePasswordVisible = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+  const [password, setPassword] = useState('');
+
+  // 비밀번호에 한글 입력 막기
+  const handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const inputElement = e.currentTarget;
+
+    // 숫자와 영문자, 허용 특수문자 외는 공백 처리
+    const filteredValue = inputElement.value.replace(
+      /[^A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/g,
+      '',
+    );
+
+    setPassword(filteredValue);
+  };
 
   return (
     <div className="mb-6 w-full">
@@ -46,6 +60,8 @@ export default function PasswordField<T extends FieldValues>({
             placeholder={placeholder}
             autoComplete="off"
             {...register(name)}
+            value={password}
+            onInput={handleInputChange}
           />
           <button
             type="button"
