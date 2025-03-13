@@ -6,16 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useState } from 'react';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
 import { LoginSchema, LoginSchemaType } from '@/lib/validation';
 import Button from '../common/button/Button';
 
-export interface Props {
-  email: string;
-  password: string;
-}
 export default function LoginForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,7 +26,10 @@ export default function LoginForm() {
   const router = useRouter();
 
   // 폼 제출 호출 함수
-  const onSubmit = async (data: Props) => {
+  const onSubmit = async (data: LoginSchemaType) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     const { email, password } = data;
     // Next-Auth 로그인
     const res = await signIn('credentials', {
@@ -39,7 +40,6 @@ export default function LoginForm() {
 
     if (!res?.error) {
       // 로그인 성공
-      // toast.success('로그인 성공!');
       router.replace('/');
       return;
     }
@@ -51,6 +51,8 @@ export default function LoginForm() {
         : '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.';
 
     toast.error(errorMessage);
+
+    setIsLoading(false);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +73,7 @@ export default function LoginForm() {
         />
         <div className="mb-8" />
         <Button
-          disabled={!isValid}
+          disabled={!isValid || isLoading}
           size="full"
           type="submit"
           variant="default"

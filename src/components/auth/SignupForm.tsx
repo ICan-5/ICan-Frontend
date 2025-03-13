@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+// import { useState } from 'react';
 import { toast } from 'sonner';
+import { useState } from 'react';
 import TextField from './TextField';
 import PasswordField from './PasswordField';
 import { SignUpSchema, SignUpSchemaType } from '@/lib/validation';
@@ -21,23 +22,25 @@ export interface Props {
 
 export default function SignupForm() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition(); // 비동기 작업 중 상태 처리
+  const [isLoading, setIsLoading] = useState(false);
 
   // 회원가입 폼 제출 호출 함수
   const onSubmit = async (formData: Props) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     const { success, message } = await signup(formData);
 
-    // 회원가입 성공
     if (success) {
       toast.success(message);
-      startTransition(() => {
-        router.push('/login');
-      });
-      return;
+      router.push('/login');
+    } else {
+      toast.error(
+        '회원가입에 실패했습니다. 사용하신 이메일이 이미 존재할 수 있습니다.',
+      );
     }
-    // 회원가입 실패
-    toast.error(`회원가입에 실패했습니다. 
-  사용하신 이메일이 이미 존재할 수 있습니다. 이메일을 다시 확인해주세요.`);
+
+    setIsLoading(false);
   };
 
   // RHF 사용한 폼 상태 관리
@@ -84,13 +87,13 @@ export default function SignupForm() {
         <div className="mb-8" />
         {/* 회원가입 버튼 */}
         <Button
-          disabled={!isValid}
+          disabled={!isValid || isLoading}
           type="submit"
           size="full"
           variant="default"
           className="mb-12 h-12 transition-colors disabled:pointer-events-none disabled:bg-gs200 disabled:text-gs400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
         >
-          {isPending ? '회원가입 중...' : '회원가입하기'}
+          회원가입하기
         </Button>
         <p className="text-center text-14M">
           이미 회원이신가요?
