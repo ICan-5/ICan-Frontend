@@ -8,17 +8,15 @@
 }
 
 .fc-daygrid-day {
-  @apply bg-gs00;
+  @apply !border-[0.5px] !border-gs200 !bg-gs00;
   min-width: 30px;
   min-height: unset !important;
   max-width: 120px !important;
-  border: 0.5px solid #e2e8f0 !important;
   position: relative !important;
 }
 
 .fc-daygrid-day.selected {
-  outline: 2px solid #3b82f6 !important;
-  outline-offset: -2px;
+  @apply !outline !outline-2 !-outline-offset-2 !outline-slate500;
 }
 
 .fc-daygrid-day-top > a {
@@ -95,3 +93,10 @@
     padding-top: 4px !important;
   }
 } */
+
+.fc-theme-standard,
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+  @apply !border-[0.5px] !border-gs200;
+}
