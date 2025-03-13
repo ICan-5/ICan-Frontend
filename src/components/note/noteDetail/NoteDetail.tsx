@@ -126,8 +126,8 @@ export default function NoteDetail({
         className={cn(
           'flex grow flex-col bg-gs00',
           {
-            'md:w-1/4': embedVisible && isModal,
-            'md:w-1/3': embedVisible && !isModal,
+            'lg:w-1/4': embedVisible && isModal,
+            'lg:w-1/3': embedVisible && !isModal,
           },
           {
             'rounded-2xl border-2 border-gs200': !isModal,

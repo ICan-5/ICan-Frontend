@@ -37,6 +37,7 @@ export default function NoteEditor({
     ? String(params.todoId)
     : String(editNoteData?.todo.todoId);
   // 할 일 제목, 목표 제목 가져오기
+
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
 
   // rhf을 통한 폼 상태 관리
@@ -82,6 +83,7 @@ export default function NoteEditor({
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
     localStorage.removeItem(`todo-${todoId}`);
+
     if (!isEditMode) {
       try {
         const res = await createNote({
