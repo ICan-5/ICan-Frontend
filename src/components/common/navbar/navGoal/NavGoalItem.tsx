@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import cn from '@/utils/cn';
-import { GOAL_BG_COLORS } from '@/constants/goalColors';
 import { Goal } from '@/types/goals';
 
 type Props = {
   goal: Goal;
   isSelected: boolean;
 };
+
+const GOAL_BG_COLORS = {
+  goal01: 'bg-goal01',
+  goal02: 'bg-goal02',
+  goal03: 'bg-goal03',
+  goal04: 'bg-goal04',
+  goal05: 'bg-goal05',
+  default: 'bg-slate500',
+} as const;
 
 export default function NavGoalItem({ goal, isSelected }: Props) {
   // TODO :: 나중에 목표 색 정해지면 수정
