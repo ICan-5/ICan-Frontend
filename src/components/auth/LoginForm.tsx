@@ -44,7 +44,7 @@ export default function LoginForm() {
       // 로그인 성공
       // toast.success('로그인 성공!');
       startTransition(() => {
-        router.push('/');
+        router.replace('/');
       });
       return;
     }
