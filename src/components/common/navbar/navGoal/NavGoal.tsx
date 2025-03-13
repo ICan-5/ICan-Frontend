@@ -20,7 +20,6 @@ export default function NavGoal() {
   const { data: goalList, isFetching } = useGoals();
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
-
   /**
    * 목표 리스트 접기/펼치기 함수
    */
@@ -66,7 +65,7 @@ export default function NavGoal() {
           className={cn('transition-transform duration-300', {
             'rotate-0': !isFolded,
             'rotate-180': isFolded,
-            invisible: goalList.length === 0,
+            invisible: !goalList || goalList.length === 0,
           })}
           icon={faAngleDown}
           onClick={foldGoalList}
@@ -89,23 +88,23 @@ export default function NavGoal() {
         {showNewGoal && (
           <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
-        {goalList.length === 0 &&
-          isFetching &&
+        {isFetching &&
           Array.from({ length: 6 }, (_, i) => i + 1).map((e) => (
             <div
               key={e}
               className="my-1 flex h-6 w-full animate-pulse rounded-md bg-gs100 2xl:h-8"
             />
           ))}
-        {goalList?.map((goal: Goal) => (
-          <NavGoalItem
-            id={goal.goalId}
-            title={goal.title}
-            color={goal.color}
-            isSelected={pathname === `/goals/${goal.goalId}`}
-            key={goal.goalId}
-          />
-        ))}
+        {!isFetching &&
+          goalList?.map((goal: Goal) => (
+            <NavGoalItem
+              id={goal.goalId}
+              title={goal.title}
+              color={goal.color}
+              isSelected={pathname === `/goals/${goal.goalId}`}
+              key={goal.goalId}
+            />
+          ))}
       </div>
     </div>
   );
