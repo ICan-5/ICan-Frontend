@@ -8,10 +8,18 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 interface Props {
   goalId: string;
   todoId?: number | null;
+  title?: string;
+  date?: string;
   onClose: () => void;
 }
 
-export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
+export default function GoalTodoModal({
+  goalId,
+  todoId,
+  onClose,
+  title,
+  date,
+}: Props) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(true);
 
@@ -31,6 +39,8 @@ export default function GoalTodoModal({ goalId, todoId, onClose }: Props) {
         <GoalTodoCreateModal
           goalId={goalId}
           todoId={todoId}
+          title={title}
+          date={date}
           onClose={handleFinalClose}
           onCancel={handleCancelCreate}
           isVisible={!isConfirmOpen}

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
+import { useState, useCallback, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback } from 'react';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import TextInput from '@/components/common/input/TextInput';
 import DateInput from '../common/input/DateInput';
@@ -25,6 +25,8 @@ type TodoFormValues = z.infer<typeof createTodoSchema>;
 interface Props {
   goalId: string;
   todoId?: number | null;
+  title?: string;
+  date?: string;
   onClose: () => void;
   onCancel: () => void;
   isVisible?: boolean;
@@ -33,6 +35,8 @@ interface Props {
 export default function GoalTodoCreateModal({
   goalId,
   todoId,
+  title,
+  date,
   onClose,
   onCancel,
   isVisible = true,
@@ -40,7 +44,9 @@ export default function GoalTodoCreateModal({
   const { data: goals } = useGoals();
   const { mutate: addTodoMutation } = useGoalAddTodo();
   const { mutate: updateTodoMutation } = useUpdateGoalTodo();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 선택된 목표 가져오기
   const goalTitle = goals?.find(
     (goal: Goal) => goal.goalId === Number(goalId),
   )?.title;
@@ -50,20 +56,29 @@ export default function GoalTodoCreateModal({
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm<TodoFormValues>({
     mode: 'onChange',
     resolver: zodResolver(createTodoSchema),
     defaultValues: {
-      title: '',
-      date: new Date(),
+      title: title || '',
+      date: date ? new Date(date) : new Date(),
     },
   });
+
+  useEffect(() => {
+    if (title) setValue('title', title);
+    if (date) setValue('date', new Date(date));
+  }, [title, date, setValue]);
 
   const titleValue = watch('title');
 
   const onSubmit = useCallback(
     (data: TodoFormValues) => {
       const formattedDate = data.date ?? new Date();
+
+      if (isSubmitting) return;
+      setIsSubmitting(true);
 
       if (todoId) {
         updateTodoMutation(
@@ -94,7 +109,14 @@ export default function GoalTodoCreateModal({
         );
       }
     },
-    [addTodoMutation, updateTodoMutation, goalId, todoId, onClose],
+    [
+      addTodoMutation,
+      updateTodoMutation,
+      goalId,
+      todoId,
+      onClose,
+      isSubmitting,
+    ],
   );
 
   if (!isVisible) return null;
@@ -110,6 +132,7 @@ export default function GoalTodoCreateModal({
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-6">
+            {/* 할 일 제목 입력 */}
             <Controller
               name="title"
               control={control}
@@ -125,6 +148,8 @@ export default function GoalTodoCreateModal({
                 />
               )}
             />
+
+            {/* 목표 제목 (읽기 전용) */}
             <p className="mt-4 text-16SB text-gsBk">목표</p>
             <input
               type="text"
@@ -132,9 +157,13 @@ export default function GoalTodoCreateModal({
               readOnly
               className="mb-3 w-full cursor-not-allowed rounded-lg bg-gs100 p-2 px-4 py-3 text-16R text-gs600"
             />
+
+            {/* 날짜 선택 */}
             <div className="relative mt-3">
               <DateInput name="date" control={control} label="날짜" />
             </div>
+
+            {/* 버튼 영역 */}
             <div className="mt-4 flex w-full flex-row gap-2">
               <Button
                 type="button"

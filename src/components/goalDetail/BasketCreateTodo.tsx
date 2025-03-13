@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, Controller } from 'react-hook-form';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +37,7 @@ export default function GoalTodoCreateModal({
 }: Props) {
   const { data: goals } = useGoals();
   const { mutate: addBasketTodo } = useAddBasketTodo();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const goalTitle =
     goals?.find((goal: Goal) => goal.goalId === goalId)?.title || '목표 없음';
@@ -65,6 +66,10 @@ export default function GoalTodoCreateModal({
 
   const onSubmit = useCallback(
     (data: BasketFormValues) => {
+      if (isSubmitting) return;
+
+      setIsSubmitting(true);
+
       addBasketTodo(
         { title: data.title, goal: { goalId } },
         {
@@ -74,7 +79,7 @@ export default function GoalTodoCreateModal({
         },
       );
     },
-    [goalId, addBasketTodo, onClose],
+    [goalId, addBasketTodo, onClose, isSubmitting],
   );
 
   if (!isVisible) return null;
