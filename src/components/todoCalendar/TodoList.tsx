@@ -52,9 +52,10 @@ export default function TodoList({ selectedDate, onOpenModal }: Props) {
           </h3>
           <div className="h-full">
             {isFetching && <SimpleTodoSkeleton repeat={3} />}
-            {!isFetching && incompleteTodos.length > 0 ? (
+            {!isFetching && incompleteTodos.length > 0 && (
               <TodoListItem todoList={incompleteTodos} />
-            ) : (
+            )}
+            {!isFetching && incompleteTodos.length === 0 && (
               <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
                 등록된 할일이 없습니다.
               </div>
@@ -87,11 +88,12 @@ export default function TodoList({ selectedDate, onOpenModal }: Props) {
           {isCompletedOpen && (
             <div className="h-full overflow-y-auto">
               {isFetching && <SimpleTodoSkeleton repeat={3} />}
-              {!isFetching && completeTodos.length > 0 ? (
+              {!isFetching && completeTodos.length > 0 && (
                 <TodoListItem todoList={completeTodos} />
-              ) : (
+              )}
+              {!isFetching && completeTodos.length === 0 && (
                 <div className="flex h-full items-center justify-center text-center text-14M text-gs500">
-                  완료된 할일이 없습니다.
+                  등록된 할일이 없습니다.
                 </div>
               )}
             </div>
