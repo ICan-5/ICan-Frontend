@@ -90,8 +90,9 @@ export default function SettingForm() {
             <p>닉네임</p>
             <input
               className={cn(
-                'focus-visible:ring-ring overflow-x-auto overflow-y-hidden rounded-xl bg-slate50 px-4 py-3 text-14R text-gsBk 2xl:h-12 2xl:text-16R',
-                errors.name && 'bg-warn50 focus-visible:ring-red-500',
+                'overflow-x-auto overflow-y-hidden rounded-xl border bg-slate50 px-4 py-3 text-14R text-gsBk 2xl:h-12 2xl:text-16R',
+                errors.name && 'bg-warn50 focus:border-warn500',
+                'border-transparent focus:border-slate500 focus:outline-none',
               )}
               id="name"
               type="text"
