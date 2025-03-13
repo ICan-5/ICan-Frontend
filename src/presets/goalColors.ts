@@ -8,7 +8,7 @@ const goalColors: Record<
   goal01: { 100: '#FFEEE0', DEFAULT: '#FB923C' },
   goal02: { 100: '#FFF9E1', DEFAULT: '#FACC15' },
   goal03: { 100: '#E0FFFB', DEFAULT: '#2DD4BF' },
-  goal04: { 100: '#F1EBFF', DEFAULT: '#8B5CF6' },
+  goal04: { 100: '#FCF3FE', DEFAULT: '#C95AEE' },
   goal05: { 100: '#FFECEC', DEFAULT: '#F87171' },
 };
 
