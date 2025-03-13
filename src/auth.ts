@@ -100,7 +100,7 @@ export const {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60, // 1시간 후 세션 만료
+    maxAge: 24 * 60 * 60, // 1일 후 세션 만료
   },
   secret: process.env.AUTH_SECRET,
   callbacks: {
