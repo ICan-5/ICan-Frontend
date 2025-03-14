@@ -112,9 +112,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
-                <span className="max-w-[100px] truncate sm:max-w-[150px] md:max-w-[300px]">
-                  {item.title}
-                </span>
+                <span className="truncate break-words">{item.title}</span>
 
                 <div className="flex items-center space-x-3">
                   <div className="relative flex items-center">

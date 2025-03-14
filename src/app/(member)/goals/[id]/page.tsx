@@ -85,13 +85,15 @@ export default function Page({ params }: { params: { id: string } }) {
         renderLoading()
       ) : (
         <div className="grid gap-[10px] md:grid-cols-[minmax(300px,750px),minmax(200px,440px)]">
-          <GoalTodoList
-            list={todoItems}
-            onToggle={handleToggleTodo}
-            goalId={params.id}
-            color={getGoalColor(color)}
-          />
-          <div className="flex flex-col gap-[10px]">
+          <div className="min-w-0">
+            <GoalTodoList
+              list={todoItems}
+              onToggle={handleToggleTodo}
+              goalId={params.id}
+              color={getGoalColor(color)}
+            />
+          </div>
+          <div className="flex min-w-0 flex-col gap-[10px]">
             <GoalDoneList
               list={doneItems.map((item) => ({
                 ...item,

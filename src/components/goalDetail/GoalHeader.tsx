@@ -185,9 +185,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
       <div className="mb-[20px] mt-auto flex max-h-[55px] flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-12M text-gs600 md:text-14M">
-              목표 색상 수정
-            </span>
+            <span className="text-14M text-gs600">목표 색상 수정</span>
             <div className="flex flex-wrap gap-1">
               {colorKeys.map((key) => (
                 <div

@@ -108,7 +108,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
   };
 
   return (
-    <div className="relative flex h-[605px] flex-col rounded-xl shadow">
+    <div className="relative flex h-[605px] max-w-full flex-col rounded-xl shadow">
       <div className="sticky top-0 z-10 flex items-center gap-2 rounded-t-xl bg-gs50 p-4">
         <h3 className="text-18SB">남은 할일</h3>
         <h3 className="text-18SB" style={{ color: color.DEFAULT }}>
