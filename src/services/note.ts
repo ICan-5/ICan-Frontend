@@ -86,7 +86,7 @@ export const createNote = async ({
   formData: {
     title: string;
     content: string;
-    linkUrl: string;
+    linkUrl?: string;
   };
   todoId: number;
 }) => {
@@ -97,7 +97,7 @@ export const createNote = async ({
         todoId,
         title: formData.title,
         content: formData.content,
-        linkUrl: formData.linkUrl || 'https://www.codeit.kr',
+        linkUrl: formData.linkUrl,
       }),
     });
 
