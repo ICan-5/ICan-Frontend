@@ -1,5 +1,5 @@
 .quill {
-  @apply flex size-full min-h-[inherit] flex-1 flex-col-reverse items-center;
+  @apply flex min-h-[inherit] w-full flex-1 flex-col-reverse items-center;
 }
 
 .ql-container {
@@ -11,17 +11,7 @@
 }
 
 .ql-editor {
-  @apply flex-1 overflow-auto p-0;
-}
-
-.ql-editor::after {
-  @apply pointer-events-none absolute bottom-0 left-0 h-7 w-full;
-  content: '';
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  @apply max-h-[calc(100%-56px)] flex-1 overflow-auto p-0;
 }
 
 .ql-editor.ql-blank::before {
@@ -50,6 +40,22 @@
   @apply hidden;
 }
 
-.ql-picker-options {
-  @apply bottom-full top-auto !important;
+.ql-editor li[data-list] {
+  @apply pl-3 text-16R;
+}
+
+.ql-editor li[data-list='bullet'] {
+  @apply text-16R;
+}
+
+.ql-editor li[data-list='bullet'] > .ql-ui:before {
+  @apply -ml-[30px];
+}
+
+.ql-editor li[data-list='ordered'] {
+  @apply text-16R;
+}
+
+.ql-editor li[data-list='ordered'] > .ql-ui:before {
+  @apply -ml-6;
 }

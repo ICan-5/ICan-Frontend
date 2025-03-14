@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         todoId: Number(todoId), // 숫자 변환
         title,
         content,
-        linkUrl,
+        ...(linkUrl && { linkUrl }),
       },
     });
 
