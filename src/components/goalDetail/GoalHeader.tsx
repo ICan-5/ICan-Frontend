@@ -192,8 +192,10 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               {colorKeys.map((key) => (
                 <div
                   key={key}
-                  className={`flex size-9 items-center justify-center rounded-lg p-1 ${
-                    selectedColor === key ? 'border-2 border-slate400' : ''
+                  className={`flex size-9 items-center justify-center rounded-lg p-1 transition-all duration-300 ${
+                    selectedColor === key
+                      ? 'border-2 border-slate400'
+                      : 'border-transparent'
                   }`}
                 >
                   <button
@@ -201,7 +203,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleColorSelect(key)}
                     aria-label={`색상 변경: ${key}`}
-                    className="size-6 rounded-full border border-transparent transition-colors duration-300"
+                    className="size-6 rounded-full border border-transparent transition-transform duration-200 ease-in-out hover:scale-110 active:scale-90"
                     style={{ backgroundColor: goalColors[key].DEFAULT }}
                   />
                 </div>

@@ -105,7 +105,9 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
               <li
                 key={item.id}
                 className={`flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors ${
-                  hoveredItem === item.id ? 'text-slate500' : 'text-gs700'
+                  hoveredItem === item.id || openDatePickerItemId === item.id
+                    ? 'text-slate500'
+                    : 'text-gs700'
                 }`}
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
