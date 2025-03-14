@@ -15,6 +15,9 @@ import { Goal } from '@/types/goals';
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
   goal02: 'text-goal02',
+  goal03: 'text-goal03',
+  goal04: 'text-goal04',
+  goal05: 'text-goal05',
   default: 'text-slate500',
 };
 
@@ -108,9 +111,9 @@ export default function CheckTodo({
         <IconButton
           className={cn(
             'flex-none rounded-2xl bg-gs00 text-slate500 group-hover:bg-gs00',
+            'opacity-100 md:opacity-0 md:group-hover:opacity-100',
             {
               'opacity-100': isMenuOpen,
-              'opacity-0 group-hover:opacity-100': !isMenuOpen,
             },
           )}
           icon={noteIcon}
@@ -122,10 +125,10 @@ export default function CheckTodo({
         <div className="relative">
           <IconButton
             className={cn(
-              'flex-none rounded-2xl bg-gs00 text-gs400 transition-opacity',
+              'flex-none rounded-2xl bg-gs00 text-slate500 group-hover:bg-gs00',
+              'opacity-100 md:opacity-0 md:group-hover:opacity-100',
               {
                 'opacity-100': isMenuOpen,
-                'opacity-0 group-hover:opacity-100': !isMenuOpen,
               },
             )}
             icon={faEllipsisVertical}

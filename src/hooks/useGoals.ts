@@ -43,9 +43,8 @@ export const useGoals = () => {
   return useQuery({
     queryKey: [QUERY_KEY.GOALS],
     queryFn: fetchGoals,
-    initialData: [],
-    retry: false,
-    throwOnError: false,
+    retry: 3,
+    staleTime: 5 * 60 * 1000,
   });
 };
 

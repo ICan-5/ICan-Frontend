@@ -30,6 +30,20 @@ export default function PasswordField<T extends FieldValues>({
   const handleTogglePasswordVisible = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+  const [password, setPassword] = useState('');
+
+  // 비밀번호에 한글 입력 막기
+  const handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const inputElement = e.currentTarget;
+
+    // 숫자와 영문자, 허용 특수문자 외는 공백 처리
+    const filteredValue = inputElement.value.replace(
+      /[^A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/g,
+      '',
+    );
+
+    setPassword(filteredValue);
+  };
 
   return (
     <div className="mb-6 w-full">
@@ -38,7 +52,7 @@ export default function PasswordField<T extends FieldValues>({
         <div className="relative w-full">
           <input
             className={cn(
-              'focus-visible:ring-ring h-12 w-full rounded-xl bg-slate50 px-4 py-3 text-16R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1 dark:bg-gs800 dark:placeholder:text-gs500',
+              'focus-visible:ring-ring h-12 w-full rounded-xl bg-slate50 px-4 py-3 text-16R transition-colors placeholder:text-gs400 focus:outline-none focus:ring-slate500 focus-visible:ring-1',
               errors[name] && 'bg-warn50 focus-visible:ring-red-500',
             )}
             type={isPasswordVisible ? 'text' : 'password'}
@@ -46,6 +60,8 @@ export default function PasswordField<T extends FieldValues>({
             placeholder={placeholder}
             autoComplete="off"
             {...register(name)}
+            value={password}
+            onInput={handleInputChange}
           />
           <button
             type="button"

@@ -11,7 +11,7 @@ export default function Layout({
 }>) {
   return (
     <NavbarProvider>
-      <div className="flex h-screen w-screen overflow-hidden bg-gs100 will-change-scroll">
+      <div className="flex h-dvh w-screen overflow-hidden bg-gs100 will-change-scroll">
         <Navbar />
         <MemberPageWrapper>{children}</MemberPageWrapper>
         {modal}

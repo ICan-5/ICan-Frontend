@@ -96,7 +96,7 @@ export default function TodoBasket() {
     ? createPortal(
         <div
           className={cn(
-            'fixed bottom-0 z-10 bg-white px-6 pb-2 pt-4 transition-all duration-300 ease-in-out',
+            'fixed bottom-0 z-10 bg-gs00 px-6 pb-2 pt-4 transition-all duration-300 ease-in-out',
             {
               'left-16 w-[calc(100vw-4rem)]': isFolded,
               'left-16 w-[calc(100vw-4rem)] md:left-64 md:w-[calc(100vw-16rem)] 2xl:left-80 2xl:w-[calc(100vw-20rem)]':
@@ -123,13 +123,15 @@ export default function TodoBasket() {
                   </div>
                 )}
               </div>
-              <button
-                type="button"
-                className="text-14M text-gs600"
-                onClick={() => handleDeleteAll()}
-              >
-                모두 지우기
-              </button>
+              {basketList.length > 0 && (
+                <button
+                  type="button"
+                  className="text-14M text-gs600"
+                  onClick={() => handleDeleteAll()}
+                >
+                  모두 지우기
+                </button>
+              )}
             </div>
 
             <div

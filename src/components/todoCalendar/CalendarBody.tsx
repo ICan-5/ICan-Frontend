@@ -13,6 +13,9 @@ import { useDeleteTodoBasket } from '@/hooks/useTodoBasket';
 const goalColor: Record<string, string> = {
   goal01: 'bg-goal01-100 text-goal01',
   goal02: 'bg-goal02-100 text-goal02',
+  goal03: 'bg-goal03-100 text-goal03',
+  goal04: 'bg-goal04-100 text-goal04',
+  goal05: 'bg-goal05-100 text-goal05',
   default: 'bg-slate100 text-slate500',
 };
 
