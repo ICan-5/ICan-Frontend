@@ -38,6 +38,7 @@ export default function NoteEditor({
     : String(editNoteData?.todo.todoId);
   // 할 일 제목, 목표 제목 가져오기
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
+  const [isLoading, setIsLoading] = useState(false);
 
   // rhf을 통한 폼 상태 관리
   const {
@@ -81,9 +82,13 @@ export default function NoteEditor({
 
   // 노트 저장 함수
   const onSubmit = async (formData: NoteSchemaType) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     localStorage.removeItem(`todo-${todoId}`);
-    if (!isEditMode) {
-      try {
+
+    try {
+      if (!isEditMode) {
         const res = await createNote({
           todoId: Number(todoId),
           formData,
@@ -92,29 +97,33 @@ export default function NoteEditor({
         if (!res.data) {
           const errorMessage = res?.message;
           toast.error(errorMessage);
+          setIsLoading(false);
           return;
         }
 
         toast.success(res?.data.message);
         router.back(); // 이전 페이지로 이동
-      } catch {
-        toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
-      }
-    } else {
-      if (!noteId) return;
-      try {
+      } else {
+        if (!noteId) {
+          setIsLoading(false);
+          return;
+        }
+
         const res = await editNote({ noteId, formData });
         if (!res.data) {
           const errorMessage = res?.message;
           toast.error(errorMessage);
+          setIsLoading(false);
           return;
         }
 
         toast.success('노트 수정이 완료되었습니다.');
         router.back();
-      } catch {
-        toast.error('노트 생성 중 알 수 없는 오류가 발생했습니다.');
       }
+    } catch {
+      toast.error('노트 처리 중 알 수 없는 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -251,6 +260,7 @@ export default function NoteEditor({
           <NoteEditHeader
             handleBack={handleBack}
             isValid={isValid}
+            isLoading={isLoading}
             handleTempSave={handleTempSave}
             isEditMode={isEditMode}
             onSubmit={handleSubmit(onSubmit)}

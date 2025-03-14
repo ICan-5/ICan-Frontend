@@ -7,6 +7,7 @@ import Button from '../../common/button/Button';
 type Props = {
   handleBack: () => void;
   isValid: boolean;
+  isLoading: boolean;
   handleTempSave: () => void;
   isEditMode: boolean;
   onSubmit: ReturnType<UseFormHandleSubmit<NoteSchemaType>>;
@@ -15,6 +16,7 @@ type Props = {
 export default function NoteEditHeader({
   handleBack,
   isValid,
+  isLoading,
   handleTempSave,
   isEditMode,
   onSubmit,
@@ -40,7 +42,7 @@ export default function NoteEditHeader({
             size="medium"
             className="!px-1 !py-3 transition-colors xs:!px-4 sm:!px-6 2xl:rounded-lg 2xl:!px-6 2xl:!text-14SB"
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid && isLoading}
             onClick={onSubmit}
           >
             {isEditMode ? '수정 완료' : '작성 완료'}
