@@ -22,7 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
   );
 
   if (isLoading)
-    return <div className="relative min-h-screen">{renderLoading()}</div>;
+    return <div className="relative min-h-dvh">{renderLoading()}</div>;
   if (error)
     return <p className="text-center text-red-500">Failed to load notes</p>;
 

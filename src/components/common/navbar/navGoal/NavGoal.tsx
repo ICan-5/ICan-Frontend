@@ -12,17 +12,14 @@ import Icon from '@/components/common/icon/Icon';
 import IconButton from '@/components/common/button/IconButton';
 import { Goal } from '@/types/goals';
 import { useGoals } from '@/hooks/useGoals';
+import { useNavbar } from '../../NavbarContext';
 
-type Props = {
-  headerFolded: boolean;
-};
-
-export default function NavGoal({ headerFolded }: Props) {
+export default function NavGoal() {
   const pathname = usePathname();
+  const { isFolded: headerFolded, closeNavbar } = useNavbar();
   const { data: goalList, isFetching } = useGoals();
   const [isFolded, setIsFolded] = useState<boolean>(false);
   const [showNewGoal, setShowNewGoal] = useState<boolean>(false);
-
   /**
    * 목표 리스트 접기/펼치기 함수
    */
@@ -31,13 +28,19 @@ export default function NavGoal({ headerFolded }: Props) {
   };
 
   /**
-   * @param event 마우스 이벤트
    * 새로운 목표 생성 & 목표 리스트가 접혀져있다면 펼치기 함수
    */
   const addGoalList = (event: React.MouseEvent) => {
     event?.stopPropagation();
     setShowNewGoal(true);
     if (isFolded) setIsFolded(false);
+  };
+
+  /**
+   * 모바일에서 클릭 시 navbar닫히게
+   */
+  const foldHeaderOnMobile = () => {
+    if (window.innerWidth <= 768) closeNavbar();
   };
 
   return (
@@ -62,7 +65,7 @@ export default function NavGoal({ headerFolded }: Props) {
           className={cn('transition-transform duration-300', {
             'rotate-0': !isFolded,
             'rotate-180': isFolded,
-            invisible: goalList.length === 0,
+            invisible: !goalList || goalList.length === 0,
           })}
           icon={faAngleDown}
           onClick={foldGoalList}
@@ -80,27 +83,26 @@ export default function NavGoal({ headerFolded }: Props) {
           { 'scale-y-0': isFolded },
           { 'invisible overflow-hidden': headerFolded },
         )}
+        onClick={foldHeaderOnMobile}
       >
         {showNewGoal && (
           <NewGoalItem onCloseInput={() => setShowNewGoal(false)} />
         )}
-        {goalList.length === 0 &&
-          isFetching &&
+        {isFetching &&
           Array.from({ length: 6 }, (_, i) => i + 1).map((e) => (
             <div
               key={e}
               className="my-1 flex h-6 w-full animate-pulse rounded-md bg-gs100 2xl:h-8"
             />
           ))}
-        {goalList?.map((goal: Goal) => (
-          <NavGoalItem
-            id={goal.goalId}
-            title={goal.title}
-            color={goal.color}
-            isSelected={pathname === `/goals/${goal.goalId}`}
-            key={goal.goalId}
-          />
-        ))}
+        {!isFetching &&
+          goalList?.map((goal: Goal) => (
+            <NavGoalItem
+              goal={goal}
+              isSelected={pathname === `/goals/${goal.goalId}`}
+              key={goal.goalId}
+            />
+          ))}
       </div>
     </div>
   );

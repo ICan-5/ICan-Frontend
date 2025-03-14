@@ -27,7 +27,9 @@ export default function NoteEditHeader({
         <Icon icon={faArrowLeft} className="size-5" />
       </button>
       <div className="ml-2 flex w-full items-center justify-between">
-        <h2 className="text-14SB xs:text-16SB md:text-18SB">노트 작성</h2>
+        <h2 className="text-14SB xs:text-16SB md:text-18SB">
+          {isEditMode ? '노트 수정' : '노트 작성'}
+        </h2>
         <div className="flex justify-end gap-2 xs:justify-normal">
           <Button
             disabled={!isValid || isLoading}

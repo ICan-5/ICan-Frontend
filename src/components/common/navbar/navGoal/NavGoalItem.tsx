@@ -1,19 +1,26 @@
 import Link from 'next/link';
 import cn from '@/utils/cn';
+import { Goal } from '@/types/goals';
 
 type Props = {
-  id: number;
-  title: string;
-  color: string;
+  goal: Goal;
   isSelected: boolean;
 };
 
-export default function NavGoalItem({ id, title, color, isSelected }: Props) {
+const GOAL_BG_COLORS = {
+  goal01: 'bg-goal01',
+  goal02: 'bg-goal02',
+  goal03: 'bg-goal03',
+  goal04: 'bg-goal04',
+  goal05: 'bg-goal05',
+  default: 'bg-slate500',
+} as const;
+
+export default function NavGoalItem({ goal, isSelected }: Props) {
   // TODO :: 나중에 목표 색 정해지면 수정
-  const c = color === 'default' ? 'bg-slate500' : 'bg-goal01';
   return (
     <Link
-      href={`/goals/${id}`}
+      href={`/goals/${goal.goalId}`}
       className={cn(
         'flex flex-none cursor-pointer items-center gap-4 overflow-hidden rounded-md p-2',
         'text-gray-400 hover:bg-gs50',
@@ -22,9 +29,11 @@ export default function NavGoalItem({ id, title, color, isSelected }: Props) {
         },
       )}
     >
-      <span className={`ml-2 size-2 flex-none rounded-md ${c}`} />
+      <span
+        className={`ml-2 size-2 flex-none rounded-md ${GOAL_BG_COLORS[goal.color]}`}
+      />
       <span className="text-overflow h-4 text-12R 2xl:h-5 2xl:text-14R">
-        {title}
+        {goal.title}
       </span>
     </Link>
   );

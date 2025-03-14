@@ -24,5 +24,13 @@ const config: Config = {
     },
   },
   plugins: [],
+  safelist: [
+    'ql-align-center',
+    'ql-align-right',
+    'ql-align-left',
+    {
+      pattern: /data-list-.*/, // data-list 속성 보존
+    },
+  ],
 };
 export default config;

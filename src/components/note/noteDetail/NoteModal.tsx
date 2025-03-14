@@ -18,8 +18,10 @@ export default function NoteModal({ noteId }: Props) {
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
   const [embedVisible, setEmbedVisible] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const closeModal = () => {
+    if (showConfirm) return;
     setIsClosing(true);
     setTimeout(() => {
       router.back();
@@ -32,7 +34,7 @@ export default function NoteModal({ noteId }: Props) {
       {!isClosing && (
         <>
           <motion.div
-            className="bg-gsBk/50 fixed inset-0 z-40"
+            className="fixed inset-0 z-40 bg-black/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -60,6 +62,7 @@ export default function NoteModal({ noteId }: Props) {
               setIsClosing={setIsClosing}
               embedVisible={embedVisible}
               setEmbedVisible={setEmbedVisible}
+              setShowConfirm={setShowConfirm}
             />
           </motion.div>
         </>

@@ -37,6 +37,7 @@ export default function NoteEditor({
     ? String(params.todoId)
     : String(editNoteData?.todo.todoId);
   // 할 일 제목, 목표 제목 가져오기
+
   const { todoQuery, goalQuery } = useTodoWithGoalTitle(todoId);
   const [isLoading, setIsLoading] = useState(false);
 

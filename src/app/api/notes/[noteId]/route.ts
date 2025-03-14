@@ -68,7 +68,13 @@ export async function PATCH(
     },
   });
 
-  if (!res1.ok) return res1;
+  if (!res1.ok) {
+    return Response.json(
+      { error: 'Failed to update note' },
+      { status: res1.status },
+    );
+  }
 
-  return res1;
+  const data = await res1.json();
+  return Response.json(data);
 }

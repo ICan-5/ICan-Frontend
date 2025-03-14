@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   // 로딩 화면 렌더링 함수
   const renderLoading = () => (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-dvh items-center justify-center">
       <FontAwesomeIcon
         icon={faSpinner}
         spin
@@ -54,7 +54,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   // 목표가 없을 때 화면 렌더링 함수
   const renderNoGoal = () => (
-    <div className="flex h-screen flex-col items-center justify-center">
+    <div className="flex h-dvh flex-col items-center justify-center">
       <div className="mb-5 text-40L text-gs600">
         <FontAwesomeIcon icon={faFaceSadCry} />
       </div>

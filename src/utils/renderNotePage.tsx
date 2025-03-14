@@ -24,7 +24,7 @@ export async function renderNoteDetail(noteId: number, isModal?: boolean) {
         {isModal ? (
           <NoteModal noteId={noteId} />
         ) : (
-          <div className="h-screen">
+          <div className="h-full">
             <NoteDetail noteId={noteId} />
           </div>
         )}
