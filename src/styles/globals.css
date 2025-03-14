@@ -186,6 +186,26 @@ body {
   .text-overflow {
     @apply overflow-hidden text-ellipsis whitespace-nowrap break-words;
   }
+
+  .ql-align-center {
+    @apply text-center;
+  }
+  .ql-align-right {
+    @apply text-right;
+  }
+  .ql-align-left {
+    @apply text-left;
+  }
+
+  li[data-list='bullet'] {
+    list-style-type: disc;
+    margin-left: 1.25rem;
+  }
+
+  li[data-list='ordered'] {
+    list-style-type: decimal;
+    margin-left: 1.25rem;
+  }
 }
 
 @layer utilities {

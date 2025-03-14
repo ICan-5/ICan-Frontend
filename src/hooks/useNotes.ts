@@ -13,7 +13,7 @@ export const useNoteDetail = (noteId?: number | null) => {
 
 export function useNoteList(goalId: number) {
   return useQuery({
-    queryKey: [QUERY_KEY.NOTE, goalId],
+    queryKey: [QUERY_KEY.GOAL_NOTES, goalId],
     queryFn: () => getNotes(goalId),
   });
 }
@@ -30,9 +30,15 @@ export const useDeleteNote = () => {
       ]);
 
       if (noteData) {
-        const { date } = noteData.todo;
+        const { date, goal } = noteData.todo;
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEY.DAILY_TODOS, date],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.GOAL_NOTES, goal?.goalId],
         });
       }
       queryClient.removeQueries({ queryKey: [QUERY_KEY.NOTE, noteId] });
