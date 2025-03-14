@@ -144,7 +144,7 @@ export const editNote = async ({
   formData: {
     title: string;
     content: string;
-    linkUrl: string;
+    linkUrl?: string;
   };
   noteId: number;
 }) => {

@@ -118,7 +118,7 @@ export default function NoteContentEditor({
         <ErrorMessage className="ml-0" message={errors.content.message} />
       )}
 
-      <div className="overflow-y-hidden-hidden relative flex h-dvh max-h-[calc(100dvh-296px)] min-h-60 w-full flex-1 basis-auto md:max-h-[calc(1000px-404px)]">
+      <div className="relative flex h-dvh max-h-[calc(100dvh-296px)] min-h-60 w-full flex-1 basis-auto overflow-y-hidden md:max-h-[calc(1000px-404px)]">
         <Controller
           control={control}
           name="content"
