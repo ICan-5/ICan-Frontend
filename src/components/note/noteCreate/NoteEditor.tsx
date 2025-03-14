@@ -236,7 +236,7 @@ export default function NoteEditor({
   }, [linkUrl]);
 
   return (
-    <div className="flex size-full flex-col md:h-dvh md:flex-row">
+    <div className="flex size-full flex-col md:flex-row">
       <EmbedPreview
         embedUrl={embedUrl}
         embedVisible={embedVisible}
@@ -273,7 +273,10 @@ export default function NoteEditor({
                 <section className="mx-6 mb-2 mt-4 flex items-center gap-3">
                   <Icon
                     icon={faFontAwesome}
-                    className="size-4 rounded-lg text-lg text-[#FB923C]"
+                    className={cn(
+                      'size-4 rounded-lg text-lg',
+                      `text-${goalQuery?.data.todo.color}`,
+                    )}
                   />
                   <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
                     {goalQuery.data?.todo.title}
