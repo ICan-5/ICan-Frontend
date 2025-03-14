@@ -22,6 +22,9 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 const goalColor: Record<string, string> = {
   goal01: 'text-goal01',
   goal02: 'text-goal02',
+  goal03: 'text-goal03',
+  goal04: 'text-goal04',
+  goal05: 'text-goal05',
   default: 'text-slate500',
 };
 
@@ -31,6 +34,7 @@ interface Props {
   embedVisible?: boolean;
   setEmbedVisible?: (visible: boolean) => void;
   setIsClosing?: (value: boolean) => void;
+  setShowConfirm?: (value: boolean) => void;
 }
 
 export default function NoteDetail({
@@ -39,6 +43,7 @@ export default function NoteDetail({
   embedVisible: embedVisibleProp,
   setEmbedVisible: setEmbedVisibleProp,
   setIsClosing,
+  setShowConfirm: setShowConfirmProp,
 }: Props) {
   const router = useRouter();
   const [sanitizedContent, setSanitizedContent] = useState<string | null>(null);
@@ -69,6 +74,9 @@ export default function NoteDetail({
   };
 
   const handleDeleteButton = () => {
+    if (setShowConfirmProp) {
+      setShowConfirmProp(true);
+    }
     setShowConfirm(true);
   };
 
@@ -79,6 +87,9 @@ export default function NoteDetail({
       },
     });
     setShowConfirm(false);
+    if (setShowConfirmProp) {
+      setShowConfirmProp(false);
+    }
   };
 
   const handleBack = () => {
@@ -101,10 +112,8 @@ export default function NoteDetail({
   return (
     <div
       className={cn(
-        'h-full overflow-y-auto bg-gs00',
-        {
-          'rounded-2xl border-2 border-gs200': !isModal,
-        },
+        'size-full',
+        { 'overflow-y-auto': isModal },
         { 'lg:flex': embedVisible },
       )}
     >
@@ -122,19 +131,27 @@ export default function NoteDetail({
       )}
 
       <div
-        className={cn('flex grow flex-col', {
-          'md:w-1/4': embedVisible,
-        })}
+        className={cn(
+          'flex h-full grow flex-col bg-gs00',
+          {
+            'lg:w-1/4': embedVisible && isModal,
+            'lg:w-1/3': embedVisible && !isModal,
+          },
+          {
+            'rounded-2xl border-2 border-gs200': !isModal,
+          },
+        )}
       >
         {!isModal && (
-          <div className="flex w-full gap-2 border-b-2 border-gs200 bg-gs50 p-4">
+          <div className="flex w-full gap-2 rounded-t-2xl border-b-2 border-gs200 bg-gs50 p-4">
             <IconButton icon={faArrowLeft} onClick={handleBack} />
             <h1 className="text-18SB text-gsBk">노트</h1>
           </div>
         )}
+
         <div
-          className={cn('flex grow flex-col gap-6 px-6', {
-            'pt-6': !isModal,
+          className={cn('flex size-full grow flex-col gap-6 px-6', {
+            'overflow-y-auto py-6': !isModal,
           })}
         >
           <div className="flex flex-col gap-3">
@@ -230,7 +247,12 @@ export default function NoteDetail({
           title="노트를 삭제 하시겠어요?"
           description="작성된 내용이 모두 사라지고 복구할 수 없습니다."
           confirmText="지우기"
-          onCancel={() => setShowConfirm(false)}
+          onCancel={() => {
+            if (setShowConfirmProp) {
+              setShowConfirmProp(false);
+            }
+            setShowConfirm(false);
+          }}
           onConfirm={handleConfirmDelete}
         />
       )}

@@ -39,7 +39,7 @@ export default function EmbedPreview({
   if (!embedVisible || !embedUrl) return null;
 
   return (
-    <section className="relative h-auto flex-1 md:min-w-52">
+    <section className="relative h-auto flex-1 md:min-w-52 lg:h-full">
       {fallback ? (
         <iframe
           src={embedUrl}

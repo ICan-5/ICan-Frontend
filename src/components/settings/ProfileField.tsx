@@ -86,7 +86,7 @@ export default function ProfileField({ onChange }: Props) {
             htmlFor="uploadImage"
           >
             <Icon icon={faPenToSquare} />
-            <span className="text-14M md:hidden lg:inline">사진 변경</span>
+            <span className="text-14M md:hidden xl:inline">사진 변경</span>
             <input
               className="hidden"
               type="file"
@@ -102,7 +102,7 @@ export default function ProfileField({ onChange }: Props) {
             })}
             onClick={deleteImage}
           >
-            사진 삭제
+            기존 이미지로 변경
           </button>
         </div>
         <span className="text-14M text-gs500 2xl:text-16M">
