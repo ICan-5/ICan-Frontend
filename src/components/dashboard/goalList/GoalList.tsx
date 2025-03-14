@@ -44,7 +44,7 @@ export default function GoalList() {
                 <SimpleTodo
                   key={todo.todoId}
                   title={todo.title}
-                  done={false}
+                  todoId={todo.todoId}
                   noteId={todo.noteId}
                 />
               ))}
@@ -64,8 +64,9 @@ export default function GoalList() {
                 <SimpleTodo
                   key={todo.todoId}
                   title={todo.title}
-                  done
+                  todoId={todo.todoId}
                   noteId={todo.noteId}
+                  done
                 />
               ))}
             {!isTodoFetching && doneItems.length === 0 && (

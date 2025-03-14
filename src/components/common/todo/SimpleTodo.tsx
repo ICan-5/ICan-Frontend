@@ -1,19 +1,30 @@
 'use client';
 
 import { faFileLines, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import IconButton from '../button/IconButton';
 
 interface Props {
   title: string;
-  done: boolean;
+  done?: boolean;
+  todoId: number;
   noteId: number | null;
 }
 
-export default function SimpleTodo({ title, done, noteId }: Props) {
+export default function SimpleTodo({
+  title,
+  done = false,
+  todoId,
+  noteId,
+}: Props) {
   const noteIcon = noteId ? faFileLines : faFilePen;
+  const router = useRouter();
   /** 노트 클릭 함수 */
-  const clickNote = () => {};
+  const clickNote = () => {
+    if (!noteId) router.push(`/${todoId}/note/create`);
+    else router.push(`/note/${noteId}`);
+  };
   return (
     <div
       className={cn(

@@ -51,7 +51,7 @@ export default function TodayList() {
             <SimpleTodo
               key={todo.todoId}
               title={todo.title}
-              done={false}
+              todoId={todo.todoId}
               noteId={todo.noteId}
             />
           ))}
