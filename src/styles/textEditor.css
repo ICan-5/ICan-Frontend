@@ -40,6 +40,22 @@
   @apply hidden;
 }
 
-.ql-picker-options {
-  @apply bottom-full top-auto !important;
+.ql-editor li[data-list] {
+  @apply pl-3 text-16R;
+}
+
+.ql-editor li[data-list='bullet'] {
+  @apply text-16R;
+}
+
+.ql-editor li[data-list='bullet'] > .ql-ui:before {
+  @apply -ml-[30px];
+}
+
+.ql-editor li[data-list='ordered'] {
+  @apply text-16R;
+}
+
+.ql-editor li[data-list='ordered'] > .ql-ui:before {
+  @apply -ml-6;
 }

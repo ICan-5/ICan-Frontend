@@ -105,10 +105,8 @@ export const createNote = async ({
     if (!res.ok) {
       return data;
     }
-    console.log('data', data);
     return { data };
   } catch (error) {
-    console.log('err');
     return error;
   }
 };

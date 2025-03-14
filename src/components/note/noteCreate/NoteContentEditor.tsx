@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { Controller } from 'react-hook-form';
@@ -9,6 +9,7 @@ import NoteSkeleton from './NoteSkeleton';
 import LinkModal from './LinkModal';
 import Icon from '../../common/icon/Icon';
 import type { NoteFormControlProps } from '@/types/note';
+import useTextLength from './useTextLength';
 
 interface ForwardedQuillProps
   extends React.ComponentProps<typeof ReactQuillType> {
@@ -37,20 +38,12 @@ export default function NoteContentEditor({
   checkEmbedUrl,
 }: NoteFormControlProps) {
   const quillInstance = useRef<ReactQuillType | null>(null);
-  const [textLength, setTextLength] = useState(0);
-  const [trimmedTextLength, setTrimmedTextLength] = useState(0);
+
+  const { textLength, trimmedTextLength, updateTextLength } =
+    useTextLength(quillInstance);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const linkUrl = getValues('linkUrl');
-
-  const updateTextLength = () => {
-    if (!quillInstance.current) return;
-    const quillEditor = quillInstance.current.getEditor();
-    const text = quillEditor.getText();
-    const nonSpaceLength = text.replace(/\s/g, '').length;
-    const length = quillEditor.getLength();
-    setTextLength(length > 1 ? length - 1 : 0);
-    setTrimmedTextLength(nonSpaceLength);
-  };
+  const contentValue = getValues('content');
 
   const modules = useMemo(() => {
     return {
@@ -75,6 +68,11 @@ export default function NoteContentEditor({
       },
     };
   }, []);
+
+  // 임시 데이터 불러오기 - 글자 수 감지
+  useEffect(() => {
+    updateTextLength();
+  }, [updateTextLength, contentValue]);
 
   return (
     <>
@@ -120,7 +118,7 @@ export default function NoteContentEditor({
         <ErrorMessage className="ml-0" message={errors.content.message} />
       )}
 
-      <div className="relative flex size-full max-h-[calc(100dvh-404px)] min-h-60 flex-1 basis-auto overflow-auto md:max-h-[calc(1000px-404px)]">
+      <div className="overflow-y-hidden-hidden relative flex h-dvh max-h-[calc(100dvh-296px)] min-h-60 w-full flex-1 basis-auto md:max-h-[calc(1000px-404px)]">
         <Controller
           control={control}
           name="content"
