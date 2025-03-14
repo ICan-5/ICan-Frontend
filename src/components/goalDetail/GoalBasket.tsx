@@ -115,7 +115,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                   <div className="relative flex items-center">
                     <DatePicker
                       dateFormat="yyyy-MM-dd"
-                      selected={null}
+                      selected={new Date()}
                       portalId="root-portal"
                       popperPlacement="top-start"
                       onChange={(date: Date | null) =>
@@ -124,11 +124,14 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
                       popperClassName="z-[9999]"
-                      dayClassName={(date) =>
-                        date.toDateString() === new Date().toDateString()
-                          ? 'text-slate500'
-                          : ''
-                      }
+                      dayClassName={(d) => {
+                        const today = new Date();
+                        const isToday =
+                          d.toDateString() === today.toDateString();
+                        return isToday
+                          ? 'selected-day react-datepicker__day--today'
+                          : '';
+                      }}
                       customInput={
                         <button
                           type="button"
