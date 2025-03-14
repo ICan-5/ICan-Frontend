@@ -11,13 +11,20 @@ import IcanLogo from '../IcanLogo';
 import IcanTitle from '../IcanTitle';
 
 export default function Navbar() {
-  const { isFolded, toggleNavbar } = useNavbar();
+  const { isFolded, toggleNavbar, closeNavbar } = useNavbar();
+
+  /**
+   * 모바일에서 클릭 시 navbar닫히게
+   */
+  const foldHeaderOnMobile = () => {
+    if (window.innerWidth <= 768) closeNavbar();
+  };
 
   return (
     <>
       <nav
         className={cn(
-          'fixed top-0 z-30 flex h-screen flex-none flex-col items-start bg-gs00 py-4 transition-all duration-300 first-line:left-0 md:relative 2xl:py-5',
+          'fixed top-0 z-30 flex h-dvh flex-none flex-col items-start bg-gs00 py-4 transition-all duration-300 first-line:left-0 md:relative 2xl:py-5',
           {
             'w-16 px-2': isFolded,
             'w-64 px-4 2xl:w-80 2xl:px-6': !isFolded,
@@ -45,6 +52,7 @@ export default function Navbar() {
           className={cn(
             'flex h-9 items-center gap-2 rounded-lg p-[3px] text-18SB 2xl:h-10',
           )}
+          onClick={foldHeaderOnMobile}
         >
           <IcanLogo
             className={cn(
@@ -60,8 +68,8 @@ export default function Navbar() {
             })}
           />
         </Link>
-        <NavUserProfile isFolded={isFolded} />
-        <NavTab isFolded={isFolded} />
+        <NavUserProfile />
+        <NavTab />
       </nav>
       <div
         className={cn('md:hidden', {

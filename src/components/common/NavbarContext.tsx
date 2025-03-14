@@ -1,10 +1,18 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 
 interface Props {
   isFolded: boolean;
   toggleNavbar: () => void;
+  closeNavbar: () => void;
 }
 
 const NavbarContext = createContext<Props | undefined>(undefined);
@@ -15,11 +23,18 @@ export function NavbarProvider({ children }: { children: React.ReactNode }) {
     setIsFolded(window.innerWidth <= 768);
   }, []);
 
-  const toggleNavbar = () => {
+  const toggleNavbar = useCallback(() => {
     setIsFolded((prev) => !prev);
-  };
+  }, []);
 
-  const contextValue = useMemo(() => ({ isFolded, toggleNavbar }), [isFolded]);
+  const closeNavbar = useCallback(() => {
+    setIsFolded(true);
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ isFolded, toggleNavbar, closeNavbar }),
+    [isFolded, toggleNavbar, closeNavbar],
+  );
 
   return (
     <NavbarContext.Provider value={contextValue}>
