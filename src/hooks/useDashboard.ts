@@ -26,5 +26,7 @@ export const useGrass = (initialData: Grass[]) => {
     queryKey: [QUERY_KEY.GRASS],
     queryFn: fetchTodoGrass,
     initialData,
+    retry: 3,
+    staleTime: 5 * 60 * 1000,
   });
 };
