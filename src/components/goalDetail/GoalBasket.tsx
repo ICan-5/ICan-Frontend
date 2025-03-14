@@ -112,7 +112,10 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
-                <span>{item.title}</span>
+                <span className="max-w-[100px] truncate sm:max-w-[150px] md:max-w-[300px]">
+                  {item.title}
+                </span>
+
                 <div className="flex items-center space-x-3">
                   <div className="relative flex items-center">
                     <DatePicker
@@ -141,7 +144,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                             hoveredItem === item.id ||
                             openDatePickerItemId === item.id
                               ? 'opacity-100'
-                              : 'opacity-0'
+                              : 'opacity-100 md:opacity-0'
                           }`}
                         >
                           <FontAwesomeIcon
@@ -158,7 +161,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       hoveredItem === item.id ||
                       openDatePickerItemId === item.id
                         ? 'opacity-100'
-                        : 'opacity-0'
+                        : 'opacity-100 md:opacity-0'
                     }`}
                     onClick={() => setSelectedDeleteTodo(item.id)}
                   >

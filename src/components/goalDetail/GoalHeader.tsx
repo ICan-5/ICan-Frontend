@@ -144,7 +144,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   }, [goalItem?.color]);
 
   return (
-    <div className="flex h-[160px] flex-col gap-4 p-1 sm:p-2 md:px-6 md:py-4 lg:p-6">
+    <div className="flex h-[160px] flex-col gap-4 p-3 md:px-6 md:py-3 lg:p-6">
       <div className="flex h-[56px] items-start justify-between md:mb-4 lg:mb-6">
         <h1 className="flex w-full items-center text-20M md:max-w-2xl">
           <FontAwesomeIcon
