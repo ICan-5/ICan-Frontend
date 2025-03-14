@@ -112,8 +112,8 @@ export default function NoteDetail({
   return (
     <div
       className={cn(
-        'size-full overflow-y-auto',
-
+        'size-full',
+        { 'overflow-y-auto': isModal },
         { 'lg:flex': embedVisible },
       )}
     >
@@ -132,7 +132,7 @@ export default function NoteDetail({
 
       <div
         className={cn(
-          'flex grow flex-col bg-gs00',
+          'flex h-full grow flex-col bg-gs00',
           {
             'lg:w-1/4': embedVisible && isModal,
             'lg:w-1/3': embedVisible && !isModal,
@@ -151,7 +151,7 @@ export default function NoteDetail({
 
         <div
           className={cn('flex size-full grow flex-col gap-6 px-6', {
-            'pt-6': !isModal,
+            'overflow-y-auto py-6': !isModal,
           })}
         >
           <div className="flex flex-col gap-3">
