@@ -91,8 +91,8 @@ export default function SettingForm() {
             <input
               className={cn(
                 'overflow-x-auto overflow-y-hidden rounded-xl border bg-slate50 px-4 py-3 text-14R text-gsBk 2xl:h-12 2xl:text-16R',
-                errors.name && 'bg-warn50 focus:border-warn500',
                 'border-transparent focus:border-slate500 focus:outline-none',
+                errors.name && 'bg-warn50 focus:border-warn500',
               )}
               id="name"
               type="text"
