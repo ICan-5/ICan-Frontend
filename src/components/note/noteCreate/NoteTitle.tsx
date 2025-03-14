@@ -16,6 +16,7 @@ export default function NoteTitle({ control, errors }: NoteFormControlProps) {
                 className="border-top border-bottom w-full rounded-none bg-gs00 pl-0 outline-none focus:border-gs200"
                 onChange={(e) => onChange(e.target.value)}
                 value={value}
+                maxLength={30}
               />
               <div className="flex px-1 py-[2px] text-xs font-medium">
                 <span className="text-error">{value ? value?.length : 0}</span>
