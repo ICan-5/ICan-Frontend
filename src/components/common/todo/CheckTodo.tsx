@@ -154,7 +154,7 @@ export default function CheckTodo({
               </button>
               <button
                 type="button"
-                className="flex whitespace-nowrap px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                className="flex whitespace-nowrap px-4 py-2 text-14R text-gsBk hover:bg-gs200"
                 onClick={() => {
                   if (onDelete) onDelete();
                 }}

@@ -34,6 +34,7 @@ export const useDailyTodos = (date: string) => {
     queryKey: [QUERY_KEY.DAILY_TODOS, date],
     queryFn: () => fetchDailyTodos(date),
     retry: false,
+    initialData: [],
     throwOnError: false,
   });
 };

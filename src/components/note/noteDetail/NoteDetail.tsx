@@ -186,14 +186,14 @@ export default function NoteDetail({
                   >
                     <button
                       type="button"
-                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gsBk hover:bg-gs200"
                       onClick={handleEdit}
                     >
                       수정하기
                     </button>
                     <button
                       type="button"
-                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gsBk hover:bg-gs200"
                       onClick={handleDeleteButton}
                     >
                       삭제하기
