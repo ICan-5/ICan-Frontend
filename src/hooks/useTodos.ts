@@ -134,9 +134,9 @@ export const useUpdateTodo = () => {
         queryKey: [QUERY_KEY.GRASS],
       });
 
-      if (goal?.id) {
+      if (goal?.goalId) {
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.id],
+          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
         });
       }
 
