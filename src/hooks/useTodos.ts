@@ -24,7 +24,6 @@ export const useMonthlyTodos = (year: number, month: number) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
     queryFn: () => fetchMonthlyTodos(year, month),
-    initialData: [],
     retry: false,
     throwOnError: false,
   });
@@ -34,7 +33,6 @@ export const useDailyTodos = (date: string) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.DAILY_TODOS, date],
     queryFn: () => fetchDailyTodos(date),
-    initialData: [],
     retry: false,
     throwOnError: false,
   });

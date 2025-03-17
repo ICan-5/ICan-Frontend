@@ -20,7 +20,7 @@ interface Props {
  */
 export default function TodoList({ selectedDate, onOpenModal }: Props) {
   // 하루 단위 할 일
-  const { data: todos, isFetching } = useDailyTodos(
+  const { data: todos = [], isFetching } = useDailyTodos(
     selectedDate.toLocaleDateString('sv-SE'),
   );
 
