@@ -17,12 +17,11 @@ import colors from '@/presets/colors';
 config.autoAddCss = false;
 
 const getGoalColor = (color: string) => {
-  return (
-    goalColors[color as keyof typeof goalColors] ?? {
-      100: colors.slate100,
-      DEFAULT: colors.slate500,
-    }
-  );
+  return {
+    100:
+      goalColors[`${color}-100` as keyof typeof goalColors] ?? colors.slate100,
+    DEFAULT: goalColors[color as keyof typeof goalColors] ?? colors.slate500,
+  };
 };
 
 export default function Page({ params }: { params: { id: string } }) {

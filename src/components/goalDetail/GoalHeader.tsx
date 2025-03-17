@@ -20,7 +20,9 @@ interface Props {
   setGoalAvailable: (value: boolean) => void;
 }
 
-const colorKeys = Object.keys(goalColors) as (keyof typeof goalColors)[];
+const colorKeys = (
+  Object.keys(goalColors) as (keyof typeof goalColors)[]
+).filter((key) => !key.includes('-100'));
 
 export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const { data: goals, isLoading } = useGoals();
@@ -126,7 +128,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   const defaultColorStyle: React.CSSProperties = useMemo(() => {
     const goalColor = goalColors[goalItem?.color as keyof typeof goalColors];
     const validColor =
-      goalColor?.DEFAULT ??
+      goalColor ??
       colors[goalItem?.color as keyof typeof colors] ??
       colors.slate500;
 
@@ -134,13 +136,15 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   }, [goalItem?.color]);
 
   const colorStyle: React.CSSProperties = useMemo(() => {
-    const goalColor = goalColors[goalItem?.color as keyof typeof goalColors];
+    const goalColor100 =
+      goalColors[`${goalItem?.color}-100` as keyof typeof goalColors];
+
     const validColor =
-      goalColor?.['100'] ??
+      goalColor100 ??
       colors[goalItem?.color as keyof typeof colors] ??
       colors.slate100;
 
-    return { backgroundColor: validColor as string };
+    return { backgroundColor: validColor };
   }, [goalItem?.color]);
 
   return (
@@ -202,7 +206,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                     onClick={() => handleColorSelect(key)}
                     aria-label={`색상 변경: ${key}`}
                     className="size-6 rounded-full border border-transparent transition-transform duration-200 ease-in-out hover:scale-110 active:scale-90"
-                    style={{ backgroundColor: goalColors[key].DEFAULT }}
+                    style={{
+                      backgroundColor: goalColors[key] || colors.slate500,
+                    }}
                   />
                 </div>
               ))}
@@ -249,7 +255,8 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           <button
             type="button"
             onClick={toggleMobileMenu}
-            className="relative flex items-center justify-center rounded-full bg-slate100 p-1 shadow"
+            className="relative flex items-center justify-center rounded-full p-1 shadow"
+            style={colorStyle}
           >
             <span className="flex size-8 items-center justify-center rounded-full">
               <FontAwesomeIcon icon={faEllipsisVertical} />
@@ -269,7 +276,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onClick={handleDeleteClick}
                 className="block w-full px-4 py-2 text-12M text-warn500 hover:bg-slate100"
               >
-                삭제하기
+                목표 삭제
               </button>
             </div>
           )}
