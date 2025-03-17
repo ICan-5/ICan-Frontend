@@ -169,7 +169,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--gs300);
   border-radius: 4px;
 }
 
