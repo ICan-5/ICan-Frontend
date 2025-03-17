@@ -14,7 +14,7 @@ export default function TodayList() {
   const { data: totalList, isFetching } = useDailyTodos(
     new Date().toLocaleDateString('sv-SE'),
   );
-  const todayList = totalList.filter((todo) => !todo.done);
+  const todayList = totalList?.filter((todo) => !todo.done);
   const formatter = new Intl.DateTimeFormat('ko-KR', { dateStyle: 'long' });
   const formattedDate = formatter.format(new Date());
 
@@ -47,15 +47,15 @@ export default function TodayList() {
       <div className="flex h-40 w-full flex-col overflow-y-auto 2xl:h-44">
         {isFetching && <SimpleTodoSkeleton />}
         {!isFetching &&
-          todayList.map((todo) => (
+          todayList?.map((todo) => (
             <SimpleTodo
               key={todo.todoId}
               title={todo.title}
-              done={false}
+              todoId={todo.todoId}
               noteId={todo.noteId}
             />
           ))}
-        {!isFetching && !todayList.length && <TodayListEmpty />}
+        {!isFetching && !todayList?.length && <TodayListEmpty />}
       </div>
     </div>
   );

@@ -42,7 +42,10 @@ export async function PATCH(
 
   const res2Data = await res2.json();
 
-  return NextResponse.json({ ...res2Data, goal });
+  return NextResponse.json({
+    ...res2Data,
+    goal: { goalId: res2Data.goalId, ...goal },
+  });
 }
 
 export async function DELETE(
