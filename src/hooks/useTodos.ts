@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { getErrorMessage } from '@/constants/errorMessages';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { Todo } from '@/types/todos';
@@ -22,21 +21,13 @@ const fetchDailyTodos = async (date: string) => {
 };
 
 export const useMonthlyTodos = (year: number, month: number) => {
-  const [hasFetched, setHasFetched] = useState(false);
-  const query = useQuery<Todo[]>({
+  return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
-    queryFn: async () => {
-      const data = await fetchMonthlyTodos(year, month);
-      setHasFetched(true);
-      return data;
-    },
+    queryFn: () => fetchMonthlyTodos(year, month),
     initialData: [],
+    staleTime: 0,
     retry: false,
   });
-  return {
-    ...query,
-    hasFetched,
-  };
 };
 
 export const useDailyTodos = (date: string) => {
@@ -54,7 +45,7 @@ export const useAddTodo = () => {
   return useMutation({
     mutationFn: (formData: TodoFormValues) => addTodo(formData),
     onSuccess: (newTodo) => {
-      const { date, goal } = newTodo;
+      const { date } = newTodo;
       const year = new Date(date).getFullYear();
       const month = new Date(date).getMonth() + 1;
 
@@ -69,13 +60,6 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
       });
-
-      if (goal?.goalId) {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
-        });
-      }
-
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
@@ -141,12 +125,6 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
-
-      if (goal?.goalId) {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
-        });
-      }
 
       // 노트에 변경 사항 반영
       if (noteId) {
