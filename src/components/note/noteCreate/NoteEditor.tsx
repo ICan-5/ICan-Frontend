@@ -259,7 +259,7 @@ export default function NoteEditor({
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="text-gsbk mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 md:min-w-[452px]"
+        className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gsBk md:min-w-[452px]"
       >
         <div>
           <NoteEditHeader
@@ -317,12 +317,8 @@ export default function NoteEditor({
           )}
         </div>
 
-        <div className="text-gsbk mx-6 mb-6 flex h-full min-h-0 flex-col">
-          <NoteTitle
-            control={control}
-            errors={errors}
-            color={goalQuery?.data?.todo?.color}
-          />
+        <div className="mx-6 mb-6 flex h-full min-h-0 flex-col text-gsBk">
+          <NoteTitle control={control} errors={errors} />
           <NoteContentEditor
             control={control}
             errors={errors}

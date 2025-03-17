@@ -78,7 +78,7 @@ export default function EmbedPreview({
       <button type="button" onClick={onClose}>
         <Icon
           icon={faClose}
-          className="hover:bg-gsbk focus:bg-gsbk active:bg-gsbk absolute right-4 top-4 rounded-full bg-gs600 text-gs00 transition-colors"
+          className="absolute right-4 top-4 rounded-full bg-gs600 text-gs00 transition-colors hover:bg-gsBk focus:bg-gsBk active:bg-gsBk"
         />
       </button>
     </section>

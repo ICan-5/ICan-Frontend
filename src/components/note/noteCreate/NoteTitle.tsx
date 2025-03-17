@@ -2,14 +2,7 @@ import { Controller } from 'react-hook-form';
 import ErrorMessage from '../../auth/ErrorMessage';
 import { NoteFormControlProps } from '@/types/note';
 
-export default function NoteTitle({
-  control,
-  errors,
-  color,
-}: NoteFormControlProps) {
-  const getColor = (col: string | undefined) => {
-    return col === 'default' ? { color: `var(--slate500)` } : { color: col };
-  };
+export default function NoteTitle({ control, errors }: NoteFormControlProps) {
   return (
     <>
       <div className="flex items-center justify-between border-y border-gs200 py-3">
@@ -29,14 +22,7 @@ export default function NoteTitle({
                 <span className="text-error text-gs600">
                   {value ? value?.length : 0}
                 </span>
-                <span
-                  className={
-                    color && color !== 'default' ? `text-${color}` : 'text-gsBk'
-                  }
-                  style={getColor(color)}
-                >
-                  /30
-                </span>
+                <span className="text-slate500">/30</span>
               </div>
             </>
           )}

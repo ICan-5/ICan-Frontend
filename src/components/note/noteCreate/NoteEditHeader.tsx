@@ -24,10 +24,10 @@ export default function NoteEditHeader({
   return (
     <div className="w-full items-center border-b-2 border-gs200 bg-gs50 px-4 py-2 xs:flex sm:min-w-[400px]">
       <button type="button" onClick={handleBack}>
-        <Icon icon={faArrowLeft} className="size-5 text-gs600" />
+        <Icon icon={faArrowLeft} className="size-5 text-gsBk" />
       </button>
       <div className="ml-2 flex w-full items-center justify-between">
-        <h2 className="text-14SB text-gs600 xs:text-16SB md:text-18SB">
+        <h2 className="text-14SB text-gsBk xs:text-16SB md:text-18SB">
           {isEditMode ? '노트 수정' : '노트 작성'}
         </h2>
         <div className="flex justify-end gap-2 xs:justify-normal">
