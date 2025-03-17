@@ -14,7 +14,7 @@ export default function TodayProgress({ progressData }: Props) {
   const progress = data || progressData;
   /**
    * @returns 진행도에 따른 문구
-   * prgress에 맞는 문구를 리턴해주는 함수
+   * progress에 맞는 문구를 리턴해주는 함수
    */
   const getProgressMessage = () => {
     if (progress <= 0.1) return '차근차근 시작해볼까요?';
