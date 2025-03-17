@@ -1,11 +1,14 @@
 'use client';
 
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useNoteList } from '@/hooks/useNotes';
 import NoteHeader from '@/components/note/NoteHeader';
 import NoteList from '@/components/note/NoteList';
 
+config.autoAddCss = false;
 export default function Page({ params }: { params: { id: string } }) {
   const goalId = Number(params.id);
   const { data: notes, isLoading, error } = useNoteList(goalId);

@@ -75,6 +75,15 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const trimmedTitle = newTitle.trim();
+    const isTitleChanged = trimmedTitle && trimmedTitle !== goalItem?.title;
+    const isColorChanged = selectedColor !== goalItem?.color;
+
+    if (!isTitleChanged && !isColorChanged) {
+      setIsEditing(false);
+      return;
+    }
+
     if (!e.relatedTarget || !e.relatedTarget.closest('.save-button')) {
       handleSave();
     }
@@ -135,9 +144,9 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
   }, [goalItem?.color]);
 
   return (
-    <div className="flex h-[160px] flex-col gap-3 p-6 md:px-6 md:py-5">
-      <div className="flex min-h-[56px] items-start justify-between">
-        <h1 className="flex max-w-full items-center text-16M md:max-w-2xl md:text-20M">
+    <div className="flex h-[160px] flex-col gap-4 p-3 md:px-6 md:py-3 lg:p-6">
+      <div className="flex h-[56px] items-start justify-between md:mb-4 lg:mb-6">
+        <h1 className="flex w-full items-center text-20M md:max-w-2xl">
           <FontAwesomeIcon
             icon={faFontAwesome}
             className="mr-2"
@@ -151,11 +160,11 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                 onBlur={handleBlur}
                 onChange={(e) => setNewTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full border-b border-gs500"
+                className="w-full border-none bg-transparent outline-none"
               />
             </div>
           ) : (
-            <span className="max-h-[48px] w-full overflow-y-auto whitespace-pre-wrap break-words">
+            <span className="max-h-[40px] w-full overflow-y-auto whitespace-pre-wrap break-words">
               {goalTitle}
             </span>
           )}
@@ -173,21 +182,18 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
           </button>
         )}
       </div>
-
-      <div className="flex-1" />
-
-      <div className="mb-[20px] mt-auto flex flex-row items-center justify-between gap-3">
+      <div className="mb-[20px] mt-auto flex max-h-[55px] flex-row items-center justify-between gap-3">
         {isEditing ? (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-12M text-gs600 md:text-14M">
-              목표 색상 수정
-            </span>
+            <span className="text-14M text-gs600">목표 색상 수정</span>
             <div className="flex flex-wrap gap-1">
               {colorKeys.map((key) => (
                 <div
                   key={key}
-                  className={`flex size-9 items-center justify-center rounded-lg p-1 ${
-                    selectedColor === key ? 'border-2 border-slate400' : ''
+                  className={`flex size-9 items-center justify-center rounded-lg p-1 transition-all duration-300 ${
+                    selectedColor === key
+                      ? 'border-2 border-slate400'
+                      : 'border-transparent'
                   }`}
                 >
                   <button
@@ -195,7 +201,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleColorSelect(key)}
                     aria-label={`색상 변경: ${key}`}
-                    className="size-6 rounded-full border border-transparent"
+                    className="size-6 rounded-full border border-transparent transition-transform duration-200 ease-in-out hover:scale-110 active:scale-90"
                     style={{ backgroundColor: goalColors[key].DEFAULT }}
                   />
                 </div>
