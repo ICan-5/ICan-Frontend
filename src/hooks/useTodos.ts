@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { getErrorMessage } from '@/constants/errorMessages';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { Todo } from '@/types/todos';
@@ -21,12 +22,21 @@ const fetchDailyTodos = async (date: string) => {
 };
 
 export const useMonthlyTodos = (year: number, month: number) => {
-  return useQuery<Todo[]>({
+  const [hasFetched, setHasFetched] = useState(false);
+  const query = useQuery<Todo[]>({
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
-    queryFn: () => fetchMonthlyTodos(year, month),
+    queryFn: async () => {
+      const data = await fetchMonthlyTodos(year, month);
+      setHasFetched(true);
+      return data;
+    },
+    initialData: [],
     retry: false,
-    throwOnError: false,
   });
+  return {
+    ...query,
+    hasFetched,
+  };
 };
 
 export const useDailyTodos = (date: string) => {

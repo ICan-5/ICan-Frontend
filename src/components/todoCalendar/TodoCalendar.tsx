@@ -26,6 +26,8 @@ export default function TodoCalendar() {
     data: monthlyTodos = [],
     isLoading,
     error,
+    refetch,
+    hasFetched,
   } = useMonthlyTodos(currentYear, currentMonth);
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -55,7 +57,13 @@ export default function TodoCalendar() {
     }
 
     return undefined;
-  }, [monthlyTodos]);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !hasFetched && monthlyTodos.length === 0) {
+      refetch();
+    }
+  }, [isLoading, monthlyTodos, hasFetched, refetch]);
 
   return error ? (
     <div>
