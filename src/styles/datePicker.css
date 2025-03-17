@@ -11,8 +11,12 @@
   @apply !rounded-t-2xl !border-2 !border-gs200 !bg-gs50 !p-2;
 }
 
+.react-datepicker__month {
+  @apply !bg-gs00;
+}
+
 .react-datepicker__day {
-  @apply !w-9 !rounded-lg py-1 !text-14M hover:!bg-gs200 2xl:!text-16M;
+  @apply !w-9 !rounded-lg py-1 !text-14M !text-gsBk hover:!bg-gs200 2xl:!text-16M;
   line-height: 1.25rem !important;
 }
 

@@ -159,7 +159,7 @@ export default function NoteDetail({
               {/* 목표 제목 */}
               <div className="flex items-center justify-between">
                 {note.todo.goal && (
-                  <h1 className="flex items-center gap-3 text-16M">
+                  <h1 className="flex items-center gap-3 text-16M text-gsBk">
                     <Icon
                       icon={faFlag}
                       className={cn(
@@ -214,7 +214,9 @@ export default function NoteDetail({
           <div className="flex flex-col gap-4">
             {/* 노트 제목 */}
             <div className="flex items-center justify-between border-y py-3">
-              <h1 className="flex items-center text-18M">{note.title}</h1>
+              <h1 className="flex items-center text-18M text-gsBk">
+                {note.title}
+              </h1>
             </div>
             {note.linkUrl && (
               <button
@@ -236,7 +238,7 @@ export default function NoteDetail({
 
             {/* 내용 */}
             <div
-              className="whitespace-pre-line text-16R text-gs700"
+              className="whitespace-pre-line text-16R text-gsBk"
               dangerouslySetInnerHTML={{ __html: sanitizedContent || '' }}
             />
           </div>
