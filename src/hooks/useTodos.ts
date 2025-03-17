@@ -45,7 +45,7 @@ export const useAddTodo = () => {
   return useMutation({
     mutationFn: (formData: TodoFormValues) => addTodo(formData),
     onSuccess: (newTodo) => {
-      const { date } = newTodo;
+      const { date, goal } = newTodo;
       const year = new Date(date).getFullYear();
       const month = new Date(date).getMonth() + 1;
 
@@ -63,6 +63,13 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
+
+      if (goal?.goalId) {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
+        });
+      }
+
       queryClient.setQueryData(
         [QUERY_KEY.MONTHLY_TODOS, { year, month }],
         (oldData: Todo[]) => {
@@ -85,6 +92,8 @@ export const useUpdateTodo = () => {
       const month = new Date(newDate).getMonth() + 1;
 
       let previousDate: string | null = null;
+      let previousGoal: number | null = null;
+
       queryClient
         .getQueryCache()
         .findAll({
@@ -95,6 +104,7 @@ export const useUpdateTodo = () => {
           const foundTodo = todos?.find((todo) => todo.todoId === todoId);
           if (foundTodo) {
             previousDate = foundTodo.date;
+            previousGoal = foundTodo?.goal?.goalId || null;
           }
         });
 
@@ -113,6 +123,17 @@ export const useUpdateTodo = () => {
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEY.DAILY_TODOS, previousDate],
         });
+      }
+
+      if (goal?.goalId) {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
+        });
+        if (previousGoal && previousGoal !== goal.goalId) {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.GOAL_TODOS, previousGoal],
+          });
+        }
       }
 
       // 데이터 순서가 꼬이는 이슈가 있어서 수정 시 모든 데이터 무효화
@@ -149,6 +170,7 @@ export const useDeleteTodo = () => {
     mutationFn: (todoId: number) => deleteTodo(todoId),
     onSuccess: ({ todoId }) => {
       let previousDate: string | null = null;
+      let previousGoal: number | null = null;
 
       queryClient
         .getQueryCache()
@@ -158,6 +180,7 @@ export const useDeleteTodo = () => {
           const foundTodo = todos.find((todo) => todo.todoId === todoId);
           if (foundTodo) {
             previousDate = foundTodo.date;
+            previousGoal = foundTodo?.goal?.goalId || null;
           }
         });
 
@@ -171,6 +194,12 @@ export const useDeleteTodo = () => {
           (oldTodos) =>
             oldTodos ? oldTodos.filter((todo) => todo.todoId !== todoId) : [],
         );
+
+        if (previousGoal) {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.GOAL_TODOS, previousGoal],
+          });
+        }
 
         // 한 달 단위의 데이터를 무효화하여 최신 데이터 유지
         queryClient.invalidateQueries({
