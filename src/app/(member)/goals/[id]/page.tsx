@@ -63,7 +63,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="h-[162px] rounded-xl bg-gs00 shadow">
           <GoalHeader id={params.id} setGoalAvailable={setIsGoalAvailable} />
         </div>
-        <div className="h-[162px] rounded-xl bg-gs00 shadow">
+        <div className="h-[162px] rounded-xl border-2 border-gs200 shadow">
           <GoalProgress
             doneItems={doneItems.length}
             todoItems={todoItems.length}

@@ -6,7 +6,6 @@ import {
   faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
-import { getDay } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Basket } from '@/types/todos';
 import BasketTodoModal from './BasketTodoModal';
@@ -76,8 +75,8 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
   };
 
   return (
-    <div className="relative flex h-[285px] flex-col rounded-xl shadow">
-      <div className="relative mb-4 flex items-center rounded-t-xl border-b bg-gs00 p-4">
+    <div className="relative flex h-[285px] flex-col rounded-xl border-2 border-gs200 shadow">
+      <div className="relative mb-4 flex items-center rounded-t-xl border-b-2 border-gs200 bg-gs50 p-4">
         <div className="relative flex items-center gap-2">
           <h3 className="text-18SB">할일 장바구니</h3>
           <div
@@ -145,21 +144,19 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                         const today = new Date();
                         const isToday =
                           d.toDateString() === today.toDateString();
-                        const isSunday = getDay(d) === 0;
 
                         let className = 'text-gsBk ';
 
                         if (isToday)
                           className +=
                             'selected-day react-datepicker__day--today ';
-                        if (isSunday) className += 'text-warn500';
 
                         return className.trim();
                       }}
                       customInput={
                         <button
                           type="button"
-                          className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
+                          className={`flex size-7 items-center justify-center rounded-full bg-gs50 p-1 shadow-md transition-opacity duration-200 ${
                             hoveredItem === item.id ||
                             openDatePickerItemId === item.id
                               ? 'opacity-100'
@@ -176,7 +173,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                   </div>
                   <button
                     type="button"
-                    className={`flex size-7 items-center justify-center rounded-full bg-gs00 p-1 shadow-md transition-opacity duration-200 ${
+                    className={`flex size-7 items-center justify-center rounded-full bg-gs50 p-1 shadow-md transition-opacity duration-200 ${
                       hoveredItem === item.id ||
                       openDatePickerItemId === item.id
                         ? 'opacity-100'

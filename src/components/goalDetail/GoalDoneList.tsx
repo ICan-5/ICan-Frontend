@@ -52,7 +52,7 @@ export default function GoalDoneList({ list, onToggle, goalId }: Props) {
 
   return (
     <div className="relative flex h-[310px] flex-col rounded-xl bg-gs00 shadow">
-      <div className="sticky top-0 z-10 flex-none rounded-xl bg-gs50 p-4">
+      <div className="sticky top-0 z-10 flex-none rounded-t-xl bg-gs50 p-4">
         <h3 className="text-18SB">완료된 할일</h3>
       </div>
       <div className="flex-1 overflow-y-auto px-6">

@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
         spin
         className="text-4xl text-slate500"
       />
-      <span className="ml-2 text-lg text-slate-400">로딩 중...</span>
+      <span className="ml-2 text-lg text-slate400">로딩 중...</span>
     </div>
   );
 
