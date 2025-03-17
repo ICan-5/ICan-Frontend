@@ -128,7 +128,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       }
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
-                      calendarClassName="bg-gs00 text-gsBk"
+                      calendarClassName="bg-gs00"
                       popperClassName="z-[9999]"
                       renderCustomHeader={({
                         date,

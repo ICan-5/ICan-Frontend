@@ -267,7 +267,7 @@ export default function GoalHeader({ id, setGoalAvailable }: Props) {
               <button
                 type="button"
                 onClick={handleEditClick}
-                className="block w-full px-4 py-2 text-12M text-slate800 hover:bg-slate100"
+                className="block w-full px-4 py-2 text-12M text-gsBk hover:bg-slate100"
               >
                 목표 수정
               </button>
