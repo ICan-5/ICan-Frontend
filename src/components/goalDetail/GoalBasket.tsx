@@ -128,6 +128,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       }
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
+                      calendarClassName="bg-gs00 text-gsBk"
                       popperClassName="z-[9999]"
                       renderCustomHeader={({
                         date,
@@ -146,7 +147,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                           d.toDateString() === today.toDateString();
                         const isSunday = getDay(d) === 0;
 
-                        let className = '';
+                        let className = 'text-gsBk ';
 
                         if (isToday)
                           className +=
