@@ -23,7 +23,7 @@ export default function TodoCalendar() {
 
   // 한 달 단위 할 일
   const {
-    data: monthlyTodos,
+    data: monthlyTodos = [],
     isLoading,
     error,
   } = useMonthlyTodos(currentYear, currentMonth);
@@ -80,7 +80,6 @@ export default function TodoCalendar() {
               }}
             />
           )}
-          {!isCalendarLoaded && <Loading />}
         </div>
         {isCalendarLoaded && (
           <div

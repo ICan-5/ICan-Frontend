@@ -159,7 +159,7 @@ export default function NoteDetail({
               {/* 목표 제목 */}
               <div className="flex items-center justify-between">
                 {note.todo.goal && (
-                  <h1 className="flex items-center gap-3 text-16M">
+                  <h1 className="flex items-center gap-3 text-16M text-gsBk">
                     <Icon
                       icon={faFlag}
                       className={cn(
@@ -186,14 +186,14 @@ export default function NoteDetail({
                   >
                     <button
                       type="button"
-                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gsBk hover:bg-gs200"
                       onClick={handleEdit}
                     >
                       수정하기
                     </button>
                     <button
                       type="button"
-                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gs700 hover:bg-gs200"
+                      className="flex whitespace-nowrap rounded px-4 py-2 text-14R text-gsBk hover:bg-gs200"
                       onClick={handleDeleteButton}
                     >
                       삭제하기
@@ -204,7 +204,7 @@ export default function NoteDetail({
             </div>
 
             {/* To do */}
-            <div className="flex items-center gap-2 text-gs700">
+            <div className="flex items-center gap-2 text-gs600">
               <span className="rounded bg-gs200 p-1 text-12M">To do</span>
               <span className="text-14R">{note.todo.title}</span>
               <span className="ml-auto text-12R">{note.updatedAt}</span>
@@ -214,7 +214,9 @@ export default function NoteDetail({
           <div className="flex flex-col gap-4">
             {/* 노트 제목 */}
             <div className="flex items-center justify-between border-y py-3">
-              <h1 className="flex items-center text-18M">{note.title}</h1>
+              <h1 className="flex items-center text-18M text-gsBk">
+                {note.title}
+              </h1>
             </div>
             {note.linkUrl && (
               <button
@@ -236,7 +238,7 @@ export default function NoteDetail({
 
             {/* 내용 */}
             <div
-              className="whitespace-pre-line text-16R text-gs700"
+              className="whitespace-pre-line text-16R text-gsBk"
               dangerouslySetInnerHTML={{ __html: sanitizedContent || '' }}
             />
           </div>

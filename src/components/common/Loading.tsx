@@ -1,11 +1,15 @@
-/**
- * 임시 로딩 컴포넌트
- * 추후 common으로 이동
- */
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 export default function Loading() {
   return (
-    <div className="flex items-center justify-center">
-      <p className="text-gray-500">로딩 중...</p>
+    <div className="flex min-h-dvh items-center justify-center">
+      <FontAwesomeIcon
+        icon={faSpinner}
+        spin
+        className="size-10 text-slate500"
+      />
+      <span className="ml-2 text-lg text-slate400">로딩 중...</span>
     </div>
   );
 }

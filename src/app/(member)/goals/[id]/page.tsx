@@ -2,7 +2,7 @@
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { useState } from 'react';
-import { faFaceSadCry, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faFaceSadCry } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GoalBasket from '@/components/goalDetail/GoalBasket';
 import GoalDoneList from '@/components/goalDetail/GoalDoneList';
@@ -13,6 +13,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { useGoalTodo, useToggleTodo } from '@/hooks/useGoalsTodo';
 import goalColors from '@/presets/goalColors';
 import colors from '@/presets/colors';
+import Loading from '@/components/common/Loading';
 
 config.autoAddCss = false;
 
@@ -40,16 +41,7 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   // 로딩 화면 렌더링 함수
-  const renderLoading = () => (
-    <div className="flex min-h-dvh items-center justify-center">
-      <FontAwesomeIcon
-        icon={faSpinner}
-        spin
-        className="text-4xl text-slate500"
-      />
-      <span className="ml-2 text-lg text-slate400">로딩 중...</span>
-    </div>
-  );
+  const renderLoading = () => <Loading />;
 
   // 목표가 없을 때 화면 렌더링 함수
   const renderNoGoal = () => (

@@ -25,8 +25,8 @@ export const useMonthlyTodos = (year: number, month: number) => {
     queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
     queryFn: () => fetchMonthlyTodos(year, month),
     initialData: [],
+    staleTime: 0,
     retry: false,
-    throwOnError: false,
   });
 };
 
@@ -34,7 +34,6 @@ export const useDailyTodos = (date: string) => {
   return useQuery<Todo[]>({
     queryKey: [QUERY_KEY.DAILY_TODOS, date],
     queryFn: () => fetchDailyTodos(date),
-    initialData: [],
     retry: false,
     throwOnError: false,
   });
@@ -46,7 +45,7 @@ export const useAddTodo = () => {
   return useMutation({
     mutationFn: (formData: TodoFormValues) => addTodo(formData),
     onSuccess: (newTodo) => {
-      const { date, goal } = newTodo;
+      const { date } = newTodo;
       const year = new Date(date).getFullYear();
       const month = new Date(date).getMonth() + 1;
 
@@ -61,13 +60,6 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.MONTHLY_TODOS, { year, month }],
       });
-
-      if (goal?.goalId) {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
-        });
-      }
-
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
@@ -133,12 +125,6 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.GRASS],
       });
-
-      if (goal?.goalId) {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.GOAL_TODOS, goal?.goalId],
-        });
-      }
 
       // 노트에 변경 사항 반영
       if (noteId) {
