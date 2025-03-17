@@ -288,8 +288,13 @@ export default function NoteEditor({
                       'size-4 rounded-lg text-lg',
                       `text-${goalQuery?.data.todo.color}`,
                     )}
+                    style={
+                      goalQuery?.data.todo.color === 'default'
+                        ? { color: 'var(--slate500)' }
+                        : {}
+                    }
                   />
-                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
+                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs600">
                     {goalQuery.data?.todo.title}
                   </h3>
                 </section>
@@ -297,7 +302,7 @@ export default function NoteEditor({
               {/* 할 일 제목 */}
               <article
                 className={cn(
-                  'mx-6 mb-4 flex items-center gap-2 text-gs700',
+                  'mx-6 mb-4 flex items-center gap-2 text-gs600',
                   !goalQuery.data?.todo.title && 'mt-4',
                 )}
               >

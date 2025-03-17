@@ -76,7 +76,7 @@ export default function NoteContentEditor({
 
   return (
     <>
-      <span className="mb-2 mt-3 text-12M">
+      <span className="mb-2 mt-3 text-12M text-gs600">
         공백포함: {textLength}자 | 공백제외: {trimmedTextLength}자
       </span>
 
@@ -132,7 +132,7 @@ export default function NoteContentEditor({
                 updateTextLength();
               }}
               placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
-              className="text-black"
+              className="text-gs600"
             />
           )}
         />
