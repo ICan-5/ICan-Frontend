@@ -18,7 +18,7 @@ export default function GoalList() {
     isLoading: isTodoFetching,
   } = useGoalTodo(selectedGoalId, !isGoalsFetching && selectedGoalId !== -1);
 
-  if (!isGoalsFetching && goals.length === 0)
+  if (!isGoalsFetching && goals?.length === 0)
     return (
       <div className="flex size-full min-h-60 items-center justify-center rounded-2xl border-2 border-dashed border-gs200 bg-gs50 text-14M text-gs400 2xl:rounded-[20px]">
         왼쪽 사이드바에서 새로운 목표를 추가해주세요.

@@ -85,7 +85,7 @@ export default function GoalTab({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
     >
-      {goals.map((goal: Goal, index: number) => (
+      {goals?.map((goal: Goal, index: number) => (
         <button
           type="button"
           key={goal.goalId}
