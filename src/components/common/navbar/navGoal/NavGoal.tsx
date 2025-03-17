@@ -65,7 +65,7 @@ export default function NavGoal() {
           className={cn('transition-transform duration-300', {
             'rotate-0': !isFolded,
             'rotate-180': isFolded,
-            invisible: !goalList || goalList.length === 0,
+            invisible: !goalList || goalList?.length === 0,
           })}
           icon={faAngleDown}
           onClick={foldGoalList}
