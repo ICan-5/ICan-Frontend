@@ -130,6 +130,7 @@ export default function NoteContentEditor({
               onChange={(content) => {
                 onChange(content === '<p><br></p>' ? '' : content);
                 updateTextLength();
+                trigger('content');
               }}
               placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
               className="text-gsBk"
