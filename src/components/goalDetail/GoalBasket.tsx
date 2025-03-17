@@ -88,7 +88,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
               className="relative size-5 text-gs500"
             />
             <div
-              className={`absolute top-full -ml-12 mt-2 min-w-[205px] rounded-md bg-gs00 p-2 text-14M text-gsBk shadow transition-opacity duration-200 ${
+              className={`absolute top-full z-[9999] -ml-16 mt-2 min-w-[205px] rounded-md bg-gs00 p-2 text-14M text-gsBk shadow transition-opacity duration-200 ${
                 isTooltipOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
               }`}
             >
