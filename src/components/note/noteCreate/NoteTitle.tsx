@@ -8,7 +8,7 @@ export default function NoteTitle({
   color,
 }: NoteFormControlProps) {
   const getColor = (col: string | undefined) => {
-    return col === 'default' ? {} : { color: col };
+    return col === 'default' ? { color: `var(--slate500)` } : { color: col };
   };
   return (
     <>
@@ -29,7 +29,12 @@ export default function NoteTitle({
                 <span className="text-error text-gs600">
                   {value ? value?.length : 0}
                 </span>
-                <span className={`text-${color}`} style={getColor(color)}>
+                <span
+                  className={
+                    color && color !== 'default' ? `text-${color}` : 'text-gsBk'
+                  }
+                  style={getColor(color)}
+                >
                   /30
                 </span>
               </div>
