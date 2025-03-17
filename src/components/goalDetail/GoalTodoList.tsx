@@ -163,7 +163,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                 )
                 .map(([date, todos]) => (
                   <div key={date} className="relative mb-4">
-                    <div className="text-16M text-gs700">{date}</div>
+                    <div className="text-16M text-gs400">{date}</div>
                     {todos.map((todo) => (
                       <CheckTodo
                         key={todo.todoId}
@@ -209,7 +209,7 @@ export default function GoalTodoList({ list, onToggle, goalId, color }: Props) {
                 )
                 .map(([date, todos]) => (
                   <div key={date} className="relative mb-4">
-                    <div className="text-16M text-gs700">{date}</div>
+                    <div className="text-16M text-gs400">{date}</div>
                     {todos.map((todo) => (
                       <CheckTodo
                         key={todo.todoId}
