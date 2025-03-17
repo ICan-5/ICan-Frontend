@@ -44,6 +44,7 @@ export interface NoteFormControlProps {
   }>;
   setEmbedVisible?: (val: boolean) => void;
   checkEmbedUrl?: () => void;
+  color?: string;
 }
 
 export interface NoteDetail {

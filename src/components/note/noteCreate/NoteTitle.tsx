@@ -2,7 +2,14 @@ import { Controller } from 'react-hook-form';
 import ErrorMessage from '../../auth/ErrorMessage';
 import { NoteFormControlProps } from '@/types/note';
 
-export default function NoteTitle({ control, errors }: NoteFormControlProps) {
+export default function NoteTitle({
+  control,
+  errors,
+  color,
+}: NoteFormControlProps) {
+  const getColor = (col: string | undefined) => {
+    return col === 'default' ? {} : { color: col };
+  };
   return (
     <>
       <div className="flex items-center justify-between border-y border-gs200 py-3">
@@ -13,7 +20,7 @@ export default function NoteTitle({ control, errors }: NoteFormControlProps) {
             <>
               <input
                 placeholder="노트의 제목을 입력해주세요"
-                className="border-top border-bottom w-full rounded-none bg-gs00 pl-0 text-gs600 outline-none focus:border-gs200"
+                className="border-top border-bottom w-full rounded-none bg-gs00 pl-0 text-gsBk outline-none focus:border-gs200"
                 onChange={(e) => onChange(e.target.value)}
                 value={value}
                 maxLength={30}
@@ -22,7 +29,9 @@ export default function NoteTitle({ control, errors }: NoteFormControlProps) {
                 <span className="text-error text-gs600">
                   {value ? value?.length : 0}
                 </span>
-                <span className="text-blue-500">/30</span>
+                <span className={`text-${color}`} style={getColor(color)}>
+                  /30
+                </span>
               </div>
             </>
           )}
