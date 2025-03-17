@@ -204,7 +204,7 @@ export default function NoteDetail({
             </div>
 
             {/* To do */}
-            <div className="flex items-center gap-2 text-gs700">
+            <div className="flex items-center gap-2 text-gs600">
               <span className="rounded bg-gs200 p-1 text-12M">To do</span>
               <span className="text-14R">{note.todo.title}</span>
               <span className="ml-auto text-12R">{note.updatedAt}</span>
