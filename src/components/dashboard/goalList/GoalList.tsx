@@ -33,7 +33,7 @@ export default function GoalList() {
         selectedIndex={selectedGoalIndex}
         onSelect={(index) => setSelectedGoalIndex(index)}
       />
-      <div className="flex w-full flex-col gap-6 rounded-b-lg bg-gs00 px-6 py-4 md:flex-row">
+      <div className="flex w-full flex-col gap-6 overflow-x-hidden rounded-b-lg bg-gs00 px-6 py-4 md:flex-row">
         <GoalTodoSection
           isFetching={isGoalsFetching || isTodoFetching}
           todoItems={todoItems}

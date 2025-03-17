@@ -9,7 +9,7 @@ interface Props {
 
 export default function GoalDoneSection({ isFetching, doneItems }: Props) {
   return (
-    <section className="flex flex-col gap-3 md:flex-[2]">
+    <section className="flex flex-col gap-3 md:w-2/5">
       <p className="text-14SB">완료</p>
       <div className="w-full md:h-40 md:overflow-y-scroll 2xl:h-44">
         {isFetching && <SimpleTodoSkeleton />}
