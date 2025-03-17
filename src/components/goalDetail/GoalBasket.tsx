@@ -6,6 +6,7 @@ import {
   faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
+import { getDay } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Basket } from '@/types/todos';
 import BasketTodoModal from './BasketTodoModal';
@@ -13,6 +14,7 @@ import { useGoalAddTodo } from '@/hooks/useGoalsTodo';
 import { useDeleteBasketTodo } from '@/hooks/useGoalBasketTodo';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import IconButton from '../common/button/IconButton';
+import CustomDateHeader from '../common/input/datePicker/CustomDateHeader';
 
 interface Props {
   basketItems: Basket[];
@@ -104,7 +106,7 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
             basketItems.map((item) => (
               <li
                 key={item.id}
-                className={`flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gs700 transition-colors ${
+                className={`flex items-center justify-between border-b border-dashed border-gs300 pb-2 text-gsBk transition-colors ${
                   hoveredItem === item.id || openDatePickerItemId === item.id
                     ? 'text-slate500'
                     : 'text-gs700'
@@ -126,14 +128,33 @@ export default function GoalBasket({ basketItems, goalId, color }: Props) {
                       }
                       onCalendarOpen={() => handleCalendarOpen(item.id)}
                       onCalendarClose={handleCalendarClose}
+                      calendarClassName="bg-gs00"
                       popperClassName="z-[9999]"
+                      renderCustomHeader={({
+                        date,
+                        decreaseMonth,
+                        increaseMonth,
+                      }) => (
+                        <CustomDateHeader
+                          date={date}
+                          decreaseMonth={decreaseMonth}
+                          increaseMonth={increaseMonth}
+                        />
+                      )}
                       dayClassName={(d) => {
                         const today = new Date();
                         const isToday =
                           d.toDateString() === today.toDateString();
-                        return isToday
-                          ? 'selected-day react-datepicker__day--today'
-                          : '';
+                        const isSunday = getDay(d) === 0;
+
+                        let className = 'text-gsBk ';
+
+                        if (isToday)
+                          className +=
+                            'selected-day react-datepicker__day--today ';
+                        if (isSunday) className += 'text-warn500';
+
+                        return className.trim();
                       }}
                       customInput={
                         <button
