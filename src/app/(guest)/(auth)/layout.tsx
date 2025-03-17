@@ -13,7 +13,7 @@ export default function Layout({
           <IcanLogo className="size-12 flex-none" />
           <IcanTitle className="h-8 w-28" />
         </h2>
-        <p className="mb-10 break-keep text-gs700">
+        <p className="mb-10 break-keep text-gs600">
           할 일을 계획하고 관리해요!
         </p>
       </div>

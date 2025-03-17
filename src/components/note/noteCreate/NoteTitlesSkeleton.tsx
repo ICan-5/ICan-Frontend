@@ -4,7 +4,7 @@ export default function NoteTitlesSkeleton() {
       <section className="mt-2 flex size-full items-center gap-2">
         <div className="h-6 w-full animate-pulse bg-gs100" />
       </section>
-      <article className="mb-2 flex size-full items-center gap-2 text-gs700">
+      <article className="mb-2 flex size-full items-center gap-2 text-gs600">
         <div className="h-6 w-full animate-pulse bg-gs100" />
       </article>
     </div>

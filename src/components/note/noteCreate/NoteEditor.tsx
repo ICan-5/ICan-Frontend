@@ -245,6 +245,10 @@ export default function NoteEditor({
     if (!linkUrl) setEmbedVisible(false);
   }, [linkUrl]);
 
+  const getTodoColorStyle = (color: string | undefined) => {
+    return color === 'default' ? { color: 'var(--slate500)' } : {};
+  };
+
   return (
     <div className="flex size-full flex-col md:flex-row">
       <EmbedPreview
@@ -255,7 +259,7 @@ export default function NoteEditor({
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gs900 md:min-w-[452px]"
+        className="mx-auto flex size-full flex-1 flex-col overflow-auto break-keep rounded-2xl border-2 border-gs200 bg-gs00 text-gsBk md:min-w-[452px]"
       >
         <div>
           <NoteEditHeader
@@ -288,8 +292,9 @@ export default function NoteEditor({
                       'size-4 rounded-lg text-lg',
                       `text-${goalQuery?.data.todo.color}`,
                     )}
+                    style={getTodoColorStyle(goalQuery?.data.todo.color)}
                   />
-                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gs800">
+                  <h3 className="w-[calc(100%-40px)] break-words text-16M text-gsBk">
                     {goalQuery.data?.todo.title}
                   </h3>
                 </section>
@@ -297,7 +302,7 @@ export default function NoteEditor({
               {/* 할 일 제목 */}
               <article
                 className={cn(
-                  'mx-6 mb-4 flex items-center gap-2 text-gs700',
+                  'mx-6 mb-4 flex items-center gap-2 text-gs600',
                   !goalQuery.data?.todo.title && 'mt-4',
                 )}
               >
@@ -312,7 +317,7 @@ export default function NoteEditor({
           )}
         </div>
 
-        <div className="mx-6 mb-6 flex h-full min-h-0 flex-col text-gs800">
+        <div className="mx-6 mb-6 flex h-full min-h-0 flex-col text-gsBk">
           <NoteTitle control={control} errors={errors} />
           <NoteContentEditor
             control={control}

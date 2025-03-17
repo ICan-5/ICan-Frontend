@@ -76,15 +76,15 @@ export default function NoteContentEditor({
 
   return (
     <>
-      <span className="mb-2 mt-3 text-12M">
+      <span className="mb-2 mt-3 text-12M text-gs600">
         공백포함: {textLength}자 | 공백제외: {trimmedTextLength}자
       </span>
 
       {linkUrl && (
-        <section className="mb-4 flex h-auto w-full items-center rounded-full bg-gs100 px-2 py-1 text-16R text-gs800">
+        <section className="mb-4 flex h-auto w-full items-center rounded-full bg-gs100 px-2 py-1 text-16R text-gsBk">
           <Icon
             icon={faLink}
-            className="mr-2 size-6 rounded-full bg-slate500 text-gs00"
+            className="mr-2 size-6 min-h-6 min-w-6 rounded-full bg-slate500 text-gs00"
           />
           <button
             type="button"
@@ -130,9 +130,10 @@ export default function NoteContentEditor({
               onChange={(content) => {
                 onChange(content === '<p><br></p>' ? '' : content);
                 updateTextLength();
+                trigger('content');
               }}
               placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
-              className="text-black"
+              className="text-gsBk"
             />
           )}
         />

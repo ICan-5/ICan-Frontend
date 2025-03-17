@@ -23,17 +23,37 @@
 }
 
 .ql-toolbar.ql-snow {
-  @apply z-10 w-full min-w-[400px] max-w-[752px] rounded-full border-gs200 bg-gs00;
+  @apply z-10 flex w-full min-w-[235px] max-w-[752px] flex-wrap rounded-full border-gs200 bg-gs00;
   @apply absolute bottom-3 left-0 md:left-[unset];
   box-shadow: 0px 1px 2px 0px #0000000d;
 }
 
+[data-dark='true'] .ql-toolbar.ql-snow .ql-stroke {
+  @apply !stroke-gsBk;
+}
+
+[data-dark='true'] .ql-toolbar.ql-snow .ql-fill {
+  @apply !fill-gsBk;
+}
+
+/* 시스템 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  .ql-toolbar.ql-snow .ql-stroke {
+    @apply !stroke-gsBk;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .ql-toolbar.ql-snow .ql-fill {
+    @apply !fill-gsBk;
+  }
+}
+
 .ql-toolbar.ql-snow .ql-formats {
-  @apply mr-4;
+  @apply mr-0 sm:mr-3;
 }
 
 .ql-toolbar.ql-snow .ql-formats:last-child {
-  @apply absolute right-2 mr-0;
+  @apply absolute right-0 rounded-full bg-gs200;
 }
 
 .ql-snow.ql-toolbar:after {
