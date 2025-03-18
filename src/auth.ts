@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { redirect } from 'next/navigation';
 import { authConfig } from './auth.config';
 
 // refresh token을 사용하여 access token을 갱신하는 함수
@@ -26,6 +27,7 @@ async function refreshAccessToken(token: any) {
     }
     throw refreshAccessToken;
   } catch {
+    redirect('/login');
     return { ...token };
   }
 }
