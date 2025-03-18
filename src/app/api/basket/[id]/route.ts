@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: number } },
 ) {
   const { id } = params;
-  const res = await fetchIntance({
+  const res = await fetchInstance({
     method: 'DELETE',
     url: `/calendar/todo-basket/${id}`,
   });

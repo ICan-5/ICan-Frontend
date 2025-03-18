@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 // 노트 생성
 export async function POST(req: NextRequest) {
@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { todoId, title, content, linkUrl } = body;
 
-    const res1 = await fetchIntance({
+    const res1 = await fetchInstance({
       base: 'CODEIT',
       method: 'POST',
       url: '/notes',
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const { id: noteId } = data;
 
     // 노트 id를 해당 todo에 업데이트
-    const res2 = await fetchIntance({
+    const res2 = await fetchInstance({
       base: 'BACKEND',
       method: 'PATCH',
       url: `/todos/${todoId}`,
@@ -57,7 +57,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Invalid goalId' }, { status: 400 });
   }
 
-  const res = await fetchIntance({
+  const res = await fetchInstance({
     base: 'CODEIT',
     method: 'GET',
     url: `/notes?goalId=${goalId}`,

@@ -43,7 +43,7 @@ const getConfig = async <T>(
  * body?: 'POST'나 'PATCH'일 경우 body
  * @returns response
  */
-export const fetchIntance = async <T>(options: {
+export const fetchInstance = async <T>(options: {
   base?: 'CODEIT' | 'BACKEND' | 'FRONTEND';
   url: string;
   method: 'POST' | 'GET' | 'PATCH' | 'DELETE';

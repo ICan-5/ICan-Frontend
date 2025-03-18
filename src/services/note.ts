@@ -1,5 +1,5 @@
 import { getErrorMessage } from '@/constants/errorMessages';
-import { fetchIntance } from './fetchInstance';
+import { fetchInstance } from './fetchInstance';
 import { Todo } from '@/types/todos';
 
 const formatDate = (isoString: string) => {
@@ -52,7 +52,7 @@ export const getNoteDetail = async (noteId: number) => {
 // 서버 컴포넌트에서 호출
 export const getServerNoteDetail = async (noteId: number) => {
   try {
-    const res1 = await fetchIntance({
+    const res1 = await fetchInstance({
       base: 'CODEIT',
       method: 'GET',
       url: `/notes/${noteId}`,
@@ -61,7 +61,7 @@ export const getServerNoteDetail = async (noteId: number) => {
 
     const noteData: NoteResponse = await res1.json();
 
-    const res2 = await fetchIntance({
+    const res2 = await fetchInstance({
       method: 'GET',
       url: `/todos/${noteData.todo.id}`,
     });

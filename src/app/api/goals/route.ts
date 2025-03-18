@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function GET() {
-  const res = await fetchIntance({
+  const res = await fetchInstance({
     base: 'BACKEND',
     method: 'GET',
     url: '/goals',
@@ -13,7 +13,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const title = req.nextUrl.searchParams.get('title');
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'POST',
     url: '/goals',
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   const data = await res1.json();
   const { id } = data;
 
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     base: 'BACKEND',
     method: 'POST',
     url: '/goals',

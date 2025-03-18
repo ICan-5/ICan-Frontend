@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function PATCH(
   req: NextRequest,
@@ -14,7 +14,7 @@ export async function PATCH(
   }
 
   // 목표 이름 수정 요청 (백엔드 API)
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     method: 'PATCH',
     base: 'CODEIT',
     url: `/goals/${goalId}`,
@@ -26,7 +26,7 @@ export async function PATCH(
   }
 
   // 색상 변경 요청 (백엔드 API)
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     method: 'PATCH',
     url: `/goals/${goalId}`,
     body: { goalId, title, color },
@@ -41,7 +41,7 @@ export async function DELETE(
 ) {
   const { goalId } = params;
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'DELETE',
     url: `/goals/${goalId}`,
@@ -51,7 +51,7 @@ export async function DELETE(
     return res1;
   }
 
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     url: `/goals/${goalId}`,
     method: 'DELETE',
   });
@@ -70,7 +70,7 @@ export async function GET(
       { status: 400 },
     );
   }
-  const res = await fetchIntance({
+  const res = await fetchInstance({
     base: 'BACKEND',
     method: 'GET',
     url: `/goals/${goalId}`,

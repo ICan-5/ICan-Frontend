@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const res = await fetchIntance({
+  const res = await fetchInstance({
     method: 'GET',
     params: { year, month },
     url: `/calendar/monthly-todos`,

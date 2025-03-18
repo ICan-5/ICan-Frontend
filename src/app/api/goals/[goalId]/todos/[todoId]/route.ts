@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function PATCH(
   req: NextRequest,
@@ -16,7 +16,7 @@ export async function PATCH(
     );
   }
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'PATCH',
     url: `/todos/${todoId}`,
@@ -27,7 +27,7 @@ export async function PATCH(
     return res1;
   }
 
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     url: `/todos/${todoId}`,
     method: 'PATCH',
     body: {

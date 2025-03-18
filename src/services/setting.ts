@@ -1,10 +1,10 @@
 'use server';
 
-import { fetchIntance } from './fetchInstance';
+import { fetchInstance } from './fetchInstance';
 
 export const updateUser = async (formData: FormData) => {
   try {
-    const res = await fetchIntance({
+    const res = await fetchInstance({
       url: '/user',
       method: 'POST',
       body: formData,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchIntance } from '@/services/fetchInstance';
+import { fetchInstance } from '@/services/fetchInstance';
 
 export async function GET(
   req: NextRequest,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   const { noteId } = params;
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'GET',
     url: `/notes/${noteId}`,
@@ -16,7 +16,7 @@ export async function GET(
 
   const noteData = await res1.json();
 
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     method: 'GET',
     url: `/todos/${noteData.todo.id}`,
   });
@@ -33,7 +33,7 @@ export async function DELETE(
 ) {
   const { noteId } = params;
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'DELETE',
     url: `/notes/${noteId}`,
@@ -41,7 +41,7 @@ export async function DELETE(
 
   if (!res1.ok) return res1;
 
-  const res2 = await fetchIntance({
+  const res2 = await fetchInstance({
     method: 'DELETE',
     url: `/notes/${noteId}`,
   });
@@ -57,7 +57,7 @@ export async function PATCH(
   const body = await req.json();
   const { title, content, linkUrl } = body;
 
-  const res1 = await fetchIntance({
+  const res1 = await fetchInstance({
     base: 'CODEIT',
     method: 'PATCH',
     url: `/notes/${noteId}`,

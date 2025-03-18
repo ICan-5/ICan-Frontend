@@ -1,14 +1,14 @@
 'use server';
 
 import { getErrorMessage } from '@/constants/errorMessages';
-import { fetchIntance } from './fetchInstance';
+import { fetchInstance } from './fetchInstance';
 import { Grass } from '@/types/dashboard';
 
 export const getTodayProgress = async () => {
   try {
     const date = new Date().toLocaleDateString('sv-SE');
 
-    const res = await fetchIntance({
+    const res = await fetchInstance({
       base: 'BACKEND',
       method: 'GET',
       url: `/dashboard/todo-stats?date=${date}`,
@@ -27,7 +27,7 @@ export const getTodayProgress = async () => {
 export const getTodoGrass = async () => {
   try {
     const year = new Date().getFullYear();
-    const res = await fetchIntance({
+    const res = await fetchInstance({
       base: 'BACKEND',
       method: 'GET',
       url: '/dashboard/jandi',
